@@ -14,7 +14,7 @@
     - Minh Tung Nguyen, minhtung0404, ---, GUI
     - Minjoo Kim, minjoo-johanna, ---, GUI
     - Hayate Sasaki, hayate0s, ---, ---
-    - Liu Yufei, elisabeth04, ---, Video animations
+    - Yufei Liu, elisabeth04, ---, Video animations
     - Yi Yao Tan, yao-creative, ---, ---
 
     ## Teams
@@ -29,7 +29,7 @@
     ### Video processing and animations 
 
     - Dimitri Korkotashvilli
-    - Liu Yufei
+    - Yufei Liu
 
     ### Image processing and filters 
 
