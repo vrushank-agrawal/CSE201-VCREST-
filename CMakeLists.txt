@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.20)
 project(video_editor_BX23)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # include your Qt directory here
-set(CMAKE_PREFIX_PATH "C:\\src\\Qt\\5.12.5\\mingw73_64")
 
-find_package(Qt5 COMPONENTS
+find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
@@ -17,9 +18,9 @@ find_package(Qt5 COMPONENTS
 
 add_executable(video_editor_BX23 main.cpp)
 target_link_libraries(video_editor_BX23
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
         )
 
 if (WIN32)
