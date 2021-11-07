@@ -23,6 +23,12 @@ target_link_libraries(video_editor_BX23
         Qt6::Widgets
         )
 
+# add warning
+target_compile_options(video_editor_BX23 PRIVATE
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+        -Wall>
+        $<$<CXX_COMPILER_ID:MSVC>:
+        /W4>)
 if (WIN32)
     set(DEBUG_SUFFIX)
     if (CMAKE_BUILD_TYPE MATCHES "Debug")
