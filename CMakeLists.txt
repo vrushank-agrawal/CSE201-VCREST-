@@ -8,15 +8,13 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# include your Qt directory here
-
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
         REQUIRED)
 
-add_executable(video_editor_BX23 main.cpp)
+add_executable(video_editor_BX23 main.cpp src/Audio/Audio.cpp src/Audio/Audio.hpp)
 target_link_libraries(video_editor_BX23
         Qt::Core
         Qt::Gui
