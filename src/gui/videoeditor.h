@@ -6,7 +6,7 @@
 #define VIDEO_EDITOR_BX23_VIDEOEDITOR_H
 
 #include <QMainWindow>
-
+#include <QVideoWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class VideoEditor; }
