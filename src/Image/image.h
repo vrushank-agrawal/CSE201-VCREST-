@@ -14,44 +14,48 @@ using namespace std;
 #ifndef IMAGE_CLASS
 #define IMAGE_CLASS
 
-class Image {
+namespace img {
 
-    Mat img_matrix;
-    const string filename;
+    class Image {
 
-public:
+        Mat img_matrix;
+        string filename;
 
-    Image();
+    public:
 
-    ~Image();
+        Image( string filename);
 
-    // returns the Matrix associated to the image
-    Mat getMat();
+        ~Image();
 
-    //counts number of images if a multi image file
-    size_t countImg(const String & 	filename,
-                    int 	        flags = IMREAD_ANYCOLOR);
+        // returns the Matrix associated to the image
+        Mat getMat();
 
-    // returns true if input image is of valid format
-    bool validImgRead(const String & 	filename);
+        //counts number of images if a multi image file
+        size_t countImg(const string & 	filename,
+                        int 	        flags = IMREAD_ANYCOLOR);
 
-    // returns a Matrix of the image color values
-    Mat decodeImg(InputArray 	buf,
-                  int 	        flags);
+        // returns true if input image is of valid format
+        bool validImg(const string & 	filename);
 
-    // saves img in a certain file format
-    bool saveImg();
+        // returns a Matrix of the image color values
+        Mat decodeImg(InputArray 	buf,
+                      int 	        flags);
 
-    // Basic functions
-    void resizeImg();
-    void rotateImg();
+        // saves img in a certain file format
+        bool saveImg();
 
-    //Blurs
-    void blur();
-    void boxBlur();
-    void gaussianBlur();
-    void medianBlur();
+        // Basic functions
+        void resizeImg();
+        void rotateImg();
 
-};
+        //Blurs
+        void blur();
+        void boxBlur();
+        void gaussianBlur();
+        void medianBlur();
+
+    };
+}
+
 
 #endif // IMAGE_CLASS
