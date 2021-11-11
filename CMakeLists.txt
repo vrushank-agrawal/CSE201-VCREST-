@@ -16,7 +16,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(video_editor_BX23 main.cpp)
+add_executable(video_editor_BX23 main.cpp src/gui/videoeditor.cpp src/gui/videoeditor.h src/gui/videoeditor.ui)
 target_link_libraries(video_editor_BX23
         Qt::Core
         Qt::Gui
