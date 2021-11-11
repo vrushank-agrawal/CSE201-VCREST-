@@ -41,3 +41,11 @@ This is a unique video editing software developed to help a user create a video 
 
 * Lasha Koroshinadze
 * Hayate Sasaki
+
+## Third parties
+- Qt6.2.1
+
+## Setting for CLion
+- In Setting(Preferences)/Build, Execute and Deployment
+    - Toolchain to change your compiler
+    - In CMake: -DCMAKE_PREFIX_PATH=path/to/your/Qt (example ~/Qt/6.2.1/MacOS)
