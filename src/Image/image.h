@@ -46,7 +46,7 @@ namespace img {
 
         // Basic functions
         void resizeImg();
-        void rotateImg();
+        void rotateImg(double angle);
 
         //Blurs
         void blur(int width, int height);
