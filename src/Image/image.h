@@ -49,10 +49,10 @@ namespace img {
         void rotateImg();
 
         //Blurs
-        void blur();
-        void boxBlur();
-        void gaussianBlur();
-        void medianBlur();
+        void blur(int width, int height);
+        void boxBlur(int width, int height, int ddepth);
+        void gaussianBlur(int width, int height);
+        void medianBlur(int width, int height);
 
     };
 }

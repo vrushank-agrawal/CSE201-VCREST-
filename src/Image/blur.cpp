@@ -20,6 +20,6 @@ void img::Image::boxBlur(int width, int height, int ddepth = -1){
 void img::Image::gaussianBlur(int width, int height){
     GaussianBlur(this->img_matrix, this->img_matrix, Size(width, height), 0);
 };
-void img::Image::medianBlur(){
+void img::Image::medianBlur(int width, int height){
     medianBlur(this->img_matrix, this->img_matrix, Size(width, height))
 };
