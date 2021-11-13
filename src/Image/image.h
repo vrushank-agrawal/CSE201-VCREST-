@@ -45,7 +45,7 @@ namespace img {
         bool saveImg();
 
         // Basic functions
-        void resizeImg();
+        void resizeImg(int width, int height);
         void rotateImg(double angle);
 
         //Blurs
