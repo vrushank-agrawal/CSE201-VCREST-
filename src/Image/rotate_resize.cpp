@@ -13,5 +13,5 @@ void img::Image::rotateImg(double angle){
 }
 
 void img::Image::resizeImg(int width, int height){
-    resize(this->img_matrix, this->img_matrix, Size(width, height), INTER_LINEAR);
+    resize(this->img_matrix, this->img_matrix, Size(width, height), INTER_LINEAR); //uses linear interpolation to resize the image.
 }

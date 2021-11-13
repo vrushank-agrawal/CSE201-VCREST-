@@ -42,7 +42,7 @@ namespace img {
                       int 	        flags);
 
         // saves img in a certain file format
-        bool saveImg();
+        bool saveImg(str filepath);
 
         // Basic functions
         void resizeImg(int width, int height);
