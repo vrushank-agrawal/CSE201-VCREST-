@@ -52,7 +52,7 @@ namespace img {
         void blur(int width, int height);
         void boxBlur(int width, int height, int ddepth);
         void gaussianBlur(int width, int height);
-        void medianBlur(int width, int height);
+        void medianBlur(int kernel_size);
 
     };
 }

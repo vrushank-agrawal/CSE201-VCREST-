@@ -17,6 +17,6 @@ bool img::Image::validImg(const string &filename) {
 }
 
 Mat img::Image::getMat(){
-
+    
 }
 
