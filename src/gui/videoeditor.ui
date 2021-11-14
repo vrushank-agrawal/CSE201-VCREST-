@@ -80,13 +80,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuImport">
-     <property name="title">
-      <string>Import</string>
-     </property>
-     <addaction name="actionImport_Media_2"/>
-     <addaction name="actionImport_VEST_Projects_2"/>
-    </widget>
     <widget class="QMenu" name="menuSave_Project">
      <property name="title">
       <string>Save Project</string>
@@ -96,6 +89,10 @@
      <addaction name="actionBackup_Project"/>
     </widget>
     <addaction name="actionNew_Video"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_Media_3"/>
+    <addaction name="actionImport_VEST_Projects_3"/>
+    <addaction name="separator"/>
     <addaction name="actionOpen_Library"/>
     <addaction name="actionOpen_Recent"/>
     <addaction name="actionClose_Library"/>
@@ -103,11 +100,14 @@
     <addaction name="actionMove_To_Library"/>
     <addaction name="actionMerge_Events"/>
     <addaction name="actionConsolidate_Library_Files"/>
+    <addaction name="separator"/>
     <addaction name="menuSave_Project"/>
-    <addaction name="menuImport"/>
     <addaction name="actionExport"/>
+    <addaction name="separator"/>
     <addaction name="actionShare"/>
+    <addaction name="separator"/>
     <addaction name="actionUpdate_Projects_and_Events"/>
+    <addaction name="separator"/>
     <addaction name="actionDelete_Project"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -116,19 +116,24 @@
     </property>
     <addaction name="actionUndo"/>
     <addaction name="actionPaste"/>
+    <addaction name="separator"/>
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste_2"/>
     <addaction name="actionPaste_Adjustments"/>
     <addaction name="actionDelete"/>
     <addaction name="actionDelete_Keyframes"/>
+    <addaction name="separator"/>
     <addaction name="actionDuplicate_Project"/>
+    <addaction name="separator"/>
     <addaction name="actionSelect_All"/>
     <addaction name="actionSelect_Entire_Clip"/>
     <addaction name="actionSelect_in_Video"/>
     <addaction name="actionDeselect_All"/>
+    <addaction name="separator"/>
     <addaction name="actionAdd_to_Video"/>
     <addaction name="actionInsert"/>
+    <addaction name="separator"/>
     <addaction name="actionFind"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -140,15 +145,18 @@
     <addaction name="actionPlay_from_Beginning"/>
     <addaction name="actionPlay_Full_Screen"/>
     <addaction name="actionLoop_Playback"/>
+    <addaction name="separator"/>
     <addaction name="actionSort_Events_By"/>
     <addaction name="actionSort_By"/>
     <addaction name="actionShow_Separate_Days_in_Events"/>
     <addaction name="actionShow_Audio_Waveforms"/>
     <addaction name="actionShow_Used_Media_Ranges"/>
     <addaction name="actionShow_Skimmer_Info"/>
+    <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="actionZoom_All_Clips"/>
+    <addaction name="separator"/>
     <addaction name="actionSnapping"/>
     <addaction name="actionAudio_Skimming"/>
    </widget>
@@ -161,17 +169,23 @@
     <addaction name="actionZoom"/>
     <addaction name="actionMove_Window_to_Left_Side_of_Screen"/>
     <addaction name="actionMove_Window_to_Right_Side_of_Screen"/>
+    <addaction name="separator"/>
     <addaction name="actionGo_to_Media"/>
     <addaction name="actionGo_to_Projects"/>
     <addaction name="actionShow_Libraries"/>
     <addaction name="actionContent_Library"/>
     <addaction name="actionTheme_Chooser"/>
+    <addaction name="separator"/>
     <addaction name="actionClip_Trimmer"/>
     <addaction name="actionPrecision_Editor"/>
     <addaction name="actionRecord_Voiceover"/>
+    <addaction name="separator"/>
     <addaction name="actionRevert_to_Original_Layout"/>
+    <addaction name="separator"/>
     <addaction name="actionBring_All_to_Front"/>
+    <addaction name="separator"/>
     <addaction name="actionEnter_Full_Screen"/>
+    <addaction name="separator"/>
     <addaction name="actionVEST"/>
     <addaction name="actionWelcome_to_VEST"/>
    </widget>
@@ -180,10 +194,13 @@
      <string>Help</string>
     </property>
     <addaction name="actionSearch"/>
+    <addaction name="separator"/>
     <addaction name="actionVEST_Help"/>
+    <addaction name="separator"/>
     <addaction name="actionWhat_s_New_in_VEST"/>
     <addaction name="actionKeyboard_Shortcuts"/>
     <addaction name="actionSupported_Cameras"/>
+    <addaction name="separator"/>
     <addaction name="actionService_and_Support"/>
    </widget>
    <widget class="QMenu" name="menuVEST">
@@ -191,12 +208,17 @@
      <string>VEST</string>
     </property>
     <addaction name="actionAbout_VEST"/>
+    <addaction name="separator"/>
     <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
     <addaction name="actionProvide_VEST_Feedback"/>
+    <addaction name="separator"/>
     <addaction name="actionServices"/>
+    <addaction name="separator"/>
     <addaction name="actionHide_VEST"/>
     <addaction name="actionHide_Others"/>
     <addaction name="actionShow_All"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit_VEST"/>
    </widget>
    <widget class="QMenu" name="menuModify">
@@ -207,17 +229,20 @@
     <addaction name="actionFade_to"/>
     <addaction name="actionFlash_and_Freeze_Frame"/>
     <addaction name="actionMute_Audio"/>
+    <addaction name="separator"/>
     <addaction name="actionTrim_to_Selection"/>
     <addaction name="actionTrim_Clip_Edge"/>
     <addaction name="actionSplit_Clip"/>
     <addaction name="actionJoin_Clips"/>
     <addaction name="actionDetach_Audio"/>
+    <addaction name="separator"/>
     <addaction name="actionSlow_Motion"/>
     <addaction name="actionFast_Forward"/>
     <addaction name="actionInstant_Reply"/>
     <addaction name="actionRewind"/>
     <addaction name="actionAdd_Freeze_Frame"/>
     <addaction name="actionReset_Speed"/>
+    <addaction name="separator"/>
     <addaction name="actionAdjust_Clip_Date_and_Time"/>
    </widget>
    <widget class="QMenu" name="menuMark">
@@ -227,6 +252,7 @@
     <addaction name="actionFavorite"/>
     <addaction name="actionReject"/>
     <addaction name="actionUnrate"/>
+    <addaction name="separator"/>
     <addaction name="actionAdd_Marker"/>
     <addaction name="actionDelete_Marker"/>
    </widget>
@@ -762,6 +788,16 @@
   <action name="actionQuit_VEST">
    <property name="text">
     <string>Quit VEST</string>
+   </property>
+  </action>
+  <action name="actionImport_Media_3">
+   <property name="text">
+    <string>Import Media...</string>
+   </property>
+  </action>
+  <action name="actionImport_VEST_Projects_3">
+   <property name="text">
+    <string>Import VEST Projects</string>
    </property>
   </action>
  </widget>
