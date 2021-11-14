@@ -8,6 +8,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+include_directories(libs/aubio/include)
+link_directories(libs/aubio/lib)
+
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -15,10 +18,12 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(video_editor_BX23 main.cpp src/Audio/Audio.cpp src/Audio/Audio.hpp)
+
 target_link_libraries(video_editor_BX23
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        libaubio.a
         )
 
 # add warning
