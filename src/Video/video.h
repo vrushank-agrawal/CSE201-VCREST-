@@ -1,5 +1,4 @@
 // Draft for video class
-
 #ifndef OPENCV
 #define OPENCV
 
