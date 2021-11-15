@@ -2,16 +2,32 @@
 // Created by lasha on 14-Nov-21.
 //
 
-#include "aubio/aubio.h"
 #include "Audio.hpp"
 
-#include <iostream>
+namespace audio {
 
-using namespace std;
+    Audio::Audio(string uri) {
 
-int audio::Audio::getX() {
-    aubio_source_t *a = new_aubio_source("C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/test.wav", 0,
-                                         50);
-    cout << aubio_source_get_samplerate(a) << endl;
-    return 0;
+        uint_t sample_rate = 0;
+        uint_t hop_size = 256;
+        uint_t n_frames = 0, read = 0;
+
+        aubio_source_t *s = new_aubio_source(uri.c_str(), sample_rate, hop_size);
+        fvec_t *vec = new_fvec(hop_size);
+
+        do {
+            aubio_source_do(s, vec, &read);
+            fvec_print(vec);
+            n_frames += read;
+        } while (read == hop_size);
+
+        aubio_source_close(s);
+
+        if (vec)
+            del_fvec(vec);
+        if (s)
+            del_aubio_source(s);
+
+    }
+
 }
