@@ -8,6 +8,4 @@ target_link_libraries(gui
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        Qt::Multimedia
-        Qt::MultimediaWidgets
         )
