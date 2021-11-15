@@ -45,14 +45,14 @@ namespace img {
         bool saveImg();
 
         // Basic functions
-        void resizeImg();
-        void rotateImg();
+        void resizeImg(int width, int height);
+        void rotateImg(double angle);
 
         //Blurs
-        void blur();
-        void boxBlur();
-        void gaussianBlur();
-        void medianBlur();
+        void blur(int width, int height);
+        void boxBlur(int width, int height, int ddepth);
+        void gaussianBlur(int width, int height);
+        void medianBlur(int kernel_size);
 
     };
 }
