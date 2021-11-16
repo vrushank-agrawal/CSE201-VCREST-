@@ -15,6 +15,10 @@ namespace audio {
 
     class Audio {
     private:
+        int n_channels;
+        int sample_rate;
+        int bit_depth;
+        int length;
 
     public:
         Audio(string uri);
@@ -23,6 +27,5 @@ namespace audio {
     };
 
 }
-
 
 #endif //VIDEO_EDITOR_BX23_AUDIO_HPP
