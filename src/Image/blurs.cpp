@@ -23,3 +23,4 @@ void img::Image::gaussianBlur(int width, int height){
 void img::Image::medianBlur(int kernel_size){
     medianBlur(this->img_matrix, this->img_matrix, kernel_size)
 };
+
