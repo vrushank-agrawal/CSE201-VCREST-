@@ -1,4 +1,4 @@
-# VEST - Video editing software tool 
+# VEST - Video editing software tool
 
 This is a unique video editing software developed to help a user create a video out of a group of images. The main feature is to allow the user to merge images with an audio file in a given sequence by analyzing the audio's bpm. Further features include adding simple animations to the corresponding video and certain filters to the images imported into the application by the user.
 
@@ -26,18 +26,18 @@ This is a unique video editing software developed to help a user create a video 
 * Minh Tung Nguyen
 * Minjoo Kim
 
-### Video processing and animations 
+### Video processing and animations
 
 * Dimitri Korkotashvilli
 * Yufei Liu
 * Lucia Carai
 
-### Image processing and filters 
+### Image processing and filters
 
 * Vrushank Agrawal
 * Yi Yao Tan
-    
-### Audio analyzing 
+
+### Audio analyzing
 
 * Lasha Koroshinadze
 * Hayate Sasaki
@@ -78,3 +78,14 @@ This is a unique video editing software developed to help a user create a video 
     - wait for the installtion to complete (takes a lot of time) 
     - Now try to run src/testing_opencv as a separate debug environment in CLion 
     - if there is no error and the image lena.jpg is displayed then OpenCV is successfully integrated, otherwise retry the entire process or try google or contact me at vrushank2001@gmail.com
+### MacOS
+1. Getting OpenCV Source Code
+    - Download OpenCV source code using this [link](https://github.com/opencv/opencv/archive/4.5.4.zip) and unpack it.
+2. Building OpenCV from Source Using CMake
+    - Create a temporary directory, which we denote as `build_opencv` inside `opencv-4.5.4` folder, where you want to put the generated Makefiles, project files as well the object files and output binaries and enter there.
+    - Run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv`
+    - Build using `make -j7`
+
+Notes: 
+
+I used Xcode g++ compiler because using other compiler leads to an error like `Undefined symbols for architecture arm64`. If you also have this problem you probably want to change to Xcode g++ compiler.
