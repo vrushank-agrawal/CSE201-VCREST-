@@ -8,8 +8,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# include your Qt directory here
-
 find_package(Qt6 COMPONENTS
         Core
         Gui

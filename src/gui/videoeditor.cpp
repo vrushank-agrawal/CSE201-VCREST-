@@ -11,6 +11,8 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
+    ui->preview->setGraphicsView(ui->graphicsView);
+//    ui->preview->play();
 }
 
 VideoEditor::~VideoEditor() {
