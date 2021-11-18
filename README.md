@@ -84,8 +84,16 @@ if there is no error and the image lena.jpg is displayed then OpenCV is successf
     - Download OpenCV source code using this [link](https://github.com/opencv/opencv/archive/4.5.4.zip) and unpack it.
 2. Building OpenCV from Source Using CMake
     - Create a temporary directory, which we denote as `build_opencv` inside `opencv-4.5.4` folder, where you want to put the generated Makefiles, project files as well the object files and output binaries and enter there.
-    - Run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv`
-    - Build using `make -j7`
+    - Generate Makefile (2 ways)
+      - Using terminal: Open terminal on folder `build_opencv` and run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv` on terminal
+      - Using cmake-gui
+        - set the opencv source path
+        - set the build path to `build_opencv`
+        - set `CMAKE_BUILD_TYPE` to `Release`
+        - set `BUILD_EXAMPLES` to `ON`
+        - run `Configure`
+        - run `Generate`
+    - Build by run `make -j7` on terminal
 
 Notes: 
 
