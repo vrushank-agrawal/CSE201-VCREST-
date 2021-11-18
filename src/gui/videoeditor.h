@@ -21,9 +21,17 @@ public:
 
 public slots:
     void ImportImage();
+    void SetAudioTimeSpan();
 
 private:
     Ui::VideoEditor *ui;
+    double audioLength = 0.0; // Audio Length in minutes
+    double audioTimeSpan;
+
+    double Round2Decimal(double d) {
+        double value = (int)(d * 100 + .5);
+        return (double)value / 100.0;
+    }
 };
 
 
