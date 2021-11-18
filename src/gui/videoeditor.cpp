@@ -14,22 +14,9 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
-    connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::ImportImage);
-    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::SetDisplayImage);
+    connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::importImage);
+    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
-
-//void MainWindow::loadImage(const QString &fileName)
-//{
-//    QPixmap newImage;
-//    if (!newImage.load(fileName)) {
-//        QMessageBox::warning(this, tr("Open Image"),
-//                             tr("The image file could not be loaded."),
-//                             QMessageBox::Close);
-//        return;
-//    }
-//    puzzleImage = newImage;
-//    setupPuzzle();
-//}
 
 void VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
@@ -52,7 +39,7 @@ void VideoEditor::loadImage(const QString &path) {
 void VideoEditor::setupWidgets() {
 }
 
-void VideoEditor::SetDisplayImage() {
+void VideoEditor::setDisplayImage() {
     if (images.empty()) {
         imageIndex = -1;
     }

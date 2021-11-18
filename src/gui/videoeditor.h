@@ -21,7 +21,7 @@ public:
 
 public slots:
     void importImage();
-    void SetDisplayImage();
+    void setDisplayImage();
 
 private:
     Ui::VideoEditor *ui;
