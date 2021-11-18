@@ -34,9 +34,37 @@ Mat stitch(int column_div, int row_div, int num,...){
         image_list = va_arg(valist, int).resize(width , height);
    }
    //use hconcat and vconcat on the list of matrices to create a collage : D
-   
+
    for 
    
    
 
+}
+Mat hstitch(Mat mat1, Mat mat2){
+    //later on we can add the division (currently)
+    Mat output;
+    int out_height = min(mat1.size().height, mat2.size().height);
+    Mat temp1= mat1;
+    Mat temp2= mat2; 
+    //allocate temp1 and temp2 matrices to concatenate and then delete them later. so that we don't modify the original images.
+    temp1.resize(mat1.size().width , out_height);
+    temp2.resize(mat2.size().width, out_height);
+    hconcat(temp1,temp2, output);
+    delete temp1;
+    delete temp2;
+    return output;
+}
+Mat vstitch(Mat mat1, Mat mat2){
+    //later on we can add the division (currently)
+    Mat output;
+    int out_wdith = min(mat1.size().width, mat2.size().width);
+    Mat temp1= mat1;
+    Mat temp2= mat2; 
+    //allocate temp1 and temp2 matrices to concatenate and then delete them later. so that we don't modify the original images.
+    temp1.resize(out_wdith);
+    temp2.resize(out_wdith, mat1.size().height);
+    hconcat(temp1,temp2, mat2.size().height);
+    delete temp1;
+    delete temp2;
+    return output;
 }
