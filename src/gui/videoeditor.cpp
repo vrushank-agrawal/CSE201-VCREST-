@@ -14,7 +14,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
     connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::ImportImage);
-    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::SetAudioTimeSpan);
+    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::SetDisplayImage);
 }
 
 void VideoEditor::ImportImage() {
@@ -25,10 +25,16 @@ void VideoEditor::ImportImage() {
     }
 }
 
-void VideoEditor::SetAudioTimeSpan() {
-    audioTimeSpan = ((double)ui->controlSlider->value())/100.0;
-    audioTimeSpan *= audioLength;
-    audioTimeSpan = Round2Decimal(audioTimeSpan);
+void VideoEditor::SetDisplayImage() {
+    if (images.empty()) {
+        imageIndex = -1;
+    }
+    else {
+        double ratio = ((double)ui->controlSlider->value())/100.0;
+        ratio *= images.size();
+        imageIndex = (int) ratio;
+        imageIndex = (imageIndex == images.size()) ? imageIndex - 1 : imageIndex;
+    }
 }
 
 VideoEditor::~VideoEditor() {

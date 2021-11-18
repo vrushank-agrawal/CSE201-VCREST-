@@ -21,17 +21,12 @@ public:
 
 public slots:
     void ImportImage();
-    void SetAudioTimeSpan();
+    void SetDisplayImage();
 
 private:
     Ui::VideoEditor *ui;
-    double audioLength = 0.0; // Audio Length in minutes
-    double audioTimeSpan;
-
-    double Round2Decimal(double d) {
-        double value = (int)(d * 100 + .5);
-        return (double)value / 100.0;
-    }
+    std::vector<QPixmap> images;
+    int imageIndex = -1; // index of image need to displayed in images
 };
 
 

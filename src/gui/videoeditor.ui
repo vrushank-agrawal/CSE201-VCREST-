@@ -308,19 +308,6 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
       <property name="styleSheet">
        <string notr="true">background: rgb(0, 170, 0)</string>
       </property>
-      <widget class="QSlider" name="controlSlider">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
      </widget>
     </item>
     <item>
@@ -334,6 +321,19 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
       <property name="styleSheet">
        <string notr="true">background: rgb(170, 255, 127)</string>
       </property>
+      <widget class="QSlider" name="controlSlider">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
