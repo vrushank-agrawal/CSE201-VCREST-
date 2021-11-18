@@ -20,6 +20,10 @@ namespace audio {
         int bit_depth;
         int length;
 
+        int hop_size;
+
+        aubio_source_t *source;
+
     public:
         Audio(string uri);
 
