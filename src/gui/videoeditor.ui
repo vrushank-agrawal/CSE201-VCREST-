@@ -305,7 +305,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="container" native="true">
+           <widget class="VideoPlayer" name="preview" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>2</horstretch>
@@ -321,9 +321,9 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
             <property name="styleSheet">
              <string notr="true">background: rgb(255, 170, 0)</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
+            <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
              <property name="spacing">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="leftMargin">
               <number>10</number>
@@ -338,32 +338,29 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               <number>10</number>
              </property>
              <item>
-              <widget class="VideoPlayer" name="preview" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
+              <widget class="QGraphicsView" name="graphicsView">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>10</verstretch>
+                </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: rgb(85, 85, 0)</string>
+                <string notr="true">background: rgb(125, 255, 128)</string>
                </property>
-               <widget class="QGraphicsView" name="graphicsView">
-                <property name="geometry">
-                 <rect>
-                  <x>20</x>
-                  <y>10</y>
-                  <width>491</width>
-                  <height>251</height>
-                 </rect>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>1</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: rgb(126, 154, 255)</string>
+               </property>
               </widget>
              </item>
             </layout>

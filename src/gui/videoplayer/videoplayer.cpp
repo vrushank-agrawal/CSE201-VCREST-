@@ -53,5 +53,5 @@ void VideoPlayer::setGraphicsView(QGraphicsView *graphicsView){
     this->graphicsView = graphicsView;
     this->graphicsView->setScene(new QGraphicsScene(this));
     this->graphicsView->scene()->addItem(&pixmap);
-    this->graphicsView->setFixedSize(500, 250);
+//    this->graphicsView->setFixedSize(500, 250);
 }
