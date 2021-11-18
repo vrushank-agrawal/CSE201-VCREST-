@@ -15,10 +15,9 @@ namespace audio {
 
     class Audio {
     private:
-        int n_channels;
+        int channels;
         int sample_rate;
-        int bit_depth;
-        int length;
+        int duration;
 
         int hop_size;
 
