@@ -71,7 +71,24 @@
             <property name="styleSheet">
              <string notr="true">background: rgb(85, 255, 255)rgb(255, 170, 255)</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout"/>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="ImportButton">
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Import</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -314,7 +331,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1077</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -19,6 +19,9 @@ public:
 
     ~VideoEditor() override;
 
+public slots:
+    void ImportImage();
+
 private:
     Ui::VideoEditor *ui;
 };
