@@ -89,13 +89,30 @@
             <property name="styleSheet">
              <string notr="true">background: rgb(85, 255, 255)rgb(255, 170, 255)</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout"/>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="importButton">
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Import</string>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
-           <widget class="QListView" name="imgList">
+           <widget class="QWidget" name="imgListWidget" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>10</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -107,7 +124,7 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: rgb(0, 255, 127)</string>
+             <string notr="true">background: rgb(85, 255, 0)</string>
             </property>
            </widget>
           </item>
@@ -408,6 +425,19 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
       <property name="styleSheet">
        <string notr="true">background: rgb(170, 255, 127)</string>
       </property>
+      <widget class="QSlider" name="controlSlider">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
