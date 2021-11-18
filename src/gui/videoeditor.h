@@ -16,14 +16,16 @@ Q_OBJECT
 
 public:
     explicit VideoEditor(QWidget *parent = nullptr);
-
+    void loadImage(const QString &path);
     ~VideoEditor() override;
 
 public slots:
-    void ImportImage();
+    void importImage();
 
 private:
     Ui::VideoEditor *ui;
+    void setupMenus();
+    void setupWidgets();
 };
 
 
