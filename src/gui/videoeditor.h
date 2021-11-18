@@ -21,9 +21,12 @@ public:
 
 public slots:
     void importImage();
+    void SetDisplayImage();
 
 private:
     Ui::VideoEditor *ui;
+    std::vector<QPixmap> images;
+    int imageIndex = -1; // index of image need to displayed in images
     void setupMenus();
     void setupWidgets();
 };
