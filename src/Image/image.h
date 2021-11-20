@@ -19,6 +19,7 @@ namespace img {
     class Image {
 
         Mat img_matrix;
+        Mat img_matrix_modified;
         string filename;
         string save_filename;
 
@@ -31,6 +32,8 @@ namespace img {
         // returns the Matrix associated to the image
         Mat getMat();
         String getFilename();
+        Mat getModifiedImg();
+        void setModifiedImg(Mat mat);
 
         //counts number of images if a multi image file
         size_t countImg(const string & 	filename,
@@ -48,6 +51,10 @@ namespace img {
                      InputArray 	img,
                      const std::vector< int > & 	params = std::vector< int >()
         );
+
+        void imgPreview( const String & 	winname);
+        void imgModifiedPreview( const string & winname);
+
 
         // Basic editing functions in rotate_resize.cpp
         void resizeImg(int width, int height);

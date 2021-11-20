@@ -7,24 +7,24 @@
 
 using namespace img;
 
-img::Image::Image(string filename) {
+img::Image::Image(const string & filename) {
     this -> filename = filename;
+    this -> img_matrix_modified = NULL;
     if (this -> validImg( filename )) {
         this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
-        if (this -> img_matrix == NULL) {
-            string s = 'improper image exception';
-            return s;
-        }
-    } else {
-        string s = 'file reading exception';
-        return s;
-    };
+//        if ( this -> getMat() == NULL) {
+//            String s = 'improper image exception';
+//            return s;
+//        }
+    }
+//    else {
+//        string s = 'file reading exception';
+//        return s;
+//    }
 }
 
 img::Image::~Image() {
-    delete img_matrix;
-    delete filename;
-    delete save_filename;
+
 }
 
 bool img::Image::validImg(const string &filename) {
@@ -35,6 +35,14 @@ Mat img::Image::getMat(){
     return this -> img_matrix;
 }
 
+Mat img::Image::getModifiedImg() {
+    return this-> img_matrix_modified;
+}
+
+void img::Image::setModifiedImg(Mat matrix) {
+    this -> img_matrix_modified = matrix;
+}
+
 Mat img::Image::decodeImg(const String &filename, int flags) {
     return imread( filename, IMREAD_COLOR);
 }
@@ -43,9 +51,20 @@ String img::Image::getFilename() {
     return this -> filename;
 }
 
-bool img::Image::saveImg(int filepath) {
-
+void img::Image::imgPreview(const String &window) {
+    Mat mat = this -> getMat();
+    imshow(window, mat);
 }
+
+void img::Image::imgModifiedPreview(const string &window) {
+    Mat mat = this -> getModifiedImg();
+    imshow(window, mat);
+}
+
+//
+//bool img::Image::saveImg(int filepath) {
+//
+//}
 
 //
 //Mat stitch(int column_div, int row_div, int num,...){
