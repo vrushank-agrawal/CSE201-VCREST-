@@ -4,10 +4,6 @@
 
 #include "Audio.hpp"
 
-#include <iostream>
-
-using namespace std;
-
 namespace audio {
 
     vector<int> filter(vector<int> input) {
@@ -39,7 +35,7 @@ namespace audio {
 
     }
 
-    vector<double> Audio::getBeatPositions() {
+    vector<int> Audio::getBeatPositions() {
 
         vector<int> beats_ms;
 
@@ -60,11 +56,7 @@ namespace audio {
 
         vector<int> output = filter(beats_ms);
 
-        cout << output.size() << endl;
-
-        for (int i = 0; i < output.size(); i++) {
-            cout << output[i] << endl;
-        }
+        return output;
 
     }
 

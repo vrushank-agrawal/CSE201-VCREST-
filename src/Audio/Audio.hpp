@@ -26,7 +26,7 @@ namespace audio {
     public:
         Audio(string uri);
 
-        vector<double> getBeatPositions();
+        vector<int> getBeatPositions();
     };
 
 }
