@@ -69,8 +69,9 @@ This is a unique video editing software developed to help a user create a video 
     - Search for `CMAKE_BUILD_TYPE` and set its value to `Release`
     - Click on `configure` and after configuration click on `generate`
 5. Now go to `C:\opencv\release\bin` and add this path to the environment variables 
-6. Now add this path `C:\opencv\release\install\x64\mingw\bin`  or  `C:\opencv\release\install\x86\mingw\bin` to environment variables
-7. Open Command prompt in `C:\opencv\release` and run `mingw32-make`. Wait for the installtion to complete (takes a lot of time)
+6. Open Command prompt in `C:\opencv\release` and run `mingw32-make`. Wait for the installtion to complete (takes a lot of time)
+6. Now run the command `mingw32-make install` that creates an install folder in  `C:\opencv\release`
+7. Now add this path `C:\opencv\release\install\x64\mingw\bin`  or  `C:\opencv\release\install\x86\mingw\bin` to environment variables
 
 
 ### MacOS
