@@ -2,9 +2,9 @@
 // Created by Minh Tung Nguyen on 18/11/2021.
 //
 
-#include <QCoreApplication>
-#include "videoplayer.h"
+#include <QStyle>
 #include <iostream>
+#include "videoplayer.h"
 
 VideoPlayer::VideoPlayer(QWidget *parent) :
         QWidget(parent)
@@ -18,6 +18,7 @@ VideoPlayer::~VideoPlayer()
 }
 
 void VideoPlayer::updatePicture(){
+    if (!isPlaying) return;
     using namespace cv;
 
     Mat frame;
@@ -39,8 +40,25 @@ void VideoPlayer::updatePicture(){
 }
 
 
-void VideoPlayer::setQLabel(VideoWindow *label){
+void VideoPlayer::setChild(VideoWindow *label, QToolButton *playButton){
     this->label = label;
+    this->playButton = playButton;
+
+    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    this->playButton->setToolTip(tr("Play"));
+    connect(this->playButton, SIGNAL(clicked()), this, SLOT(play()));
+}
+
+void VideoPlayer::play(){
+    if (isPlaying) {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        this->playButton->setToolTip(tr("Play"));
+    }
+    else {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        this->playButton->setToolTip(tr("Play"));
+    }
+    isPlaying = !isPlaying;
 }
 
 void VideoPlayer::updateVideo(cv::VideoCapture video) {
