@@ -5,6 +5,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <iostream>
+#include <stdarg.h>
 
 #endif //OPENCV
 
@@ -18,8 +19,9 @@ namespace img {
 
     class Image {
 
-        Mat img_matrix;
+        Mat imgMatrix;
         string filename;
+        
 
     public:
 
@@ -52,9 +54,11 @@ namespace img {
         void blur(int width, int height);
         void boxBlur(int width, int height, int ddepth);
         void gaussianBlur(int width, int height);
-        void medianBlur(int kernel_size);
-
+        void medianBlur(int kernelSize);
+        double getRatio();
     };
+
+    
 }
 
 
