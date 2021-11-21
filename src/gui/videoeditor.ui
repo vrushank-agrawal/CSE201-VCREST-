@@ -355,15 +355,21 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               <number>10</number>
              </property>
              <item>
-              <widget class="QGraphicsView" name="graphicsView">
+              <widget class="VideoWindow" name="label">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
-                 <verstretch>10</verstretch>
+                 <verstretch>7</verstretch>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: rgb(125, 255, 128)</string>
+                <string notr="true">background: rgb(0, 255, 12)</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -1195,6 +1201,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
    <extends>QWidget</extends>
    <header>videoplayer.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VideoWindow</class>
+   <extends>QLabel</extends>
+   <header>videowindow.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
