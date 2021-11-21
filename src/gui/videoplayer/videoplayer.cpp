@@ -12,7 +12,8 @@ VideoPlayer::VideoPlayer(QWidget *parent) :
     video.open("/Users/minhtung0404/Downloads/1.mp4");
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
-    timer->start(20);
+    double fps = video.get(cv::CAP_PROP_FPS);
+    timer->start(int(1000 / fps));
 }
 
 VideoPlayer::~VideoPlayer()
