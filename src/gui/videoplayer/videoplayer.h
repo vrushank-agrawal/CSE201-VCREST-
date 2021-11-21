@@ -27,12 +27,13 @@ public:
     explicit VideoPlayer(QWidget *parent = 0);
     ~VideoPlayer();
     void setQLabel(VideoWindow *label);
+    void updateVideo(cv::VideoCapture video);
 
 private slots:
     void updatePicture();
 
 private:
-    QTimer *timer;
+    QTimer *timer = nullptr;
     VideoWindow *label;
     cv::VideoCapture video;
 };

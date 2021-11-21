@@ -9,11 +9,6 @@
 VideoPlayer::VideoPlayer(QWidget *parent) :
         QWidget(parent)
 {
-    video.open("/Users/minhtung0404/Downloads/1.mp4");
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
-    double fps = video.get(cv::CAP_PROP_FPS);
-    timer->start(int(1000 / fps));
 }
 
 VideoPlayer::~VideoPlayer()
@@ -46,4 +41,15 @@ void VideoPlayer::updatePicture(){
 
 void VideoPlayer::setQLabel(VideoWindow *label){
     this->label = label;
+}
+
+void VideoPlayer::updateVideo(cv::VideoCapture video) {
+    this->video = video;
+    if (timer != nullptr) delete timer;
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
+    double fps = video.get(cv::CAP_PROP_FPS);
+    std::cout << fps << std::endl;
+    timer->start(int(1000 / fps));
 }
