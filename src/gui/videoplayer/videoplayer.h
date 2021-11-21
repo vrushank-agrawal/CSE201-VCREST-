@@ -9,11 +9,13 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
-#include <QGraphicsView>
+#include <QLabel>
 #include <QImage>
 #include <QPixmap>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QTimer>
+#include "videowindow.h"
 
 #include "opencv2/opencv.hpp"
 
@@ -24,12 +26,14 @@ Q_OBJECT
 public:
     explicit VideoPlayer(QWidget *parent = 0);
     ~VideoPlayer();
-    void play();
-    void setGraphicsView(QGraphicsView *graphicsView);
+    void setQLabel(VideoWindow *label);
+
+private slots:
+    void updatePictureb();
 
 private:
-    QGraphicsView *graphicsView;
-    QGraphicsPixmapItem pixmap;
+    QTimer *timer;
+    VideoWindow *label;
     cv::VideoCapture video;
 };
 
