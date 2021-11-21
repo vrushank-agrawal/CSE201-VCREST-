@@ -4,6 +4,9 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/video.hpp>
+#include <opencv2/core/utility.hpp>
 #include <iostream>
 
 #endif //OPENCV
@@ -19,16 +22,21 @@ namespace img {
     class Image {
 
         Mat img_matrix;
+        Mat img_matrix_modified;
         string filename;
+        string save_filename;
 
     public:
 
-        Image( string filename);
+        Image(const string &    filename);
 
         ~Image();
 
         // returns the Matrix associated to the image
         Mat getMat();
+        String getFilename();
+        Mat getModifiedImg();
+        void setModifiedImg(Mat mat);
 
         //counts number of images if a multi image file
         size_t countImg(const string & 	filename,
@@ -38,19 +46,27 @@ namespace img {
         bool validImg(const string & 	filename);
 
         // returns a Matrix of the image color values
-        Mat decodeImg(InputArray 	buf,
-                      int 	        flags);
+        Mat decodeImg(const String & 	filename,
+                      int 	            flags = IMREAD_COLOR);
 
         // saves img in a certain file format
-        bool saveImg();
+        bool saveImg(const String & 	filename,
+                     InputArray 	img,
+                     const std::vector< int > & 	params = std::vector< int >()
+        );
 
-        // Basic functions
+        // Image matrix preview functions
+        void imgPreview( const String & 	winname);
+        void imgModifiedPreview( const string & winname);
+
+        // Basic editing functions in rotate_resize.cpp
         void resizeImg(int width, int height);
         void rotateImg(double angle);
 
-        //Blurs
+        //Blurs in blurs.cpp
+        void bilateralFilter(int distance);
         void blur(int width, int height);
-        void boxBlur(int width, int height, int ddepth);
+        void boxBlur(int width, int height, int depth);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
 
