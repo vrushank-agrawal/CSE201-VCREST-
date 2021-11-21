@@ -17,7 +17,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
           
     // add graphics view to preview
     ui->preview->setChild(ui->label, ui->playButton);
-    ui->preview->updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
+    ui->preview->updateVideo(cv::VideoCapture("link to the video"));
           
     connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::importImage);
     connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);

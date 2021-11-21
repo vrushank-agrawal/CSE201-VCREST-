@@ -374,7 +374,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="widget" native="true">
+              <widget class="QWidget" name="controller" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
