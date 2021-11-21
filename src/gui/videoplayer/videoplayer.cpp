@@ -2,56 +2,72 @@
 // Created by Minh Tung Nguyen on 18/11/2021.
 //
 
-#include "videoplayer.h"
+#include <QStyle>
 #include <iostream>
+#include "videoplayer.h"
 
 VideoPlayer::VideoPlayer(QWidget *parent) :
         QWidget(parent)
 {
-    video.open("/Users/minhtung0404/Downloads/1.mp4");
 }
 
 VideoPlayer::~VideoPlayer()
 {
-    delete graphicsView;
+    delete label;
+    delete timer;
 }
 
-void VideoPlayer::play(){
+void VideoPlayer::updatePicture(){
+    if (!isPlaying) return;
     using namespace cv;
 
     Mat frame;
-    int cnt = 100;
-    while(video.isOpened())
+    if (video.isOpened())
     {
         video >> frame;
-        std::cerr << "new frame " << frame.empty() << std::endl;
         if(!frame.empty())
         {
-            copyMakeBorder(frame,
-                           frame,
-                           frame.rows,
-                           frame.rows,
-                           frame.cols,
-                           frame.cols,
-                           BORDER_CONSTANT);
-
             QImage qimg(frame.data,
                         frame.cols,
                         frame.rows,
                         frame.step,
                         QImage::Format_RGB888);
-            pixmap.setPixmap( QPixmap::fromImage(qimg.rgbSwapped()) );
-//            graphicsView->fitInView(&pixmap, Qt::KeepAspectRatio);
+            label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
+            label->updatePixmap();
+            label->update();
         }
-        cnt--;
-        if (!cnt) break;
     }
 }
 
 
-void VideoPlayer::setGraphicsView(QGraphicsView *graphicsView){
-    this->graphicsView = graphicsView;
-    this->graphicsView->setScene(new QGraphicsScene(this));
-    this->graphicsView->scene()->addItem(&pixmap);
-//    this->graphicsView->setFixedSize(500, 250);
+void VideoPlayer::setChild(VideoWindow *label, QToolButton *playButton){
+    this->label = label;
+    this->playButton = playButton;
+
+    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    this->playButton->setToolTip(tr("Play"));
+    connect(this->playButton, SIGNAL(clicked()), this, SLOT(play()));
+}
+
+void VideoPlayer::play(){
+    if (isPlaying) {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        this->playButton->setToolTip(tr("Play"));
+    }
+    else {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        this->playButton->setToolTip(tr("Play"));
+    }
+    isPlaying = !isPlaying;
+}
+
+void VideoPlayer::updateVideo(cv::VideoCapture video) {
+    this->video = video;
+    if (timer != nullptr) delete timer;
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
+    double fps = video.get(cv::CAP_PROP_FPS);
+    std::cout << fps << std::endl;
+    timer->start(int(1000 / fps));
 }
