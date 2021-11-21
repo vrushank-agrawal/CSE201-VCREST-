@@ -7,23 +7,62 @@
 
 using namespace img;
 
-img::Image::Image(string filename) {
+img::Image::Image(const string & filename) {
     this -> filename = filename;
-    this -> validImg( filename );
+    if (this -> validImg( filename )) {
+        this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
+        if ( this -> getMat().empty()) {
+            printf("improper image exception") ;
+        }
+    } else {
+        printf("file reading exception") ;
+    }
+    this -> img_matrix_modified = this -> img_matrix.clone();
+}
+
+img::Image::~Image() {
+
 }
 
 bool img::Image::validImg(const string &filename) {
-
-
+    return haveImageReader(filename);
 }
 
 Mat img::Image::getMat(){
-    
+    return this -> img_matrix;
 }
+
+Mat img::Image::getModifiedImg() {
+    return this-> img_matrix_modified;
+}
+
+void img::Image::setModifiedImg(Mat matrix) {
+    this -> img_matrix_modified = matrix;
+}
+
+Mat img::Image::decodeImg(const String &filename, int flags) {
+    return imread( filename, IMREAD_COLOR);
+}
+<<<<<<< HEAD
 double img::Image::getRatio(){
     size dimensions = imgMatrix.size();
     return dimensions.height/ dimensions.width;
 }
+=======
+
+String img::Image::getFilename() {
+    return this -> filename;
+}
+
+void img::Image::imgPreview(const String &window) {
+    Mat mat = this -> getMat();
+    imshow(window, mat);
+}
+
+void img::Image::imgModifiedPreview(const string &window) {
+    Mat mat = this -> getModifiedImg();
+    imshow(window, mat);
+>>>>>>> blur
 // Mat stitch(int column_div, int row_div, int num,...){ 
 //     // list of row and column divisions in tuples, column divisions list((int left_most_pixel, int right_most_pixel))
 //     // num indicates the number of image arguments (probably should be limited to 4 max, which can be called recursively
