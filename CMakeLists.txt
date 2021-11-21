@@ -15,15 +15,19 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Multimedia
+        MultimediaWidgets
         REQUIRED)
+add_subdirectory(src/gui)
 
-add_executable(video_editor_BX23 main.cpp src/Audio/Audio.cpp src/Audio/Audio.hpp)
-
-target_link_libraries(video_editor_BX23
+add_executable(video_editor_BX23 main.cpp)
+target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        libaubio.a
+        Qt::Multimedia
+        Qt::MultimediaWidgets
+        gui
         )
 
 # add warning
