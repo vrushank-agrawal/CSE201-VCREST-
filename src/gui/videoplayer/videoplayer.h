@@ -29,7 +29,7 @@ public:
     void setQLabel(VideoWindow *label);
 
 private slots:
-    void updatePictureb();
+    void updatePicture();
 
 private:
     QTimer *timer;
