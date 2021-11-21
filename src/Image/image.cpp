@@ -9,18 +9,15 @@ using namespace img;
 
 img::Image::Image(const string & filename) {
     this -> filename = filename;
-    this -> img_matrix_modified = NULL;
     if (this -> validImg( filename )) {
         this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
-//        if ( this -> getMat() == NULL) {
-//            String s = 'improper image exception';
-//            return s;
-//        }
+        if ( this -> getMat().empty()) {
+            printf("improper image exception") ;
+        }
+    } else {
+        printf("file reading exception") ;
     }
-//    else {
-//        string s = 'file reading exception';
-//        return s;
-//    }
+    this -> img_matrix_modified = this -> img_matrix.clone();
 }
 
 img::Image::~Image() {
