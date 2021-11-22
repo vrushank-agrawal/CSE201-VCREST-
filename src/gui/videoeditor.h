@@ -6,7 +6,6 @@
 #define VIDEO_EDITOR_BX23_VIDEOEDITOR_H
 
 #include <QMainWindow>
-#include <QVideoWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class VideoEditor; }
@@ -17,11 +16,19 @@ Q_OBJECT
 
 public:
     explicit VideoEditor(QWidget *parent = nullptr);
-
+    void loadImage(const QString &path);
     ~VideoEditor() override;
+
+public slots:
+    void importImage();
+    void setDisplayImage();
 
 private:
     Ui::VideoEditor *ui;
+    std::vector<QPixmap> images;
+    int imageIndex = -1; // index of image need to displayed in images
+    void setupMenus();
+    void setupWidgets();
 };
 
 

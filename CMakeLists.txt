@@ -8,14 +8,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# include your Qt directory here
-
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
-        Multimedia
-        MultimediaWidgets
         REQUIRED)
 
 add_subdirectory(src/gui)
@@ -25,8 +21,6 @@ target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        Qt::Multimedia
-        Qt::MultimediaWidgets
         gui
         )
 
