@@ -60,4 +60,9 @@ namespace audio {
 
     }
 
+    bool test(string uri) {
+        Audio audio1 = Audio(uri);
+        return audio1.getBeatPositions().size() > 10;
+    }
+
 }
