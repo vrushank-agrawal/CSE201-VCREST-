@@ -27,10 +27,11 @@ namespace img {
         string save_filename;
 
     public:
-
+        
         Image(const string &    filename);
 
         ~Image();
+        
 
         // returns the Matrix associated to the image
         Mat getMat();
@@ -54,7 +55,9 @@ namespace img {
                      InputArray 	img,
                      const std::vector< int > & 	params = std::vector< int >()
         );
-
+        //Returns ratio from dimensions:
+        double getRatio();
+        
         // Image matrix preview functions
         void imgPreview( const String & 	winname);
         void imgModifiedPreview( const string & winname);
