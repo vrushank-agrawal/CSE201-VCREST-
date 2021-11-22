@@ -9,5 +9,5 @@ message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_executable( video test_video.cpp )
+add_executable( video test_video.cpp cmake-build-debug/Video.cpp cmake-build-debug/Video.h)
 target_link_libraries( video ${OpenCV_LIBS} )
