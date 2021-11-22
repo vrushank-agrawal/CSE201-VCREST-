@@ -43,9 +43,9 @@ using namespace cv;
 int main(){
 
 
-    string imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\A.png";
+    //string imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\A.png";
     Mat img1 = imread(imgpath);
-    imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\B.png";
+    //imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\B.png";
     Mat img2 = imread(imgpath);
     Mat images[10];
     int times[10];
