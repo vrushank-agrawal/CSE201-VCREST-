@@ -10,7 +10,7 @@ using namespace cv;
 
 int main()
 {
-    std::string image_path = samples::findFile("insert img path");
+    std::string image_path = samples::findFile("lena.jpg");
     Mat img = imread(image_path, IMREAD_COLOR);
     if(img.empty())
     {
