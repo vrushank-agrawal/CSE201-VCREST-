@@ -48,6 +48,11 @@ String img::Image::getFilename() {
     return this -> filename;
 }
 
+double img::Image::getRatio(){
+            size dimensions = imgMatrix.size();
+            return dimensions.height/ dimensions.width;
+        }
+
 void img::Image::imgPreview(const String &window) {
     Mat mat = this -> getMat();
     imshow(window, mat);
