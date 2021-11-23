@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.20)
 project(video_editor_BX23)
 
@@ -8,16 +9,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-include_directories(libs/aubio/include)
-link_directories(libs/aubio/lib)
-
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
-        Multimedia
-        MultimediaWidgets
         REQUIRED)
+
 add_subdirectory(src/gui)
 
 add_executable(video_editor_BX23 main.cpp)
@@ -25,8 +22,6 @@ target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        Qt::Multimedia
-        Qt::MultimediaWidgets
         gui
         )
 
