@@ -82,8 +82,8 @@ This is a unique video editing software developed to help a user create a video 
     - Generate Makefile (2 ways)
       - Using terminal: Open terminal on folder `build_opencv` and run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv` on terminal
       - Using cmake-gui
-        - set the opencv source path
-        - set the build path to `build_opencv`
+        - set the opencv source path to the folder `opencv`
+        - set the build path to the folder `build_opencv`
         - set `CMAKE_BUILD_TYPE` to `Release`
         - set `BUILD_EXAMPLES` to `ON`
         - run `Configure`
@@ -91,5 +91,5 @@ This is a unique video editing software developed to help a user create a video 
     - Build by run `make -j7` on terminal
 
 Notes: 
-- Try to run `src/testing_opencv` as a separate debug environment in CLion. If there is no error and the image lena.jpg is displayed then OpenCV is successfully integrated, otherwise retry the entire process / try google
+- Try to run `test_opencv` as a separate debug environment in CLion. If there is no error and the image lena.jpg is displayed then OpenCV is successfully integrated, otherwise retry the entire process / try google
 - For MacOS, use Xcode g++ compiler because using other compiler leads to an error like `Undefined symbols for architecture arm64`. If you have this problem you probably want to change to Xcode g++ compiler.
