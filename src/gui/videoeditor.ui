@@ -221,7 +221,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../Downloads/blur.png</normaloff>../../../../../Downloads/blur.png</iconset>
+                 <normaloff>:/img-blur.png</normaloff>:/img-blur.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -232,7 +232,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="cropButton">
+              <widget class="QToolButton" name="resizeButton">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -250,7 +250,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../Downloads/crop.png</normaloff>../../../../../Downloads/crop.png</iconset>
+                 <normaloff>:/img-resize.png</normaloff>:/img-resize.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -261,7 +261,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="zoomButton">
+              <widget class="QToolButton" name="rotateButton">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -279,7 +279,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../../Downloads/loupe.png</normaloff>../../../../../Downloads/loupe.png</iconset>
+                 <normaloff>:/img-rotate.png</normaloff>:/img-rotate.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -484,7 +484,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1077</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -17,7 +17,7 @@ find_package(Qt6 COMPONENTS
 
 add_subdirectory(src/gui)
 
-add_executable(video_editor_BX23 main.cpp)
+add_executable(video_editor_BX23 main.cpp application.qrc)
 target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Core
         Qt::Gui
