@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "aubio/aubio.h"
+#include "../../libs/aubio/include/aubio/aubio.h"
 
 using namespace std;
 
