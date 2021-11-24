@@ -6,6 +6,9 @@
 #define VIDEO_EDITOR_BX23_VIDEOEDITOR_H
 
 #include <QMainWindow>
+#include <QListView>
+#include "imagethumbnail/imagethumbnail.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class VideoEditor; }
@@ -29,6 +32,7 @@ private:
     int imageIndex = -1; // index of image need to displayed in images
     void setupMenus();
     void setupWidgets();
+    void setupImageListWidget();
 };
 
 

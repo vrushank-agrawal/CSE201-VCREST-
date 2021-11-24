@@ -6,7 +6,7 @@
 
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
-#include "imglist/imglist.h"
+#include "imagethumbnail/imagethumbnail.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -18,6 +18,8 @@ VideoEditor::VideoEditor(QWidget *parent) :
     // add graphics view to preview
     ui->preview->setChild(ui->label, ui->playButton);
     ui->preview->updateVideo(cv::VideoCapture("link to the video"));
+
+    setupWidgets();
           
     connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::importImage);
     connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
@@ -42,6 +44,21 @@ void VideoEditor::loadImage(const QString &path) {
 }
 
 void VideoEditor::setupWidgets() {
+    setupImageListWidget();
+}
+
+void VideoEditor::setupImageListWidget() {
+    ui->imgListWidget->setDragEnabled(true);
+    ui->imgListWidget->setViewMode(QListView::IconMode);
+    ui->imgListWidget->setIconSize(QSize(300, 300));
+    ui->imgListWidget->setGridSize(QSize(310, 310));
+    ui->imgListWidget->setSpacing(10);
+    ui->imgListWidget->setMovement(QListView::Snap);
+    ui->imgListWidget->setAcceptDrops(true);
+    ui->imgListWidget->setDropIndicatorShown(true);
+
+    QPixmap *testPixmap = new QPixmap(":/img-blur.png");
+    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
 }
 
 void VideoEditor::setDisplayImage() {
