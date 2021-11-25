@@ -31,6 +31,7 @@ void VideoEditor::importImage() {
     if (fileName != "") {
         QMessageBox::information(this, "..", fileName);
     }
+    loadImage(fileName);
 }
 
 void VideoEditor::loadImage(const QString &path) {
@@ -57,7 +58,10 @@ void VideoEditor::setupImageListWidget() {
     ui->imgListWidget->setAcceptDrops(true);
     ui->imgListWidget->setDropIndicatorShown(true);
 
-    QPixmap *testPixmap = new QPixmap(":/img-blur.png");
+
+    auto *testPixmap = new QPixmap(":/img-error.png");
+    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
+    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
     new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
 }
 

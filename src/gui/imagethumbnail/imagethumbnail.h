@@ -17,7 +17,8 @@ public:
     ~ImageThumbnail() override;
 
 private:
-    QVBoxLayout *container;
+    QWidget *container;
+    QVBoxLayout *qvBoxLayout;
     QLabel *image;
     QLabel *name;
 };

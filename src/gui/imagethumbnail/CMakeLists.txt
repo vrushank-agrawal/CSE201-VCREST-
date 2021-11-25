@@ -1,4 +1,4 @@
-add_library(imageThumbnail imglist.cpp temp.cpp temp.h temp.ui imagethumbnail.cpp imagethumbnail.h)
+add_library(imageThumbnail imagethumbnail.cpp)
 
 target_include_directories(imageThumbnail
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}

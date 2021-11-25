@@ -8,39 +8,27 @@
 #include <QLabel>
 #include "imagethumbnail.h"
 
-
 ImageThumbnail::ImageThumbnail(const QPixmap& image, const QString& name, QWidget *parent= nullptr) : QWidget(parent) {
-    this->setFixedSize(60, 80);
+    container = new QWidget(this);
+    this->setFixedSize(120, 160);
     this->setStyleSheet("background: white; border: 1px solid black");
     this->image = new QLabel();
     this->name = new QLabel();
 
-    QSizePolicy imageSize(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    imageSize.setHorizontalStretch(0);
-    imageSize.setVerticalStretch(5);
-    imageSize.setHeightForWidth(this->image->sizePolicy().hasHeightForWidth());
-    this->image->setSizePolicy(imageSize);
-
-    QSizePolicy nameSize(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    nameSize.setHorizontalStretch(0);
-    nameSize.setVerticalStretch(1);
-    nameSize.setHeightForWidth(this->name->sizePolicy().hasHeightForWidth());
-    this->name->setSizePolicy(nameSize);
-
-    this->image->setPixmap(image);
+    this->image->setPixmap(image.scaled(40, 40, Qt::KeepAspectRatio));
     this->name->setText(name);
 
+    qvBoxLayout = new QVBoxLayout(container);
+    qvBoxLayout->addWidget(this->image, 5, Qt::AlignHCenter);
+    qvBoxLayout->addWidget(this->name, 1, Qt::AlignHCenter);
 
-    container = new QVBoxLayout(this);
-    container->addWidget(this->image, 5, Qt::AlignHCenter);
-    container->addWidget(this->name, 1, Qt::AlignHCenter);
-
-    container->setAlignment(Qt::AlignHCenter);
+    qvBoxLayout->setAlignment(Qt::AlignHCenter);
 }
 
 ImageThumbnail::~ImageThumbnail() {
+    delete container;
     delete image;
     delete name;
-    delete container;
+    delete qvBoxLayout;
 }
 

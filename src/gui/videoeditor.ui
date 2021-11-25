@@ -110,7 +110,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QListView" name="imgListWidget" native="true">
+           <widget class="QListView" name="imgListWidget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>10</horstretch>
