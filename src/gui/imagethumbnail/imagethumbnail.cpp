@@ -32,7 +32,15 @@ void ThumbnailManager::addImage(const cv::Mat& image, const QString& name) {
 }
 
 void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
-    auto *item = new QListWidgetItem(QIcon(image),name);
+    QString displayName;
+    if (name.lastIndexOf("/") >= 0) {
+        displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
+    }
+    else {
+        displayName = name;
+    }
+
+    auto *item = new QListWidgetItem(QIcon(image),displayName);
     item->setBackground(*brush);
     item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);

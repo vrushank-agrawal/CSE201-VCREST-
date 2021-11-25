@@ -9,7 +9,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
@@ -41,20 +40,15 @@ void VideoEditor::importMedia() {
 QString VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
     QString fileName = QFileDialog::getOpenFileName(this, "Import image", "./", filter);
-    if (fileName != "") {
-        QMessageBox::information(this, "..", fileName);
-    }
     return fileName;
 }
 
-void VideoEditor::loadImage(const QString &path) {
-    QPixmap img;
+void VideoEditor::loadImage(const QString& path) {
+    QPixmap img(path);
     if (!img.load(path)) {
-        QMessageBox::warning(this, tr("Open Image"),
-                             tr("The image file could not be loaded"),
-                             QMessageBox::Close);
-        return;
+        img = QPixmap(":/img-error.png");
     }
+    thumbnailManager->addImage(img, path);
 }
 
 void VideoEditor::setupImageListWidget() {
