@@ -14,6 +14,6 @@ void img::Image::rotateImg(double angle){
 
 void img::Image::resizeImg(int width, int height) {
     if (height != 0 && width != 0) {
-        resize(this->getMat(), this->getMat(), Size(width, height)); //uses linear interpolation to resize the image.
+        resize(this->getMat(), this->getModifiedImg(), Size(width, height),INTER_LINEAR); //uses linear interpolation to resize the image.
     }
 }
