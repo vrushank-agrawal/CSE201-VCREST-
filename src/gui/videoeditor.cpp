@@ -19,19 +19,33 @@ VideoEditor::VideoEditor(QWidget *parent) :
     ui->preview->setChild(ui->label, ui->playButton);
     ui->preview->updateVideo(cv::VideoCapture("link to the video"));
 
+    setupMenus();
     setupWidgets();
-          
-    connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::importImage);
+
     connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
 
-void VideoEditor::importImage() {
+void VideoEditor::setupMenus() {
+    ui->actionImport_Media->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Media, &QAction::triggered, this, &VideoEditor::importMedia);
+}
+
+void VideoEditor::setupWidgets() {
+    setupImageListWidget();
+}
+
+void VideoEditor::importMedia() {
+    QString fileName = importImage();
+    loadImage(fileName);
+}
+
+QString VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
     QString fileName = QFileDialog::getOpenFileName(this, "Import image", "./", filter);
     if (fileName != "") {
         QMessageBox::information(this, "..", fileName);
     }
-    loadImage(fileName);
+    return fileName;
 }
 
 void VideoEditor::loadImage(const QString &path) {
@@ -44,25 +58,15 @@ void VideoEditor::loadImage(const QString &path) {
     }
 }
 
-void VideoEditor::setupWidgets() {
-    setupImageListWidget();
-}
-
 void VideoEditor::setupImageListWidget() {
-    ui->imgListWidget->setDragEnabled(true);
-    ui->imgListWidget->setViewMode(QListView::IconMode);
-    ui->imgListWidget->setIconSize(QSize(300, 300));
-    ui->imgListWidget->setGridSize(QSize(310, 310));
-    ui->imgListWidget->setSpacing(10);
-    ui->imgListWidget->setMovement(QListView::Snap);
-    ui->imgListWidget->setAcceptDrops(true);
-    ui->imgListWidget->setDropIndicatorShown(true);
-
+    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
 
     auto *testPixmap = new QPixmap(":/img-error.png");
-    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
-    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
-    new ImageThumbnail(testPixmap->scaled(30, 30), "test", ui->imgListWidget);
+    auto *brush = new QBrush(Qt::white);
+
+    thumbnailManager->addImage(*testPixmap, "test1");
+    thumbnailManager->addImage(*testPixmap, "test2");
+    thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 }
 
 void VideoEditor::setDisplayImage() {

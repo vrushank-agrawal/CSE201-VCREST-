@@ -8,19 +8,21 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QListWidget>
+#include "opencv2/opencv.hpp"
 
-class ImageThumbnail : public QWidget {
-Q_OBJECT
+class ThumbnailManager {
 
 public:
-    explicit ImageThumbnail(const QPixmap& image, const QString& name, QWidget* parent);
-    ~ImageThumbnail() override;
+    explicit ThumbnailManager(QListWidget *qListWidget);
+    ~ThumbnailManager();
+    void addImage(const cv::Mat& image, const QString& name);
+    void addImage(const QPixmap& image, const QString& name);
 
 private:
-    QWidget *container;
-    QVBoxLayout *qvBoxLayout;
-    QLabel *image;
-    QLabel *name;
+    QListWidget *listWidget;
+    QList<QListWidgetItem> *listItems;
+    QBrush *brush;
 };
 
 

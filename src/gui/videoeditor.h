@@ -23,7 +23,7 @@ public:
     ~VideoEditor() override;
 
 public slots:
-    void importImage();
+    void importMedia();
     void setDisplayImage();
 
 private:
@@ -33,6 +33,8 @@ private:
     void setupMenus();
     void setupWidgets();
     void setupImageListWidget();
+    QString importImage();
+    ThumbnailManager *thumbnailManager;
 };
 
 

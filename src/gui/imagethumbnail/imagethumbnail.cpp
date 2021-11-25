@@ -4,31 +4,38 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_ImageThumbnail.h" resolved
 
-#include <QVBoxLayout>
-#include <QLabel>
 #include "imagethumbnail.h"
 
-ImageThumbnail::ImageThumbnail(const QPixmap& image, const QString& name, QWidget *parent= nullptr) : QWidget(parent) {
-    container = new QWidget(this);
-    this->setFixedSize(120, 160);
-    this->setStyleSheet("background: white; border: 1px solid black");
-    this->image = new QLabel();
-    this->name = new QLabel();
+ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListWidget) {
+    qListWidget->setDragEnabled(true);
+    qListWidget->setViewMode(QListView::IconMode);
+    qListWidget->setIconSize(QSize(50, 50));
+    qListWidget->setGridSize(QSize(70, 80));
+    qListWidget->setSpacing(10);
+    qListWidget->setContentsMargins(10, 10, 10, 10);
+    qListWidget->setMovement(QListView::Snap);
+    qListWidget->setAcceptDrops(true);
+    qListWidget->setDropIndicatorShown(true);
+    qListWidget->setWordWrap(true);
 
-    this->image->setPixmap(image.scaled(40, 40, Qt::KeepAspectRatio));
-    this->name->setText(name);
-
-    qvBoxLayout = new QVBoxLayout(container);
-    qvBoxLayout->addWidget(this->image, 5, Qt::AlignHCenter);
-    qvBoxLayout->addWidget(this->name, 1, Qt::AlignHCenter);
-
-    qvBoxLayout->setAlignment(Qt::AlignHCenter);
+    brush = new QBrush(Qt::white);
 }
 
-ImageThumbnail::~ImageThumbnail() {
-    delete container;
-    delete image;
-    delete name;
-    delete qvBoxLayout;
+void ThumbnailManager::addImage(const cv::Mat& image, const QString& name) {
+    QImage qImage(image.data, image.cols, image.rows, image.step, QImage::Format_RGB888);
+    addImage(
+            QPixmap::fromImage(qImage),
+            name
+            );
+}
+
+void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
+    auto *item = new QListWidgetItem(QIcon(image),name);
+    item->setBackground(*brush);
+    listWidget->addItem(item);
+}
+
+ThumbnailManager::~ThumbnailManager() {
+    delete listWidget;
 }
 

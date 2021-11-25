@@ -89,28 +89,11 @@
             <property name="styleSheet">
              <string notr="true">background: rgb(85, 255, 255)rgb(255, 170, 255)</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="0" column="0">
-              <widget class="QPushButton" name="importButton">
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Import</string>
-               </property>
-               <property name="default">
-                <bool>false</bool>
-               </property>
-               <property name="flat">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <layout class="QGridLayout" name="gridLayout"/>
            </widget>
           </item>
           <item>
-           <widget class="QListView" name="imgListWidget">
+           <widget class="QListWidget" name="imgListWidget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>10</horstretch>
@@ -501,7 +484,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     </widget>
     <addaction name="actionNew_Video"/>
     <addaction name="separator"/>
-    <addaction name="actionImport_Media_3"/>
+    <addaction name="actionImport_Media"/>
     <addaction name="actionImport_VEST_Projects_3"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_Library"/>
@@ -682,11 +665,6 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   <action name="actionNew_Event">
    <property name="text">
     <string>New Event</string>
-   </property>
-  </action>
-  <action name="actionImport_Media">
-   <property name="text">
-    <string>Import Media...</string>
    </property>
   </action>
   <action name="actionImport_VEST_Projects">
@@ -1199,7 +1177,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     <string>Quit VEST</string>
    </property>
   </action>
-  <action name="actionImport_Media_3">
+  <action name="actionImport_Media">
    <property name="text">
     <string>Import Media...</string>
    </property>
