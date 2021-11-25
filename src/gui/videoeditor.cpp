@@ -6,7 +6,6 @@
 
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
-#include "imagethumbnail/imagethumbnail.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -62,11 +61,14 @@ void VideoEditor::setupImageListWidget() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
 
     auto *testPixmap = new QPixmap(":/img-error.png");
-    auto *brush = new QBrush(Qt::white);
 
     thumbnailManager->addImage(*testPixmap, "test1");
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
+
+    for (int i = 0; i < 20; i++) {
+        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
+    }
 }
 
 void VideoEditor::setDisplayImage() {
