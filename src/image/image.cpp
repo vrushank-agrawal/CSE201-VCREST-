@@ -29,7 +29,7 @@ img::Image::~Image() {
 
 }
 
-int return_img_error (int val) {
+int img::Image::return_img_error (int val) {
     return val;
 }
 

@@ -31,7 +31,8 @@ namespace img {
         Image(const string &    filename);
 
         ~Image();
-        
+
+        int return_img_error(int a);
 
         // returns the Matrix associated to the image
         Mat getMat();
