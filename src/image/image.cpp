@@ -58,7 +58,7 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            size dimensions = imgMatrix.size();
+            Size dimensions = this -> getMat().size();
             return dimensions.height/ dimensions.width;
         }
 
