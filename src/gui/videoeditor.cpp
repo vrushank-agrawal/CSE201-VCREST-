@@ -24,43 +24,49 @@ VideoEditor::VideoEditor(QWidget *parent) :
 }
 
 void VideoEditor::setupMenus() {
-    ui->actionImport_Media->setShortcut(QKeySequence::Open);
-    connect(ui->actionImport_Media, &QAction::triggered, this, &VideoEditor::importMedia);
+    ui->actionImport_Image->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
+
+    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
 }
 
 void VideoEditor::setupWidgets() {
+    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
+    audioManager = new AudioManager(ui->audioListWidget);
+
+    // testing
     setupImageListWidget();
+    audioManager->addAudio("hello.mp3");
 }
 
-void VideoEditor::importMedia() {
-    QString fileName = importImage();
-    loadImage(fileName);
-}
-
-QString VideoEditor::importImage() {
+void VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    QString fileName = QFileDialog::getOpenFileName(this, "Import image", "./", filter);
+    QString fileName = importFile("Import Image", "/", filter);
+    QPixmap img(fileName);
+    if (!img.load(fileName)) {
+        img = QPixmap(":/img-error.png");
+    }
+    thumbnailManager->addImage(img, fileName);
+}
+
+void VideoEditor::importAudio() {
+
+}
+
+QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
+    QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
     return fileName;
 }
 
-void VideoEditor::loadImage(const QString& path) {
-    QPixmap img(path);
-    if (!img.load(path)) {
-        img = QPixmap(":/img-error.png");
-    }
-    thumbnailManager->addImage(img, path);
-}
 
 void VideoEditor::setupImageListWidget() {
-    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
-
     auto *testPixmap = new QPixmap(":/img-error.png");
 
     thumbnailManager->addImage(*testPixmap, "test1");
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 3; i < 20; i++) {
         thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
     }
 }

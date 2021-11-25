@@ -48,5 +48,6 @@ void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
 
 ThumbnailManager::~ThumbnailManager() {
     delete listWidget;
+    delete brush;
 }
 

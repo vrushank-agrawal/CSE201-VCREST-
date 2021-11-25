@@ -7,7 +7,8 @@
 
 #include <QMainWindow>
 #include <QListView>
-#include "imagethumbnail/imagethumbnail.h"
+#include <audiomanager.h>
+#include <imagethumbnail.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -19,11 +20,11 @@ Q_OBJECT
 
 public:
     explicit VideoEditor(QWidget *parent = nullptr);
-    void loadImage(const QString &path);
     ~VideoEditor() override;
 
 public slots:
-    void importMedia();
+    void importImage();
+    void importAudio();
     void setDisplayImage();
 
 private:
@@ -33,8 +34,9 @@ private:
     void setupMenus();
     void setupWidgets();
     void setupImageListWidget();
-    QString importImage();
+    QString importFile(const QString& caption, const QString& startingDirectory, const QString& filter);
     ThumbnailManager *thumbnailManager;
+    AudioManager *audioManager;
 };
 
 

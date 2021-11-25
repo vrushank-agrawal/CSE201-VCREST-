@@ -21,7 +21,6 @@ public:
 
 private:
     QListWidget *listWidget;
-    QList<QListWidgetItem> *listItems;
     QBrush *brush;
 };
 
