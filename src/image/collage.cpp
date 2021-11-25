@@ -66,12 +66,6 @@ Mat img::collage::twoStitch(){
             //height dominant
             imgMatrix = hstitch(imageArr[0].imgMatrix, imageArr[1].imgMatrix);
         } //REMEMBER TO RESIZE AFTER!!
-    } else if (numImages == 3){
-        Collage  
-        imageArr[max_ratios_index]
-    } else if (numImages == 4){
-        //stitch 
-    }
 
 }
 

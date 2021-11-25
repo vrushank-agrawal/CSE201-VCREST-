@@ -5,14 +5,14 @@
 #include "../image.h"
 #include "../image.cpp"
 #include "../blurs.cpp"
-//#include "../rotate_resize.cpp"
+#include "../rotate_resize.cpp"
 #include "../save.cpp"
 
 using namespace cv;
 
 int main()
 {
-    std::string image_path = samples::findFile("C:\\Users\\minht\\CLionProjects\\video_editor_BX23\\src\\testing_opencv\\lena.jpg");
+    std::string image_path = samples::findFile("lena.jpg");
     Image img1 = Image(image_path);
 
     string file = img1.getFilename();
@@ -41,9 +41,10 @@ int main()
 //    img1.imgModifiedPreview("testing_box_filter");
 //    int o = waitKey(0);
 
-//    img1.resizeImg(5, 6);
-//    img1.imgModifiedPreview("testing_img_resize");
-//    int p = waitKey(0);
+    //img1.resizeImg(5, 6);
+    img1.rotateImg(25);
+    img1.imgModifiedPreview("testing_img_resize");
+    int p = waitKey(0);
 
     int j = waitKey(0);
 }
