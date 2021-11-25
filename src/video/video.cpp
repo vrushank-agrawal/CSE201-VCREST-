@@ -1,7 +1,7 @@
 //
 // Created by korkot on 11/21/2021.
 //
-#include "Video.h"
+#include "video.h"
 
 using namespace vid;
 using namespace std;
