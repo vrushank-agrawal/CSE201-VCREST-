@@ -15,8 +15,8 @@ Mat hstitch(Mat mat1, Mat mat2){
     return output;
 }
 img::Collage::Collage(int numImages, Image imageArr){
-    this-> imageArr = imageArr;
     this-> numImages = numImages;
+    this-> imageArr = imageArr[numImages];
     double ratios[numImages];
     //calculate ratios
     double max_ratios;
@@ -42,30 +42,39 @@ Mat vstitch(Mat mat1, Mat mat2){
     return output;
 }
 
-Mat img::collage::twoStitch(){
+void img::collage::twoStitch() {
     //stitch depending on sizes 
-    
-    if (numImages ==2){
-        //default stitching based on ratio 
+
+    if (numImages == 2) {
+        //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
         double minimum = min(ratios[0], ratios[1])
         double maximum = max(ratios[0], ratios[1])
-        if (ratios[0] < 1 && ratios[1] < 1){
+        if (ratios[0] < 1 && ratios[1] < 1) {
             //width dominant
-            imgMatrix = vstitch(imageArr[0].imgMatrix, imageArr[1].imgMatrix);
-        }
-        else if (minimum < 1 && maximum >1){
-            if (1/minimum > maximum){
-                //the width to height ratio of one image is greater than the height to width ratio of the other 
+            this->getModifiedImg() = vstitch(imageArr[0].
+            this->getMat(), imageArr[1].
+            this->getMat());
+        } else if (minimum < 1 && maximum > 1) {
+            if (1 / minimum > maximum) {
+                //the width to height ratio of one image is greater than the height to width ratio of the other
                 //Thus width dominant so we vertical stitch
-                imgMatrix = vstitch(imageArr[0].imgMatrix, imageArr[1].imgMatrix);
-            }else{
-                imgMatrix = hstitch(imageArr[0].imgMatrix, imageArr[1].imgMatrix);
+                this->getModifiedImg() = vstitch(imageArr[0].
+                this->getMat(), imageArr[1].
+                this->getMat());
+            } else {
+                this->getModifiedImg() = hstitch(imageArr[0].
+                this->getMat(), imageArr[1].
+                this->getMat());
             }
         } else {
             //height dominant
-            imgMatrix = hstitch(imageArr[0].imgMatrix, imageArr[1].imgMatrix);
+            this->getModifiedImg() = hstitch(imageArr[0].
+            this->getMat(), imageArr[1].
+            this->getMat());
         } //REMEMBER TO RESIZE AFTER!!
-
+    } else{
+        std::cout << "Must have only 2 images!" <<endl;
+    }
 }
 
