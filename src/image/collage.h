@@ -5,27 +5,34 @@
 
 namespace img {
 
-    class Collage: public Image {
+    class Collage {
             public:
-                Collage(numImages, imageArr);
-                Image imageArr[numImages]; //array of image matrices
-                int subImageCorners[numImages*4]; //create an array of coordinates of corners of each of the images, variable 
+                Collage(int numImages, vector<Image> imageArr);
+                ~ Collage();
+
+                //create an array of coordinates of corners of each of the images, variable
+//                int subImageCorners[numImages * 4];
+
                 void twoStitch();
                 void threeStitch();
                 void fourStitch();
                 void flip();
+
                 int getNumImages();
-                double getRatios();
+                const std::vector<double>& getRatios();
                 double getMaxRatios();
-                Image getImageArr();
+                const std::vector<Image>& getImageArr();
                 int getMaxRatiosIndex();
+                Mat getModifiedImage();
 
             private:
-                int numImages;
-                double ratios;
-                double maxRatios;
-                Image imageArr;
-                int maxRatiosIndex;
 
-    }
+                int numImages;
+                vector <double> ratios;
+                double maxRatios;
+                vector <Image> imageArr;
+                int maxRatiosIndex;
+                Mat modifiedImage;
+
+    };
 }

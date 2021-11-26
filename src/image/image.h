@@ -27,7 +27,9 @@ namespace img {
         string save_filename;
 
     public:
-        
+
+        Image (Mat mat);
+
         Image(const string &    filename);
 
         ~Image();

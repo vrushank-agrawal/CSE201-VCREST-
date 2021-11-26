@@ -7,11 +7,18 @@
 
 using namespace img;
 
-img::Image::Image(const string & filename) {
-    this -> filename = filename;
-    if (this -> validImg( filename )) {
-        this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
-        if ( this -> getMat().empty()) {
+img::Image::Image(Mat mat) {
+    img_matrix = mat;
+    img_matrix_modified = img_matrix.clone();
+    filename = std::string();
+    save_filename = std::string();
+}
+
+img::Image::Image(const string & file) {
+    filename = file;
+    if (validImg( filename )) {
+        img_matrix = decodeImg( filename, IMREAD_COLOR);
+        if ( getMat().empty()) {
 //            printf("improper image exception - file is corrupt/invalid") ;
             return_img_error(1) ;
         }
@@ -19,10 +26,11 @@ img::Image::Image(const string & filename) {
 //        printf("file reading exception - file cannot be read by VEST") ;
         return_img_error(2) ;
     }
-    this -> img_matrix_modified = this -> img_matrix.clone();
+    img_matrix_modified = img_matrix.clone();
 
 //        printf("img is valid can be read") ;
     return_img_error(0) ;
+    save_filename = std::string();
 }
 
 img::Image::~Image() {
