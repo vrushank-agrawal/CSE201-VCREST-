@@ -14,13 +14,18 @@ namespace img {
                 void threeStitch();
                 void fourStitch();
                 void flip();
+                int getNumImages();
+                double getRatios();
+                double getMaxRatios();
+                Image getImageArr();
+                int getMaxRatiosIndex();
 
             private:
                 int numImages;
                 double ratios;
-                double max_ratios;
+                double maxRatios;
                 Image imageArr;
-                int max_ratios_index;
+                int maxRatiosIndex;
 
     }
 }

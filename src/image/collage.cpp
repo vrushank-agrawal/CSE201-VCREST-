@@ -14,23 +14,41 @@ Mat hstitch(Mat mat1, Mat mat2){
     hconcat(mat1,mat2, output);
     return output;
 }
+
 img::Collage::Collage(int numImages, Image imageArr){
     this-> numImages = numImages;
     this-> imageArr = imageArr[numImages];
     double ratios[numImages];
     //calculate ratios
-    double max_ratios;
-    int max_ratios_index;
+    double maxRatios;
+    int maxRatiosIndex;
     for (i = 0; i < numImages; i++){
         ratios[i] = imageArr[i].getRatio();
-        if (i == 0 || (ratios[i]> max_ratios)){
-            max_ratios = ratios[i];
-            max_ratios_index = i;
+        if (i == 0 || (ratios[i]> maxRatios)){
+            maxRatios = ratios[i];
+            maxRatiosIndex = i;
         }
     }
-    this->ratios = ratios;
-    this->max_ratios = max_ratios;
+    this -> ratios = ratios;
+    this -> maxRatios = maxRatios;
+    this -> maxRatiosIndex = maxRatiosIndex;
 }
+
+int img::Collage::getNumImages(){
+    return this -> numImages;
+};
+double img::Collage::getRatios(){
+    return this -> ratios;
+};
+double img::Collage::getMaxRatios(){
+    return this -> maxRatios;
+};
+Image img::Collage::getImageArr(){
+    return this -> imageArr;
+};
+int img::Collage::getMaxRatiosIndex(){
+    return this -> maxRatiosIndex;
+};
 Mat vstitch(Mat mat1, Mat mat2){
     //later on we can add the division (currently)
     Mat output;
@@ -42,39 +60,33 @@ Mat vstitch(Mat mat1, Mat mat2){
     return output;
 }
 
-void img::collage::twoStitch() {
+voidimg::collage::twoStitch() {
     //stitch depending on sizes 
 
-    if (numImages == 2) {
+    if (this->getNumImages() == 2) {
         //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
-        double minimum = min(ratios[0], ratios[1])
-        double maximum = max(ratios[0], ratios[1])
-        if (ratios[0] < 1 && ratios[1] < 1) {
+        double minimum = min(this->getRatios[0], this->getRatios[1])
+        double maximum = max(this->getRatios[0], this->getRatios[1])
+        if (this->getRatios[0] < 1 && this->getRatios[1] < 1) {
             //width dominant
-            this->getModifiedImg() = vstitch(imageArr[0].
-            this->getMat(), imageArr[1].
+            this->getModifiedImg() = vstitch(this->getImageArr()[0].
+            this->getMat(), this->getImageArr()[1].
             this->getMat());
         } else if (minimum < 1 && maximum > 1) {
             if (1 / minimum > maximum) {
                 //the width to height ratio of one image is greater than the height to width ratio of the other
                 //Thus width dominant so we vertical stitch
-                this->getModifiedImg() = vstitch(imageArr[0].
-                this->getMat(), imageArr[1].
-                this->getMat());
+                this->getModifiedImg() = vstitch(this->getImageArr()[0].this->getMat(), this->getImageArr()[1].this->getMat());
             } else {
-                this->getModifiedImg() = hstitch(imageArr[0].
-                this->getMat(), imageArr[1].
-                this->getMat());
+                this->getModifiedImg() = hstitch(this->getImageArr()[0].this->getMat(), this->getImageArr()[1].this->getMat());
             }
         } else {
             //height dominant
-            this->getModifiedImg() = hstitch(imageArr[0].
-            this->getMat(), imageArr[1].
-            this->getMat());
+            this->getModifiedImg() = hstitch(this->getImageArr()[0].this->getMat(), this->getImageArr()[1].this->getMat());
         } //REMEMBER TO RESIZE AFTER!!
     } else{
-        std::cout << "Must have only 2 images!" <<endl;
+        std::cout << "must have 2 images only" <<endl;
     }
 }
 
