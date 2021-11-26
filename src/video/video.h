@@ -1,9 +1,13 @@
-// Draft for video class
 #ifndef OPENCV
 #define OPENCV
 
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <vector>
+#include <string>
 #endif //OPENCV
 
 using namespace cv;
@@ -15,36 +19,36 @@ using namespace std;
 namespace vid {
 
     class Video {
-
-     
-        string filename_audio;
-        list filenames_images;
-        int time_of_display; 
-
-
     public:
-
-        Video(list filenames_images, string filename_audio, int time_of_display; 
-);
-
+        Video();
+        Video(Mat image, int time_of_display);
+        Video(Mat *images, int *times_of_display, int size);
         ~Video();
+        void test();
+        void CreateVideo(string output_name);
+        void DisplayCurrentVideo();
+        void Add(Mat img, int time_to_display);
+        void Remove(int index);
+        void ApplyAnimation(int index);
+        void Clear();
+        struct ImageAnimator{
+        public:
+            ImageAnimator(Mat img, int display_time);
+            ~ImageAnimator(){};
+            //void ZoomAnimation();
+            //void RotateAnimation();
+            void Display();
 
-      
-
-        // returns true if input video is of valid format
-        bool validVid(const string & 	filename_audio, const list &   filenames_images);
-
-
-        // saves video in a certain file format
-        bool saveVid();
-
-        // Basic functions
-
-        void cropVid();
-        void resizeVid();
-       
-
+        private:
+            Mat img;
+            int time, animation_type;
+        };
+    private:
+        vector<Mat> images;
+        vector<ImageAnimator> animators;
+        int number_of_animations;
     };
+
 }
 
 
