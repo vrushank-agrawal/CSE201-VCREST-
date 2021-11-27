@@ -11,9 +11,10 @@ using namespace img;
 
 Video::Video() {
     this->number_of_animations = 0;
+    this->width = 0;
+    this->height = 0;
     this->Clear();
 }
-
 
 void Video::test(){
     cout << "OK" << endl;
@@ -21,13 +22,16 @@ void Video::test(){
 
 Video::Video(Mat image, int time_of_display) : Video() {
     this->Add(image, time_of_display);
+    this->width = image.size().width;
+    this->height = image.size().height;
     number_of_animations++;
 }
 
 Video::Video(Mat *images, int *times_of_display, int size) : Video() {
     for (int index = 0; index < size; index++) {
-        cout << "Here" << endl;
         this->Add(images[index], times_of_display[index]);
+        this->width = images[index].size().width;
+        this->height = images[index].size().height;
         number_of_animations++;
     }
 }
@@ -63,6 +67,17 @@ void Video::DisplayCurrentVideo() {
     destroyAllWindows();
 }
 
+void Video::WriteVideo(string output_name) {
+    VideoWriter video_writer(output_name, VideoWriter::fourcc('M','J','P','G'),
+                             10, Size(this->width, this->height));
+    if (this->number_of_animations > 0){
+        this->animators[0].Write(video_writer);
+    }
+    video_writer.release();
+    destroyAllWindows();
+
+}
+
 Video::ImageAnimator::ImageAnimator(Mat img, int display_time) {
     this->img = img;
     this->time = display_time;
@@ -79,6 +94,22 @@ void Video::ImageAnimator::Display() {
         i++;
     }
 }
+
+void Video::ImageAnimator::Write(VideoWriter video_writer) {
+    int i = 0;
+    while(i < this->time){
+
+        video_writer.write(img);
+        imshow( "Frame", img);
+
+        char c = (char)waitKey(1);
+        if( c == 27 )
+            break;
+        i++;
+    }
+}
+
+
 
 const double FRAMEPERSECOND = 60;
 void Video::ImageAnimator::ZoomAnimation(double ratio) {

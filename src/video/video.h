@@ -8,13 +8,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../image/image.h"
 #endif //OPENCV
-
 
 using namespace cv;
 using namespace std;
-using namespace img;
 
 #ifndef VIDEO_CLASS
 #define VIDEO_CLASS
@@ -28,7 +25,7 @@ namespace vid {
         Video(Mat *images, int *times_of_display, int size);
         ~Video();
         void test();
-        void CreateVideo(string output_name);
+        void WriteVideo(string output_name);
         void DisplayCurrentVideo();
         void Add(Mat img, int time_to_display);
         void Remove(int index);
@@ -41,7 +38,7 @@ namespace vid {
             void ZoomAnimation(double ratio);
             //void RotateAnimation();
             void Display();
-
+            void Write(VideoWriter video_writer);
         private:
             Mat img;
             int time, animation_type;
@@ -50,6 +47,7 @@ namespace vid {
         vector<Mat> images;
         vector<ImageAnimator> animators;
         int number_of_animations;
+        int width, height;
     };
 
 }

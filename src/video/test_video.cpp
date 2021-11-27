@@ -41,10 +41,9 @@ using namespace cv;
 }*/
 
 int main(){
-
-    string imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\Video_part\\video_editor_BX23\\src\\video_samples\\A.png";
+    string imgpath = "..\\..\\video_samples\\A.png";
     Mat img1 = imread(imgpath);
-    imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\Video_part\\video_editor_BX23\\src\\video_samples\\B.png";
+    imgpath = "..\\..\\video_samples\\B.png";
     Mat img2 = imread(imgpath);
     Mat images[10];
     int times[10];
@@ -58,23 +57,6 @@ int main(){
     v.Remove(0);
     v.DisplayCurrentVideo();
 
-    /*VideoWriter video("outcpp.avi", VideoWriter::fourcc('M','J','P','G'),
-                      10, Size(img.size().width, img.size().height));
-    int i = 0;
-    while(i < 50){
-
-        video.write(img);
-        imshow( "Frame", img);
-
-        char c = (char)waitKey(1);
-        if( c == 27 )
-            break;
-        i++;
-    }
-    video.release();
-    destroyAllWindows();*/
-
-    // in the end the avi file must be created and you must see the video
     cout << "Everything done, opencv works" << endl;
     return 0;
 }
