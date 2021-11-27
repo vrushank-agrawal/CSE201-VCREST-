@@ -8,10 +8,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "../image/image.h"
 #endif //OPENCV
+
 
 using namespace cv;
 using namespace std;
+using namespace img;
 
 #ifndef VIDEO_CLASS
 #define VIDEO_CLASS
