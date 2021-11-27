@@ -35,7 +35,7 @@ namespace vid {
         public:
             ImageAnimator(Mat img, int display_time);
             ~ImageAnimator(){};
-            //void ZoomAnimation();
+            void ZoomAnimation(double ratio);
             //void RotateAnimation();
             void Display();
 

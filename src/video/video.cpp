@@ -2,9 +2,12 @@
 // Created by korkot on 11/21/2021.
 //
 #include "video.h"
+#include "../image/image.h"
 
 using namespace vid;
 using namespace std;
+using namespace img;
+
 
 Video::Video() {
     this->number_of_animations = 0;
@@ -75,4 +78,23 @@ void Video::ImageAnimator::Display() {
             break;
         i++;
     }
+}
+
+const double FRAMEPERSECOND = 60;
+void Video::ImageAnimator::ZoomAnimation(double ratio) {
+    string output;
+    int num_frame = FRAMEPERSECOND*time;
+    Mat modified_img_list[num_frame];
+    double change_per_frame = 1+(ratio-1)/num_frame;
+    double img_h = img.size().height;
+    double img_w = img.size().width;
+    modified_img_list[0] = img;
+    for (int i=1;i<=num_frame;i++){
+        img_h *= change_per_frame;
+        img_w *= change_per_frame;
+        //modified_img_list[i] = img.resizeImg(img_w, img_h);
+    }
+    //CreateVideo(output);
+    Display();
+
 }
