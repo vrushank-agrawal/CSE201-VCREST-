@@ -6,10 +6,8 @@
 
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
-#include "imglist/imglist.h"
 #include <QFileDialog>
 #include <QMessageBox>
-
 
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
@@ -18,30 +16,59 @@ VideoEditor::VideoEditor(QWidget *parent) :
     // add graphics view to preview
     ui->preview->setChild(ui->label, ui->playButton);
     ui->preview->updateVideo(cv::VideoCapture("link to the video"));
-          
-    connect(ui->importButton,  &QPushButton::clicked, this, &VideoEditor::importImage);
+
+    setupMenus();
+    setupWidgets();
+
     connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
+}
+
+void VideoEditor::setupMenus() {
+    ui->actionImport_Image->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
+
+    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
+}
+
+void VideoEditor::setupWidgets() {
+    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
+    audioManager = new AudioManager(ui->audioListWidget);
+
+    // testing
+    setupImageListWidget();
+    audioManager->addAudio("hello.mp3");
 }
 
 void VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    QString fileName = QFileDialog::getOpenFileName(this, "Import image", "./", filter);
-    if (fileName != "") {
-        QMessageBox::information(this, "..", fileName);
+    QString fileName = importFile("Import Image", "/", filter);
+    QPixmap img(fileName);
+    if (!img.load(fileName)) {
+        img = QPixmap(":/img-error.png");
     }
+    thumbnailManager->addImage(img, fileName);
 }
 
-void VideoEditor::loadImage(const QString &path) {
-    QPixmap img;
-    if (!img.load(path)) {
-        QMessageBox::warning(this, tr("Open Image"),
-                             tr("The image file could not be loaded"),
-                             QMessageBox::Close);
-        return;
-    }
+void VideoEditor::importAudio() {
+
 }
 
-void VideoEditor::setupWidgets() {
+QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
+    QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
+    return fileName;
+}
+
+
+void VideoEditor::setupImageListWidget() {
+    auto *testPixmap = new QPixmap(":/img-error.png");
+
+    thumbnailManager->addImage(*testPixmap, "test1");
+    thumbnailManager->addImage(*testPixmap, "test2");
+    thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
+
+    for (int i = 3; i < 20; i++) {
+        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
+    }
 }
 
 void VideoEditor::setDisplayImage() {
