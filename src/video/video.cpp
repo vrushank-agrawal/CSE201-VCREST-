@@ -9,30 +9,20 @@ using namespace std;
 using namespace img;
 
 
-Video::Video() {
-    this->number_of_animations = 0;
-    this->width = 0;
-    this->height = 0;
-    this->Clear();
-}
 
 void Video::test(){
     cout << "OK" << endl;
 }
 
-Video::Video(Mat image, int time_of_display) : Video() {
-    this->Add(image, time_of_display);
-    this->width = image.size().width;
-    this->height = image.size().height;
-    number_of_animations++;
+Video::Video(int width, int height) {
+    this->number_of_animations = 0;
+    this->Resize(width, height);
+    this->Clear();
 }
 
-Video::Video(Mat *images, int *times_of_display, int size) : Video() {
+Video::Video(Mat *images, int *times_of_display, int size, int width, int height) : Video(width, height) {
     for (int index = 0; index < size; index++) {
         this->Add(images[index], times_of_display[index]);
-        this->width = images[index].size().width;
-        this->height = images[index].size().height;
-        number_of_animations++;
     }
 }
 
@@ -44,20 +34,38 @@ void Video::Add(Mat img, int time_to_display) {
     this->images.push_back(img);
     ImageAnimator new_animator = ImageAnimator(img, time_to_display);
     this->animators.push_back(new_animator);
+    this->number_of_animations ++;
+}
+
+void Video::Add(Mat img, int time_to_display, int index) {
+    if (index > this->number_of_animations){
+        cout << "Index is out of reach";
+    } else if (index == this->number_of_animations) {
+        this->Add(img, time_to_display);
+    } else {
+        this->images.insert(this->images.begin() + index, img);
+        ImageAnimator new_animator = ImageAnimator(img, time_to_display);
+        this->animators.insert(this->animators.begin() + index, new_animator);
+        this->number_of_animations++;
+    }
 }
 
 void Video::Remove(int index) {
+    if (index >= this->number_of_animations){
+        cout << "Index out of reach" << endl;
+        return;
+    }
     this->images.erase(this->images.begin() + index);
     this->animators.erase(this->animators.begin() + index);
     number_of_animations --;
 }
 
 void Video::Clear() {
-    for (int i = 0; i < number_of_animations; i++){
-    }
     this->images.clear();
     this->animators.clear();
-    int number_of_animations = 0;
+    this->number_of_animations = 0;
+    this->width = 0;
+    this->height = 0;
 }
 
 void Video::DisplayCurrentVideo() {
@@ -70,18 +78,29 @@ void Video::DisplayCurrentVideo() {
 void Video::WriteVideo(string output_name) {
     VideoWriter video_writer(output_name, VideoWriter::fourcc('M','J','P','G'),
                              10, Size(this->width, this->height));
-    if (this->number_of_animations > 0){
-        this->animators[0].Write(video_writer);
+    for (int i = 0; i < this->number_of_animations; i++){
+        this->animators[i].Write(video_writer);
     }
     video_writer.release();
     destroyAllWindows();
+}
 
+void Video::Resize(int width, int height) {
+    this->width = width;
+    this->height = height;
+}
+
+int Video::AnimationNumber(){
+    return this->number_of_animations;
 }
 
 Video::ImageAnimator::ImageAnimator(Mat img, int display_time) {
     this->img = img;
     this->time = display_time;
     this->animation_type = -1;
+}
+
+Video::ImageAnimator::~ImageAnimator() {
 }
 
 void Video::ImageAnimator::Display() {
@@ -98,10 +117,7 @@ void Video::ImageAnimator::Display() {
 void Video::ImageAnimator::Write(VideoWriter video_writer) {
     int i = 0;
     while(i < this->time){
-
         video_writer.write(img);
-        imshow( "Frame", img);
-
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -110,9 +126,8 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 }
 
 
-
 const double FRAMEPERSECOND = 60;
-void Video::ImageAnimator::ZoomAnimation(double ratio) {
+void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
     string output;
     int num_frame = FRAMEPERSECOND*time;
     Mat modified_img_list[num_frame];
@@ -125,7 +140,6 @@ void Video::ImageAnimator::ZoomAnimation(double ratio) {
         img_w *= change_per_frame;
         //modified_img_list[i] = img.resizeImg(img_w, img_h);
     }
-    //CreateVideo(output);
+    //WriteVideo(output);
     Display();
-
 }

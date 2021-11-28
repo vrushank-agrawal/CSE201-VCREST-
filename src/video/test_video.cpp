@@ -45,17 +45,37 @@ int main(){
     Mat img1 = imread(imgpath);
     imgpath = "..\\..\\video_samples\\B.png";
     Mat img2 = imread(imgpath);
+    imgpath = "..\\..\\video_samples\\C.jpg";
+    Mat img3 = imread(imgpath);
+
+
     Mat images[10];
     int times[10];
     images[0] = img1;
     images[1] = img2;
+    images[2] = img3;
     times[0] = 100;
     times[1] = 100;
-    vid::Video v(images, times, 2);
+    times[2] = 100;
+    vid::Video v(images, times, 3, img1.size().width, img1.size().height);
+    //v.DisplayCurrentVideo();
     v.test();
+    v.Add(img3, 50, 0);
+    v.Add(img1, 50, 4);
+    v.Add(img2, 50, 4);
+    //v.Add(img3, 50, 2);
+    cout << v.AnimationNumber() << endl;
     v.DisplayCurrentVideo();
+    v.Remove(1);
     v.Remove(0);
     v.DisplayCurrentVideo();
+
+
+    v.Clear();
+    cout << v.AnimationNumber() << endl;
+    v.Add(img1, 50);
+    v.Resize(img1.size().width, img1.size().height);
+    v.WriteVideo("..//YESSS.avi");
 
     cout << "Everything done, opencv works" << endl;
     return 0;
