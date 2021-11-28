@@ -7,7 +7,7 @@
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
 #include <QFileDialog>
-#include "image/image.h"
+#include "image.h"
 
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
