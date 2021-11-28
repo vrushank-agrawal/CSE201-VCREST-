@@ -11,8 +11,7 @@
 
 using namespace cv;
 
-int main()
-{
+int main(){
     std::string image_path = samples::findFile("lena.jpg");
     Image img1 = Image(image_path);
     Image img2 = Image(image_path);
@@ -52,11 +51,12 @@ int main()
 //    int q = waitKey(0);
 
     // test stitching functions
-//    vector<Image> imageArr = {img1, img2};
-//    Collage collage = Collage(2, imageArr);
-//    Image collage_img = Image(collage.getModifiedImage());
-//    collage_img.imgPreview("test_lena_collage");
-//    int r = waitKey(0);
+    vector<Image> imageArr = {img1, img2};
+    Collage collage = Collage(2, imageArr);
+    collage.twoStitch();
+    Image collage_img = Image(collage.getModifiedImage());
+    collage_img.imgPreview("test_lena_collage");
+    int r = waitKey(0);
 
     int j = waitKey(0);
 }

@@ -18,6 +18,7 @@ namespace img {
                 void fourStitch();
                 void flip();
 
+                const std::vector<int>& testVect();
                 int getNumImages();
                 const std::vector<double>& getRatios();
                 double getMaxRatios();
@@ -29,9 +30,9 @@ namespace img {
 
                 int numImages;
                 vector <double> ratios;
-                double maxRatios;
+                double maxRatios = 0;
                 vector <Image> imageArr;
-                int maxRatiosIndex;
+                int maxRatiosIndex = 0;
                 Mat modifiedImage;
 
     };
