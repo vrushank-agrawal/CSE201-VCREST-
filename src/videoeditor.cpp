@@ -7,7 +7,7 @@
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
 #include <QFileDialog>
-#include <QMessageBox>
+#include "image/image.h"
 
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
@@ -88,18 +88,18 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
+    updateVideo(cv::VideoCapture("D:/Downloads/sample-mp4-file-small.mp4"));
 
 }
 
 void VideoEditor::importImage() {
     QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
     QString fileName = importFile("Import Image", "/", filter);
-    QPixmap img(fileName);
-    if (!img.load(fileName)) {
-        img = QPixmap(":/img-error.png");
-    }
-    thumbnailManager->addImage(img, fileName);
+    img::Image image(fileName.toStdString());
+    if (false)
+        thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
+    else
+        thumbnailManager->addImage(image.getModifiedImg(), fileName);
 }
 
 void VideoEditor::importAudio() {
@@ -119,7 +119,7 @@ void VideoEditor::setupImageListWidget() {
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 3; i < 20; i++) {
+    for (int i = 3; i < 10; i++) {
         thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
     }
 }
