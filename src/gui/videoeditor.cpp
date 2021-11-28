@@ -12,19 +12,55 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
+
+    // add signal to play video when clicking playButton
+    connect(ui->playButton, SIGNAL(clicked()), ui->preview, SLOT(play()));
+
+    // set up skipForward button
+    ui->skipForward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+    connect(ui->skipForward, SIGNAL(clicked()), ui->preview, SLOT(forward()));
+
+    // set up skipBackward button
+    ui->skipBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+    connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
+
+    // set signal update Slider to set value of progressBar
+    connect(ui->preview, SIGNAL(updateSlider(int)), ui->progressBar, SLOT(setValue(int)));
+
+    // add signal to change progressBar to change to correspond frame in preview
+    connect(ui->progressBar, SIGNAL(sliderMoved(int)),
+            ui->preview, SLOT(sliderMoved(int)));
+
+    // add signal to change controlSlider to change to correspond frame in preview
+    connect(ui->controlSlider, SIGNAL(sliderMoved(int)),
+            ui->preview, SLOT(sliderMoved(int)));
+
+    // adjust controlSlider and progressBar according to the other
+    connect(ui->controlSlider, &QSlider::rangeChanged, ui->progressBar, &QSlider::setRange);
+    connect(ui->progressBar, &QSlider::rangeChanged, ui->controlSlider, &QSlider::setRange);
+
+    connect(ui->controlSlider, &QSlider::valueChanged, ui->progressBar, &QSlider::setValue);
+    connect(ui->progressBar, &QSlider::valueChanged, ui->controlSlider, &QSlider::setValue);
           
-    // add graphics view to preview
+    // add label, playButton and progressBar to preview
     ui->preview->setChild(ui->label,
-                          ui->playButton,
-                          ui->skipForward,
-                          ui->skipBackward,
-                          ui->progressBar);
-    ui->preview->updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
+                          ui->playButton);
+
+    // add video to preview
+    updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
 
     setupMenus();
     setupWidgets();
 
 //    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
+}
+
+void VideoEditor::updateVideo(const cv::VideoCapture &video){
+    ui->preview->updateVideo(video);
+
+    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
+    ui->progressBar->setTracking(true);
+    ui->controlSlider->setTracking(true);
 }
 
 void VideoEditor::setupMenus() {

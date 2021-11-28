@@ -27,23 +27,22 @@ public:
     explicit VideoPlayer(QWidget *parent = 0);
     ~VideoPlayer();
     void setChild(VideoWindow *label,
-                  QToolButton *playButton,
-                  QToolButton *skipForward,
-                  QToolButton *skipBackward,
-                  QSlider *slider);
-    void updateVideo(cv::VideoCapture video);
+                  QToolButton *playButton);
+    void updateVideo(const cv::VideoCapture &video);
+
+signals:
+    void updateSlider(int position);
 
 private slots:
     void updatePicture();
     void play();
     void sliderMoved(int position);
-    void sliderPressed();
-    void positionChanged();
+    void forward();
+    void backward();
 
 private:
     bool isPlaying = false;
-    QToolButton *playButton, *skipForward, *skipBackward;
-    QSlider *slider;
+    QToolButton *playButton;
     QTimer *timer = nullptr;
     VideoWindow *label;
     cv::VideoCapture video;

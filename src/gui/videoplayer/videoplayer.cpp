@@ -13,7 +13,6 @@ VideoPlayer::VideoPlayer(QWidget *parent) :
 
 VideoPlayer::~VideoPlayer()
 {
-    delete label;
     delete timer;
 }
 
@@ -34,36 +33,30 @@ void VideoPlayer::updatePicture(){
             label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
             label->updatePixmap();
             label->update();
+            emit updateSlider(video.get(cv::CAP_PROP_POS_FRAMES));
         }
     }
 }
 
 void VideoPlayer::setChild(VideoWindow *label,
-                           QToolButton *playButton,
-                           QToolButton *skipForward,
-                           QToolButton *skipBackward,
-                           QSlider *slider)
+                           QToolButton *playButton)
 {
     this->label = label;
 
     this->playButton = playButton;
     this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     this->playButton->setToolTip(tr("Play"));
-    connect(this->playButton, SIGNAL(clicked()), this, SLOT(play()));
+}
 
-    this->skipForward = skipForward;
-    this->skipForward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
+    this->video = video;
 
-    this->skipBackward = skipBackward;
-    this->skipBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+    if (timer != nullptr) delete timer;
 
-    this->slider = slider;
-    this->slider->setRange(0, 0);
-    this->slider->setTracking(true);
-    connect(this->slider, SIGNAL(sliderPressed()),
-            this, SLOT(sliderPressed()));
-    connect(this->slider, SIGNAL(sliderMoved(int)),
-            this, SLOT(sliderMoved(int)));
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
+    double fps = this->video.get(cv::CAP_PROP_FPS);
+    timer->start(int(1000 / fps));
 }
 
 void VideoPlayer::play(){
@@ -79,26 +72,17 @@ void VideoPlayer::play(){
 }
 
 void VideoPlayer::sliderMoved(int position){
-    video.set(cv::CAP_PROP_POS_FRAMES, slider->value());
+    video.set(cv::CAP_PROP_POS_FRAMES, position);
 }
 
-void VideoPlayer::sliderPressed(){
-    video.set(cv::CAP_PROP_POS_FRAMES, slider->value());
+void VideoPlayer::forward(){
+    int currentFrame = video.get(cv::CAP_PROP_POS_FRAMES);
+    int fps = video.get(cv::CAP_PROP_FPS);
+    video.set(cv::CAP_PROP_POS_FRAMES, currentFrame + fps * 5);
 }
 
-void VideoPlayer::positionChanged() {
-    slider->setValue(video.get(cv::CAP_PROP_POS_FRAMES));
-}
-
-void VideoPlayer::updateVideo(cv::VideoCapture video) {
-    this->video = video;
-
-    this->slider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
-    if (timer != nullptr) delete timer;
-
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
-    connect(timer, SIGNAL(timeout()), this, SLOT(positionChanged()));
-    double fps = video.get(cv::CAP_PROP_FPS);
-    timer->start(int(1000 / fps));
+void VideoPlayer::backward(){
+    int currentFrame = video.get(cv::CAP_PROP_POS_FRAMES);
+    int fps = video.get(cv::CAP_PROP_FPS);
+    video.set(cv::CAP_PROP_POS_FRAMES, currentFrame - fps * 5);
 }
