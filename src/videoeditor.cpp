@@ -12,7 +12,38 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
+    setupVideoPlayer();
+    setupMenus();
+    setupWidgets();
 
+//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
+}
+
+void VideoEditor::updateVideo(const cv::VideoCapture &video){
+    ui->preview->updateVideo(video);
+
+    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
+    ui->progressBar->setTracking(true);
+    ui->controlSlider->setTracking(true);
+}
+
+void VideoEditor::setupMenus() {
+    ui->actionImport_Image->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
+
+    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
+}
+
+void VideoEditor::setupWidgets() {
+    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
+    audioManager = new AudioManager(ui->audioListWidget);
+
+    // testing
+    setupImageListWidget();
+    audioManager->addAudio("hello.mp3");
+}
+
+void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
     connect(ui->playButton, SIGNAL(clicked()), ui->preview, SLOT(play()));
 
@@ -51,7 +82,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
 
     connect(ui->controlSlider, &QSlider::valueChanged, ui->progressBar, &QSlider::setValue);
     connect(ui->progressBar, &QSlider::valueChanged, ui->controlSlider, &QSlider::setValue);
-          
+
     // add label, playButton and progressBar to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
@@ -59,34 +90,6 @@ VideoEditor::VideoEditor(QWidget *parent) :
     // add video to preview
     updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
 
-    setupMenus();
-    setupWidgets();
-
-//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
-}
-
-void VideoEditor::updateVideo(const cv::VideoCapture &video){
-    ui->preview->updateVideo(video);
-
-    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
-    ui->progressBar->setTracking(true);
-    ui->controlSlider->setTracking(true);
-}
-
-void VideoEditor::setupMenus() {
-    ui->actionImport_Image->setShortcut(QKeySequence::Open);
-    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
-
-    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
-}
-
-void VideoEditor::setupWidgets() {
-    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
-    audioManager = new AudioManager(ui->audioListWidget);
-
-    // testing
-    setupImageListWidget();
-    audioManager->addAudio("hello.mp3");
 }
 
 void VideoEditor::importImage() {
