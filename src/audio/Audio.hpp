@@ -7,9 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "../../libs/aubio/include/aubio/aubio.h"
-
-using namespace std;
+#include "aubio/aubio.h"
 
 namespace audio {
 
@@ -24,10 +22,12 @@ namespace audio {
         aubio_source_t *source;
 
     public:
-        Audio(string uri);
+        Audio(std::string uri);
 
-        vector<int> getBeatPositions();
+        std::vector<int> getBeatPositions();
     };
+
+    bool test(std::string uri);
 
 }
 

@@ -2,15 +2,15 @@
 // Created by lasha on 14-Nov-21.
 //
 
-#include "Audio.hpp"
+#include "audio.hpp"
 
 namespace audio {
 
-    vector<int> filter(vector<int> input) {
+    std::vector<int> filter(std::vector<int> input) {
 
         int min_length = 200;
 
-        vector<int> output;
+        std::vector<int> output;
         output.push_back(input[0]);
 
         for (int i = 1; i < input.size(); i++) {
@@ -23,7 +23,7 @@ namespace audio {
 
     }
 
-    Audio::Audio(string uri) {
+    Audio::Audio(std::string uri) {
 
         sample_rate = 0;
         hop_size = 512;
@@ -35,9 +35,9 @@ namespace audio {
 
     }
 
-    vector<int> Audio::getBeatPositions() {
+    std::vector<int> Audio::getBeatPositions() {
 
-        vector<int> beats_ms;
+        std::vector<int> beats_ms;
 
         uint_t read = 0;
 
@@ -54,13 +54,13 @@ namespace audio {
             beats_ms.push_back(aubio_tempo_get_last_ms(tempo));
         } while (read == hop_size);
 
-        vector<int> output = filter(beats_ms);
+        std::vector<int> output = filter(beats_ms);
 
         return output;
 
     }
 
-    bool test(string uri) {
+    bool test(std::string uri) {
         Audio audio1 = Audio(uri);
         return audio1.getBeatPositions().size() > 10;
     }
