@@ -11,23 +11,35 @@
 
 namespace audio {
 
+    enum AudioType {
+        mp3, wav
+    };
+
     class Audio {
     private:
+
+        std::string uri;
+        char *file;
+
+        // Audio parameters
         int channels;
         int sample_rate;
         int duration;
 
+        // Source parameters
         int hop_size;
+
+        // Function parameters
+        int min_len = 200;
 
         aubio_source_t *source;
 
     public:
-        Audio(std::string uri);
+        Audio(const std::string &uri);
 
         std::vector<int> getBeatPositions();
-    };
 
-    bool test(std::string uri);
+    };
 
 }
 
