@@ -3,7 +3,6 @@
 //
 
 #include "videowindow.h"
-#include <QWidget>
 
 VideoWindow::VideoWindow(QWidget *parent): QLabel(parent) {
 }
@@ -16,7 +15,12 @@ void VideoWindow::setOriginalPixmap(QPixmap pixmap) {
 }
 
 void VideoWindow::updatePixmap() {
-    setPixmap(original_pixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    if (!original_pixmap.isNull()){
+        setPixmap(original_pixmap.scaled(width(),
+                                         height(),
+                                         Qt::KeepAspectRatio,
+                                         Qt::SmoothTransformation));
+    }
 }
 
 void VideoWindow::resizeEvent(QResizeEvent *event) {

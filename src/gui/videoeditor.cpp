@@ -14,13 +14,17 @@ VideoEditor::VideoEditor(QWidget *parent) :
     ui->setupUi(this);
           
     // add graphics view to preview
-    ui->preview->setChild(ui->label, ui->playButton);
-    ui->preview->updateVideo(cv::VideoCapture("link to the video"));
+    ui->preview->setChild(ui->label,
+                          ui->playButton,
+                          ui->skipForward,
+                          ui->skipBackward,
+                          ui->progressBar);
+    ui->preview->updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
 
     setupMenus();
     setupWidgets();
 
-    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
+//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
 
 void VideoEditor::setupMenus() {
