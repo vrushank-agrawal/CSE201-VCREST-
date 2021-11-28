@@ -7,8 +7,8 @@
 
 #include <QMainWindow>
 #include <QListView>
-#include <audiomanager.h>
-#include <imagethumbnail.h>
+#include "audiomanager/audiomanager.h"
+#include "imagethumbnail/imagethumbnail.h"
 
 
 QT_BEGIN_NAMESPACE

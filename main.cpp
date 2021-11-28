@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "videoeditor.h"
+#include "src/videoeditor.h"
 
 #include "src/Audio/Audio.hpp"
 
