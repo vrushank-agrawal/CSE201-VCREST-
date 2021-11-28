@@ -4,7 +4,7 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 target_include_directories(imageThumbnail
-        INTERFACE .
+        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
 target_link_libraries(imageThumbnail

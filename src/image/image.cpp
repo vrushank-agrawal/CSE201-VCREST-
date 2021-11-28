@@ -8,21 +8,22 @@
 using namespace img;
 
 img::Image::Image(const string & filename) {
+    // FIX_THIS
     this -> filename = filename;
     if (this -> validImg( filename )) {
         this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
         if ( this -> getMat().empty()) {
 //            printf("improper image exception - file is corrupt/invalid") ;
-            return_img_error(1) ;
+//            return_img_error(1) ;
         }
     } else {
 //        printf("file reading exception - file cannot be read by VEST") ;
-        return_img_error(2) ;
+//        return_img_error(2) ;
     }
     this -> img_matrix_modified = this -> img_matrix.clone();
 
 //        printf("img is valid can be read") ;
-    return_img_error(0) ;
+//    return_img_error(0) ;
 }
 
 img::Image::~Image() {
@@ -58,9 +59,12 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            size dimensions = imgMatrix.size();
-            return dimensions.height/ dimensions.width;
-        }
+//            size dimensions = imgMatrix.size();
+//            return dimensions.height/ dimensions.width;
+
+//    FIX_THIS
+    return 0;
+}
 
 void img::Image::imgPreview(const String &window) {
     Mat mat = this -> getMat();
