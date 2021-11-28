@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-add_subdirectory(audiomanager)
 add_subdirectory(gui)
 
 add_library(videoEditor videoeditor.cpp)
@@ -14,5 +13,4 @@ target_link_libraries(videoEditor
         Qt::Gui
         Qt::Widgets
         gui
-        audioManager
         )
