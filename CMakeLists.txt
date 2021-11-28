@@ -22,7 +22,7 @@ target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        gui
+        videoEditor
         )
 
 # add warning
