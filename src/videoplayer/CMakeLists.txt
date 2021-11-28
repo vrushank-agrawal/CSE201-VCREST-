@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-add_library(videoPlayer videoplayer.cpp videowindow.cpp videowindow.h)
+add_library(videoPlayer videoplayer.cpp videowindow.cpp)
 
 target_include_directories(videoPlayer
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
