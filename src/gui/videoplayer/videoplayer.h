@@ -36,12 +36,15 @@ signals:
 private slots:
     void updatePicture();
     void play();
+    void sliderPressed();
     void sliderMoved(int position);
+    void sliderReleased();
     void forward();
     void backward();
 
 private:
     bool isPlaying = false;
+    bool isMoving = false;
     QToolButton *playButton;
     QTimer *timer = nullptr;
     VideoWindow *label;

@@ -18,22 +18,32 @@ VideoEditor::VideoEditor(QWidget *parent) :
 
     // set up skipForward button
     ui->skipForward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+    ui->skipForward->setToolTip(tr("Forward"));
     connect(ui->skipForward, SIGNAL(clicked()), ui->preview, SLOT(forward()));
 
     // set up skipBackward button
     ui->skipBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+    ui->skipBackward->setToolTip(tr("Backward"));
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
     // set signal update Slider to set value of progressBar
     connect(ui->preview, SIGNAL(updateSlider(int)), ui->progressBar, SLOT(setValue(int)));
 
     // add signal to change progressBar to change to correspond frame in preview
+    connect(ui->progressBar, SIGNAL(sliderPressed()),
+            ui->preview, SLOT(sliderPressed()));
     connect(ui->progressBar, SIGNAL(sliderMoved(int)),
             ui->preview, SLOT(sliderMoved(int)));
+    connect(ui->progressBar, SIGNAL(sliderReleased()),
+            ui->preview, SLOT(sliderReleased()));
 
     // add signal to change controlSlider to change to correspond frame in preview
+    connect(ui->controlSlider, SIGNAL(sliderPressed()),
+            ui->preview, SLOT(sliderPressed()));
     connect(ui->controlSlider, SIGNAL(sliderMoved(int)),
             ui->preview, SLOT(sliderMoved(int)));
+    connect(ui->controlSlider, SIGNAL(sliderReleased()),
+            ui->preview, SLOT(sliderReleased()));
 
     // adjust controlSlider and progressBar according to the other
     connect(ui->controlSlider, &QSlider::rangeChanged, ui->progressBar, &QSlider::setRange);
