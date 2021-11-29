@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QToolButton>
+#include <QSlider>
 #include "videowindow.h"
 
 #include "opencv2/opencv.hpp"
@@ -25,15 +26,25 @@ Q_OBJECT
 public:
     explicit VideoPlayer(QWidget *parent = 0);
     ~VideoPlayer();
-    void setChild(VideoWindow *label, QToolButton *playButton);
-    void updateVideo(cv::VideoCapture video);
+    void setChild(VideoWindow *label,
+                  QToolButton *playButton);
+    void updateVideo(const cv::VideoCapture &video);
+
+signals:
+    void updateSlider(int position);
 
 private slots:
     void updatePicture();
     void play();
+    void sliderPressed();
+    void sliderMoved(int position);
+    void sliderReleased();
+    void forward();
+    void backward();
 
 private:
     bool isPlaying = false;
+    bool isMoving = false;
     QToolButton *playButton;
     QTimer *timer = nullptr;
     VideoWindow *label;

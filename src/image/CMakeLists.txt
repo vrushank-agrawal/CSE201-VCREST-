@@ -1,10 +1,13 @@
-add_library(image image.cpp)
+add_library(imageLibrary image.cpp)
 
 find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-include_directories( ${OPENCV_INCLUDE_DIRS} )
+target_include_directories(imageLibrary
+        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+        )
 
-target_link_libraries(img ${OPENCV_LIBS} )
+target_link_libraries(imageLibrary ${OpenCV_LIBS})
 
 message(STATUS "OpenCV library status:")
 message(STATUS "    config: ${OpenCV_DIR}")
