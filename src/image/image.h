@@ -27,11 +27,14 @@ namespace img {
         string save_filename;
 
     public:
-        
+
+        Image (Mat mat);
+
         Image(const string &    filename);
 
         ~Image();
-        
+
+        int return_img_error(int a);
 
         // returns the Matrix associated to the image
         Mat getMat();
