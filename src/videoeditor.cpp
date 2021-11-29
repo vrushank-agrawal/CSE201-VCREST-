@@ -98,8 +98,9 @@ void VideoEditor::importImage() {
     img::Image image(fileName.toStdString());
     if (false)
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
-    else
+    else {
         thumbnailManager->addImage(image.getModifiedImg(), fileName);
+    }
 }
 
 void VideoEditor::importAudio() {
@@ -122,6 +123,8 @@ void VideoEditor::setupImageListWidget() {
     for (int i = 3; i < 10; i++) {
         thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
     }
+
+    thumbnailManager->addImage(*testPixmap, QString::number(thumbnailManager->getImagesCount()));
 }
 
 void VideoEditor::setDisplayImage() {

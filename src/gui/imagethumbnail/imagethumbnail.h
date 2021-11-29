@@ -11,17 +11,24 @@
 #include <QListWidget>
 #include "opencv2/opencv.hpp"
 
+using namespace cv;
+
 class ThumbnailManager {
 
 public:
     explicit ThumbnailManager(QListWidget *qListWidget);
     ~ThumbnailManager();
-    void addImage(const cv::Mat& image, const QString& name);
+    void addImage(cv::Mat image, const QString& name);
     void addImage(const QPixmap& image, const QString& name);
+    int getImagesCount();
+    Mat* getImage(int index);
+    void removeImage(int index);
+    void removeAllImages(int index);
 
 private:
     QListWidget *listWidget;
-    QBrush *brush;
+    QBrush brush;
+    QVector<Mat> images;
 };
 
 
