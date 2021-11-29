@@ -100,10 +100,6 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image.getModifiedImg(), fileName);
-        auto test = thumbnailManager->getImage(0);
-        if (test == nullptr)
-            return;
-        thumbnailManager->addImage(*test, "test23123");
     }
 }
 
