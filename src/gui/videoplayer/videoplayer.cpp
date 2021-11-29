@@ -60,21 +60,13 @@ void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
 }
 
 void VideoPlayer::play(){
-    if (isPlaying) {
-        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-        this->playButton->setToolTip(tr("Play"));
-    }
-    else {
-        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-        this->playButton->setToolTip(tr("Pause"));
-    }
     isPlaying = !isPlaying;
+    updatePlayButton();
 }
 
 void VideoPlayer::sliderPressed(){
     isMoving = true;
-    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    this->playButton->setToolTip(tr("Play"));
+    updatePlayButton();
 }
 
 void VideoPlayer::sliderMoved(int position){
@@ -83,8 +75,7 @@ void VideoPlayer::sliderMoved(int position){
 
 void VideoPlayer::sliderReleased() {
     isMoving = false;
-    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-    this->playButton->setToolTip(tr("Pause"));
+    updatePlayButton();
 }
 
 void VideoPlayer::forward(){
@@ -101,4 +92,15 @@ void VideoPlayer::backward(){
     int newFrame = std::max(0, currentFrame - fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
     emit updateSlider(newFrame);
+}
+
+void VideoPlayer::updatePlayButton(){
+    if (!isPlaying || isMoving) {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        this->playButton->setToolTip(tr("Play"));
+    }
+    else {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        this->playButton->setToolTip(tr("Pause"));
+    }
 }

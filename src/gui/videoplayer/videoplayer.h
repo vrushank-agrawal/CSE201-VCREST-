@@ -43,6 +43,8 @@ private slots:
     void backward();
 
 private:
+    void updatePlayButton();
+
     bool isPlaying = false;
     bool isMoving = false;
     QToolButton *playButton;
