@@ -23,9 +23,10 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
     brush = QBrush(Qt::white);
 }
 
-void ThumbnailManager::addImage(Mat image, const QString& name) {
+void ThumbnailManager::addImage(Image image, const QString& name) {
     images.append(image);
-    QImage qImage(image.data, image.cols, image.rows, image.step, QImage::Format_RGB888);
+    Mat mat = image.getModifiedImg();
+    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
             QPixmap::fromImage(qImage),
             name
@@ -45,8 +46,6 @@ void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
     item->setBackground(brush);
     item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);
-
-//    images->append(Mat());
 }
 
 ThumbnailManager::~ThumbnailManager() {
@@ -57,7 +56,7 @@ int ThumbnailManager::getImagesCount() {
     return images.length();
 }
 
-Mat* ThumbnailManager::getImage(int index) {
+Image* ThumbnailManager::getImage(int index) {
     if (index >= getImagesCount()) {
         return nullptr;
     }

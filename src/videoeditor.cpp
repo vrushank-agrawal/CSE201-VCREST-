@@ -99,7 +99,7 @@ void VideoEditor::importImage() {
     if (false)
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
-        thumbnailManager->addImage(image.getModifiedImg(), fileName);
+        thumbnailManager->addImage(image, fileName);
     }
 }
 
