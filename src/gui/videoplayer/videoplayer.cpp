@@ -70,6 +70,7 @@ void VideoPlayer::sliderPressed(){
 
 void VideoPlayer::sliderMoved(int position){
     video.set(cv::CAP_PROP_POS_FRAMES, position);
+    updatePicture();
 }
 
 void VideoPlayer::sliderReleased() {

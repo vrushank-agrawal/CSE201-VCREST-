@@ -18,7 +18,7 @@ ProgressBar::~ProgressBar() {
 void ProgressBar::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
     {
-        int position = minimum() + ((maximum()-minimum()) * event->x()) / width();
+        int position = minimum() + ((maximum()-minimum()) * event->pos().x()) / width();
         setValue(position) ;
         event->accept();
         emit frameUpdate(position);
@@ -29,10 +29,10 @@ void ProgressBar::mouseReleaseEvent(QMouseEvent *event) {
 void ProgressBar::mouseMoveEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
     {
-        int position = minimum() + ((maximum()-minimum()) * event->x()) / width();
+        int position = minimum() + ((maximum()-minimum()) * event->pos().x()) / width();
         setValue(position) ;
         event->accept();
-        emit frameUpdate(position);
+//        emit frameUpdate(position);
     }
     emit QSlider::mouseMoveEvent(event);
 }
@@ -40,7 +40,7 @@ void ProgressBar::mouseMoveEvent(QMouseEvent *event) {
 void ProgressBar::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
     {
-        int position = minimum() + ((maximum()-minimum()) * event->x()) / width();
+        int position = minimum() + ((maximum()-minimum()) * event->pos().x()) / width();
         setValue(position) ;
         event->accept();
         emit frameUpdate(position);
