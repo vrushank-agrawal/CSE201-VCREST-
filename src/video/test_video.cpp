@@ -41,40 +41,42 @@ using namespace cv;
 }*/
 
 int main(){
-
-    string imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\Video_part\\video_editor_BX23\\src\\video_samples\\A.png";
+    string imgpath = "..\\..\\video_samples\\A.png";
     Mat img1 = imread(imgpath);
-    imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\Video_part\\video_editor_BX23\\src\\video_samples\\B.png";
+    imgpath = "..\\..\\video_samples\\B.png";
     Mat img2 = imread(imgpath);
+    imgpath = "..\\..\\video_samples\\C.jpg";
+    Mat img3 = imread(imgpath);
+
+
     Mat images[10];
     int times[10];
     images[0] = img1;
     images[1] = img2;
+    images[2] = img3;
     times[0] = 100;
     times[1] = 100;
-    vid::Video v(images, times, 2);
+    times[2] = 100;
+    vid::Video v(images, times, 3, img1.size().width, img1.size().height);
+    //v.DisplayCurrentVideo();
     v.test();
+    v.Add(img3, 50, 0);
+    v.Add(img1, 50, 4);
+    v.Add(img2, 50, 4);
+    //v.Add(img3, 50, 2);
+    cout << v.AnimationNumber() << endl;
     v.DisplayCurrentVideo();
+    v.Remove(1);
     v.Remove(0);
     v.DisplayCurrentVideo();
 
-    /*VideoWriter video("outcpp.avi", VideoWriter::fourcc('M','J','P','G'),
-                      10, Size(img.size().width, img.size().height));
-    int i = 0;
-    while(i < 50){
 
-        video.write(img);
-        imshow( "Frame", img);
+    v.Clear();
+    cout << v.AnimationNumber() << endl;
+    v.Add(img1, 50);
+    v.Resize(img1.size().width, img1.size().height);
+    v.WriteVideo("..//YESSS.avi");
 
-        char c = (char)waitKey(1);
-        if( c == 27 )
-            break;
-        i++;
-    }
-    video.release();
-    destroyAllWindows();*/
-
-    // in the end the avi file must be created and you must see the video
     cout << "Everything done, opencv works" << endl;
     return 0;
 }
