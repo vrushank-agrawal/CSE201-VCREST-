@@ -17,8 +17,6 @@ VideoPlayer::~VideoPlayer()
 }
 
 void VideoPlayer::updatePicture(){
-    if (!isPlaying || isMoving) return;
-
     cv::Mat frame;
     if (video.isOpened())
     {
@@ -57,6 +55,7 @@ void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
     connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
     double fps = this->video.get(cv::CAP_PROP_FPS);
     timer->start(int(1000 / fps));
+    timer->stop();
 }
 
 void VideoPlayer::play(){
@@ -98,9 +97,13 @@ void VideoPlayer::updatePlayButton(){
     if (!isPlaying || isMoving) {
         this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
         this->playButton->setToolTip(tr("Play"));
+
+        timer->stop();
     }
     else {
         this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
         this->playButton->setToolTip(tr("Pause"));
+
+        timer->start();
     }
 }
