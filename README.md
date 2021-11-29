@@ -11,7 +11,7 @@ This is a unique video editing software developed to help a user create a video 
 * Dimitri Korkotashvilli                                          | Dimitri-Korkotashvili, dkorkot
 * Lasha Koroshinadze                                              | lashahub, lashakoroshinadze
 * Hieu Le                                                         | Hieu-Lee, hieule203
-* Minh Tung Nguyen                                                | minhtung0404, tungnguynminh2
+* Minh Tung Nguyen                                                | minhtung0404, minhtung0404
 * Minjoo Kim                                                      | minjoo-johanna, ---
 * Hayate Sasaki                                                   | hayate0s, hayatesasaki
 * Yufei Liu                                                       | elisabeth04, user24392150
@@ -80,7 +80,7 @@ This is a unique video editing software developed to help a user create a video 
 2. Building OpenCV from Source Using CMake
     - Create a temporary directory, which we denote as `build_opencv` inside `opencv-4.5.4` folder, where you want to put the generated Makefiles, project files as well the object files and output binaries and enter there.
     - Generate Makefile (2 ways)
-      - Using terminal: Open terminal on folder `build_opencv` and run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv` on terminal
+      - Using terminal: Open terminal on folder `build_opencv` and run `cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../` on terminal
       - Using cmake-gui
         - set the opencv source path to the folder `opencv`
         - set the build path to the folder `build_opencv`
@@ -89,6 +89,13 @@ This is a unique video editing software developed to help a user create a video 
         - run `Configure`
         - run `Generate`
     - Build by run `make -j7` on terminal
+3. Add opencv to path
+   - Open terminal
+   - Run `sudo nano /etc/paths/`
+   - Add the folder `opencv-4.5.4/build_opencv/bin` to the end of the files
+   - `Ctrl + X` and save the files
+   - Check it with terminal by `echo $PATH`. You should see the folder you just put.
+   - Notes: it might be different for people who use zsh (you might need to edit it in `~/.zshrc`)
 
 Notes: 
 - Try to run `test_opencv` as a separate debug environment in CLion. If there is no error and the image lena.jpg is displayed then OpenCV is successfully integrated, otherwise retry the entire process / try google
