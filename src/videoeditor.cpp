@@ -88,7 +88,7 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("D:/Downloads/sample-mp4-file-small.mp4"));
+    updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
 
 }
 

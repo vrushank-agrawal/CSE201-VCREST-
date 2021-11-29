@@ -391,8 +391,14 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
                     <horstretch>0</horstretch>
-                    <verstretch>1</verstretch>
+                    <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="sizeIncrement">
+                   <size>
+                    <width>1</width>
+                    <height>1</height>
+                   </size>
                   </property>
                   <property name="text">
                    <string>...</string>
@@ -426,11 +432,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSlider" name="progressBar">
+                 <widget class="ProgressBar" name="progressBar">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
+                    <verstretch>10</verstretch>
                    </sizepolicy>
                   </property>
                   <property name="sliderPosition">
@@ -489,7 +495,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
       <property name="styleSheet">
        <string notr="true">background: rgb(170, 255, 127)</string>
       </property>
-      <widget class="QSlider" name="controlSlider">
+      <widget class="ProgressBar" name="controlSlider">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1250,6 +1256,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
    <class>VideoWindow</class>
    <extends>QLabel</extends>
    <header>videowindow.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ProgressBar</class>
+   <extends>QSlider</extends>
+   <header>progressbar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
