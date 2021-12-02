@@ -9,6 +9,11 @@ using namespace std;
 using namespace img;
 
 
+Video::Video() {
+    this->number_of_animations = 0;
+    this->Clear();
+}
+
 
 void Video::test(){
     cout << "OK" << endl;
@@ -22,7 +27,9 @@ Video::Video(int width, int height) {
 
 Video::Video(Mat *images, int *times_of_display, int size, int width, int height) : Video(width, height) {
     for (int index = 0; index < size; index++) {
+        cout << "Here" << endl;
         this->Add(images[index], times_of_display[index]);
+        number_of_animations++;
     }
 }
 
@@ -61,6 +68,8 @@ void Video::Remove(int index) {
 }
 
 void Video::Clear() {
+    for (int i = 0; i < number_of_animations; i++){
+    }
     this->images.clear();
     this->animators.clear();
     this->number_of_animations = 0;
@@ -127,7 +136,24 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 
 
 const double FRAMEPERSECOND = 60;
-void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
+void Video::ImageAnimator::RotateAnimation(double angle) {
+    string output;
+    int num_frame = FRAMEPERSECOND*time;
+
+    double change_per_frame = angle/num_frame;
+
+
+    Image image_mat = img::Image(get_mat());
+    for (int i=1;i<=num_frame;i++){
+        //Remove(i);
+        //Add(image_mat.rotateImg(change_per_frame).getMat(), 1/FRAMEPERSECOND, i);
+//vectors
+    }
+    //CreateVideo(output);
+    Display();
+
+}
+void Video::ImageAnimator::ZoomAnimation(double ratio) {
     string output;
     int num_frame = FRAMEPERSECOND*time;
     Mat modified_img_list[num_frame];
@@ -135,11 +161,14 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
     double img_h = img.size().height;
     double img_w = img.size().width;
     modified_img_list[0] = img;
+    Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         img_h *= change_per_frame;
         img_w *= change_per_frame;
-        //modified_img_list[i] = img.resizeImg(img_w, img_h);
+        modified_img_list[i] = image_mat.rotateImg(i);
+
     }
     //WriteVideo(output);
     Display();
+
 }

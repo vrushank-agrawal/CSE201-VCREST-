@@ -46,7 +46,10 @@ namespace vid {
             ~ImageAnimator();
             void ZoomAnimationDisplay(double ratio);
             void ZoomAnimationWrite(VideoWriter video_writer);
-            //void RotateAnimation();
+            void RotateAnimation(double angle);
+            Mat get_mat() {
+                return this -> img;
+            }
             void Display();
             void Write(VideoWriter video_writer);
 
