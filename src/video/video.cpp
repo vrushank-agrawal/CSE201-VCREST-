@@ -50,6 +50,17 @@ void Video::Add(Mat img, int time_to_display, int index) {
     }
 }
 
+
+//Draft(not tested) 
+void Video::Add_at_T(Mat img, int time_to_display, int T) {
+int sum= 0;  //guess we will need to change this based on unit of time we use
+while (sum <= T){
+for (int index = 0; index < this->number_of_animations; index++){
+sum += this->animators[index].time} 
+this->Add(img, time_to_display, sum)
+}
+
+
 void Video::Remove(int index) {
     if (index >= this->number_of_animations){
         cout << "Index out of reach" << endl;
