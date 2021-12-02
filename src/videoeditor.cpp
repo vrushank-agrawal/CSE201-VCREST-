@@ -22,8 +22,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
 
-    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
-    ui->progressBar->setTracking(true);
+    ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
 }
 
@@ -57,33 +56,25 @@ void VideoEditor::setupVideoPlayer() {
     ui->skipBackward->setToolTip(tr("Backward"));
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
-    // set signal update Slider to set value of progressBar
-    connect(ui->preview, SIGNAL(updateSlider(int)), ui->progressBar, SLOT(setValue(int)));
-
-    // add signal to change progressBar to change to correspond frame in preview
-    connect(ui->progressBar, SIGNAL(sliderPressed()),
-            ui->preview, SLOT(sliderPressed()));
-    connect(ui->progressBar, SIGNAL(sliderReleased()),
-            ui->preview, SLOT(sliderReleased()));
-    connect(ui->progressBar, SIGNAL(frameUpdate(int)),
-            ui->preview, SLOT(sliderMoved(int)));
-
-    // add signal to change controlSlider to change to correspond frame in preview
+    // connect controlSlider with position
     connect(ui->controlSlider, SIGNAL(sliderPressed()),
             ui->preview, SLOT(sliderPressed()));
     connect(ui->controlSlider, SIGNAL(sliderReleased()),
             ui->preview, SLOT(sliderReleased()));
-    connect(ui->progressBar, SIGNAL(frameUpdate(int)),
-            ui->preview, SLOT(sliderMoved(int)));
+    connect(ui->controlSlider, SIGNAL(frameChanged(int)),
+            this, SLOT(updatePosition(int)));
 
-    // adjust controlSlider and progressBar according to the other
-    connect(ui->controlSlider, &QSlider::rangeChanged, ui->progressBar, &QSlider::setRange);
-    connect(ui->progressBar, &QSlider::rangeChanged, ui->controlSlider, &QSlider::setRange);
+    // connect frameUpdated in preview to update position in this class
+    connect(ui->preview, SIGNAL(frameUpdated(int)),
+            this, SLOT(updatePosition(int)));
 
-    connect(ui->controlSlider, &QSlider::valueChanged, ui->progressBar, &QSlider::setValue);
-    connect(ui->progressBar, &QSlider::valueChanged, ui->controlSlider, &QSlider::setValue);
+    // connect positionChanged in this class to slider and preview
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->controlSlider, SLOT(setValue(int)));
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->preview, SLOT(updateFrame(int)));
 
-    // add label, playButton and progressBar to preview
+    // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
 
@@ -136,6 +127,13 @@ void VideoEditor::setDisplayImage() {
         ratio *= images.size();
         imageIndex = (int) ratio;
         imageIndex = (imageIndex == images.size()) ? imageIndex - 1 : imageIndex;
+    }
+}
+
+void VideoEditor::updatePosition(int position) {
+    if (this->position != position) {
+        this->position = position;
+        emit positionChanged(position);
     }
 }
 

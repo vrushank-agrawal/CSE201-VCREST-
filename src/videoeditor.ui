@@ -431,22 +431,6 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="ProgressBar" name="progressBar">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>10</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="sliderPosition">
-                   <number>0</number>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
                </layout>
               </widget>
              </item>
@@ -512,7 +496,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1077</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -31,13 +31,13 @@ public:
     void updateVideo(const cv::VideoCapture &video);
 
 signals:
-    void updateSlider(int position);
+    void frameUpdated(int position);
 
 private slots:
     void updatePicture();
     void play();
     void sliderPressed();
-    void sliderMoved(int position);
+    void updateFrame(int position);
     void sliderReleased();
     void forward();
     void backward();

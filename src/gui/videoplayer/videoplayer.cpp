@@ -31,7 +31,7 @@ void VideoPlayer::updatePicture(){
             label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
             label->updatePixmap();
             label->update();
-            emit updateSlider(video.get(cv::CAP_PROP_POS_FRAMES));
+            emit frameUpdated(video.get(cv::CAP_PROP_POS_FRAMES));
         }
     }
 }
@@ -68,9 +68,11 @@ void VideoPlayer::sliderPressed(){
     updatePlayButton();
 }
 
-void VideoPlayer::sliderMoved(int position){
-    video.set(cv::CAP_PROP_POS_FRAMES, position);
-    updatePicture();
+void VideoPlayer::updateFrame(int position){
+    if (position != video.get(cv::CAP_PROP_POS_FRAMES)) {
+        video.set(cv::CAP_PROP_POS_FRAMES, position-1);
+        updatePicture();
+    }
 }
 
 void VideoPlayer::sliderReleased() {
@@ -83,7 +85,7 @@ void VideoPlayer::forward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::min(int(video.get(cv::CAP_PROP_FRAME_COUNT)), currentFrame + fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit updateSlider(newFrame);
+    emit frameUpdated(newFrame);
 }
 
 void VideoPlayer::backward(){
@@ -91,7 +93,7 @@ void VideoPlayer::backward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::max(0, currentFrame - fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit updateSlider(newFrame);
+    emit frameUpdated(newFrame);
 }
 
 void VideoPlayer::updatePlayButton(){

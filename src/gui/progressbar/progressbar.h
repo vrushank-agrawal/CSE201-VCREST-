@@ -16,7 +16,7 @@ public:
     ~ProgressBar();
 
 signals:
-    void frameUpdate(int position);
+    void frameChanged(int position);
 
 private:
     virtual void mouseMoveEvent(QMouseEvent *event);

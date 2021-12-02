@@ -22,12 +22,17 @@ public:
     explicit VideoEditor(QWidget *parent = nullptr);
     ~VideoEditor() override;
 
+signals:
+    void positionChanged(int position);
+
 public slots:
     void importImage();
     void importAudio();
     void setDisplayImage();
+    void updatePosition(int position);
 
 private:
+    int position = 0;
     Ui::VideoEditor *ui;
     std::vector<QPixmap> images;
     int imageIndex = -1; // index of image need to displayed in images
