@@ -9,11 +9,6 @@ using namespace std;
 using namespace img;
 
 
-Video::Video() {
-    this->number_of_animations = 0;
-    this->Clear();
-}
-
 
 void Video::test(){
     cout << "OK" << endl;
@@ -137,6 +132,7 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 
 const double FRAMEPERSECOND = 60;
 void Video::ImageAnimator::RotateAnimation(double angle) {
+    vector<Mat> modified;
     string output;
     int num_frame = FRAMEPERSECOND*time;
 
@@ -145,6 +141,8 @@ void Video::ImageAnimator::RotateAnimation(double angle) {
 
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
+        image_mat.rotateImg(change_per_frame);
+        modified[i] = image_mat.getMat();
         //Remove(i);
         //Add(image_mat.rotateImg(change_per_frame).getMat(), 1/FRAMEPERSECOND, i);
 //vectors
@@ -153,19 +151,21 @@ void Video::ImageAnimator::RotateAnimation(double angle) {
     Display();
 
 }
-void Video::ImageAnimator::ZoomAnimation(double ratio) {
+void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
+    vector<Mat> modified;
     string output;
     int num_frame = FRAMEPERSECOND*time;
-    Mat modified_img_list[num_frame];
+
     double change_per_frame = 1+(ratio-1)/num_frame;
-    double img_h = img.size().height;
-    double img_w = img.size().width;
-    modified_img_list[0] = img;
+    int img_h = img.size().height;
+    int img_w = img.size().width;
+
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         img_h *= change_per_frame;
         img_w *= change_per_frame;
-        modified_img_list[i] = image_mat.rotateImg(i);
+        image_mat.resizeImg(img_w, img_h);
+        modified[i] = image_mat.getMat();
 
     }
     //WriteVideo(output);
