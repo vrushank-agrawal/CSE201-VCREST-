@@ -17,32 +17,44 @@ namespace audio {
 
         std::string ext = uri.substr(uri.length() - 3);
 
+        char cstr[uri.length() + 1];
+        strcpy(cstr, uri.c_str());
+
         if (ext == "wav") {
 
-            ifstream infile(uri);
-            if (!infile.is_open()) {
-                cout << "ERROR WHILE READING THE FILE!" << endl;
-                return;
-            }
-
-            infile.seekg(0, std::ios::end);
-            size_t length = infile.tellg();
-            infile.seekg(0, std::ios::beg);
-
-            file = new char[length];
-
-            infile.read(file, length);
-            infile.close();
-
-            for (int i = 44; i < 100; i++) {
-                cout << int(file[i]) << endl;
-            }
+            lameHelper conv;
+            conv.encode(cstr, "/temp.mp3");
+            conv.decode("/temp.mp3", "/temp.wav");
+            remove("/temp.mp3");
 
         } else if (ext == "mp3") {
 
+            lameHelper conv;
+            conv.decode(cstr, "/temp.wav");
+
         } else {
-            cout << "The file type is not supported" << endl;
+            return;
         }
+
+        ifstream infile(uri);
+        if (!infile.is_open()) {
+            cout << "ERROR WHILE READING THE FILE!" << endl;
+            return;
+        }
+
+        infile.seekg(0, std::ios::end);
+        size_t length = infile.tellg();
+        infile.seekg(0, std::ios::beg);
+
+        file = new char[length];
+
+        infile.read(file, length);
+        infile.close();
+
+        for (int i = 44; i < 100; i++) {
+            cout << int(file[i]) << endl;
+        }
+
 
     }
 
