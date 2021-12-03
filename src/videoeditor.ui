@@ -451,40 +451,15 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="imageTimeline" native="true">
+     <widget class="Timeline" name="timeline">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
-        <verstretch>3</verstretch>
+        <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
       <property name="styleSheet">
-       <string notr="true">background: rgb(0, 170, 0)</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="audioTimeline" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>3</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: rgb(170, 255, 127)</string>
+       <string notr="true">background: rgb(12, 255, 0)</string>
       </property>
      </widget>
     </item>
@@ -1239,6 +1214,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
    <class>ProgressBar</class>
    <extends>QSlider</extends>
    <header>progressbar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Timeline</class>
+   <extends>QGraphicsView</extends>
+   <header>timeline.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

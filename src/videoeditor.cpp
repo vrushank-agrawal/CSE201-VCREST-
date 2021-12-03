@@ -15,8 +15,6 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
-
-//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
 
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
