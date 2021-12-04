@@ -7,7 +7,7 @@ namespace img {
 
     class Collage {
             public:
-                Collage(int numImages, vector<Image> imageArr);
+                Collage( vector<Image> imageArr);
                 ~ Collage();
 
                 //create an array of coordinates of corners of each of the images, variable
@@ -21,19 +21,20 @@ namespace img {
                 const std::vector<int>& testVect();
                 int getNumImages();
                 const std::vector<double>& getRatios();
-                double getMaxRatios();
                 const std::vector<Image>& getImageArr();
-                int getMaxRatiosIndex();
                 Mat getModifiedImage();
-
+                void setModifiedImageArr(vector <Image> imageArrModified);
+                vector<Image> getModiefiedImageArr();
+                void setModifiedImage(Mat modifiedMat);
             private:
 
                 int numImages;
                 vector <double> ratios;
-                double maxRatios = 0;
+
                 vector <Image> imageArr;
                 int maxRatiosIndex = 0;
                 Mat modifiedImage;
+                vector <Image> imageArrModified;
 
     };
 }

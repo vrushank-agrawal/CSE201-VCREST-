@@ -66,9 +66,11 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            Size dimensions = this -> getMat().size();
-            return dimensions.height/ dimensions.width;
+            return this -> getMat().size().height/ this -> getMat().size().width;
         }
+double img::Image::getModifiedImageRatio() {
+    return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
+}
 
 void img::Image::imgPreview(const String &window) {
     Mat mat = this -> getMat();

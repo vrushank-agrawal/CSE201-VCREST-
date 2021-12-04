@@ -60,7 +60,7 @@ namespace img {
         );
         //Returns ratio from dimensions:
         double getRatio();
-        
+        double getModifiedImageRatio();
         // Image matrix preview functions
         void imgPreview( const String & 	winname);
         void imgModifiedPreview( const string & winname);
