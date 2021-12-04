@@ -7,13 +7,11 @@
 AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
     qListWidget->setDragEnabled(true);
     qListWidget->setViewMode(QListView::ListMode);
-//    qListWidget->setIconSize(QSize(50, 50));
-//    qListWidget->setGridSize(QSize(80, 90));
-//    qListWidget->setSpacing(20);
-//    qListWidget->setContentsMargins(20, 20, 20, 20);
+    qListWidget->setIconSize(QSize(20, 20));
     qListWidget->setMovement(QListView::Snap);
-    qListWidget->setAcceptDrops(true);
+    qListWidget->setAcceptDrops(false);
     qListWidget->setDropIndicatorShown(true);
+    qListWidget->setDefaultDropAction(Qt::MoveAction);
     qListWidget->setWordWrap(true);
     qListWidget->setUniformItemSizes(true);
     qListWidget->setAutoScrollMargin(100);
