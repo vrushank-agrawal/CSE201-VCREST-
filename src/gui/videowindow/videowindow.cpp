@@ -4,11 +4,14 @@
 
 #include "videowindow.h"
 
-VideoWindow::VideoWindow(QWidget *parent): QLabel(parent) {
+VideoWindow::VideoWindow(QWidget *parent) : QGraphicsView(parent) {
+    scene = new QGraphicsScene(this);
+    setScene(scene);
 }
 
 VideoWindow::~VideoWindow() {
-};
+    delete graphicsPixmap;
+}
 
 void VideoWindow::setOriginalPixmap(QPixmap pixmap) {
     original_pixmap = pixmap;
@@ -16,15 +19,14 @@ void VideoWindow::setOriginalPixmap(QPixmap pixmap) {
 
 void VideoWindow::updatePixmap() {
     if (!original_pixmap.isNull()){
-        setPixmap(original_pixmap.scaled(width(),
-                                         height(),
-                                         Qt::KeepAspectRatio,
-                                         Qt::SmoothTransformation));
+        delete graphicsPixmap;
+        graphicsPixmap = new QGraphicsPixmapItem(original_pixmap);
+        scene->addItem(graphicsPixmap);
+        fitInView(graphicsPixmap, Qt::KeepAspectRatio);
     }
 }
 
 void VideoWindow::resizeEvent(QResizeEvent *event) {
-    resize(event->size());
     updatePixmap();
     QWidget::resizeEvent(event);
 }

@@ -6,22 +6,24 @@
 #define VIDEO_EDITOR_BX23_VIDEOWINDOW_H
 
 #include <QWidget>
-#include <QLabel>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QResizeEvent>
 
-class VideoWindow: public QLabel
+class VideoWindow: public QGraphicsView
 {
 Q_OBJECT
 public:
-    explicit VideoWindow(QWidget *parent = 0);
+    explicit VideoWindow(QWidget *parent = nullptr);
     ~VideoWindow();
-
     void setOriginalPixmap(QPixmap);
     void updatePixmap();
 
 private:
     QPixmap original_pixmap;
+    QGraphicsPixmapItem *graphicsPixmap = nullptr;
+    QGraphicsScene *scene;
 protected:
     virtual void resizeEvent(QResizeEvent *event);
 };
