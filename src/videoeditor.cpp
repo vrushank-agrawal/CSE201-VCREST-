@@ -91,8 +91,19 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("D:/Downloads/1.mp4"));
+    QStringList arguments = QApplication::arguments();
 
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+    }
+
+    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
 void VideoEditor::importImage() {
