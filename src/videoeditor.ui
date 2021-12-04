@@ -340,22 +340,13 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
              <item>
               <widget class="VideoWindow" name="label">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>7</verstretch>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: rgb(0, 255, 12)</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-               <property name="indent">
-                <number>-1</number>
+                <string notr="true">background:rgb(68, 255, 82)</string>
                </property>
               </widget>
              </item>
@@ -1209,11 +1200,6 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VideoWindow</class>
-   <extends>QLabel</extends>
-   <header>videowindow.h</header>
-  </customwidget>
-  <customwidget>
    <class>ProgressBar</class>
    <extends>QSlider</extends>
    <header>progressbar.h</header>
@@ -1222,6 +1208,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
    <class>Timeline</class>
    <extends>QGraphicsView</extends>
    <header>timeline.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VideoWindow</class>
+   <extends>QGraphicsView</extends>
+   <header>videowindow.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
