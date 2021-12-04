@@ -14,11 +14,18 @@ Q_OBJECT
 public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
+    void updateVideoLength(int length);
+
+signals:
+    void videoLengthChanged(int length);
 
 private:
     int xTimeOffset = 100, yTime = 0;
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene;
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 };
 
 #endif //VIDEO_EDITOR_BX23_TIMELINE_H

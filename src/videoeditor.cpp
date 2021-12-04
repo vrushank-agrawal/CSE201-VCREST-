@@ -20,8 +20,13 @@ VideoEditor::VideoEditor(QWidget *parent) :
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
 
+    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
+        fps = video.get(cv::CAP_PROP_FPS);
+
     ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
 void VideoEditor::setupMenus() {
