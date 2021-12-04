@@ -2,21 +2,27 @@
 // Created by Minh Tung Nguyen on 03/12/2021.
 //
 
-#include "timeline.h"
 #include <QDebug>
 #include <QDateTime>
+#include "timeline.h"
 
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 {
     scene = new QGraphicsScene();
     setScene(scene);
-    width = lengthInSecond * xTimeOffset;
-    scene->setSceneRect(0, 0, width, height);
+    sceneWidth = lengthInSecond * xTimeOffset;
+    scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
 
-    QLineF separator(0, 0, width, 0);
+    indicator = new Indicator(sceneHeight);
+    scene->addItem(indicator);
+    indicator->setPos(0, 0);
+    indicator->setZValue(101);
+    indicator->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+
+    QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
         QGraphicsItem *line = scene->addLine(separator);
-        line->setPos(0, timeHeight + i * (height - timeHeight) / 2);
+        line->setPos(0, timeHeight + i * (sceneHeight - timeHeight) / 2);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
 
@@ -40,13 +46,13 @@ Timeline::~Timeline() {
 void Timeline::updateVideoLength(int length) {
     if (lengthInSecond != length) {
         lengthInSecond = length;
-        width = lengthInSecond * xTimeOffset;
-        scene->setSceneRect(0, 0, width, height);
+        sceneWidth = lengthInSecond * xTimeOffset;
+        scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
         emit videoLengthChanged(length);
     }
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {
-    fitInView(0, 0, 3000, height+10, Qt::IgnoreAspectRatio);
+    fitInView(0, 0, 3000, sceneHeight + 10, Qt::IgnoreAspectRatio);
     QGraphicsView::resizeEvent(event);
 }

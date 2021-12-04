@@ -8,6 +8,7 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QResizeEvent>
+#include "indicator.h"
 
 class Timeline: public QGraphicsView {
 Q_OBJECT
@@ -20,11 +21,12 @@ signals:
     void videoLengthChanged(int length);
 
 private:
-    int width = 120, height = 120;
+    int sceneWidth = 120, sceneHeight = 120;
     int timeHeight = 20;
     int xTimeOffset = 100, yTime = 0;
     int lengthInSecond = 10 * 60;
-    QGraphicsScene *scene;
+    QGraphicsScene *scene = nullptr;
+    Indicator *indicator = nullptr;
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
