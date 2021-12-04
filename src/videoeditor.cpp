@@ -45,6 +45,7 @@ void VideoEditor::setupWidgets() {
     // testing
     setupImageListWidget();
     audioManager->addAudio("hello.mp3");
+    audioManager->addAudio("world.mp3");
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -90,7 +91,7 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("/Users/minhtung0404/Downloads/1.mp4"));
+    updateVideo(cv::VideoCapture("D:/Downloads/1.mp4"));
 
 }
 
@@ -102,6 +103,7 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image, fileName);
+        ui->timeline->addImage(thumbnailManager->getImage(0));
     }
 }
 

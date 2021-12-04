@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <cmath>
 #include "timeline.h"
+#include "imageitem.h"
 
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 {
@@ -79,4 +80,9 @@ void Timeline::updateIndicatorPosition(double time) {
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
+}
+
+void Timeline::addImage(Image *image) {
+    ImageItem *temp = new ImageItem(image, 200, 50);
+    scene->addItem(temp);
 }

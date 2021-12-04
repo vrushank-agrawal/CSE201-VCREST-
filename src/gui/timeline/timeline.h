@@ -9,6 +9,9 @@
 #include <QGraphicsItem>
 #include <QResizeEvent>
 #include "indicator.h"
+#include "image.h"
+
+using namespace img;
 
 class Timeline: public QGraphicsView {
 Q_OBJECT
@@ -16,6 +19,7 @@ public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
     void updateVideoLength(int length);
+    void addImage(Image *image);
 
 signals:
     void videoLengthChanged(int length);
