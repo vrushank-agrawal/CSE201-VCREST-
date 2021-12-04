@@ -6,6 +6,7 @@ add_subdirectory(imagethumbnail)
 add_subdirectory(audiomanager)
 add_subdirectory(progressbar)
 add_subdirectory(timeline)
+add_subdirectory(indicator)
 
 add_library(gui)
 
@@ -20,4 +21,5 @@ target_link_libraries(gui
         audioManager
         progressBar
         timeline
+        indicator
         )

@@ -24,15 +24,18 @@ public:
 
 signals:
     void positionChanged(int position);
+    void timeIndicatorChanged(double timeInSec);
 
 public slots:
     void importImage();
     void importAudio();
     void setDisplayImage();
     void updatePosition(int position);
+    void updateTimeIndicator(double time);
 
 private:
-    int position = 0;
+    int position = 0, fps = 30;
+    double timeInSec;
     Ui::VideoEditor *ui;
     std::vector<QPixmap> images;
     int imageIndex = -1; // index of image need to displayed in images

@@ -20,8 +20,15 @@ VideoEditor::VideoEditor(QWidget *parent) :
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
 
+    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
+        fps = video.get(cv::CAP_PROP_FPS);
+
+    this->fps = fps;
+
     ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
 void VideoEditor::setupMenus() {
@@ -71,6 +78,12 @@ void VideoEditor::setupVideoPlayer() {
             ui->controlSlider, SLOT(setValue(int)));
     connect(this, SIGNAL(positionChanged(int)),
             ui->preview, SLOT(updateFrame(int)));
+
+    // connect timeInSecChanged with
+    connect(this, SIGNAL(timeIndicatorChanged(double)),
+            ui->timeline, SLOT(updateIndicatorPosition(double)));
+    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
+            this, SLOT(updateTimeIndicator(double)));
 
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
@@ -131,7 +144,18 @@ void VideoEditor::setDisplayImage() {
 void VideoEditor::updatePosition(int position) {
     if (this->position != position) {
         this->position = position;
+        this->timeInSec = 1.0 * position / fps;
         emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
+    }
+}
+
+void VideoEditor::updateTimeIndicator(double time) {
+    if (this->timeInSec != time) {
+        this->timeInSec = time;
+        this->position = int(time * fps);
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
     }
 }
 
