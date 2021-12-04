@@ -19,6 +19,8 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     indicator->setPos(0, 0);
     indicator->setZValue(101);
     indicator->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+    connect(indicator, SIGNAL(positionChanged(qreal)),
+            this, SLOT(updateTime(qreal)));
 
     QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
@@ -57,7 +59,7 @@ void Timeline::moveTimeline() {
     qreal xPosition = indicator->x() - sceneShowingWidth / 2;
     if (xPosition < 0) xPosition = 0;
     if (xPosition + sceneShowingWidth > sceneWidth) xPosition = sceneWidth - sceneShowingWidth;
-    
+
     fitInView(xPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
 }
 
@@ -67,6 +69,14 @@ void Timeline::resizeEvent(QResizeEvent *event) {
 }
 
 void Timeline::updateIndicatorPosition(double time) {
-    indicator->setPos(time * xTimeOffset, 0);
-    moveTimeline();
+    if (indicator->x() != time * xTimeOffset) {
+        indicator->setPos(time * xTimeOffset, 0);
+        moveTimeline();
+        emit timeIndicatorChanged(time);
+    }
+}
+
+void Timeline::updateTime(qreal xPosition) {
+    double time = xPosition / xTimeOffset;
+    emit timeIndicatorChanged(time);
 }

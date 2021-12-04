@@ -31,6 +31,7 @@ public slots:
     void importAudio();
     void setDisplayImage();
     void updatePosition(int position);
+    void updateTimeIndicator(double time);
 
 private:
     int position = 0, fps = 30;

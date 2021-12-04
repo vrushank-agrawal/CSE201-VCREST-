@@ -21,6 +21,10 @@ Indicator::Indicator(qreal height): QGraphicsItem ()
     setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 }
 
+Indicator::~Indicator() {
+
+}
+
 QSizeF Indicator::calculateSize()const
 {
     qreal minX = points[0].x();
@@ -82,6 +86,7 @@ void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = false;
     qDebug()<<event->scenePos();
+    emit positionChanged(event->scenePos().x());
     QGraphicsItem::mouseReleaseEvent(event);
     update();
 }

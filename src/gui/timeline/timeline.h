@@ -19,6 +19,7 @@ public:
 
 signals:
     void videoLengthChanged(int length);
+    void timeIndicatorChanged(qreal time);
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
@@ -33,6 +34,7 @@ private:
 
 private slots:
     void updateIndicatorPosition(double);
+    void updateTime(qreal xPosition);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

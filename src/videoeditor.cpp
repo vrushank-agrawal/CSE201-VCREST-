@@ -82,6 +82,8 @@ void VideoEditor::setupVideoPlayer() {
     // connect timeInSecChanged with
     connect(this, SIGNAL(timeIndicatorChanged(double)),
             ui->timeline, SLOT(updateIndicatorPosition(double)));
+    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
+            this, SLOT(updateTimeIndicator(double)));
 
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
@@ -144,7 +146,16 @@ void VideoEditor::updatePosition(int position) {
         this->position = position;
         this->timeInSec = 1.0 * position / fps;
         emit positionChanged(position);
-        emit timeIndicatorChanged(this->timeInSec);
+        emit timeIndicatorChanged(timeInSec);
+    }
+}
+
+void VideoEditor::updateTimeIndicator(double time) {
+    if (this->timeInSec != time) {
+        this->timeInSec = time;
+        this->position = int(time * fps);
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
     }
 }
 

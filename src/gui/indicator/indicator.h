@@ -18,10 +18,12 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
 
-class Indicator:public QGraphicsItem
+class Indicator: public QObject, public QGraphicsItem
 {
+Q_OBJECT
 public:
-    Indicator(qreal height);
+    explicit Indicator(qreal height);
+    ~Indicator();
 
     QSizeF calculateSize() const;
     void setHeight(qreal height){line.setP2(QPoint(0,height));}
@@ -31,7 +33,9 @@ public:
     QPen pen;
     QLine line;
     bool pressed=false;
-    // QGraphicsItem interface
+signals:
+    void positionChanged(qreal time);
+
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
