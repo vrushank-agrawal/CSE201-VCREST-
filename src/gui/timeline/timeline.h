@@ -22,11 +22,17 @@ signals:
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
+    qreal sceneShowingWidth = 3000;
     int timeHeight = 20;
     int xTimeOffset = 100, yTime = 0;
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
+
+    void moveTimeline();
+
+private slots:
+    void updateIndicatorPosition(double);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

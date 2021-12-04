@@ -4,6 +4,7 @@
 
 #include <QDebug>
 #include <QDateTime>
+#include <cmath>
 #include "timeline.h"
 
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
@@ -52,7 +53,20 @@ void Timeline::updateVideoLength(int length) {
     }
 }
 
+void Timeline::moveTimeline() {
+    qreal xPosition = indicator->x() - sceneShowingWidth / 2;
+    if (xPosition < 0) xPosition = 0;
+    if (xPosition + sceneShowingWidth > sceneWidth) xPosition = sceneWidth - sceneShowingWidth;
+    
+    fitInView(xPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
+}
+
 void Timeline::resizeEvent(QResizeEvent *event) {
-    fitInView(0, 0, 3000, sceneHeight + 10, Qt::IgnoreAspectRatio);
     QGraphicsView::resizeEvent(event);
+    moveTimeline();
+}
+
+void Timeline::updateIndicatorPosition(double time) {
+    indicator->setPos(time * xTimeOffset, 0);
+    moveTimeline();
 }
