@@ -30,7 +30,6 @@ void VideoPlayer::updatePicture(){
                         QImage::Format_RGB888);
             label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
             label->updatePixmap();
-            label->update();
             emit frameUpdated(video.get(cv::CAP_PROP_POS_FRAMES));
         }
     }
