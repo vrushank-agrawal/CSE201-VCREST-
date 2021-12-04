@@ -28,7 +28,7 @@ void ThumbnailManager::addImage(Image image, const QString& name) {
     Mat mat = image.getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
-            QPixmap::fromImage(qImage),
+            QPixmap::fromImage(qImage.rgbSwapped()),
             name
             );
 }

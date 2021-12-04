@@ -18,21 +18,17 @@ class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
 public:
-    explicit ImageItem(Image *image, qreal width, qreal height);
+    explicit ImageItem(Image *image, QSizeF size, QPoint position);
     ~ImageItem();
 
 
 private:
     Image *image;
-    QSizeF calculateSize() const;
-    void setHeight(qreal height){line.setP2(QPoint(0,height));}
-
-    QVector<QPointF> points; // polygons for the head
-    QBrush brush;
-    QPen pen;
-    QLine line;
-    bool pressed=false;
-    qreal width, height;
+    static QBrush brush;
+    static QPen pen;
+    static qreal yOffset, border;
+    QSizeF size;
+    QPointF position;
     QPixmap thumbnail;
 
 signals:

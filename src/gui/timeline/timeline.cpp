@@ -83,6 +83,6 @@ void Timeline::updateTime(qreal xPosition) {
 }
 
 void Timeline::addImage(Image *image) {
-    ImageItem *temp = new ImageItem(image, 200, 50);
+    ImageItem *temp = new ImageItem(image, QSize(200, 40), QPoint(0, 0));
     scene->addItem(temp);
 }
