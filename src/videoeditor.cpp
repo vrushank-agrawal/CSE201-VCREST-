@@ -91,8 +91,19 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("D:/Downloads/1.mp4"));
+    QStringList arguments = QApplication::arguments();
 
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+    }
+
+    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
 void VideoEditor::importImage() {
@@ -103,7 +114,6 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image, fileName);
-        ui->timeline->addImage(thumbnailManager->getImage(0));
     }
 }
 
@@ -124,11 +134,14 @@ void VideoEditor::setupImageListWidget() {
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 3; i < 10; i++) {
-        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
-    }
+    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+}
 
-    thumbnailManager->addImage(*testPixmap, QString::number(thumbnailManager->getImagesCount()));
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    Image *image = thumbnailManager->getImage(item);
+    qDebug() << image;
+    ui->timeline->appendImage(image);
 }
 
 void VideoEditor::setDisplayImage() {

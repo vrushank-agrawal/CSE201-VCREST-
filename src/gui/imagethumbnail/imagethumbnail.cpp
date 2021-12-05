@@ -21,19 +21,20 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
     qListWidget->setAutoScrollMargin(100);
 
     brush = QBrush(Qt::white);
+    map = QMap<QListWidgetItem*, Image>();
 }
 
 void ThumbnailManager::addImage(Image image, const QString& name) {
-    images.append(image);
     Mat mat = image.getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
             QPixmap::fromImage(qImage.rgbSwapped()),
-            name
+            name,
+            &image
             );
 }
 
-void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
+void ThumbnailManager::addImage(const QPixmap& image, const QString& name, Image *img) {
     QString displayName;
     if (name.lastIndexOf("/") >= 0) {
         displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
@@ -43,6 +44,8 @@ void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
     }
 
     auto *item = new QListWidgetItem(QIcon(image),displayName);
+    if (img != nullptr)
+        map.insert(item, *img);
     item->setBackground(brush);
     item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);
@@ -53,22 +56,14 @@ ThumbnailManager::~ThumbnailManager() {
 }
 
 int ThumbnailManager::getImagesCount() {
-    return images.length();
+    return map.size();
 }
 
-Image* ThumbnailManager::getImage(int index) {
-    if (index >= getImagesCount()) {
-        return nullptr;
-    }
-    return &images[index];
+Image *ThumbnailManager::getImage(QListWidgetItem *item) {
+    return &map.find(item).value();
 }
 
 void ThumbnailManager::removeImage(int index) {
-    if (index >= getImagesCount()) {
-        return;
-    }
-    images.remove(index);
 }
 
-//void ThumbnailManager::
 

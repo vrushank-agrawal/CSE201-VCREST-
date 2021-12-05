@@ -32,6 +32,7 @@ public slots:
     void setDisplayImage();
     void updatePosition(int position);
     void updateTimeIndicator(double time);
+    void appendImageToThumbnail(QListWidgetItem*);
 
 private:
     int position = 0, fps = 30;

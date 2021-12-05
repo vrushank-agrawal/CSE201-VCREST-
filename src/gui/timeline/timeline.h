@@ -8,6 +8,8 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QResizeEvent>
+#include <QListWidgetItem>
+#include <imageitem.h>
 #include "indicator.h"
 #include "image.h"
 
@@ -19,7 +21,9 @@ public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
     void updateVideoLength(int length);
-    void addImage(Image *image);
+    void addImage(Image *image, QPointF duration); // add an Image at the specified location
+    void appendImage(Image *image, double length=5); // append an Image to the end of the timeline
+    Image* getImage(qreal time);
 
 signals:
     void videoLengthChanged(int length);
@@ -33,12 +37,15 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
+    QMap<double, Image*> map;
 
     void moveTimeline();
 
 private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
+    void updateImagePosition(QPointF prevDuration, QPointF newDuration);
+    void deleteImage(ImageItem*);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

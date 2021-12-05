@@ -4,9 +4,7 @@
 
 #include <QDebug>
 #include <QDateTime>
-#include <cmath>
 #include "timeline.h"
-#include "imageitem.h"
 
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 {
@@ -41,6 +39,10 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
         line->setPos(i*xTimeOffset,yTime);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
+
+    ImageItem::yOffset = timeHeight;
+    ImageItem::xTimeOffset = xTimeOffset;
+    map = QMap<double, Image*>();
 }
 
 Timeline::~Timeline() {
@@ -82,7 +84,61 @@ void Timeline::updateTime(qreal xPosition) {
     emit timeIndicatorChanged(time);
 }
 
-void Timeline::addImage(Image *image) {
-    ImageItem *temp = new ImageItem(image, QSize(200, 40), QPoint(0, 0));
-    scene->addItem(temp);
+void Timeline::addImage(Image *image, QPointF duration) {
+    ImageItem *item = new ImageItem(image,
+                                    duration,
+                                    QPoint(duration.x() * xTimeOffset, ImageItem::border)
+                                    );
+    scene->addItem(item);
+
+    QMap<double, Image*>::iterator xloc = map.find(duration.x());
+    if (xloc != map.end() && xloc.value() == nullptr)
+        map.remove(duration.x());
+
+    map.insert(duration.x(), image);
+    if (map.find(duration.y()) == map.end())
+        map.insert(duration.y(), nullptr);
+    qDebug() << "Current map:" << map;
+    connect(item, SIGNAL(positionChanged(QPointF, QPointF)),
+            this, SLOT(updateImagePosition(QPointF, QPointF)));
+    connect(item, SIGNAL(deleted(ImageItem *)),
+            this, SLOT(deleteImage(ImageItem *)));
+}
+
+void Timeline::appendImage(Image *image, double length) {
+    double start = map.isEmpty() ? 0 : map.lastKey();
+    addImage(image, QPointF(start, start + length));
+}
+
+
+void Timeline::updateImagePosition(QPointF prevDuration, QPointF newDuration) {
+    QMap<double, Image*>::iterator iterator = map.find(prevDuration.x());
+    if (iterator == map.end())
+        return;
+
+    Image *image = iterator.value();
+    map.remove(prevDuration.x());
+    map.insert(newDuration.x(), image);
+    if (map.find(prevDuration.y()).value() == nullptr)
+        map.remove(prevDuration.y());
+    if (map.find(newDuration.y()) == map.end())
+        map.insert(newDuration.y(), nullptr);
+    qDebug() << map;
+}
+
+Image* Timeline::getImage(double time) {
+    QMap<double, Image*>::iterator iterator = map.lowerBound(time);
+    if (iterator == map.end())
+        return nullptr;
+
+    if (iterator.key() <= time)
+        return iterator.value();
+    else
+        return nullptr;
+}
+
+void Timeline::deleteImage(ImageItem *item) {
+    map.remove(item->duration.x());
+    if (map.find(item->duration.y()).value() == nullptr)
+        map.remove(item->duration.y());
 }

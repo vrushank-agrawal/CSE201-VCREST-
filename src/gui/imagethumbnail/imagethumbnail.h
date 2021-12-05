@@ -23,16 +23,16 @@ public:
     void addImage(Image image, const QString& name);
 
     // will be made private
-    void addImage(const QPixmap& image, const QString& name);
+    void addImage(const QPixmap& image, const QString& name, Image *img=nullptr);
     int getImagesCount();
-    Image* getImage(int index);
+    Image* getImage(QListWidgetItem *item);
     void removeImage(int index);
     void removeAllImages(int index);
 
 private:
     QListWidget *listWidget;
     QBrush brush;
-    QVector<Image> images;
+    QMap<QListWidgetItem*, Image> map;
 };
 
 

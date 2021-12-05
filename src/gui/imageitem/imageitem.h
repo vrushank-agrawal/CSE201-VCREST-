@@ -10,6 +10,7 @@
 #include <QBrush>
 #include <QPen>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 #include "image.h"
 
 using namespace img;
@@ -18,21 +19,27 @@ class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
 public:
-    explicit ImageItem(Image *image, QSizeF size, QPoint position);
+    explicit ImageItem(Image *image, QPointF duration, QPoint position);
     ~ImageItem();
+    static double yOffset, xTimeOffset, yHeight;
+    constexpr static const double border = 3;
+    QPointF duration;
 
 
 private:
     Image *image;
     static QBrush brush;
     static QPen pen;
-    static qreal yOffset, border;
     QSizeF size;
     QPointF position;
     QPixmap thumbnail;
+    bool pressed=false;
+    QPointF oldPos,oldMousePos;
+    void calculateSize();
 
 signals:
-    void positionChanged(qreal time);
+    void positionChanged(QPointF oldDuration, QPointF newDuration);
+    void deleted(ImageItem*);
 
 public:
     virtual QRectF boundingRect() const override;
@@ -42,9 +49,7 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 
