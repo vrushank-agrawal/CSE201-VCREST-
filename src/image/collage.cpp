@@ -38,19 +38,6 @@ img::Collage::Collage(vector<Image> inImageArr){
 
     for (int i = 0; i < this-> numImages ; i ++ ){
         ratios.push_back(this->imageArr.at(i).getRatio());
-        //find the dominant ratio of height to width
-//        if (this -> maxRatios > 1) {
-//            if (ratios[i] > this->maxRatios || ((ratios[i]<1) && (1 / ratios[i]) > this->maxRatios)) {
-//                this->maxRatios = ratios[i];
-//                this->maxRatiosIndex = i;
-//            }
-//        }
-//        else if (this -> maxRatios <= 1) {
-//            if (ratios[i] < this->maxRatios || ((ratios[i] > 1) && (1 / ratios[i]) < this->maxRatios)) {
-//                this->maxRatios = ratios[i];
-//                this->maxRatiosIndex = i;
-//            }
-//        }
 
     }
 
@@ -62,6 +49,12 @@ img::Collage::~Collage() {
 }
 void img::Collage::setModifiedImageArr(vector<Image> imageArrModified){
     this -> imageArrModified = imageArrModified;
+    this -> modifiedNumImages = imageArrModified.size();
+    for (int i = 0; i < this-> numImages ; i ++ ){
+        ratios.push_back(this->imageArrModified.at(i).getRatio());
+
+    }
+
 }
 
 int img::Collage::getNumImages(){
@@ -70,6 +63,9 @@ int img::Collage::getNumImages(){
 
 const std::vector<double>& img::Collage::getRatios(){
     return this -> ratios;
+}
+const std::vector<double>& img::Collage::getModifiedRatios(){
+    return this -> modifiedRatios;
 }
 
 
@@ -86,7 +82,7 @@ void img::Collage::setModifiedImage(Mat modifiedMat) {
 Mat img::Collage::getModifiedImage() {
     return this -> modifiedImage;
 }
-vector<Image> img::Collage::getModiefiedImageArr(){
+vector<Image> img::Collage::getModifiedImageArr(){
     return this -> imageArrModified;
 }
 
@@ -96,7 +92,7 @@ void img::Collage::twoStitch(bool original= true ) {
     if (original){
         arr = this->getImageArr();
     }else{
-        arr = this->getModiefiedImageArr();
+        arr = this->getModifiedImageArr();
     }
     if (arr.size() == 2) {
         //default stitching based on ratio
@@ -165,4 +161,61 @@ void img::Collage::threeStitch() {
     } else{
         std::cout << "A different amount of images than 3!";
     }
+}
+void img::Collage::fourStitch(bool original= true) {
+    if (this->getNumImages() == 4) {
+        vector<double> ratios;
+        vector<Image> subImageArr1;
+        if (original){
+            ratios = this-> getRatios();
+            subImageArr1 = this->getImageArr();
+        } else{
+            ratios = this-> getModifiedRatios();
+            subImageArr1 = this->getModifiedImageArr();
+        }
+
+        int maximum = getMaxIndex(ratios);
+        // std::cout << "maximum: " << typeid(maximum).name();
+
+        vector<Image> subImageArr2;
+        //split into two collages of double stitch and then stitch all of them together
+        vector<Image>::iterator maxIndex = subImageArr1.begin() + maximum ;
+        vector<double>::iterator maxRatiosIndex = ratios.begin() + maximum ;
+        subImageArr2.push_back(*maxIndex);
+        ratios.erase(maxRatiosIndex);
+        subImageArr1.erase(maxIndex);
+        int secondMaximum = getMaxIndex(ratios);
+        vector<Image>::iterator secondMaxIndex = subImageArr1.begin() + secondMaximum ;
+        subImageArr1.erase(secondMaxIndex);
+        subImageArr2.push_back(*secondMaxIndex);
+        Collage subCollage1(subImageArr1);
+        Collage subCollage2(subImageArr2);
+        subCollage1.twoStitch();
+        subCollage2.twoStitch();
+
+        this->setModifiedImageArr({subCollage1.getModifiedImage(), subCollage2.getModifiedImage()});
+        this->twoStitch(false);
+
+
+
+    } else{
+        std::cout << "A different amount of images than 4!";
+    }
+
+}
+void img::Collage::fourStitchRecAux(bool original = false, int times= 0){
+    if (times > 0) {
+        this->fourStitch();
+        Image img1(this->getModifiedImage());
+        Image img2(this->getModifiedImage());
+        Image img3(this->getModifiedImage());
+        Image img4(this->getModifiedImage());
+        this->setModifiedImageArr({img1, img2, img3, img4});
+        times--;
+        fourStitchRecAux(original = false, times);
+    }
+}
+void img::Collage::fourStitchRec(int times){
+    fourStitchRecAux(true, times);
+
 }

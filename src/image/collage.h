@@ -15,7 +15,8 @@ namespace img {
 
                 void twoStitch(bool );
                 void threeStitch();
-                void fourStitch();
+                void fourStitch(bool );
+                void fourStitchRec(int times);
                 void flip();
 
                 const std::vector<int>& testVect();
@@ -24,17 +25,19 @@ namespace img {
                 const std::vector<Image>& getImageArr();
                 Mat getModifiedImage();
                 void setModifiedImageArr(vector <Image> imageArrModified);
-                vector<Image> getModiefiedImageArr();
+                vector<Image> getModifiedImageArr();
                 void setModifiedImage(Mat modifiedMat);
+                const std::vector<double>& getModifiedRatios();
             private:
 
                 int numImages;
+                int modifiedNumImages;
                 vector <double> ratios;
-
+                vector <double> modifiedRatios;
                 vector <Image> imageArr;
-                int maxRatiosIndex = 0;
                 Mat modifiedImage;
                 vector <Image> imageArrModified;
+                void fourStitchRecAux(bool, int times);
 
     };
 }

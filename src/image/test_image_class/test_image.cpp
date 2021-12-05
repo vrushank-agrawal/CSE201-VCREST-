@@ -7,7 +7,7 @@
 #include "../blurs.cpp"
 #include "../rotate_resize.cpp"
 #include "../save.cpp"
-//#include "../collage.cpp"
+#include "../collage.cpp"
 
 using namespace cv;
 
@@ -15,6 +15,8 @@ int main(){
     std::string image_path = samples::findFile("lena.jpg");
     Image img1 = Image(image_path);
     Image img2 = Image(image_path);
+    Image img3 = Image(image_path);
+    Image img4 = Image(image_path);
 
     string file = img1.getFilename();
     Mat matrix = img1.getMat();
@@ -42,18 +44,18 @@ int main(){
 //    img1.imgModifiedPreview("testing_box_filter");
 //    int o = waitKey(0);
 
-    img1.resizeImg(500, 600);
-    img1.imgModifiedPreview("testing_img_resize");
-    int p = waitKey(0);
+//    img1.resizeImg(500, 600);
+//    img1.imgModifiedPreview("testing_img_resize");
+//    int p = waitKey(0);
 
 //    img1.rotateImg(25);
 //    img1.imgModifiedPreview("testing_img_rotate");
 //    int q = waitKey(0);
 
     // test stitching functions
-    vector<Image> imageArr = {img1, img2};
-    Collage collage = Collage(2, imageArr);
-    collage.twoStitch();
+    vector<Image> imageArr = {img1, img2, img3, img4};
+    Collage collage = Collage(imageArr);
+    collage.fourStitchRec(5);
     Image collage_img = Image(collage.getModifiedImage());
     collage_img.imgPreview("test_lena_collage");
     int r = waitKey(0);
