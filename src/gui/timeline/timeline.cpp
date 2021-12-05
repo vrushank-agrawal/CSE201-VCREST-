@@ -4,8 +4,6 @@
 
 #include <QDebug>
 #include <QDateTime>
-#include <cmath>
-//#include <QMap>
 #include "timeline.h"
 #include "imageitem.h"
 
@@ -93,12 +91,25 @@ void Timeline::addImage(Image *image, QPointF duration) {
                                     QPoint(duration.x() * xTimeOffset, ImageItem::border)
                                     );
     scene->addItem(item);
+    qDebug() << "searching for xloc";
+
+    QMap<double, Image*>::iterator xloc = map.find(duration.x());
+    if (xloc != map.end() && xloc.value() == nullptr)
+        map.remove(duration.x());
+    qDebug() << "inserting for image";
+
     map.insert(duration.x(), image);
     if (map.find(duration.y()) == map.end())
         map.insert(duration.y(), nullptr);
     qDebug() << map;
     connect(item, SIGNAL(positionChanged(QPointF, QPointF)), this, SLOT(updateImagePosition(QPointF, QPointF)));
 }
+
+void Timeline::appendImage(Image *image, double length) {
+    double start = map.isEmpty() ? 0 : map.lastKey();
+    addImage(image, QPointF(start, start + length));
+}
+
 
 void Timeline::updateImagePosition(QPointF prevDuration, QPointF newDuration) {
     QMap<double, Image*>::iterator iterator = map.find(prevDuration.x());

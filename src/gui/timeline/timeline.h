@@ -8,6 +8,7 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QResizeEvent>
+#include <QListWidgetItem>
 #include "indicator.h"
 #include "image.h"
 
@@ -19,7 +20,8 @@ public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
     void updateVideoLength(int length);
-    void addImage(Image *image, QPointF duration);
+    void addImage(Image *image, QPointF duration); // add an Image at the specified location
+    void appendImage(Image *image, double length=5); // append an Image to the end of the timeline
     Image* getImage(qreal time);
 
 signals:

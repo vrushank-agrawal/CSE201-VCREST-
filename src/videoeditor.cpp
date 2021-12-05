@@ -114,7 +114,7 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image, fileName);
-        ui->timeline->addImage(thumbnailManager->getImage(0), QPointF(0, 5));
+        ui->timeline->appendImage(thumbnailManager->getImage(thumbnailManager->getImagesCount() - 1));
     }
 }
 
@@ -135,11 +135,14 @@ void VideoEditor::setupImageListWidget() {
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 3; i < 10; i++) {
-        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
-    }
+    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+}
 
-    thumbnailManager->addImage(*testPixmap, QString::number(thumbnailManager->getImagesCount()));
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    Image *image = thumbnailManager->getAssocImage(item);
+    qDebug() << image;
+    ui->timeline->appendImage(image);
 }
 
 void VideoEditor::setDisplayImage() {
