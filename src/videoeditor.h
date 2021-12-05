@@ -31,6 +31,8 @@ private:
     Ui::VideoEditor *ui;
     std::vector<QPixmap> images;
     int imageIndex = -1; // index of image need to displayed in images
+    void updateVideo(const cv::VideoCapture &video);
+    void setupVideoPlayer();
     void setupMenus();
     void setupWidgets();
     void setupImageListWidget();

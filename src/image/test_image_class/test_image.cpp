@@ -7,7 +7,7 @@
 #include "../blurs.cpp"
 #include "../rotate_resize.cpp"
 #include "../save.cpp"
-#include "../collage.cpp"
+//#include "../collage.cpp"
 
 using namespace cv;
 
@@ -42,9 +42,9 @@ int main(){
 //    img1.imgModifiedPreview("testing_box_filter");
 //    int o = waitKey(0);
 
-//    img1.resizeImg(5, 6);
-//    img1.imgModifiedPreview("testing_img_resize");
-//    int p = waitKey(0);
+    img1.resizeImg(500, 600);
+    img1.imgModifiedPreview("testing_img_resize");
+    int p = waitKey(0);
 
 //    img1.rotateImg(25);
 //    img1.imgModifiedPreview("testing_img_rotate");
