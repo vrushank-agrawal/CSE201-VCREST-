@@ -24,8 +24,8 @@ settings_t::settings_t() {
 lameHelper::lameHelper() {
     //Initialize to NULL, aids deletion/closing later
     for (int i = 0; i < MAX_THREAD_COUNT; i++) {
-        hThread[i] = NULL;
-        hSParam[i] = NULL;
+        hThread[i] = nullptr;
+        hSParam[i] = nullptr;
     }
 
 }
@@ -33,36 +33,37 @@ lameHelper::lameHelper() {
 lameHelper::~lameHelper() {
     //Destroy all declared objects
     for (int i = 0; i < MAX_THREAD_COUNT; i++) {
-        if (hThread[i] != NULL)
+        if (hThread[i] != nullptr)
             CloseHandle(hThread[i]);
 
-        if (hSParam[i] != NULL)
+        if (hSParam[i] != nullptr)
             delete hSParam[i];
     }
 }
 
-int lameHelper::encode(char *pcm_in, char *mp3_out) {
+int lameHelper::encode(const std::string &pcm_in, const std::string &mp3_out) {
     settings_t t;//Pass the default value of settings
-    return encode_x(pcm_in, mp3_out, t, NULL);
+    return encode_x(pcm_in, mp3_out, t, nullptr);
 }
 
-int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPROC callback_proc) {
-    lame_global_flags *gfp = NULL;
+int lameHelper::encode_x(const std::string &pcm_in, const std::string &mp3_out, const settings_t &settings,
+                         WNDPROC callback_proc) {
+    lame_global_flags *gfp = nullptr;
     gfp = lame_init();
     lame_set_in_samplerate(gfp, settings.in_samplerate);
 
     //Init the id3 tag structure
     id3tag_init(gfp);
     id3tag_v2_only(gfp);
-    id3tag_set_year(gfp, settings.year);
-    id3tag_set_genre(gfp, settings.genre);
-    id3tag_set_artist(gfp, settings.artist);
-    id3tag_set_album(gfp, settings.album);
-    id3tag_set_title(gfp, settings.title);
-    id3tag_set_track(gfp, settings.track);
-    id3tag_set_comment(gfp, settings.comment);
+    id3tag_set_year(gfp, settings.year.c_str());
+    id3tag_set_genre(gfp, settings.genre.c_str());
+    id3tag_set_artist(gfp, settings.artist.c_str());
+    id3tag_set_album(gfp, settings.album.c_str());
+    id3tag_set_title(gfp, settings.title.c_str());
+    id3tag_set_track(gfp, settings.track.c_str());
+    id3tag_set_comment(gfp, settings.comment.c_str());
 
-    set_id3_albumart(gfp, settings.albumart);
+    set_id3_albumart(gfp, settings.albumart.c_str());
 
     //Setting Channels
     switch (settings.channels) {
@@ -113,8 +114,8 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
     int lResult = 0;
     if (lame_init_params(gfp) == -1) {
         //lame initialization failed
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -2, NULL);
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -2, 0);
         }
         sprintf(errMsg, "FATAL ERROR: parameters failed to initialize properly in lame. Aborting!\n");
         errorHandler(errMsg);
@@ -125,14 +126,14 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
         long PCM_total_size = 0;
         long cumulative_read = 0;
 
-        FILE *pcm = fopen(pcm_in, "rb");
-        FILE *mp3 = fopen(mp3_out, "wb");
+        FILE *pcm = fopen(pcm_in.c_str(), "rb");
+        FILE *mp3 = fopen(mp3_out.c_str(), "wb");
 
-        if (pcm == NULL) {
-            if (callback_proc != NULL) {
-                callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -1, NULL);
+        if (pcm == nullptr) {
+            if (callback_proc != nullptr) {
+                callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
             }
-            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", pcm_in);
+            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", pcm_in.c_str());
             errorHandler(errMsg);
             return -1;
         }
@@ -140,22 +141,22 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
         PCM_total_size = ftell(pcm);
         fseek(pcm, 0, SEEK_SET);
 
-        if (mp3 == NULL) {
-            if (callback_proc != NULL) {
-                callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -1, NULL);
+        if (mp3 == nullptr) {
+            if (callback_proc != nullptr) {
+                callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
             }
-            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", mp3_out);
+            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", mp3_out.c_str());
             errorHandler(errMsg);
             return -1;
         }
 
-        unsigned char *buffer = new unsigned char[LAME_MAXMP3BUFFER];
+        auto *buffer = new unsigned char[LAME_MAXMP3BUFFER];
 
         short int pcm_buffer[PCM_SIZE * 2];
         unsigned char mp3_buffer[MP3_SIZE];
 
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_STARTED, NULL, NULL);
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_STARTED, 0, 0);
         }
 
         int imp3 = lame_get_id3v2_tag(gfp, buffer, LAME_MAXMP3BUFFER);
@@ -174,9 +175,9 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
             fwrite(mp3_buffer, write, sizeof(char), mp3);
 
             //Percentage done
-            if (callback_proc != NULL) {
+            if (callback_proc != nullptr) {
                 int percentage = ((float) cumulative_read / PCM_total_size) * 100;
-                callback_proc((HWND) GetModuleHandle(NULL), LH_COMPUTED, percentage, NULL);
+                callback_proc((HWND) GetModuleHandle(NULL), LH_COMPUTED, percentage, 0);
             }
         } while (read != 0);
 
@@ -185,7 +186,8 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
 
         imp3 = lame_get_lametag_frame(gfp, buffer, LAME_MAXMP3BUFFER);
         if (fseek(mp3, audio_pos, SEEK_SET) != 0) {
-            errorHandler("WARNING: can't seek back to update LAME-tag frame!\n");
+            std::string err = "WARNING: can't seek back to update LAME-tag frame!\n";
+            errorHandler(err.c_str());
         }
         fwrite(buffer, sizeof(char), imp3, mp3);
         delete[] buffer;
@@ -193,8 +195,8 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
         fclose(mp3);
         fclose(pcm);
 
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_DONE, NULL, NULL);
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_DONE, 0, 0);
         }
     }
 
@@ -204,10 +206,10 @@ int lameHelper::encode_x(char *pcm_in, char *mp3_out, settings_t settings, WNDPR
 
 int lameHelper::set_id3_albumart(lame_t gfp, char const *file_name) {
     int iResult = -1;
-    FILE *fpi = 0;
-    char *albumart = 0;
+    FILE *fpi = nullptr;
+    char *albumart = nullptr;
 
-    if (file_name == NULL) {
+    if (file_name == nullptr) {
         return 0;
     }
 
@@ -239,9 +241,11 @@ int lameHelper::set_id3_albumart(lame_t gfp, char const *file_name) {
             sprintf(errMsg, "WARNING: could not find file '%s' for albumart.\n", file_name);
             errorHandler(errMsg);
             break;
-        case 2:
-            errorHandler("WARNING: insufficient memory for reading the albumart.\n");
+        case 2: {
+            std::string err = "WARNING: insufficient memory for reading the albumart.\n";
+            errorHandler(const_cast<char *>(err.c_str()));
             break;
+        }
         case 3:
             sprintf(errMsg, "WARNING: read error in '%s' for albumart.\n", file_name);
             errorHandler(errMsg);
@@ -289,11 +293,11 @@ void lameHelper::WriteWaveHeader(FILE *const fp, int pcmbytes, int freq, int cha
     write_32_bits_low_high(fp, pcmbytes); /* length in bytes of raw PCM data */
 }
 
-int lameHelper::decode(char *mp3_in, char *pcm_out) {
-    return decode(mp3_in, pcm_out, NULL);
+int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out) {
+    return decode(mp3_in, pcm_out, nullptr);
 }
 
-int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
+int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WNDPROC callback_proc) {
     int read, i, samples;
     long wavsize = 0; // use to count the number of mp3 byte read, this is used to write the length of the wave file
     long cumulative_read = 0;
@@ -301,12 +305,12 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
     short int pcm_l[PCM_SIZE], pcm_r[PCM_SIZE];
     unsigned char mp3_buffer[MP3_SIZE];
 
-    FILE *mp3 = fopen(mp3_in, "rb");
-    if (mp3 == NULL) {
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -1, NULL);
+    FILE *mp3 = fopen(mp3_in.c_str(), "rb");
+    if (mp3 == nullptr) {
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
         }
-        sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", mp3_in);
+        sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", mp3_in.c_str());
         errorHandler(errMsg);
         return -1;
     }
@@ -315,12 +319,12 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
     fseek(mp3, 0, SEEK_SET);
 
 
-    FILE *pcm = fopen(pcm_out, "wb");
-    if (pcm == NULL) {
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -1, NULL);
+    FILE *pcm = fopen(pcm_out.c_str(), "wb");
+    if (pcm == nullptr) {
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
         }
-        sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", pcm_out);
+        sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", pcm_out.c_str());
         errorHandler(errMsg);
         return -1;
     }
@@ -329,10 +333,10 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
     lame_t lame = lame_init();
     lame_set_decode_only(lame, 1);
     if (lame_init_params(lame) == -1) {
-        if (callback_proc != NULL) {
-            callback_proc((HWND) GetModuleHandle(NULL), LH_ERROR, -2, NULL);
+        if (callback_proc != nullptr) {
+            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -2, 0);
         }
-        sprintf(errMsg, "FATAL ERROR: parameters failed to initialize properly in lame. Aborting!\n", pcm_out);
+        sprintf(errMsg, "FATAL ERROR: parameters failed to initialize properly in lame. Aborting!\n", pcm_out.c_str());
         errorHandler(errMsg);
         return -2;
     }
@@ -346,8 +350,8 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
     int nSampleRate = -1;
     int mp3_len;
 
-    if (callback_proc != NULL) {
-        callback_proc((HWND) GetModuleHandle(NULL), LH_STARTED, NULL, NULL);
+    if (callback_proc != nullptr) {
+        callback_proc((HWND) GetModuleHandle(nullptr), LH_STARTED, 0, 0);
     }
 
     while ((read = fread(mp3_buffer, sizeof(char), MP3_SIZE, mp3)) > 0) {
@@ -370,7 +374,8 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
             }
 
             if (samples > 0 && mp3data.header_parsed != 1) {
-                errorHandler("WARNING: lame decode error occured!");
+                std::string err = "WARNING: lame decode error occured!";
+                errorHandler(err.c_str());
                 break;
             }
 
@@ -384,9 +389,9 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
             }
             mp3_len = 0;
 
-            if (callback_proc != NULL) {
+            if (callback_proc != nullptr) {
                 int percentage = ((float) cumulative_read / MP3_total_size) * 100;
-                callback_proc((HWND) GetModuleHandle(NULL), LH_COMPUTED, percentage, NULL);
+                callback_proc((HWND) GetModuleHandle(nullptr), LH_COMPUTED, percentage, 0);
             }
         } while (samples > 0);
     }
@@ -402,20 +407,22 @@ int lameHelper::decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc) {
 
     if (!fseek(pcm, 0l, SEEK_SET))//seek back and adjust length
         WriteWaveHeader(pcm, (int) wavsize, mp3data.samplerate, mp3data.stereo, 16);
-    else
-        errorHandler("WARNING: can't seek back to adjust length in wave header!");
+    else {
+        std::string err = "WARNING: can't seek back to adjust length in wave header!";
+        errorHandler(err.c_str());
+    }
 
     hip_decode_exit(hip);
     lame_close(lame);
     fclose(mp3);
     fclose(pcm);
 
-    if (callback_proc != NULL) {
-        callback_proc((HWND) GetModuleHandle(NULL), LH_DONE, NULL, NULL);
+    if (callback_proc != nullptr) {
+        callback_proc((HWND) GetModuleHandle(nullptr), LH_DONE, 0, 0);
     }
     return 0;
 }
 
-void lameHelper::errorHandler(char *msg) {
+void lameHelper::errorHandler(const char *msg) {
     printf("%s\n", msg);
 }

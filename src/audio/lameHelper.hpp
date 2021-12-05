@@ -1,3 +1,4 @@
+#include <string>
 #include <windows.h>
 #include "lame.h"
 
@@ -20,47 +21,22 @@ enum encode_channel_e {
 };
 
 enum bitrate_e {
-    BR_8kbps = 8,
-    BR_16kbps = 16,
-    BR_24kbps = 24,
-    BR_32kbps = 32,
-    BR_40kbps = 40,
-    BR_48kbps = 48,
-    BR_56kbps = 56,
-    BR_64kbps = 64,
-    BR_80kbps = 80,
-    BR_96kbps = 96,
-    BR_112kbps = 112,
-    BR_128kbps = 128,
-    BR_144kbps = 144,
-    BR_160kbps = 160,
     BR_192kbps = 192,
-    BR_224kbps = 224,
-    BR_256kbps = 256,
-    BR_320kbps = 320
 };
 
 enum samplerate_e {
-    SR_8khz = 8000,
-    SR_11khz = 11025,
-    SR_12khz = 12000,
-    SR_16khz = 16000,
-    SR_22khz = 22050,
-    SR_24khz = 24000,
-    SR_32khz = 32000,
-    SR_44khz = 44100,
-    SR_48khz = 48000
+    SR_44khz = 44100
 };
 
 struct settings_t {
-    char *title;
-    char *artist;
-    char *album;
-    char *comment;
-    char *year;
-    char *track;
-    char *genre;
-    char *albumart;
+    std::string title;
+    std::string artist;
+    std::string album;
+    std::string comment;
+    std::string year;
+    std::string track;
+    std::string genre;
+    std::string albumart;
 
     encode_channel_e channels;
     bitrate_e abr_bitrate;
@@ -78,8 +54,8 @@ class lameHelper; //lameHelper prototype, needed because of struct StaticParam_t
 
 //Use to hold parameters for the thread function
 struct StaticParam_t {
-    char *pcm;
-    char *mp3;
+    std::string pcm;
+    std::string mp3;
     settings_t settings;
     WNDPROC callback_proc;
     lameHelper *lhObj;
@@ -94,14 +70,9 @@ private:
     HANDLE hThread[MAX_THREAD_COUNT];
     StaticParam_t *hSParam[MAX_THREAD_COUNT];
 
-    int encode_x(char *, char *, settings_t, WNDPROC);
+    int encode_x(const std::string &, const std::string &, const settings_t &, WNDPROC);
 
-    //The static member from which we can start the thread
-    static int encode_s(void *param);
-
-    static int decode_s(void *param);
-
-    void WriteWaveHeader(FILE *const, int, int, int, int);
+    void WriteWaveHeader(FILE *, int, int, int, int);
 
     void write_32_bits_low_high(FILE *, int);
 
@@ -109,7 +80,7 @@ private:
 
     int set_id3_albumart(lame_t gfp, char const *file_name);
 
-    void errorHandler(char *);
+    void errorHandler(const char *);
 
     char errMsg[1000];
 public:
@@ -118,11 +89,11 @@ public:
     ~lameHelper();
 
     //Encode a pcm file to mp3
-    int encode(char *pcm_in, char *mp3_out);
+    int encode(const std::string &pcm_in, const std::string &mp3_out);
 
     //Decode a mp3 to pcm
-    int decode(char *mp3_in, char *pcm_out);
+    int decode(const std::string &mp3_in, const std::string &pcm_out);
 
-    int decode(char *mp3_in, char *pcm_out, WNDPROC callback_proc);
+    int decode(const std::string &mp3_in, const std::string &, WNDPROC callback_proc);
 
 };
