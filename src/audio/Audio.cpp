@@ -23,8 +23,9 @@ namespace audio {
         if (ext == "wav") {
 
             lameHelper conv;
-            conv.encode(cstr, "/temp.mp3");
-            conv.decode("/temp.mp3", "/temp.wav");
+            conv.encode(cstr, R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\test.mp3)");
+            conv.decode(R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\test.mp3)",
+                        R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\final.wav)");
             remove("/temp.mp3");
 
         } else if (ext == "mp3") {

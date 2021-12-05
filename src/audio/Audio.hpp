@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include "aubio/aubio.h"
-#include "lameHelper.h"
+#include "lameHelper.hpp"
 
 namespace audio {
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-add_library(audio audio.cpp audio.hpp lameHelper.cpp lameHelper.h)
+add_library(audio audio.cpp audio.hpp lameHelper.cpp lameHelper.hpp)
 
 target_include_directories(audio PUBLIC
         ../../libs/lame/include
