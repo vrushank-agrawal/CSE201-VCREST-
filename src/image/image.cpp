@@ -33,9 +33,7 @@ img::Image::Image(const string & file) {
     save_filename = std::string();
 }
 
-img::Image::~Image() {
-
-}
+img::Image::~Image() {}
 
 int img::Image::return_img_error (int val) {
     return val;
@@ -79,8 +77,3 @@ void img::Image::imgModifiedPreview(const string &window) {
     Mat mat = this -> getModifiedImg();
     imshow(window, mat);
 }
-
-//
-//bool img::Image::saveImg(int filepath) {
-//
-//}
