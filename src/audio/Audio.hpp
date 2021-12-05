@@ -12,15 +12,10 @@
 
 namespace audio {
 
-    enum AudioType {
-        mp3, wav
-    };
-
     class Audio {
     private:
 
         std::string uri;
-        char *file;
 
         // Audio parameters
         int channels;
@@ -34,6 +29,10 @@ namespace audio {
         int min_len = 200;
 
         aubio_source_t *source;
+
+    public:
+        char *file;
+        int size;
 
     public:
         Audio(const std::string &uri);

@@ -36,7 +36,7 @@ struct settings_t {
     std::string year;
     std::string track;
     std::string genre;
-    std::string albumart;
+    char *albumart;
 
     encode_channel_e channels;
     bitrate_e abr_bitrate;
@@ -54,13 +54,12 @@ class lameHelper; //lameHelper prototype, needed because of struct StaticParam_t
 
 //Use to hold parameters for the thread function
 struct StaticParam_t {
-    std::string pcm;
+    std::string wav;
     std::string mp3;
     settings_t settings;
     WNDPROC callback_proc;
     lameHelper *lhObj;
 };
-
 
 class lameHelper {
 private:
@@ -88,12 +87,12 @@ public:
 
     ~lameHelper();
 
-    //Encode a pcm file to mp3
-    int encode(const std::string &pcm_in, const std::string &mp3_out);
+    //Encode a wav file to mp3
+    int encode(const std::string &wav_in, const std::string &mp3_out);
 
-    //Decode a mp3 to pcm
-    int decode(const std::string &mp3_in, const std::string &pcm_out);
+    //Decode a mp3 to wav
+    int decode(const std::string &mp3_in, const std::string &wav_out);
 
-    int decode(const std::string &mp3_in, const std::string &, WNDPROC callback_proc);
+    int decode(const std::string &mp3_in, const std::string &wav_out, WNDPROC callback_proc);
 
 };

@@ -41,12 +41,12 @@ lameHelper::~lameHelper() {
     }
 }
 
-int lameHelper::encode(const std::string &pcm_in, const std::string &mp3_out) {
+int lameHelper::encode(const std::string &wav_in, const std::string &mp3_out) {
     settings_t t;//Pass the default value of settings
-    return encode_x(pcm_in, mp3_out, t, nullptr);
+    return encode_x(wav_in, mp3_out, t, nullptr);
 }
 
-int lameHelper::encode_x(const std::string &pcm_in, const std::string &mp3_out, const settings_t &settings,
+int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, const settings_t &settings,
                          WNDPROC callback_proc) {
     lame_global_flags *gfp = nullptr;
     gfp = lame_init();
@@ -63,7 +63,7 @@ int lameHelper::encode_x(const std::string &pcm_in, const std::string &mp3_out, 
     id3tag_set_track(gfp, settings.track.c_str());
     id3tag_set_comment(gfp, settings.comment.c_str());
 
-    set_id3_albumart(gfp, settings.albumart.c_str());
+    set_id3_albumart(gfp, settings.albumart);
 
     //Setting Channels
     switch (settings.channels) {
@@ -126,14 +126,14 @@ int lameHelper::encode_x(const std::string &pcm_in, const std::string &mp3_out, 
         long PCM_total_size = 0;
         long cumulative_read = 0;
 
-        FILE *pcm = fopen(pcm_in.c_str(), "rb");
+        FILE *pcm = fopen(wav_in.c_str(), "rb");
         FILE *mp3 = fopen(mp3_out.c_str(), "wb");
 
         if (pcm == nullptr) {
             if (callback_proc != nullptr) {
                 callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
             }
-            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", pcm_in.c_str());
+            sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", wav_in.c_str());
             errorHandler(errMsg);
             return -1;
         }
@@ -293,8 +293,8 @@ void lameHelper::WriteWaveHeader(FILE *const fp, int pcmbytes, int freq, int cha
     write_32_bits_low_high(fp, pcmbytes); /* length in bytes of raw PCM data */
 }
 
-int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out) {
-    return decode(mp3_in, pcm_out, nullptr);
+int lameHelper::decode(const std::string &mp3_in, const std::string &wav_out) {
+    return decode(mp3_in, wav_out, nullptr);
 }
 
 int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WNDPROC callback_proc) {

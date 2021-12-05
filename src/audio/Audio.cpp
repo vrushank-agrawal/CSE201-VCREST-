@@ -11,8 +11,6 @@ using namespace std;
 
 namespace audio {
 
-    int min_len = 200;
-
     Audio::Audio(const std::string &uri) {
 
         std::string ext = uri.substr(uri.length() - 3);
@@ -20,18 +18,20 @@ namespace audio {
         char cstr[uri.length() + 1];
         strcpy(cstr, uri.c_str());
 
+        string mp3out = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output.mp3";
+        string wavout = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output.wav";
+
         if (ext == "wav") {
 
             lameHelper conv;
-            conv.encode(cstr, R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\test.mp3)");
-            conv.decode(R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\test.mp3)",
-                        R"(C:\Users\lasha\Documents\GitHub\video_editor_BX23\media\audio\final.wav)");
-            remove("/temp.mp3");
+            conv.encode(uri, mp3out);
+            conv.decode(mp3out, wavout);
+            remove(mp3out.c_str());
 
         } else if (ext == "mp3") {
 
             lameHelper conv;
-            conv.decode(cstr, "/temp.wav");
+            conv.decode(cstr, wavout);
 
         } else {
             return;
@@ -48,6 +48,7 @@ namespace audio {
         infile.seekg(0, std::ios::beg);
 
         file = new char[length];
+        size = length;
 
         infile.read(file, length);
         infile.close();
@@ -96,6 +97,19 @@ namespace audio {
 
         return output;
 
+    }
+
+    void merge(Audio a1, Audio a2) {
+        char *merged_file = new char[a1.size + a2.size - 44];
+        for (int i = 0; i < a1.size; i++) {
+            merged_file[i] = a1.file[i];
+        }
+        for (int i = 44; i < a2.size; i++) {
+            merged_file[a1.size + i] = a2.file[i];
+        }
+        int curr_size = *(int *) merged_file[40];
+        curr_size += *(int *) a2.file[40];
+        *(int *) merged_file[40] = curr_size;
     }
 
 }
