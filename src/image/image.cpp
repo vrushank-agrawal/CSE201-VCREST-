@@ -64,7 +64,7 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            return this -> getMat().size().height/ this -> getMat().size().width;
+            return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
         }
 double img::Image::getModifiedImageRatio() {
     return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;

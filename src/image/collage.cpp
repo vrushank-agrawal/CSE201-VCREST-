@@ -1,6 +1,6 @@
 #include "collage.h"
 #include <algorithm>
-#include <typeinfo>
+// #include <typeinfo>
 using namespace img;
 using namespace cv;
 
@@ -87,33 +87,38 @@ Mat img::Collage::getModifiedImage() {
     return this -> modifiedImage;
 }
 vector<Image> img::Collage::getModiefiedImageArr(){
-    return this -> modifiedImage;
+    return this -> imageArrModified;
 }
 
-void img::Collage::twoStitch() {
-    //stitch depending on sizes 
-
-    if (this->getNumImages() == 2) {
+void img::Collage::twoStitch(bool original= true ) {
+    //stitch depending on sizes
+    vector<Image> arr;
+    if (original){
+        arr = this->getImageArr();
+    }else{
+        arr = this->getModiefiedImageArr();
+    }
+    if (arr.size() == 2) {
         //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
-        double minimum = min(this->getRatios().at(0), this->getRatios().at(1));
-        double maximum = max(this->getRatios().at(0), this->getRatios().at(1));
-        if (this->getRatios().at(0) < 1 && this->getRatios().at(1) < 1) {
+
+        double minimum = min(arr.at(0).getRatio(), arr.at(1).getRatio());
+        double maximum = max(arr.at(0).getRatio(), arr.at(1).getRatio());
+        if (arr.at(0).getRatio() < 1 && arr.at(1).getRatio() < 1) {
             //width dominant
-            this->setModifiedImage(vstitch(this->getImageArr().at(0),
-                                           this->getImageArr().at(1)));
-        } else if (minimum < 1 && maximum > 1) {
-            if (1 / minimum > maximum) {
+            this->setModifiedImage(vstitch(arr.at(0), arr.at(1)));
+        } else if (minimum < 1 && maximum >= 1) {
+            if (1 / minimum >= maximum) {
                 //the width to height ratio of one image is greater than the height to width ratio of the other
                 //Thus width dominant, so we do vertical stitch
-                this->setModifiedImage(vstitch(this->getImageArr().at(0), this->getImageArr().at(1)));
+                this->setModifiedImage(vstitch(arr.at(0), arr.at(1)));
             } else {
-                this->setModifiedImage(hstitch(this->getImageArr().at(0), this->getImageArr().at(1)));
+                this->setModifiedImage(hstitch(arr.at(0), arr.at(1)));
             }
         } else {
 
             //height dominant
-            this->setModifiedImage(hstitch(this->getImageArr().at(0), this->getImageArr().at(0)));
+            this->setModifiedImage(hstitch(arr.at(0), arr.at(1)));
         }  //REMEMBER TO RESIZE AFTER!!
     } else {
         std::cout << "A different amount of images than 2!";
@@ -141,13 +146,19 @@ void img::Collage::threeStitch() {
         //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
         int maximum = getMaxIndex(this-> getRatios());
-        std::cout << "maximum: " << typeid(maximum).name();
+        // std::cout << "maximum: " << typeid(maximum).name();
         vector<Image> subImageArr = this->getImageArr();
         vector<Image>::iterator maxIndex = subImageArr.begin() + maximum ;
         subImageArr.erase(maxIndex);
         Collage subCollage(subImageArr);
         subCollage.twoStitch();
         Image twoStitched(subCollage.getModifiedImage());
+        vector<Image> modifiedImageArr;
+        modifiedImageArr.push_back(twoStitched);
+        modifiedImageArr.push_back(*maxIndex);
+
+        this -> setModifiedImageArr(modifiedImageArr);
+        this -> twoStitch(false);
 
 
 

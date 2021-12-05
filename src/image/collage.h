@@ -13,7 +13,7 @@ namespace img {
                 //create an array of coordinates of corners of each of the images, variable
 //                int subImageCorners[numImages * 4];
 
-                void twoStitch();
+                void twoStitch(bool );
                 void threeStitch();
                 void fourStitch();
                 void flip();
