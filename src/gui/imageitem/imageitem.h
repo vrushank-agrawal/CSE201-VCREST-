@@ -19,10 +19,10 @@ class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
 public:
-    explicit ImageItem(Image *image, QSizeF size, QPoint position);
+    explicit ImageItem(Image *image, QPointF duration, QPoint position);
     ~ImageItem();
-    static qreal yOffset, xTimeOffset;
-    constexpr static const qreal border = 3;
+    static double yOffset, xTimeOffset, yHeight;
+    constexpr static const double border = 3;
     QPointF duration;
 
 
@@ -35,6 +35,7 @@ private:
     QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;
+    void calculateSize();
 
 signals:
     void positionChanged(QPointF oldDuration, QPointF newDuration);

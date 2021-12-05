@@ -19,7 +19,7 @@ public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
     void updateVideoLength(int length);
-    void addImage(Image *image);
+    void addImage(Image *image, QPointF duration);
     Image* getImage(qreal time);
 
 signals:

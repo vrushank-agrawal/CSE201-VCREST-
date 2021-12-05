@@ -114,7 +114,7 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image, fileName);
-        ui->timeline->addImage(thumbnailManager->getImage(0));
+        ui->timeline->addImage(thumbnailManager->getImage(0), QPointF(0, 5));
     }
 }
 

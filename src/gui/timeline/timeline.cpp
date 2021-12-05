@@ -87,14 +87,11 @@ void Timeline::updateTime(qreal xPosition) {
     emit timeIndicatorChanged(time);
 }
 
-void Timeline::addImage(Image *image) {
-    QPointF duration(0, 5); // to be changed
+void Timeline::addImage(Image *image, QPointF duration) {
     ImageItem *item = new ImageItem(image,
-                                    QSize(200, 40),
-                                    QPoint(duration.y() * xTimeOffset, ImageItem::border)
+                                    duration,
+                                    QPoint(duration.x() * xTimeOffset, ImageItem::border)
                                     );
-    item->duration = duration;
-
     scene->addItem(item);
     map.insert(duration.x(), image);
     if (map.find(duration.y()) == map.end())
