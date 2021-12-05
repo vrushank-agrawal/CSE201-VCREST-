@@ -39,6 +39,7 @@ private:
 
 signals:
     void positionChanged(QPointF oldDuration, QPointF newDuration);
+    void deleted(ImageItem*);
 
 public:
     virtual QRectF boundingRect() const override;
@@ -48,9 +49,7 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-
-protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 

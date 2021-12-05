@@ -74,6 +74,7 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     duration = newDuration;
 }
 
-QVariant ImageItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) {
-    return QGraphicsItem::itemChange(change, value);
+void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+    emit deleted(this);
+    delete this;
 }

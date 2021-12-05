@@ -114,7 +114,6 @@ void VideoEditor::importImage() {
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
     else {
         thumbnailManager->addImage(image, fileName);
-        ui->timeline->appendImage(thumbnailManager->getImage(thumbnailManager->getImagesCount() - 1));
     }
 }
 
@@ -140,7 +139,7 @@ void VideoEditor::setupImageListWidget() {
 }
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    Image *image = thumbnailManager->getAssocImage(item);
+    Image *image = thumbnailManager->getImage(item);
     qDebug() << image;
     ui->timeline->appendImage(image);
 }

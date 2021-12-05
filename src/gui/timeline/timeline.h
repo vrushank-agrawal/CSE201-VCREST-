@@ -9,6 +9,7 @@
 #include <QGraphicsItem>
 #include <QResizeEvent>
 #include <QListWidgetItem>
+#include <imageitem.h>
 #include "indicator.h"
 #include "image.h"
 
@@ -44,6 +45,7 @@ private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
     void updateImagePosition(QPointF prevDuration, QPointF newDuration);
+    void deleteImage(ImageItem*);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

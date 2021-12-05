@@ -5,7 +5,6 @@
 #include <QDebug>
 #include <QDateTime>
 #include "timeline.h"
-#include "imageitem.h"
 
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 {
@@ -91,18 +90,19 @@ void Timeline::addImage(Image *image, QPointF duration) {
                                     QPoint(duration.x() * xTimeOffset, ImageItem::border)
                                     );
     scene->addItem(item);
-    qDebug() << "searching for xloc";
 
     QMap<double, Image*>::iterator xloc = map.find(duration.x());
     if (xloc != map.end() && xloc.value() == nullptr)
         map.remove(duration.x());
-    qDebug() << "inserting for image";
 
     map.insert(duration.x(), image);
     if (map.find(duration.y()) == map.end())
         map.insert(duration.y(), nullptr);
-    qDebug() << map;
-    connect(item, SIGNAL(positionChanged(QPointF, QPointF)), this, SLOT(updateImagePosition(QPointF, QPointF)));
+    qDebug() << "Current map:" << map;
+    connect(item, SIGNAL(positionChanged(QPointF, QPointF)),
+            this, SLOT(updateImagePosition(QPointF, QPointF)));
+    connect(item, SIGNAL(deleted(ImageItem *)),
+            this, SLOT(deleteImage(ImageItem *)));
 }
 
 void Timeline::appendImage(Image *image, double length) {
@@ -135,4 +135,10 @@ Image* Timeline::getImage(double time) {
         return iterator.value();
     else
         return nullptr;
+}
+
+void Timeline::deleteImage(ImageItem *item) {
+    map.remove(item->duration.x());
+    if (map.find(item->duration.y()).value() == nullptr)
+        map.remove(item->duration.y());
 }
