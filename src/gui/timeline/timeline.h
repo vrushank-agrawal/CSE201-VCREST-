@@ -20,6 +20,7 @@ public:
     ~Timeline();
     void updateVideoLength(int length);
     void addImage(Image *image);
+    Image* getImage(qreal time);
 
 signals:
     void videoLengthChanged(int length);
@@ -33,13 +34,14 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
-//    QMap<qreal, Image*> map;
+    QMap<double, Image*> map;
 
     void moveTimeline();
 
 private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
+    void updateImagePosition(QPointF prevDuration, QPointF newDuration);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

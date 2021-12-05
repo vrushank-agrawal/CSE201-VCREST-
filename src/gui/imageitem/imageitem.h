@@ -21,8 +21,9 @@ Q_OBJECT
 public:
     explicit ImageItem(Image *image, QSizeF size, QPoint position);
     ~ImageItem();
-    static qreal yOffset;
+    static qreal yOffset, xTimeOffset;
     constexpr static const qreal border = 3;
+    QPointF duration;
 
 
 private:
@@ -36,7 +37,7 @@ private:
     QPointF oldPos,oldMousePos;
 
 signals:
-    void positionChanged(qreal time);
+    void positionChanged(QPointF oldDuration, QPointF newDuration);
 
 public:
     virtual QRectF boundingRect() const override;

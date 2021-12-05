@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <cmath>
+//#include <QMap>
 #include "timeline.h"
 #include "imageitem.h"
 
@@ -43,6 +44,8 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     }
 
     ImageItem::yOffset = timeHeight;
+    ImageItem::xTimeOffset = xTimeOffset;
+    map = QMap<double, Image*>();
 }
 
 Timeline::~Timeline() {
@@ -85,6 +88,43 @@ void Timeline::updateTime(qreal xPosition) {
 }
 
 void Timeline::addImage(Image *image) {
-    ImageItem *temp = new ImageItem(image, QSize(200, 40), QPoint(0, ImageItem::border));
-    scene->addItem(temp);
+    QPointF duration(0, 5); // to be changed
+    ImageItem *item = new ImageItem(image,
+                                    QSize(200, 40),
+                                    QPoint(duration.y() * xTimeOffset, ImageItem::border)
+                                    );
+    item->duration = duration;
+
+    scene->addItem(item);
+    map.insert(duration.x(), image);
+    if (map.find(duration.y()) == map.end())
+        map.insert(duration.y(), nullptr);
+    qDebug() << map;
+    connect(item, SIGNAL(positionChanged(QPointF, QPointF)), this, SLOT(updateImagePosition(QPointF, QPointF)));
+}
+
+void Timeline::updateImagePosition(QPointF prevDuration, QPointF newDuration) {
+    QMap<double, Image*>::iterator iterator = map.find(prevDuration.x());
+    if (iterator == map.end())
+        return;
+
+    Image *image = iterator.value();
+    map.remove(prevDuration.x());
+    map.insert(newDuration.x(), image);
+    if (map.find(prevDuration.y()).value() == nullptr)
+        map.remove(prevDuration.y());
+    if (map.find(newDuration.y()) == map.end())
+        map.insert(newDuration.y(), nullptr);
+    qDebug() << map;
+}
+
+Image* Timeline::getImage(double time) {
+    QMap<double, Image*>::iterator iterator = map.lowerBound(time);
+    if (iterator == map.end())
+        return nullptr;
+
+    if (iterator.key() <= time)
+        return iterator.value();
+    else
+        return nullptr;
 }

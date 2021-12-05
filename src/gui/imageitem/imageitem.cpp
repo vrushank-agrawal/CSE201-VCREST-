@@ -5,6 +5,7 @@
 #include "imageitem.h"
 
 qreal ImageItem::yOffset = 20;
+qreal ImageItem::xTimeOffset = 100;
 QBrush ImageItem::brush = QBrush(Qt::RoundCap);
 QPen ImageItem::pen = QPen(Qt::black, border);
 
@@ -61,6 +62,9 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     pressed = false;
     oldMousePos = event->scenePos();
     oldPos = scenePos();
+    QPointF newDuration(oldPos.x() / xTimeOffset, oldPos.x() / xTimeOffset + duration.y() - duration.x());
+    emit positionChanged(duration, newDuration);
+    duration = newDuration;
 }
 
 QVariant ImageItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) {
