@@ -33,6 +33,7 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
+//    QMap<qreal, Image*> map;
 
     void moveTimeline();
 

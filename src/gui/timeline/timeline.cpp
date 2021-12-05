@@ -41,6 +41,8 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
         line->setPos(i*xTimeOffset,yTime);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
+
+    ImageItem::yOffset = timeHeight;
 }
 
 Timeline::~Timeline() {
@@ -83,6 +85,6 @@ void Timeline::updateTime(qreal xPosition) {
 }
 
 void Timeline::addImage(Image *image) {
-    ImageItem *temp = new ImageItem(image, QSize(200, 40), QPoint(0, 0));
+    ImageItem *temp = new ImageItem(image, QSize(200, 40), QPoint(0, ImageItem::border));
     scene->addItem(temp);
 }

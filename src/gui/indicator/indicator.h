@@ -33,6 +33,7 @@ public:
     QPen pen;
     QLine line;
     bool pressed=false;
+
 signals:
     void positionChanged(qreal time);
 

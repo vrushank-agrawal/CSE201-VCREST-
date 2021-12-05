@@ -10,6 +10,7 @@
 #include <QBrush>
 #include <QPen>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 #include "image.h"
 
 using namespace img;
@@ -20,16 +21,19 @@ Q_OBJECT
 public:
     explicit ImageItem(Image *image, QSizeF size, QPoint position);
     ~ImageItem();
+    static qreal yOffset;
+    constexpr static const qreal border = 3;
 
 
 private:
     Image *image;
     static QBrush brush;
     static QPen pen;
-    static qreal yOffset, border;
     QSizeF size;
     QPointF position;
     QPixmap thumbnail;
+    bool pressed=false;
+    QPointF oldPos,oldMousePos;
 
 signals:
     void positionChanged(qreal time);

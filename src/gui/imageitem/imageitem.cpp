@@ -4,7 +4,7 @@
 
 #include "imageitem.h"
 
-qreal ImageItem::yOffset = 20, ImageItem::border = 3;
+qreal ImageItem::yOffset = 20;
 QBrush ImageItem::brush = QBrush(Qt::RoundCap);
 QPen ImageItem::pen = QPen(Qt::black, border);
 
@@ -33,10 +33,10 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QRectF thumbnailRect(0,0, thumbnail.width(), thumbnail.height());
     painter->drawPixmap(
             QRectF(
-                    border,
-                    border,
-                    (thumbnail.width() * wScale > size.width()) ? size.width() : thumbnail.width() * wScale,
-                    size.height()
+                    border / 2,
+                    border / 2,
+                    (thumbnail.width() * wScale > size.width()) ? size.width() : thumbnail.width() * wScale + border,
+                    size.height() + border
                     ),
             thumbnail,
             thumbnailRect
@@ -44,15 +44,23 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    QGraphicsItem::mousePressEvent(event);
+    pressed = true;
+    oldMousePos = event->scenePos();
+    oldPos = scenePos();
 }
 
 void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-    QGraphicsItem::mouseMoveEvent(event);
+    if (pressed){
+        QPointF newPos = event->scenePos();
+        int dx = (newPos - oldMousePos).x();
+        setX(oldPos.x()+dx);
+    }
 }
 
 void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    QGraphicsItem::mouseReleaseEvent(event);
+    pressed = false;
+    oldMousePos = event->scenePos();
+    oldPos = scenePos();
 }
 
 QVariant ImageItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value) {
