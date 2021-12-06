@@ -132,8 +132,8 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 
 const double FRAMEPERSECOND = 60;
 void Video::ImageAnimator::RotateAnimation(double angle) {
-    vector<Mat> modified;
-    string output;
+
+
     int num_frame = FRAMEPERSECOND*time;
 
     double change_per_frame = angle/num_frame;
@@ -142,18 +142,17 @@ void Video::ImageAnimator::RotateAnimation(double angle) {
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         image_mat.rotateImg(change_per_frame);
-        modified[i] = image_mat.getMat();
+        img = image_mat.getMat();
+        imshow( "Frame", img);
         //Remove(i);
         //Add(image_mat.rotateImg(change_per_frame).getMat(), 1/FRAMEPERSECOND, i);
 //vectors
     }
-    //CreateVideo(output);
-    Display();
+
 
 }
 void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
-    vector<Mat> modified;
-    string output;
+
     int num_frame = FRAMEPERSECOND*time;
 
     double change_per_frame = 1+(ratio-1)/num_frame;
@@ -165,10 +164,10 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
         img_h *= change_per_frame;
         img_w *= change_per_frame;
         image_mat.resizeImg(img_w, img_h);
-        modified[i] = image_mat.getMat();
+        img = image_mat.getMat();
+        imshow( "Frame", img);
 
     }
-    //WriteVideo(output);
-    Display();
+
 
 }
