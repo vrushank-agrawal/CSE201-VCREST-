@@ -32,6 +32,7 @@ namespace vid {
         void DisplayCurrentVideo();
         void Add(Mat img, int time_to_display);
         void Add(Mat img, int time_to_display, int index);
+        void Add_at_T(Mat img, int time_to_display, int T); // not yet tested 
         void Remove(int index);
         void ApplyAnimation(int index);
         void Resize(int width, int height);
