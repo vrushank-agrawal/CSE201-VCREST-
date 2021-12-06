@@ -12,9 +12,10 @@ QPen ImageItem::pen = QPen(Qt::black, border);
 
 
 ImageItem::ImageItem(Image *image,
-                     QPointF duration,
+                     QMultiMap<double, Image*>::iterator start,
+                     QMultiMap<double, Image*>::iterator end,
                      QPoint position
-                     ): image(image), duration(duration) {
+                     ): image(image), start(start), end(end) {
     Mat mat = image->getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
@@ -30,7 +31,7 @@ QRectF ImageItem::boundingRect() const {
 }
 
 void ImageItem::calculateSize() {
-    double width = (duration.y() - duration.x()) * xTimeOffset;
+    double width = (end.key() - start.key()) * xTimeOffset;
     size = QSizeF(width, yHeight);
 }
 
@@ -69,9 +70,8 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     pressed = false;
     oldMousePos = event->scenePos();
     oldPos = scenePos();
-    QPointF newDuration(oldPos.x() / xTimeOffset, oldPos.x() / xTimeOffset + duration.y() - duration.x());
-    emit positionChanged(duration, newDuration);
-    duration = newDuration;
+    QPointF newDuration(oldPos.x() / xTimeOffset, oldPos.x() / xTimeOffset + end.key() - start.key());
+    emit positionChanged(this, newDuration);
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {

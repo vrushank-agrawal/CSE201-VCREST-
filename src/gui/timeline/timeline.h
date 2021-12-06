@@ -37,14 +37,14 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
-    QMap<double, Image*> map;
+    QMultiMap<double, Image*> map;
 
     void moveTimeline();
 
 private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
-    void updateImagePosition(QPointF prevDuration, QPointF newDuration);
+    void updateImagePosition(ImageItem* item, QPointF newDuration);
     void deleteImage(ImageItem*);
 
 protected:
