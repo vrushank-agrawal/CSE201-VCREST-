@@ -10,18 +10,29 @@
 #include <QLabel>
 #include <QListWidget>
 #include "opencv2/opencv.hpp"
+#include "image.h"
+
+using namespace cv;
+using namespace img;
 
 class ThumbnailManager {
 
 public:
     explicit ThumbnailManager(QListWidget *qListWidget);
     ~ThumbnailManager();
-    void addImage(const cv::Mat& image, const QString& name);
-    void addImage(const QPixmap& image, const QString& name);
+    void addImage(Image image, const QString& name);
+
+    // will be made private
+    void addImage(const QPixmap& image, const QString& name, Image *img=nullptr);
+    int getImagesCount();
+    Image* getImage(QListWidgetItem *item);
+    void removeImage(int index);
+    void removeAllImages(int index);
 
 private:
     QListWidget *listWidget;
-    QBrush *brush;
+    QBrush brush;
+    QMap<QListWidgetItem*, Image> map;
 };
 
 
