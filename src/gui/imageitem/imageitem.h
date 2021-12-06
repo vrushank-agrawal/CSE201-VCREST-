@@ -19,15 +19,19 @@ class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
 public:
-    explicit ImageItem(Image *image, QPointF duration, QPoint position);
+    explicit ImageItem(Image *image,
+                       QMultiMap<double, Image*>::iterator start,
+                       QMultiMap<double, Image*>::iterator end,
+                       QPoint position
+                       );
     ~ImageItem();
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
-    QPointF duration;
+    QMultiMap<double, Image*>::iterator start, end;
+    Image *image;
 
 
 private:
-    Image *image;
     static QBrush brush;
     static QPen pen;
     QSizeF size;
@@ -38,7 +42,7 @@ private:
     void calculateSize();
 
 signals:
-    void positionChanged(QPointF oldDuration, QPointF newDuration);
+    void positionChanged(ImageItem* item, QPointF newDuration);
     void deleted(ImageItem*);
 
 public:

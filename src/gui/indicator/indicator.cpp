@@ -65,7 +65,6 @@ void Indicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = true;
-    qDebug()<<"press";
 
     QGraphicsItem::mousePressEvent(event);
     update();
@@ -74,7 +73,6 @@ void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF pos = event->scenePos();
-    qDebug()<<"move";
     if(pressed){
         this->setPos(pos.x(),y());
     }
@@ -85,7 +83,6 @@ void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = false;
-    qDebug()<<event->scenePos();
     emit positionChanged(event->scenePos().x());
     QGraphicsItem::mouseReleaseEvent(event);
     update();
