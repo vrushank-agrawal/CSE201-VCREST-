@@ -35,7 +35,6 @@ private:
     static QBrush brush;
     static QPen pen;
     QSizeF size;
-    QPointF position;
     QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;

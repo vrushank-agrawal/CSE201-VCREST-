@@ -49,7 +49,6 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 
 Timeline::~Timeline() {
     delete scene;
-    delete indicator;
 }
 
 void Timeline::updateVideoLength(int length) {
