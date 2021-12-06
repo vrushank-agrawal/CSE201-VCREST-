@@ -6,6 +6,8 @@
 #include <QDateTime>
 #include "timeline.h"
 
+double Timeline::default_image_length = 5;
+
 Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 {
     scene = new QGraphicsScene();
@@ -47,6 +49,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 
 Timeline::~Timeline() {
     delete scene;
+    delete indicator;
 }
 
 void Timeline::updateVideoLength(int length) {
@@ -107,7 +110,10 @@ void Timeline::appendImage(Image *image, double length) {
 
 
 void Timeline::updateImagePosition(ImageItem* item, QPointF newDuration) {
+    // delete old duration
     deleteImage(item);
+
+    // add new duration
     item->start = map.insert(newDuration.x(), item->image);
     item->end = map.insert(newDuration.y(), nullptr);
     qDebug() << map;
@@ -115,11 +121,13 @@ void Timeline::updateImagePosition(ImageItem* item, QPointF newDuration) {
 
 Image* Timeline::getImage(double time) {
     QMultiMap<double, Image*>::iterator iterator = map.lowerBound(time);
+    // find the greatest key smaller than this key
     if (iterator.key() > time) {
         iterator--;
         iterator = map.find(iterator.key());
     }
 
+    // ignore nullptr
     while (iterator != map.end() && iterator.key() <= time) {
         if (iterator.value() != nullptr)
             return iterator.value();
@@ -132,4 +140,22 @@ void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
     qDebug() << map;
+}
+
+void Timeline::addImageAtIndicator(Image *image, double max_length) {
+    double time = indicator->x() / xTimeOffset;
+
+    // image already exists
+    if (getImage(time) != nullptr) {
+        appendImage(image, max_length);
+        return;
+    }
+
+    QMultiMap<double, Image*>::iterator end = map.upperBound(time);
+    double duration;
+    if (end == map.end()) // trying to append image at the end of timeline
+        duration = max_length;
+    else
+        duration = (end.key() - time > max_length) ? max_length : end.key() - time;
+    addImage(image, QPointF(time, time + duration));
 }

@@ -20,9 +20,11 @@ Q_OBJECT
 public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
+    static double default_image_length;
     void updateVideoLength(int length);
     void addImage(Image *image, QPointF duration); // add an Image at the specified location
-    void appendImage(Image *image, double length=5); // append an Image to the end of the timeline
+    void appendImage(Image *image, double length=default_image_length); // append an Image to the end of the timeline
+    void addImageAtIndicator(Image *image, double max_length = default_image_length); // call appendImage if an image already exists
     Image* getImage(qreal time);
 
 signals:

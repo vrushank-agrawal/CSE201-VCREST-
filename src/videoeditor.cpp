@@ -140,8 +140,7 @@ void VideoEditor::setupImageListWidget() {
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
     Image *image = thumbnailManager->getImage(item);
-    qDebug() << image;
-    ui->timeline->appendImage(image);
+    ui->timeline->addImageAtIndicator(image);
 }
 
 void VideoEditor::setDisplayImage() {
