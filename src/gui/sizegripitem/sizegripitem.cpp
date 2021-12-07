@@ -115,14 +115,14 @@ SizeGripItem::SizeGripItem(Resizer* resizer, QGraphicsItem* parent)
     if (parentItem())
         rect_ = parentItem()->boundingRect();
 
-    handleItems_.append(new HandleItem(TopLeft, this));
-    handleItems_.append(new HandleItem(Top, this));
-    handleItems_.append(new HandleItem(TopRight, this));
+//    handleItems_.append(new HandleItem(TopLeft, this));
+//    handleItems_.append(new HandleItem(Top, this));
+//    handleItems_.append(new HandleItem(TopRight, this));
     handleItems_.append(new HandleItem(Right, this));
-    handleItems_.append(new HandleItem(BottomRight, this));
-    handleItems_.append(new HandleItem(Bottom, this));
-    handleItems_.append(new HandleItem(BottomLeft, this));
-    handleItems_.append(new HandleItem(Left, this));
+//    handleItems_.append(new HandleItem(BottomRight, this));
+//    handleItems_.append(new HandleItem(Bottom, this));
+//    handleItems_.append(new HandleItem(BottomLeft, this));
+//    handleItems_.append(new HandleItem(Left, this));
     updateHandleItemPositions();
 }
 

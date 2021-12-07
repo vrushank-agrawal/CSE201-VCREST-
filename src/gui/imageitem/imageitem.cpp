@@ -84,3 +84,13 @@ void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     emit deleted(this);
     delete this;
 }
+
+void ImageItem::updateDuration(double s, double e) {
+    prepareGeometryChange();
+    if (s == 0) {
+        size = QSizeF(e - s, size.height());
+        emit positionChanged(this, this->start.key(), this->start.key() + (e - s) / xTimeOffset);
+    }
+}
+
+
