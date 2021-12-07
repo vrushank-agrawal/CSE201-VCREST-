@@ -73,7 +73,7 @@ void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF pos = event->scenePos();
-    if(pressed){
+    if(pressed && pos.x() >= 0){
         this->setPos(pos.x(),y());
     }
     QGraphicsItem::mouseMoveEvent(event);
@@ -83,7 +83,9 @@ void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = false;
-    emit positionChanged(event->scenePos().x());
+    if (event->scenePos().x() >= 0) {
+        emit positionChanged(event->scenePos().x());
+    }
     QGraphicsItem::mouseReleaseEvent(event);
     update();
 }
