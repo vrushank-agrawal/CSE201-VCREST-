@@ -13,4 +13,5 @@ target_link_libraries(timeline
         indicator
         imageItem
         imageLibrary
+        sizeGripItem
         )

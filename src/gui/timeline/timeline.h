@@ -22,7 +22,7 @@ public:
     ~Timeline();
     static double default_image_length;
     void updateVideoLength(int length);
-    void addImage(Image *image, QPointF duration); // add an Image at the specified location
+    void addImage(Image *image, double start, double end); // add an Image at the specified location
     void appendImage(Image *image, double length=default_image_length); // append an Image to the end of the timeline
     void addImageAtIndicator(Image *image, double max_length = default_image_length); // call appendImage if an image already exists
     Image* getImage(qreal time);
@@ -46,7 +46,7 @@ private:
 private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
-    void updateImagePosition(ImageItem* item, QPointF newDuration);
+    void updateImagePosition(ImageItem* item, double start, double end);
     void deleteImage(ImageItem*);
 
 protected:

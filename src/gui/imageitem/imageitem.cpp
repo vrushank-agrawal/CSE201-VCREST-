@@ -30,6 +30,11 @@ QRectF ImageItem::boundingRect() const {
     return QRectF(0, 0, size.width() + border * 2, size.height() + border * 2);
 }
 
+void ImageItem::setSize(QSizeF size) {
+    prepareGeometryChange();
+    this->size = size;
+}
+
 void ImageItem::calculateSize() {
     double width = (end.key() - start.key()) * xTimeOffset;
     size = QSizeF(width, yHeight);
@@ -70,8 +75,9 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     pressed = false;
     oldMousePos = event->scenePos();
     oldPos = scenePos();
-    QPointF newDuration(oldPos.x() / xTimeOffset, oldPos.x() / xTimeOffset + end.key() - start.key());
-    emit positionChanged(this, newDuration);
+    double s = oldPos.x() / xTimeOffset;
+    double e = oldPos.x() / xTimeOffset + end.key() - start.key();
+    emit positionChanged(this, s, e);
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {

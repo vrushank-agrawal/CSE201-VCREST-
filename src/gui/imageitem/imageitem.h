@@ -18,6 +18,8 @@ using namespace img;
 class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
+Q_INTERFACES(QGraphicsItem)
+
 public:
     explicit ImageItem(Image *image,
                        QMultiMap<double, Image*>::iterator start,
@@ -29,7 +31,8 @@ public:
     constexpr static const double border = 3;
     QMultiMap<double, Image*>::iterator start, end;
     Image *image;
-
+    void setSize(QSizeF size);
+    void updateDuration(double start, double end);
 
 private:
     static QBrush brush;
@@ -41,7 +44,7 @@ private:
     void calculateSize();
 
 signals:
-    void positionChanged(ImageItem* item, QPointF newDuration);
+    void positionChanged(ImageItem* item, double start, double end);
     void deleted(ImageItem*);
 
 public:

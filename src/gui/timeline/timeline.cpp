@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QDateTime>
 #include "timeline.h"
+#include "sizegripitem.h"
+#include "resizer.h"
 
 double Timeline::default_image_length = 5;
 
@@ -87,34 +89,36 @@ void Timeline::updateTime(qreal xPosition) {
     qDebug() << time << getImage(time);
 }
 
-void Timeline::addImage(Image *image, QPointF duration) {
-    ImageItem *item = new ImageItem(image,
-                                    map.insert(duration.x(), image),
-                                    map.insert(duration.y(), nullptr),
-                                    QPoint(duration.x() * xTimeOffset, ImageItem::border)
+void Timeline::addImage(Image *image, double start, double end) {
+    auto *item = new ImageItem(image,
+                                    map.insert(start, image),
+                                    map.insert(end, nullptr),
+                                    QPoint(start * xTimeOffset, ImageItem::border)
                                     );
     scene->addItem(item);
 
     qDebug() << map;
-    connect(item, SIGNAL(positionChanged(ImageItem*, QPointF)),
-            this, SLOT(updateImagePosition(ImageItem*, QPointF)));
+    connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
+            this, SLOT(updateImagePosition(ImageItem*, double, double)));
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
+
+    auto* sizeGripItem = new SizeGripItem(new ImageItemResizer, item);
 }
 
 void Timeline::appendImage(Image *image, double length) {
     double start = map.isEmpty() ? 0 : map.lastKey();
-    addImage(image, QPointF(start, start + length));
+    addImage(image, start, start + length);
 }
 
 
-void Timeline::updateImagePosition(ImageItem* item, QPointF newDuration) {
+void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // delete old duration
     deleteImage(item);
 
     // add new duration
-    item->start = map.insert(newDuration.x(), item->image);
-    item->end = map.insert(newDuration.y(), nullptr);
+    item->start = map.insert(start, item->image);
+    item->end = map.insert(end, nullptr);
     qDebug() << map;
 }
 
@@ -156,5 +160,5 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
         duration = max_length;
     else
         duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addImage(image, QPointF(time, time + duration));
+    addImage(image, time, time + duration);
 }
