@@ -1,13 +1,17 @@
 //
 // Created by Vrushank on 11/12/2021.
 //
-#include <stdio.h>
+
+#ifndef IMAGEFILES
+#define IMAGEFILES
+
 #include "image.h"
 #include "collage/collage.cpp"
 #include "blurs.cpp"
 #include "rotate_resize.cpp"
-#include "image.h"
-#include <stdarg.h>
+
+#endif
+
 
 using namespace img;
 
