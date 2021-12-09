@@ -24,7 +24,7 @@ namespace img {
                 const std::vector<double>& getRatios();
                 const std::vector<Image>& getImageArr();
                 Mat getModifiedImage();
-                void setModifiedImageArr(vector <Image> imageArrModified);
+                void setModifiedImageArr(vector<Image> imageArrModified);
                 vector<Image> getModifiedImageArr();
                 void setModifiedImage(Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();

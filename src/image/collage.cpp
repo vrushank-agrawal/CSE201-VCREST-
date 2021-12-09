@@ -13,7 +13,7 @@ Mat hstitch(Image img1, Image img2) {
     Image temp1(img1.getMat()), temp2(img2.getMat());
     temp1.resizeImg(img1.getMat().size().width ,out_height);
     temp2.resizeImg(img2.getMat().size().width, out_height);
-    hconcat(img1.getMat(),img2.getMat(), output);
+    hconcat(temp1.getModifiedImg(),temp2.getModifiedImg(), output);
     return output;
 }
 Mat vstitch(Image img1, Image img2){
@@ -25,7 +25,7 @@ Mat vstitch(Image img1, Image img2){
     Image temp1(img1.getMat()), temp2(img2.getMat());
     temp1.resizeImg(out_width, img1.getMat().size().height);
     temp2.resizeImg(out_width, img2.getMat().size().height);
-    vconcat(img1.getMat(),img2.getMat(),output);
+    vconcat(temp1.getModifiedImg(),temp2.getModifiedImg(),output);
     return output;
 }
 
@@ -50,8 +50,9 @@ img::Collage::~Collage() {
 void img::Collage::setModifiedImageArr(vector<Image> imageArrModified){
     this -> imageArrModified = imageArrModified;
     this -> modifiedNumImages = imageArrModified.size();
-    for (int i = 0; i < this-> numImages ; i ++ ){
-        ratios.push_back(this->imageArrModified.at(i).getRatio());
+    modifiedRatios.clear();
+    for (int i = 0; i < this-> modifiedNumImages ; i ++ ){
+        modifiedRatios.push_back(this->imageArrModified.at(i).getRatio());
 
     }
 
@@ -192,8 +193,8 @@ void img::Collage::fourStitch(bool original= true) {
         Collage subCollage2(subImageArr2);
         subCollage1.twoStitch();
         subCollage2.twoStitch();
-
-        this->setModifiedImageArr({subCollage1.getModifiedImage(), subCollage2.getModifiedImage()});
+        vector<Image> imageArrModified ={subCollage1.getModifiedImage(), subCollage2.getModifiedImage()};
+        this->setModifiedImageArr(imageArrModified);
         this->twoStitch(false);
 
 
@@ -205,7 +206,7 @@ void img::Collage::fourStitch(bool original= true) {
 }
 void img::Collage::fourStitchRecAux(bool original = false, int times= 0){
     if (times > 0) {
-        this->fourStitch();
+        this->fourStitch(original);
         Image img1(this->getModifiedImage());
         Image img2(this->getModifiedImage());
         Image img3(this->getModifiedImage());
