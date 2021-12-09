@@ -6,17 +6,23 @@ using namespace cv;
 
 
 Mat hstitch(Image img1, Image img2) {
+
     //later on we can add the division (currently)
     Mat output;
     int out_height = min(img1.getMat().size().height, img2.getMat().size().height);
+
     //allocate temp1 and temp2 matrices to concatenate and then delete them later. so that we don't modify the original images.
     Image temp1(img1.getMat()), temp2(img2.getMat());
     temp1.resizeImg(img1.getMat().size().width ,out_height);
     temp2.resizeImg(img2.getMat().size().width, out_height);
     hconcat(temp1.getModifiedImg(),temp2.getModifiedImg(), output);
+
     return output;
 }
+
+
 Mat vstitch(Image img1, Image img2){
+
     //later on we can add the division (currently)
     Mat output;
     int out_width = min(img1.getMat().size().width, img2.getMat().size().width);
@@ -26,6 +32,7 @@ Mat vstitch(Image img1, Image img2){
     temp1.resizeImg(out_width, img1.getMat().size().height);
     temp2.resizeImg(out_width, img2.getMat().size().height);
     vconcat(temp1.getModifiedImg(),temp2.getModifiedImg(),output);
+
     return output;
 }
 
@@ -38,24 +45,21 @@ img::Collage::Collage(vector<Image> inImageArr){
 
     for (int i = 0; i < this-> numImages ; i ++ ){
         ratios.push_back(this->imageArr.at(i).getRatio());
-
     }
 
     // set image mat to NULL initially
-    modifiedImage = NULL;
+    modifiedImage = imageArr.at(0).getModifiedImg();
 }
-img::Collage::~Collage() {
 
-}
+img::Collage::~Collage() {}
+
 void img::Collage::setModifiedImageArr(vector<Image> imageArrModified){
     this -> imageArrModified = imageArrModified;
     this -> modifiedNumImages = imageArrModified.size();
     modifiedRatios.clear();
     for (int i = 0; i < this-> modifiedNumImages ; i ++ ){
         modifiedRatios.push_back(this->imageArrModified.at(i).getRatio());
-
     }
-
 }
 
 int img::Collage::getNumImages(){
@@ -65,27 +69,27 @@ int img::Collage::getNumImages(){
 const std::vector<double>& img::Collage::getRatios(){
     return this -> ratios;
 }
+
 const std::vector<double>& img::Collage::getModifiedRatios(){
     return this -> modifiedRatios;
 }
-
 
 const std::vector<Image>& img::Collage::getImageArr(){
     return this -> imageArr;
 }
 
-
 void img::Collage::setModifiedImage(Mat modifiedMat) {
     this -> modifiedImage = modifiedMat;
 }
 
-
 Mat img::Collage::getModifiedImage() {
     return this -> modifiedImage;
 }
+
 vector<Image> img::Collage::getModifiedImageArr(){
     return this -> imageArrModified;
 }
+
 
 void img::Collage::twoStitch(bool original= true ) {
     //stitch depending on sizes
@@ -96,9 +100,9 @@ void img::Collage::twoStitch(bool original= true ) {
         arr = this->getModifiedImageArr();
     }
     if (arr.size() == 2) {
+
         //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
-
         double minimum = min(arr.at(0).getRatio(), arr.at(1).getRatio());
         double maximum = max(arr.at(0).getRatio(), arr.at(1).getRatio());
         if (arr.at(0).getRatio() < 1 && arr.at(1).getRatio() < 1) {
@@ -113,7 +117,6 @@ void img::Collage::twoStitch(bool original= true ) {
                 this->setModifiedImage(hstitch(arr.at(0), arr.at(1)));
             }
         } else {
-
             //height dominant
             this->setModifiedImage(hstitch(arr.at(0), arr.at(1)));
         }  //REMEMBER TO RESIZE AFTER!!
@@ -121,6 +124,8 @@ void img::Collage::twoStitch(bool original= true ) {
         std::cout << "A different amount of images than 2!";
     }
 }
+
+
 template <typename T>
 int getMaxIndex(std::vector<T> arr){
     T max;
@@ -138,6 +143,8 @@ int getMaxIndex(std::vector<T> arr){
     }
     return maxIndex;
 }
+
+
 void img::Collage::threeStitch() {
     if (this->getNumImages() == 3) {
         //default stitching based on ratio
@@ -157,12 +164,12 @@ void img::Collage::threeStitch() {
         this -> setModifiedImageArr(modifiedImageArr);
         this -> twoStitch(false);
 
-
-
     } else{
         std::cout << "A different amount of images than 3!";
     }
 }
+
+
 void img::Collage::fourStitch(bool original= true) {
     if (this->getNumImages() == 4) {
         vector<double> ratios;
@@ -197,13 +204,11 @@ void img::Collage::fourStitch(bool original= true) {
         this->setModifiedImageArr(imageArrModified);
         this->twoStitch(false);
 
-
-
     } else{
         std::cout << "A different amount of images than 4!";
     }
-
 }
+
 void img::Collage::fourStitchRecAux(bool original = false, int times= 0){
     if (times > 0) {
         this->fourStitch(original);
@@ -216,7 +221,7 @@ void img::Collage::fourStitchRecAux(bool original = false, int times= 0){
         fourStitchRecAux(original = false, times);
     }
 }
+
 void img::Collage::fourStitchRec(int times){
     fourStitchRecAux(true, times);
-
 }

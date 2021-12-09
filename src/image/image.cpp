@@ -3,6 +3,10 @@
 //
 #include <stdio.h>
 #include "image.h"
+#include "collage/collage.cpp"
+#include "blurs.cpp"
+#include "rotate_resize.cpp"
+#include "image.h"
 #include <stdarg.h>
 
 using namespace img;
@@ -64,8 +68,9 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
-        }
+    return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
+}
+
 double img::Image::getModifiedImageRatio() {
     return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
 }
