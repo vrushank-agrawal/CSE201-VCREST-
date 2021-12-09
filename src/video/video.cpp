@@ -130,35 +130,24 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 }
 
 
-const double FRAMEPERSECOND = 60;
+const double FRAMEPERSECOND = 10;
+
 void Video::ImageAnimator::RotateAnimation(double angle) {
-
-
     int num_frame = FRAMEPERSECOND*time;
-
     double change_per_frame = angle/num_frame;
-
-
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         image_mat.rotateImg(change_per_frame);
         img = image_mat.getMat();
         imshow( "Frame", img);
-        //Remove(i);
-        //Add(image_mat.rotateImg(change_per_frame).getMat(), 1/FRAMEPERSECOND, i);
-//vectors
     }
-
-
 }
+
 void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
-
     int num_frame = FRAMEPERSECOND*time;
-
     double change_per_frame = 1+(ratio-1)/num_frame;
     int img_h = img.size().height;
     int img_w = img.size().width;
-
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         img_h *= change_per_frame;
@@ -166,8 +155,15 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
         image_mat.resizeImg(img_w, img_h);
         img = image_mat.getMat();
         imshow( "Frame", img);
-
     }
+}
 
-
+void Video::ImageAnimator::FlyAnimation(Mat background) {
+    int num_frame = FRAMEPERSECOND*time;
+    int h = img.rows;
+    int w = img.cols;
+    /*int diff_h =
+    for (int i=1;i<=num_frame;i++){
+        background[]
+    }*/
 }
