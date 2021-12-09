@@ -15,16 +15,20 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
-
-//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
 
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
 
-    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
-    ui->progressBar->setTracking(true);
+    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
+        fps = video.get(cv::CAP_PROP_FPS);
+
+    this->fps = fps;
+
+    ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
 void VideoEditor::setupMenus() {
@@ -41,6 +45,7 @@ void VideoEditor::setupWidgets() {
     // testing
     setupImageListWidget();
     audioManager->addAudio("hello.mp3");
+    audioManager->addAudio("world.mp3");
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -57,39 +62,48 @@ void VideoEditor::setupVideoPlayer() {
     ui->skipBackward->setToolTip(tr("Backward"));
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
-    // set signal update Slider to set value of progressBar
-    connect(ui->preview, SIGNAL(updateSlider(int)), ui->progressBar, SLOT(setValue(int)));
-
-    // add signal to change progressBar to change to correspond frame in preview
-    connect(ui->progressBar, SIGNAL(sliderPressed()),
-            ui->preview, SLOT(sliderPressed()));
-    connect(ui->progressBar, SIGNAL(sliderMoved(int)),
-            ui->preview, SLOT(sliderMoved(int)));
-    connect(ui->progressBar, SIGNAL(sliderReleased()),
-            ui->preview, SLOT(sliderReleased()));
-
-    // add signal to change controlSlider to change to correspond frame in preview
+    // connect controlSlider with position
     connect(ui->controlSlider, SIGNAL(sliderPressed()),
             ui->preview, SLOT(sliderPressed()));
-    connect(ui->controlSlider, SIGNAL(sliderMoved(int)),
-            ui->preview, SLOT(sliderMoved(int)));
     connect(ui->controlSlider, SIGNAL(sliderReleased()),
             ui->preview, SLOT(sliderReleased()));
+    connect(ui->controlSlider, SIGNAL(frameChanged(int)),
+            this, SLOT(updatePosition(int)));
 
-    // adjust controlSlider and progressBar according to the other
-    connect(ui->controlSlider, &QSlider::rangeChanged, ui->progressBar, &QSlider::setRange);
-    connect(ui->progressBar, &QSlider::rangeChanged, ui->controlSlider, &QSlider::setRange);
+    // connect frameUpdated in preview to update position in this class
+    connect(ui->preview, SIGNAL(frameUpdated(int)),
+            this, SLOT(updatePosition(int)));
 
-    connect(ui->controlSlider, &QSlider::valueChanged, ui->progressBar, &QSlider::setValue);
-    connect(ui->progressBar, &QSlider::valueChanged, ui->controlSlider, &QSlider::setValue);
+    // connect positionChanged in this class to slider and preview
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->controlSlider, SLOT(setValue(int)));
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->preview, SLOT(updateFrame(int)));
 
-    // add label, playButton and progressBar to preview
+    // connect timeInSecChanged with
+    connect(this, SIGNAL(timeIndicatorChanged(double)),
+            ui->timeline, SLOT(updateIndicatorPosition(double)));
+    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
+            this, SLOT(updateTimeIndicator(double)));
+
+    // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("D:/Downloads/sample-mp4-file-small.mp4"));
+    QStringList arguments = QApplication::arguments();
 
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+    }
+
+    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
 void VideoEditor::importImage() {
@@ -98,8 +112,9 @@ void VideoEditor::importImage() {
     img::Image image(fileName.toStdString());
     if (false)
         thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
-    else
-        thumbnailManager->addImage(image.getModifiedImg(), fileName);
+    else {
+        thumbnailManager->addImage(image, fileName);
+    }
 }
 
 void VideoEditor::importAudio() {
@@ -119,9 +134,13 @@ void VideoEditor::setupImageListWidget() {
     thumbnailManager->addImage(*testPixmap, "test2");
     thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 3; i < 10; i++) {
-        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
-    }
+    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+}
+
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    Image *image = thumbnailManager->getImage(item);
+    ui->timeline->addImageAtIndicator(image);
 }
 
 void VideoEditor::setDisplayImage() {
@@ -133,6 +152,24 @@ void VideoEditor::setDisplayImage() {
         ratio *= images.size();
         imageIndex = (int) ratio;
         imageIndex = (imageIndex == images.size()) ? imageIndex - 1 : imageIndex;
+    }
+}
+
+void VideoEditor::updatePosition(int position) {
+    if (this->position != position) {
+        this->position = position;
+        this->timeInSec = 1.0 * position / fps;
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
+    }
+}
+
+void VideoEditor::updateTimeIndicator(double time) {
+    if (this->timeInSec != time) {
+        this->timeInSec = time;
+        this->position = int(time * fps);
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
     }
 }
 
