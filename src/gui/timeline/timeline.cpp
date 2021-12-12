@@ -175,6 +175,7 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
 }
 
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
+    if (startPos < 0) return;
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;
 
