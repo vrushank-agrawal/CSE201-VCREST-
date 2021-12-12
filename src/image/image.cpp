@@ -89,7 +89,3 @@ void img::Image::imgModifiedPreview(const string &window) {
     imshow(window, mat);
 }
 
-void img::Image::blur(int width, int height) {
-
-}
-
