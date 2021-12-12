@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include "image.h"
+#include "sizegripitem.h"
 
 using namespace img;
 
@@ -33,8 +34,10 @@ public:
     Image *image;
     void setSize(QSizeF size);
     void updateDuration(double start, double end);
+    void createSizeGripItem(SizeGripItem *sizeGripItem);
 
 private:
+    SizeGripItem *sizeGripItem = nullptr;
     static QBrush brush;
     static QPen pen;
     QSizeF size;

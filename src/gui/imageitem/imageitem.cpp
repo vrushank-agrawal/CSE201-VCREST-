@@ -24,6 +24,7 @@ ImageItem::ImageItem(Image *image,
 }
 
 ImageItem::~ImageItem() {
+    delete sizeGripItem;
 }
 
 QRectF ImageItem::boundingRect() const {
@@ -91,6 +92,10 @@ void ImageItem::updateDuration(double s, double e) {
         size = QSizeF(e - s, size.height());
         emit positionChanged(this, this->start.key(), this->start.key() + (e - s) / xTimeOffset);
     }
+}
+
+void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
+    this->sizeGripItem = sizeGripItem;
 }
 
 

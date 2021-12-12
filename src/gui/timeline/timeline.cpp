@@ -103,7 +103,7 @@ void Timeline::addImage(Image *image, double start, double end) {
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
 
-    auto* sizeGripItem = new SizeGripItem(new ImageItemResizer, item);
+    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 }
 
 void Timeline::appendImage(Image *image, double length) {
