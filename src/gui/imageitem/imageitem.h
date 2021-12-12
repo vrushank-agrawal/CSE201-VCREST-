@@ -23,14 +23,12 @@ Q_INTERFACES(QGraphicsItem)
 
 public:
     explicit ImageItem(Image *image,
-                       QMultiMap<double, Image*>::iterator start,
-                       QMultiMap<double, Image*>::iterator end,
                        QPoint position
                        );
     ~ImageItem();
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
-    QMultiMap<double, Image*>::iterator start, end;
+    QMultiMap<double, ImageItem*>::iterator start, end;
     Image *image;
     void setSize(QSizeF size);
     void updateDuration(double newLength);
