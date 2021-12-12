@@ -18,7 +18,7 @@ ImageItem::ImageItem(Image *image,
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
     setPos(QPoint(position.x(), position.y() + yOffset));
-    calculateSize();
+    size = QSizeF();
 }
 
 
@@ -36,6 +36,7 @@ void ImageItem::setSize(QSizeF size) {
 }
 
 void ImageItem::calculateSize() {
+    prepareGeometryChange();
     double width = (end.key() - start.key()) * xTimeOffset;
     size = QSizeF(width, yHeight);
 }

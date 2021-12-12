@@ -93,6 +93,7 @@ void Timeline::addImage(Image *image, double start, double end) {
     auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
+    item->calculateSize();
     scene->addItem(item);
 
 //    qDebug() << map;
@@ -124,7 +125,8 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
 //    qDebug() << map;
 }
 
-Image* Timeline::getImage(double time) {
+
+ImageItem* Timeline::getImageItem(double time) {
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(time);
     // find the greatest key smaller than this key
     if (iterator.key() > time) {
@@ -135,9 +137,15 @@ Image* Timeline::getImage(double time) {
     // ignore nullptr
     while (iterator != map.end() && iterator.key() <= time) {
         if (iterator.value() != nullptr)
-            return iterator.value()->image;
+            return iterator.value();
         iterator++;
     }
+    return nullptr;
+}
+
+Image* Timeline::getImage(double time) {
+    ImageItem *item = getImageItem(time);
+    if (item != nullptr) return item->image;
     return nullptr;
 }
 
@@ -175,8 +183,8 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     double endTime = endPos / xTimeOffset;
 
     // detect collision with other images
-    Image* s = getImage(startTime);
-    if (s != nullptr && s != item->image) return;
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {

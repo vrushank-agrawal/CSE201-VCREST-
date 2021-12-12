@@ -44,6 +44,7 @@ private:
     QMultiMap<double, ImageItem*> map;
 
     void moveTimeline();
+    ImageItem* getImageItem(double time);
 
 private slots:
     void moveImageItem(ImageItem *item, double startPos, double endPos);
