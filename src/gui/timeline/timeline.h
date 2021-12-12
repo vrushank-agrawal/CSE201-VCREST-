@@ -50,6 +50,7 @@ private slots:
     void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
     void updateImagePosition(ImageItem* item, double start, double end);
+    void resizeImageItem(ImageItem *item, double newLength);
     void deleteImage(ImageItem*);
 
 protected:

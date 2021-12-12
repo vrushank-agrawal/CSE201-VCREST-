@@ -26,7 +26,7 @@
 #include "sizegripitem.h"
 
 SizeGripItem::HandleItem::HandleItem(int positionFlags, SizeGripItem* parent)
-        : QGraphicsRectItem(-4, -4, 8, 8, parent),
+        : QGraphicsRectItem(-24, -21, 22, 44, parent),
           positionFlags_(positionFlags),
           parent_(parent)
 {
@@ -208,4 +208,8 @@ void SizeGripItem::updateHandleItemPositions()
 
             item->setFlag(ItemSendsGeometryChanges, true);
         }
+}
+
+void SizeGripItem::resize(QRectF rect) {
+    rect_ = rect;
 }

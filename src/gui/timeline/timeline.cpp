@@ -102,6 +102,8 @@ void Timeline::addImage(Image *image, double start, double end) {
             this, SLOT(moveImageItem(ImageItem *, double, double)));
     connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
             this, SLOT(updateImagePosition(ImageItem*, double, double)));
+    connect(item, SIGNAL(resized(ImageItem *, double)),
+            this, SLOT(resizeImageItem(ImageItem *, double)));
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
 
@@ -188,4 +190,20 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     }
 
     item->setX(startPos);
+}
+
+void Timeline::resizeImageItem(ImageItem *item, double newLength) {
+    double startTime = item->x() / xTimeOffset;
+    double endTime = (item->x() + newLength) / xTimeOffset;
+
+    // detect collision with other images
+    QMultiMap<double, Image*>::iterator iterator = map.lowerBound(startTime);
+    while (iterator != map.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item->image) {
+            item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            return;
+        }
+        iterator++;
+    }
+    item->updateDuration(newLength);
 }

@@ -82,13 +82,13 @@ public:
     void setBottom(qreal y);
     void setBottomLeft(const QPointF& pos);
     void setLeft(qreal x);
+    void resize(QRectF);
 
 private:
     void doResize();
     void updateHandleItemPositions();
-
-    QList<HandleItem*> handleItems_;
     QRectF rect_;
+    QList<HandleItem*> handleItems_;
     Resizer* resizer_;
 };
 

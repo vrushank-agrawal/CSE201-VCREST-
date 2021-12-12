@@ -33,7 +33,7 @@ public:
     QMultiMap<double, Image*>::iterator start, end;
     Image *image;
     void setSize(QSizeF size);
-    void updateDuration(double start, double end);
+    void updateDuration(double newLength);
     void createSizeGripItem(SizeGripItem *sizeGripItem);
 
 private:
@@ -49,6 +49,7 @@ private:
 signals:
     void itemMoved(ImageItem *item, double start, double end);
     void positionChanged(ImageItem* item, double start, double end);
+    void resized(ImageItem* item, double newLength);
     void deleted(ImageItem*);
 
 public:

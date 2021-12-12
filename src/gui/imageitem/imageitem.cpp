@@ -88,12 +88,11 @@ void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     delete this;
 }
 
-void ImageItem::updateDuration(double s, double e) {
+void ImageItem::updateDuration(double newLength) {
     prepareGeometryChange();
-    if (s == 0) {
-        size = QSizeF(e - s, size.height());
-        emit positionChanged(this, this->start.key(), this->start.key() + (e - s) / xTimeOffset);
-    }
+    size = QSizeF(newLength, size.height());
+    sizeGripItem->resize(boundingRect());
+    emit positionChanged(this, this->start.key(), this->start.key() + newLength / xTimeOffset);
 }
 
 void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
