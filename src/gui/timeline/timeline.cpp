@@ -122,7 +122,6 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // add new duration
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
-//    qDebug() << map;
 }
 
 

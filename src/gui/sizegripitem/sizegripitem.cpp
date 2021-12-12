@@ -23,6 +23,7 @@
  */
 
 #include <QBrush>
+#include <QPen>
 #include "sizegripitem.h"
 
 SizeGripItem::HandleItem::HandleItem(int positionFlags, SizeGripItem* parent)
@@ -30,7 +31,8 @@ SizeGripItem::HandleItem::HandleItem(int positionFlags, SizeGripItem* parent)
           positionFlags_(positionFlags),
           parent_(parent)
 {
-    setBrush(QBrush(Qt::lightGray));
+    QPen pen(Qt::black);
+    setBrush(QBrush(Qt::gray));
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
 }
