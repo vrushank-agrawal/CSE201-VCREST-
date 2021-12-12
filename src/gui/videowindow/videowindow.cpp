@@ -11,6 +11,7 @@ VideoWindow::VideoWindow(QWidget *parent) : QGraphicsView(parent) {
 
 VideoWindow::~VideoWindow() {
     delete graphicsPixmap;
+    delete scene;
 }
 
 void VideoWindow::setOriginalPixmap(QPixmap pixmap) {
