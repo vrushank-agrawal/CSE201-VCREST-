@@ -12,25 +12,31 @@ QPen ImageItem::pen = QPen(Qt::black, border);
 
 
 ImageItem::ImageItem(Image *image,
-                     QMultiMap<double, Image*>::iterator start,
-                     QMultiMap<double, Image*>::iterator end,
                      QPoint position
-                     ): image(image), start(start), end(end) {
+                     ): image(image) {
     Mat mat = image->getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
     setPos(QPoint(position.x(), position.y() + yOffset));
-    calculateSize();
+    size = QSizeF();
 }
 
+
 ImageItem::~ImageItem() {
+    delete sizeGripItem;
 }
 
 QRectF ImageItem::boundingRect() const {
     return QRectF(0, 0, size.width() + border * 2, size.height() + border * 2);
 }
 
+void ImageItem::setSize(QSizeF size) {
+    prepareGeometryChange();
+    this->size = size;
+}
+
 void ImageItem::calculateSize() {
+    prepareGeometryChange();
     double width = (end.key() - start.key()) * xTimeOffset;
     size = QSizeF(width, yHeight);
 }
@@ -61,8 +67,10 @@ void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (pressed){
         QPointF newPos = event->scenePos();
-        int dx = (newPos - oldMousePos).x();
-        setX(oldPos.x()+dx);
+        double dx = (newPos - oldMousePos).x();
+        double start = oldPos.x() + dx;
+        double end = start + size.width();
+        emit itemMoved(this, start, end);
     }
 }
 
@@ -70,11 +78,25 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     pressed = false;
     oldMousePos = event->scenePos();
     oldPos = scenePos();
-    QPointF newDuration(oldPos.x() / xTimeOffset, oldPos.x() / xTimeOffset + end.key() - start.key());
-    emit positionChanged(this, newDuration);
+    double s = oldPos.x() / xTimeOffset;
+    double e = oldPos.x() / xTimeOffset + end.key() - start.key();
+    emit positionChanged(this, s, e);
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     emit deleted(this);
     delete this;
 }
+
+void ImageItem::updateDuration(double newLength) {
+    prepareGeometryChange();
+    size = QSizeF(newLength, size.height());
+    sizeGripItem->resize(boundingRect());
+    emit positionChanged(this, this->start.key(), this->start.key() + newLength / xTimeOffset);
+}
+
+void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
+    this->sizeGripItem = sizeGripItem;
+}
+
+

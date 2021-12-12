@@ -12,36 +12,42 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include "image.h"
+#include "sizegripitem.h"
 
 using namespace img;
 
 class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
+Q_INTERFACES(QGraphicsItem)
+
 public:
     explicit ImageItem(Image *image,
-                       QMultiMap<double, Image*>::iterator start,
-                       QMultiMap<double, Image*>::iterator end,
                        QPoint position
                        );
     ~ImageItem();
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
-    QMultiMap<double, Image*>::iterator start, end;
+    QMultiMap<double, ImageItem*>::iterator start, end;
     Image *image;
-
+    void setSize(QSizeF size);
+    void calculateSize();
+    void updateDuration(double newLength);
+    void createSizeGripItem(SizeGripItem *sizeGripItem);
 
 private:
+    SizeGripItem *sizeGripItem = nullptr;
     static QBrush brush;
     static QPen pen;
     QSizeF size;
     QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;
-    void calculateSize();
 
 signals:
-    void positionChanged(ImageItem* item, QPointF newDuration);
+    void itemMoved(ImageItem *item, double start, double end);
+    void positionChanged(ImageItem* item, double start, double end);
+    void resized(ImageItem* item, double newLength);
     void deleted(ImageItem*);
 
 public:

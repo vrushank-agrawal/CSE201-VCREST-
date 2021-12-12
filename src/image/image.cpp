@@ -88,3 +88,4 @@ void img::Image::imgModifiedPreview(const string &window) {
     Mat mat = this -> getModifiedImg();
     imshow(window, mat);
 }
+

@@ -8,6 +8,7 @@ add_subdirectory(progressbar)
 add_subdirectory(timeline)
 add_subdirectory(indicator)
 add_subdirectory(imageitem)
+add_subdirectory(sizegripitem)
 
 add_library(gui)
 
@@ -24,4 +25,5 @@ target_link_libraries(gui
         timeline
         indicator
         imageItem
+        sizeGripItem
         )

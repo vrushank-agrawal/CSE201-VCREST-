@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QDateTime>
 #include "timeline.h"
+#include "sizegripitem.h"
+#include "resizer.h"
 
 double Timeline::default_image_length = 5;
 
@@ -44,7 +46,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;
-    map = QMultiMap<double, Image*>();
+    map = QMultiMap<double, ImageItem*>();
 }
 
 Timeline::~Timeline() {
@@ -84,42 +86,47 @@ void Timeline::updateIndicatorPosition(double time) {
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    qDebug() << time << getImage(time);
+    qDebug() << getImageAtIndicator();
 }
 
-void Timeline::addImage(Image *image, QPointF duration) {
-    ImageItem *item = new ImageItem(image,
-                                    map.insert(duration.x(), image),
-                                    map.insert(duration.y(), nullptr),
-                                    QPoint(duration.x() * xTimeOffset, ImageItem::border)
-                                    );
+void Timeline::addImage(Image *image, double start, double end) {
+    auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
+    item->start = map.insert(start, item);
+    item->end = map.insert(end, nullptr);
+    item->calculateSize();
     scene->addItem(item);
 
-    qDebug() << map;
-    connect(item, SIGNAL(positionChanged(ImageItem*, QPointF)),
-            this, SLOT(updateImagePosition(ImageItem*, QPointF)));
+//    qDebug() << map;
+    connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
+            this, SLOT(moveImageItem(ImageItem *, double, double)));
+    connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
+            this, SLOT(updateImagePosition(ImageItem*, double, double)));
+    connect(item, SIGNAL(resized(ImageItem *, double)),
+            this, SLOT(resizeImageItem(ImageItem *, double)));
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
+
+    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 }
 
 void Timeline::appendImage(Image *image, double length) {
     double start = map.isEmpty() ? 0 : map.lastKey();
-    addImage(image, QPointF(start, start + length));
+    addImage(image, start, start + length);
 }
 
 
-void Timeline::updateImagePosition(ImageItem* item, QPointF newDuration) {
+void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // delete old duration
     deleteImage(item);
 
     // add new duration
-    item->start = map.insert(newDuration.x(), item->image);
-    item->end = map.insert(newDuration.y(), nullptr);
-    qDebug() << map;
+    item->start = map.insert(start, item);
+    item->end = map.insert(end, nullptr);
 }
 
-Image* Timeline::getImage(double time) {
-    QMultiMap<double, Image*>::iterator iterator = map.lowerBound(time);
+
+ImageItem* Timeline::getImageItem(double time) {
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(time);
     // find the greatest key smaller than this key
     if (iterator.key() > time) {
         iterator--;
@@ -135,10 +142,21 @@ Image* Timeline::getImage(double time) {
     return nullptr;
 }
 
+Image* Timeline::getImage(double time) {
+    ImageItem *item = getImageItem(time);
+    if (item != nullptr) return item->image;
+    return nullptr;
+}
+
+Image* Timeline::getImageAtIndicator() {
+    double time = indicator->x() / xTimeOffset;
+    return getImage(time);
+}
+
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
-    qDebug() << map;
+//    qDebug() << map;
 }
 
 void Timeline::addImageAtIndicator(Image *image, double max_length) {
@@ -150,11 +168,47 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
         return;
     }
 
-    QMultiMap<double, Image*>::iterator end = map.upperBound(time);
+    QMultiMap<double, ImageItem*>::iterator end = map.upperBound(time);
     double duration;
     if (end == map.end()) // trying to append image at the end of timeline
         duration = max_length;
     else
         duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addImage(image, QPointF(time, time + duration));
+    addImage(image, time, time + duration);
+}
+
+void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
+    double startTime = startPos / xTimeOffset;
+    double endTime = endPos / xTimeOffset;
+
+    // detect collision with other images
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
+    while (iterator != map.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            startTime += iterator.key() - endTime;
+            item->setX(startTime * xTimeOffset);
+            return;
+        }
+        iterator++;
+    }
+
+    item->setX(startPos);
+}
+
+void Timeline::resizeImageItem(ImageItem *item, double newLength) {
+    double startTime = item->x() / xTimeOffset;
+    double endTime = (item->x() + newLength) / xTimeOffset;
+
+    // detect collision with other images
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
+    while (iterator != map.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            return;
+        }
+        iterator++;
+    }
+    item->updateDuration(newLength);
 }
