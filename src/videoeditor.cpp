@@ -105,7 +105,7 @@ void VideoEditor::setupVideoPlayer() {
     // add video to preview
     QStringList arguments = QApplication::arguments();
 
-    QString videoPath = "C:\\Users\\minht\\CLionProjects\\video_editor_BX23\\src\\video_samples\\Toilet_Paper.mp4";
+    QString videoPath = "D:/Downloads/1.mp4";
     QString prefix = "videoPath=";
 
     for (int i = 0; i < arguments.size(); i++) {
