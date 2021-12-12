@@ -67,8 +67,10 @@ void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (pressed){
         QPointF newPos = event->scenePos();
-        int dx = (newPos - oldMousePos).x();
-        setX(oldPos.x()+dx);
+        double dx = (newPos - oldMousePos).x();
+        double start = oldPos.x() + dx;
+        double end = start + size.width();
+        emit itemMoved(this, start, end);
     }
 }
 

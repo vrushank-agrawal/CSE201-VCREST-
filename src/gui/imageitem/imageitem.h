@@ -47,6 +47,7 @@ private:
     void calculateSize();
 
 signals:
+    void itemMoved(ImageItem *item, double start, double end);
     void positionChanged(ImageItem* item, double start, double end);
     void deleted(ImageItem*);
 
