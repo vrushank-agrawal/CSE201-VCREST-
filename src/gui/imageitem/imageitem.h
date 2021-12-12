@@ -23,16 +23,15 @@ Q_INTERFACES(QGraphicsItem)
 
 public:
     explicit ImageItem(Image *image,
-                       QMultiMap<double, Image*>::iterator start,
-                       QMultiMap<double, Image*>::iterator end,
                        QPoint position
                        );
     ~ImageItem();
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
-    QMultiMap<double, Image*>::iterator start, end;
+    QMultiMap<double, ImageItem*>::iterator start, end;
     Image *image;
     void setSize(QSizeF size);
+    void calculateSize();
     void updateDuration(double newLength);
     void createSizeGripItem(SizeGripItem *sizeGripItem);
 
@@ -44,7 +43,6 @@ private:
     QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;
-    void calculateSize();
 
 signals:
     void itemMoved(ImageItem *item, double start, double end);

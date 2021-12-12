@@ -12,16 +12,15 @@ QPen ImageItem::pen = QPen(Qt::black, border);
 
 
 ImageItem::ImageItem(Image *image,
-                     QMultiMap<double, Image*>::iterator start,
-                     QMultiMap<double, Image*>::iterator end,
                      QPoint position
-                     ): image(image), start(start), end(end) {
+                     ): image(image) {
     Mat mat = image->getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
     setPos(QPoint(position.x(), position.y() + yOffset));
-    calculateSize();
+    size = QSizeF();
 }
+
 
 ImageItem::~ImageItem() {
     delete sizeGripItem;
@@ -37,6 +36,7 @@ void ImageItem::setSize(QSizeF size) {
 }
 
 void ImageItem::calculateSize() {
+    prepareGeometryChange();
     double width = (end.key() - start.key()) * xTimeOffset;
     size = QSizeF(width, yHeight);
 }

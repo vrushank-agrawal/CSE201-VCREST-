@@ -41,9 +41,10 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
-    QMultiMap<double, Image*> map;
+    QMultiMap<double, ImageItem*> map;
 
     void moveTimeline();
+    ImageItem* getImageItem(double time);
 
 private slots:
     void moveImageItem(ImageItem *item, double startPos, double endPos);

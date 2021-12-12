@@ -46,7 +46,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;
-    map = QMultiMap<double, Image*>();
+    map = QMultiMap<double, ImageItem*>();
 }
 
 Timeline::~Timeline() {
@@ -90,14 +90,13 @@ void Timeline::updateTime(qreal xPosition) {
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
-    auto *item = new ImageItem(image,
-                                    map.insert(start, image),
-                                    map.insert(end, nullptr),
-                                    QPoint(start * xTimeOffset, ImageItem::border)
-                                    );
+    auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
+    item->start = map.insert(start, item);
+    item->end = map.insert(end, nullptr);
+    item->calculateSize();
     scene->addItem(item);
 
-    qDebug() << map;
+//    qDebug() << map;
     connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
             this, SLOT(moveImageItem(ImageItem *, double, double)));
     connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
@@ -121,13 +120,14 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     deleteImage(item);
 
     // add new duration
-    item->start = map.insert(start, item->image);
+    item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
-    qDebug() << map;
+//    qDebug() << map;
 }
 
-Image* Timeline::getImage(double time) {
-    QMultiMap<double, Image*>::iterator iterator = map.lowerBound(time);
+
+ImageItem* Timeline::getImageItem(double time) {
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(time);
     // find the greatest key smaller than this key
     if (iterator.key() > time) {
         iterator--;
@@ -143,6 +143,12 @@ Image* Timeline::getImage(double time) {
     return nullptr;
 }
 
+Image* Timeline::getImage(double time) {
+    ImageItem *item = getImageItem(time);
+    if (item != nullptr) return item->image;
+    return nullptr;
+}
+
 Image* Timeline::getImageAtIndicator() {
     double time = indicator->x() / xTimeOffset;
     return getImage(time);
@@ -151,7 +157,7 @@ Image* Timeline::getImageAtIndicator() {
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
-    qDebug() << map;
+//    qDebug() << map;
 }
 
 void Timeline::addImageAtIndicator(Image *image, double max_length) {
@@ -163,7 +169,7 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
         return;
     }
 
-    QMultiMap<double, Image*>::iterator end = map.upperBound(time);
+    QMultiMap<double, ImageItem*>::iterator end = map.upperBound(time);
     double duration;
     if (end == map.end()) // trying to append image at the end of timeline
         duration = max_length;
@@ -177,11 +183,11 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     double endTime = endPos / xTimeOffset;
 
     // detect collision with other images
-    Image* s = getImage(startTime);
-    if (s != nullptr && s != item->image) return;
-    QMultiMap<double, Image*>::iterator iterator = map.lowerBound(startTime);
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item->image) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
             startTime += iterator.key() - endTime;
             item->setX(startTime * xTimeOffset);
             return;
@@ -197,9 +203,9 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
     double endTime = (item->x() + newLength) / xTimeOffset;
 
     // detect collision with other images
-    QMultiMap<double, Image*>::iterator iterator = map.lowerBound(startTime);
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item->image) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
             item->updateDuration((iterator.key() - startTime) * xTimeOffset);
             return;
         }
