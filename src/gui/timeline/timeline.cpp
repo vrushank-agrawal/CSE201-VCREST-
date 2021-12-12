@@ -179,8 +179,11 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     if (s != nullptr && s != item->image) return;
     QMultiMap<double, Image*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item->image)
+        if (iterator.value() != nullptr && iterator.value() != item->image) {
+            startTime += iterator.key() - endTime;
+            item->setX(startTime * xTimeOffset);
             return;
+        }
         iterator++;
     }
 
