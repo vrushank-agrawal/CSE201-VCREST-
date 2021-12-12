@@ -16,6 +16,25 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
+
+    // add video to preview
+    QStringList arguments = QApplication::arguments();
+
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+    QString prefix2 = "imagePath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+        if (arg.startsWith(prefix2)) {
+            importImage(arg.right(arg.size() - prefix2.size()));
+        }
+    }
+
+    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
 
@@ -101,21 +120,6 @@ void VideoEditor::setupVideoPlayer() {
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
-
-    // add video to preview
-    QStringList arguments = QApplication::arguments();
-
-    QString videoPath = "D:/Downloads/1.mp4";
-    QString prefix = "videoPath=";
-
-    for (int i = 0; i < arguments.size(); i++) {
-        QString arg = arguments.at(i);
-        if (arg.startsWith(prefix)) {
-            videoPath = arg.right(arg.size() - prefix.size());
-        }
-    }
-
-    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
 
