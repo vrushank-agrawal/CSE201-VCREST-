@@ -86,7 +86,7 @@ void Timeline::updateIndicatorPosition(double time) {
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    qDebug() << getImageAtIndicator();
+    //qDebug() << getImageAtIndicator();
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
