@@ -32,6 +32,7 @@ public:
     QBrush brush;
     QPen pen;
     QLine line;
+    std::time_t lastUpdateTime;
     bool pressed=false;
 
 signals:
@@ -40,6 +41,7 @@ signals:
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual void updateWhenPressed();
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

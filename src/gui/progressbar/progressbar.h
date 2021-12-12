@@ -7,6 +7,7 @@
 
 #include <QSlider>
 #include <QMouseEvent>
+#include "time.h"
 
 class ProgressBar: public QSlider
 {
@@ -19,6 +20,10 @@ signals:
     void frameChanged(int position);
 
 private:
+    qreal x_pos;
+    std::time_t lastUpdateTime;
+    bool pressed;
+    virtual void updateWhenPress();
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
