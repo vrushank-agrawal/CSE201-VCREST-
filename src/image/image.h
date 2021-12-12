@@ -27,11 +27,14 @@ namespace img {
         string save_filename;
 
     public:
-        
+
+        Image (Mat mat);
+
         Image(const string &    filename);
 
         ~Image();
-        
+
+        int return_img_error(int a);
 
         // returns the Matrix associated to the image
         Mat getMat();
@@ -57,7 +60,7 @@ namespace img {
         );
         //Returns ratio from dimensions:
         double getRatio();
-        
+        double getModifiedImageRatio();
         // Image matrix preview functions
         void imgPreview( const String & 	winname);
         void imgModifiedPreview( const string & winname);

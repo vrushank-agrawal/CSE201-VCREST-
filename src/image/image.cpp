@@ -1,36 +1,49 @@
 //
 // Created by Vrushank on 11/12/2021.
 //
-#include <stdio.h>
+
+#ifndef IMAGEFILES
+#define IMAGEFILES
+
 #include "image.h"
-#include <stdarg.h>
+#include "collage/collage.cpp"
+#include "blurs.cpp"
+#include "rotate_resize.cpp"
+
+#endif
+
 
 using namespace img;
 
-img::Image::Image(const string & filename) {
-    // FIX_THIS
-    this -> filename = filename;
-    if (this -> validImg( filename )) {
-        this -> img_matrix = this ->decodeImg( filename, IMREAD_COLOR);
-        if ( this -> getMat().empty()) {
+img::Image::Image(Mat mat) {
+    img_matrix = mat;
+    img_matrix_modified = img_matrix.clone();
+    filename = std::string();
+    save_filename = std::string();
+}
+
+img::Image::Image(const string & file) {
+    filename = file;
+    if (validImg( filename )) {
+        img_matrix = decodeImg( filename, IMREAD_COLOR);
+        if ( getMat().empty()) {
 //            printf("improper image exception - file is corrupt/invalid") ;
-//            return_img_error(1) ;
+            return_img_error(1) ;
         }
     } else {
 //        printf("file reading exception - file cannot be read by VEST") ;
-//        return_img_error(2) ;
+        return_img_error(2) ;
     }
-    this -> img_matrix_modified = this -> img_matrix.clone();
+    img_matrix_modified = img_matrix.clone();
 
 //        printf("img is valid can be read") ;
-//    return_img_error(0) ;
+    return_img_error(0) ;
+    save_filename = std::string();
 }
 
-img::Image::~Image() {
+img::Image::~Image() {}
 
-}
-
-int return_img_error (int val) {
+int img::Image::return_img_error (int val) {
     return val;
 }
 
@@ -59,11 +72,11 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-//            size dimensions = imgMatrix.size();
-//            return dimensions.height/ dimensions.width;
+    return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
+}
 
-//    FIX_THIS
-    return 0;
+double img::Image::getModifiedImageRatio() {
+    return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
 }
 
 void img::Image::imgPreview(const String &window) {
@@ -80,7 +93,3 @@ void img::Image::blur(int width, int height) {
 
 }
 
-//
-//bool img::Image::saveImg(int filepath) {
-//
-//}
