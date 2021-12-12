@@ -465,7 +465,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1077</width>
-     <height>24</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -482,6 +482,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     </widget>
     <addaction name="actionNew_Video"/>
     <addaction name="separator"/>
+    <addaction name="actionImport_Media"/>
     <addaction name="actionImport_Image"/>
     <addaction name="actionImport_Audio"/>
     <addaction name="actionImport_VEST_Projects_3"/>
@@ -1189,6 +1190,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   <action name="actionImport_Audio">
    <property name="text">
     <string>Import Audio</string>
+   </property>
+  </action>
+  <action name="actionImport_Media">
+   <property name="text">
+    <string>Import Media...</string>
    </property>
   </action>
  </widget>

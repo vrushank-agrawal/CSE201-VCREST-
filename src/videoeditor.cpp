@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include "image.h"
 
+
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
@@ -16,6 +17,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupMenus();
     setupWidgets();
 }
+
 
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
@@ -31,22 +33,32 @@ void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
-void VideoEditor::setupMenus() {
-    ui->actionImport_Image->setShortcut(QKeySequence::Open);
-    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
 
-    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
+void VideoEditor::setupMenus() {
+    imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
+    imageFileTypesFilter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
+    audioFileTypes << ".wmv";
+    audioFileTypesFilter = "Waveform Audio (*.wmv)";
+
+    ui->actionImport_Media->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Image, SIGNAL(triggered(bool)),
+            this, SLOT(importImages()));
+    connect(ui->actionImport_Audio, SIGNAL(triggered(bool)),
+            this, SLOT(importAudios()));
+    connect(ui->actionImport_Media, SIGNAL(triggered(bool)),
+            this, SLOT(importMedia()));
 }
+
 
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
-
-    // testing
-    setupImageListWidget();
-    audioManager->addAudio("hello.mp3");
-    audioManager->addAudio("world.mp3");
+    connect(ui->blurButton, SIGNAL(clicked()),
+            this, SLOT(blurImage()));
+    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
 }
+
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
@@ -106,20 +118,65 @@ void VideoEditor::setupVideoPlayer() {
     updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
 
+
 void VideoEditor::importImage() {
-    QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    QString fileName = importFile("Import Image", "/", filter);
-    img::Image image(fileName.toStdString());
-    if (false)
-        thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
-    else {
-        thumbnailManager->addImage(image, fileName);
+    QString fileName = importFile("Import Image", "/", imageFileTypesFilter);
+    importImage(fileName);
+}
+
+
+void VideoEditor::importImages() {
+    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        }
     }
 }
 
-void VideoEditor::importAudio() {
 
+void VideoEditor::importAudio() {
+    QString fileName = importFile("Import Audio", "/", audioFileTypesFilter);
+    importAudio(fileName);
 }
+
+
+void VideoEditor::importAudios() {
+    QStringList files = importFiles("Import Audios", "/", audioFileTypesFilter);
+    for (auto & file : files) {
+        if (audioFileTypes.contains(file.right(4))) {
+            importAudio(file);
+        }
+    }
+}
+
+
+void VideoEditor::importImage(const QString& fileName) {
+    img::Image image(fileName.toStdString());
+    thumbnailManager->addImage(image, fileName);
+}
+
+
+void VideoEditor::importAudio(const QString& fileName) {
+    audioManager->addAudio(fileName);
+}
+
+
+void VideoEditor::importMedia() {
+    QString filter = imageFileTypesFilter + " ;; " + audioFileTypesFilter;
+    QStringList files = importFiles("Import Media", "/", filter);
+
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        } else if (audioFileTypes.contains(file.right(4))) {
+            importAudio(file);
+        } else {
+            qDebug() << "Invalid file:" << file;
+        }
+    }
+}
+
 
 QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
     QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
@@ -127,33 +184,26 @@ QString VideoEditor::importFile(const QString& caption, const QString& dir, cons
 }
 
 
-void VideoEditor::setupImageListWidget() {
-    auto *testPixmap = new QPixmap(":/img-error.png");
-
-    thumbnailManager->addImage(*testPixmap, "test1");
-    thumbnailManager->addImage(*testPixmap, "test2");
-    thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
-
-    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
+    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
+    return files;
 }
+
+
+void VideoEditor::blurImage() {
+    img::Image *image = ui->timeline->getImageAtIndicator();
+    if (image == nullptr) return;
+    image->blur(100, 100);
+
+    emit imageChanged();
+}
+
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
     Image *image = thumbnailManager->getImage(item);
     ui->timeline->addImageAtIndicator(image);
 }
 
-void VideoEditor::setDisplayImage() {
-    if (images.empty()) {
-        imageIndex = -1;
-    }
-    else {
-        double ratio = ((double)ui->controlSlider->value())/100.0;
-        ratio *= images.size();
-        imageIndex = (int) ratio;
-        imageIndex = (imageIndex == images.size()) ? imageIndex - 1 : imageIndex;
-    }
-}
 
 void VideoEditor::updatePosition(int position) {
     if (this->position != position) {
@@ -164,6 +214,7 @@ void VideoEditor::updatePosition(int position) {
     }
 }
 
+
 void VideoEditor::updateTimeIndicator(double time) {
     if (this->timeInSec != time) {
         this->timeInSec = time;
@@ -172,6 +223,7 @@ void VideoEditor::updateTimeIndicator(double time) {
         emit timeIndicatorChanged(timeInSec);
     }
 }
+
 
 VideoEditor::~VideoEditor() {
     delete ui;

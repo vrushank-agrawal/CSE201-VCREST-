@@ -86,7 +86,7 @@ void Timeline::updateIndicatorPosition(double time) {
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    qDebug() << time << getImage(time);
+    qDebug() << getImageAtIndicator();
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
@@ -137,6 +137,11 @@ Image* Timeline::getImage(double time) {
         iterator++;
     }
     return nullptr;
+}
+
+Image* Timeline::getImageAtIndicator() {
+    double time = indicator->x() / xTimeOffset;
+    return getImage(time);
 }
 
 void Timeline::deleteImage(ImageItem *item) {

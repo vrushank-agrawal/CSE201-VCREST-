@@ -26,10 +26,12 @@ public:
     void appendImage(Image *image, double length=default_image_length); // append an Image to the end of the timeline
     void addImageAtIndicator(Image *image, double max_length = default_image_length); // call appendImage if an image already exists
     Image* getImage(qreal time);
+    Image* getImageAtIndicator();
 
 signals:
     void videoLengthChanged(int length);
     void timeIndicatorChanged(qreal time);
+
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
