@@ -86,7 +86,6 @@ void Timeline::updateIndicatorPosition(double time) {
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    //qDebug() << getImageAtIndicator();
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
@@ -96,7 +95,6 @@ void Timeline::addImage(Image *image, double start, double end) {
     item->calculateSize();
     scene->addItem(item);
 
-//    qDebug() << map;
     connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
             this, SLOT(moveImageItem(ImageItem *, double, double)));
     connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
@@ -126,12 +124,12 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
 
 
 ImageItem* Timeline::getImageItem(double time) {
-    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(time);
+    QMultiMap<double, ImageItem*>::iterator iterator = map.upperBound(time);
+
     // find the greatest key smaller than this key
-    if (iterator.key() > time) {
-        iterator--;
-        iterator = map.find(iterator.key());
-    }
+    if (iterator == map.begin()) return nullptr;
+    iterator--;
+    iterator = map.find(iterator.key());
 
     // ignore nullptr
     while (iterator != map.end() && iterator.key() <= time) {
@@ -156,7 +154,6 @@ Image* Timeline::getImageAtIndicator() {
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
-//    qDebug() << map;
 }
 
 void Timeline::addImageAtIndicator(Image *image, double max_length) {
@@ -178,6 +175,7 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
 }
 
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
+    if (startPos < 0) return;
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;
 
@@ -188,6 +186,8 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
             startTime += iterator.key() - endTime;
+            ImageItem* s = getImageItem(startTime);
+            if (s != nullptr && s != item) return;
             item->setX(startTime * xTimeOffset);
             return;
         }
