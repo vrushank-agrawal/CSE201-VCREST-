@@ -28,18 +28,15 @@ namespace img {
     public:
 
         Image (Mat mat);
-
         Image (const string &    filename);
-
         ~Image();
-
-        int return_img_error(int a);
 
         // returns the Matrix associated to the image
         Mat getMat();
         String getFilename();
         Mat getModifiedImg();
         void setModifiedImg(Mat mat);
+        int return_img_error(int a);
 
         // returns true if input image is of valid format
         bool validImg(const string & 	filename);
