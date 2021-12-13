@@ -68,6 +68,7 @@ void Timeline::moveTimeline() {
     if (xPosition + sceneShowingWidth > sceneWidth) xPosition = sceneWidth - sceneShowingWidth;
 
     fitInView(xPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
+    ImageItem::parentTransform = transform();
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {

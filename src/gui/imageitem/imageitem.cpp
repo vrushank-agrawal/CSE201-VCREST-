@@ -7,9 +7,9 @@
 double ImageItem::yHeight = 40;
 double ImageItem::yOffset = 20;
 double ImageItem::xTimeOffset = 100;
-QBrush ImageItem::brush = QBrush(Qt::RoundCap);
+QBrush ImageItem::brush = QBrush(Qt::black);
 QPen ImageItem::pen = QPen(Qt::black, border);
-
+QTransform ImageItem::parentTransform = QTransform();
 
 ImageItem::ImageItem(Image *image,
                      QPoint position
@@ -43,15 +43,21 @@ void ImageItem::calculateSize() {
 
 void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     painter->setPen(pen);
+    painter->setBrush(brush);
     painter->drawRoundedRect(boundingRect(), border, border);
     double wScale = size.width() / thumbnail.width();
     QRectF thumbnailRect(0,0, thumbnail.width(), thumbnail.height());
+
+    qreal height = size.height() + border;
+    qreal width = (size.height() + border) * parentTransform.m22() / thumbnail.height() * thumbnail.width() / parentTransform.m11();
+    width = min(width, size.width());
+
     painter->drawPixmap(
             QRectF(
                     border / 2,
                     border / 2,
-                    (thumbnail.width() * wScale > size.width()) ? size.width() : thumbnail.width() * wScale + border,
-                    size.height() + border
+                    width,
+                    height
                     ),
             thumbnail,
             thumbnailRect
