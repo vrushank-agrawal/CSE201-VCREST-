@@ -189,6 +189,7 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
             startTime += iterator.key() - endTime;
             ImageItem* s = getImageItem(startTime);
             if (s != nullptr && s != item) return;
+            if (startTime < 0) return;
             item->setX(startTime * xTimeOffset);
             return;
         }
