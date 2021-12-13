@@ -17,8 +17,6 @@ VideoPlayer::~VideoPlayer()
 }
 
 void VideoPlayer::updatePicture(){
-    if (!isPlaying || isMoving) return;
-
     cv::Mat frame;
     if (video.isOpened())
     {
@@ -32,8 +30,7 @@ void VideoPlayer::updatePicture(){
                         QImage::Format_RGB888);
             label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
             label->updatePixmap();
-            label->update();
-            emit updateSlider(video.get(cv::CAP_PROP_POS_FRAMES));
+            emit frameUpdated(video.get(cv::CAP_PROP_POS_FRAMES));
         }
     }
 }
@@ -57,34 +54,29 @@ void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
     connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
     double fps = this->video.get(cv::CAP_PROP_FPS);
     timer->start(int(1000 / fps));
+    timer->stop();
 }
 
 void VideoPlayer::play(){
-    if (isPlaying) {
-        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-        this->playButton->setToolTip(tr("Play"));
-    }
-    else {
-        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-        this->playButton->setToolTip(tr("Pause"));
-    }
     isPlaying = !isPlaying;
+    updatePlayButton();
 }
 
 void VideoPlayer::sliderPressed(){
     isMoving = true;
-    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    this->playButton->setToolTip(tr("Play"));
+    updatePlayButton();
 }
 
-void VideoPlayer::sliderMoved(int position){
-    video.set(cv::CAP_PROP_POS_FRAMES, position);
+void VideoPlayer::updateFrame(int position){
+    if (position != video.get(cv::CAP_PROP_POS_FRAMES)) {
+        video.set(cv::CAP_PROP_POS_FRAMES, position-1);
+        updatePicture();
+    }
 }
 
 void VideoPlayer::sliderReleased() {
     isMoving = false;
-    this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
-    this->playButton->setToolTip(tr("Pause"));
+    updatePlayButton();
 }
 
 void VideoPlayer::forward(){
@@ -92,7 +84,7 @@ void VideoPlayer::forward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::min(int(video.get(cv::CAP_PROP_FRAME_COUNT)), currentFrame + fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit updateSlider(newFrame);
+    emit frameUpdated(newFrame);
 }
 
 void VideoPlayer::backward(){
@@ -100,5 +92,20 @@ void VideoPlayer::backward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::max(0, currentFrame - fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit updateSlider(newFrame);
+    emit frameUpdated(newFrame);
+}
+
+void VideoPlayer::updatePlayButton(){
+    if (!isPlaying || isMoving) {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        this->playButton->setToolTip(tr("Play"));
+
+        timer->stop();
+    }
+    else {
+        this->playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        this->playButton->setToolTip(tr("Pause"));
+
+        timer->start();
+    }
 }

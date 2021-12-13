@@ -59,23 +59,22 @@ int main(){
     times[2] = 100;
     vid::Video v(images, times, 3, img1.size().width, img1.size().height);
     //v.DisplayCurrentVideo();
-    v.test();
+    //v.test();
     v.Add(img3, 50, 0);
     v.Add(img1, 50, 4);
     v.Add(img2, 50, 4);
-    //v.Add(img3, 50, 2);
+    v.Add(img3, 50, 2);
     cout << v.AnimationNumber() << endl;
-    v.DisplayCurrentVideo();
+    //v.DisplayCurrentVideo();
     v.Remove(1);
     v.Remove(0);
-    v.DisplayCurrentVideo();
-
+    //v.DisplayCurrentVideo();
 
     v.Clear();
     cout << v.AnimationNumber() << endl;
     v.Add(img1, 50);
     v.Resize(img1.size().width, img1.size().height);
-    v.WriteVideo("..//YESSS.avi");
+    //v.WriteVideo("..//YESSS.avi");
 
     cout << "Everything done, opencv works" << endl;
     return 0;

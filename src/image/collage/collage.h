@@ -1,4 +1,4 @@
-#include "image.h"
+#include "../image.h"
 
 #include <iostream>
 #include <stdarg.h>
@@ -7,32 +7,36 @@ namespace img {
 
     class Collage {
             public:
-                Collage(int numImages, vector<Image> imageArr);
+                Collage( vector<Image> imageArr);
                 ~ Collage();
 
                 //create an array of coordinates of corners of each of the images, variable
 //                int subImageCorners[numImages * 4];
 
-                void twoStitch();
+                void twoStitch(bool );
                 void threeStitch();
-                void fourStitch();
+                void fourStitch(bool );
+                void fourStitchRec(int times);
                 void flip();
 
+                const std::vector<int>& testVect();
                 int getNumImages();
                 const std::vector<double>& getRatios();
-                double getMaxRatios();
                 const std::vector<Image>& getImageArr();
-                int getMaxRatiosIndex();
                 Mat getModifiedImage();
-
+                void setModifiedImageArr(vector<Image> imageArrModified);
+                vector<Image> getModifiedImageArr();
+                void setModifiedImage(Mat modifiedMat);
+                const std::vector<double>& getModifiedRatios();
             private:
 
                 int numImages;
+                int modifiedNumImages;
                 vector <double> ratios;
-                double maxRatios;
+                vector <double> modifiedRatios;
                 vector <Image> imageArr;
-                int maxRatiosIndex;
                 Mat modifiedImage;
-
+                vector <Image> imageArrModified;
+                void fourStitchRecAux(bool, int times);
     };
 }

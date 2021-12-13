@@ -9,39 +9,56 @@
 #include <QFileDialog>
 #include "image.h"
 
+
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
-
-//    connect(ui->controlSlider, &QSlider::valueChanged, this, &VideoEditor::setDisplayImage);
 }
+
 
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
     ui->preview->updateVideo(video);
 
-    ui->progressBar->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
-    ui->progressBar->setTracking(true);
+    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
+        fps = video.get(cv::CAP_PROP_FPS);
+
+    this->fps = fps;
+
+    ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
+
 
 void VideoEditor::setupMenus() {
-    ui->actionImport_Image->setShortcut(QKeySequence::Open);
-    connect(ui->actionImport_Image, &QAction::triggered, this, &VideoEditor::importImage);
+    imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
+    imageFileTypesFilter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
+    audioFileTypes << ".wmv";
+    audioFileTypesFilter = "Waveform Audio (*.wmv)";
 
-    connect(ui->actionImport_Audio, &QAction::triggered, this, &VideoEditor::importImage);
+    ui->actionImport_Media->setShortcut(QKeySequence::Open);
+    connect(ui->actionImport_Image, SIGNAL(triggered(bool)),
+            this, SLOT(importImages()));
+    connect(ui->actionImport_Audio, SIGNAL(triggered(bool)),
+            this, SLOT(importAudios()));
+    connect(ui->actionImport_Media, SIGNAL(triggered(bool)),
+            this, SLOT(importMedia()));
 }
+
 
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
-
-    // testing
-    setupImageListWidget();
-    audioManager->addAudio("hello.mp3");
+    connect(ui->blurButton, SIGNAL(clicked()),
+            this, SLOT(blurImage()));
+    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
 }
+
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
@@ -57,54 +74,109 @@ void VideoEditor::setupVideoPlayer() {
     ui->skipBackward->setToolTip(tr("Backward"));
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
-    // set signal update Slider to set value of progressBar
-    connect(ui->preview, SIGNAL(updateSlider(int)), ui->progressBar, SLOT(setValue(int)));
-
-    // add signal to change progressBar to change to correspond frame in preview
-    connect(ui->progressBar, SIGNAL(sliderPressed()),
-            ui->preview, SLOT(sliderPressed()));
-    connect(ui->progressBar, SIGNAL(sliderMoved(int)),
-            ui->preview, SLOT(sliderMoved(int)));
-    connect(ui->progressBar, SIGNAL(sliderReleased()),
-            ui->preview, SLOT(sliderReleased()));
-
-    // add signal to change controlSlider to change to correspond frame in preview
+    // connect controlSlider with position
     connect(ui->controlSlider, SIGNAL(sliderPressed()),
             ui->preview, SLOT(sliderPressed()));
-    connect(ui->controlSlider, SIGNAL(sliderMoved(int)),
-            ui->preview, SLOT(sliderMoved(int)));
     connect(ui->controlSlider, SIGNAL(sliderReleased()),
             ui->preview, SLOT(sliderReleased()));
+    connect(ui->controlSlider, SIGNAL(frameChanged(int)),
+            this, SLOT(updatePosition(int)));
 
-    // adjust controlSlider and progressBar according to the other
-    connect(ui->controlSlider, &QSlider::rangeChanged, ui->progressBar, &QSlider::setRange);
-    connect(ui->progressBar, &QSlider::rangeChanged, ui->controlSlider, &QSlider::setRange);
+    // connect frameUpdated in preview to update position in this class
+    connect(ui->preview, SIGNAL(frameUpdated(int)),
+            this, SLOT(updatePosition(int)));
 
-    connect(ui->controlSlider, &QSlider::valueChanged, ui->progressBar, &QSlider::setValue);
-    connect(ui->progressBar, &QSlider::valueChanged, ui->controlSlider, &QSlider::setValue);
+    // connect positionChanged in this class to slider and preview
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->controlSlider, SLOT(setValue(int)));
+    connect(this, SIGNAL(positionChanged(int)),
+            ui->preview, SLOT(updateFrame(int)));
 
-    // add label, playButton and progressBar to preview
+    // connect timeInSecChanged with
+    connect(this, SIGNAL(timeIndicatorChanged(double)),
+            ui->timeline, SLOT(updateIndicatorPosition(double)));
+    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
+            this, SLOT(updateTimeIndicator(double)));
+
+    // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
 
     // add video to preview
-    updateVideo(cv::VideoCapture("D:/Downloads/sample-mp4-file-small.mp4"));
+    QStringList arguments = QApplication::arguments();
 
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+    }
+
+    updateVideo(cv::VideoCapture(videoPath.toStdString()));
 }
+
 
 void VideoEditor::importImage() {
-    QString filter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    QString fileName = importFile("Import Image", "/", filter);
-    img::Image image(fileName.toStdString());
-    if (false)
-        thumbnailManager->addImage(QPixmap(":/img-error.png"), fileName);
-    else
-        thumbnailManager->addImage(image.getModifiedImg(), fileName);
+    QString fileName = importFile("Import Image", "/", imageFileTypesFilter);
+    importImage(fileName);
 }
+
+
+void VideoEditor::importImages() {
+    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        }
+    }
+}
+
 
 void VideoEditor::importAudio() {
-
+    QString fileName = importFile("Import Audio", "/", audioFileTypesFilter);
+    importAudio(fileName);
 }
+
+
+void VideoEditor::importAudios() {
+    QStringList files = importFiles("Import Audios", "/", audioFileTypesFilter);
+    for (auto & file : files) {
+        if (audioFileTypes.contains(file.right(4))) {
+            importAudio(file);
+        }
+    }
+}
+
+
+void VideoEditor::importImage(const QString& fileName) {
+    img::Image image(fileName.toStdString());
+    thumbnailManager->addImage(image, fileName);
+}
+
+
+void VideoEditor::importAudio(const QString& fileName) {
+    audioManager->addAudio(fileName);
+}
+
+
+void VideoEditor::importMedia() {
+    QString filter = imageFileTypesFilter + " ;; " + audioFileTypesFilter;
+    QStringList files = importFiles("Import Media", "/", filter);
+
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        } else if (audioFileTypes.contains(file.right(4))) {
+            importAudio(file);
+        } else {
+            qDebug() << "Invalid file:" << file;
+        }
+    }
+}
+
 
 QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
     QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
@@ -112,29 +184,46 @@ QString VideoEditor::importFile(const QString& caption, const QString& dir, cons
 }
 
 
-void VideoEditor::setupImageListWidget() {
-    auto *testPixmap = new QPixmap(":/img-error.png");
+QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
+    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
+    return files;
+}
 
-    thumbnailManager->addImage(*testPixmap, "test1");
-    thumbnailManager->addImage(*testPixmap, "test2");
-    thumbnailManager->addImage(*testPixmap, "test2222222222222222222222222222222222222222222");
 
-    for (int i = 3; i < 10; i++) {
-        thumbnailManager->addImage(*testPixmap, "test" + QString::number(i));
+void VideoEditor::blurImage() {
+    img::Image *image = ui->timeline->getImageAtIndicator();
+    if (image == nullptr) return;
+    image->blur(100, 100);
+
+    emit imageChanged();
+}
+
+
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    Image *image = thumbnailManager->getImage(item);
+    ui->timeline->addImageAtIndicator(image);
+}
+
+
+void VideoEditor::updatePosition(int position) {
+    if (this->position != position) {
+        this->position = position;
+        this->timeInSec = 1.0 * position / fps;
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
     }
 }
 
-void VideoEditor::setDisplayImage() {
-    if (images.empty()) {
-        imageIndex = -1;
-    }
-    else {
-        double ratio = ((double)ui->controlSlider->value())/100.0;
-        ratio *= images.size();
-        imageIndex = (int) ratio;
-        imageIndex = (imageIndex == images.size()) ? imageIndex - 1 : imageIndex;
+
+void VideoEditor::updateTimeIndicator(double time) {
+    if (this->timeInSec != time) {
+        this->timeInSec = time;
+        this->position = int(time * fps);
+        emit positionChanged(position);
+        emit timeIndicatorChanged(timeInSec);
     }
 }
+
 
 VideoEditor::~VideoEditor() {
     delete ui;

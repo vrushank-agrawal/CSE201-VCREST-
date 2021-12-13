@@ -4,6 +4,11 @@ add_subdirectory(videoplayer)
 add_subdirectory(videowindow)
 add_subdirectory(imagethumbnail)
 add_subdirectory(audiomanager)
+add_subdirectory(progressbar)
+add_subdirectory(timeline)
+add_subdirectory(indicator)
+add_subdirectory(imageitem)
+add_subdirectory(sizegripitem)
 
 add_library(gui)
 
@@ -16,4 +21,9 @@ target_link_libraries(gui
         videoWindow
         imageThumbnail
         audioManager
+        progressBar
+        timeline
+        indicator
+        imageItem
+        sizeGripItem
         )

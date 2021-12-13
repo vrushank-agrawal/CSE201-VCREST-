@@ -1,9 +1,17 @@
 //
 // Created by Vrushank on 11/12/2021.
 //
-#include <stdio.h>
+
+#ifndef IMAGEFILES
+#define IMAGEFILES
+
 #include "image.h"
-#include <stdarg.h>
+#include "collage/collage.cpp"
+#include "blurs.cpp"
+#include "rotate_resize.cpp"
+
+#endif
+
 
 using namespace img;
 
@@ -33,9 +41,7 @@ img::Image::Image(const string & file) {
     save_filename = std::string();
 }
 
-img::Image::~Image() {
-
-}
+img::Image::~Image() {}
 
 int img::Image::return_img_error (int val) {
     return val;
@@ -66,9 +72,12 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            Size dimensions = this -> getMat().size();
-            return dimensions.height/ dimensions.width;
-        }
+    return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
+}
+
+double img::Image::getModifiedImageRatio() {
+    return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
+}
 
 void img::Image::imgPreview(const String &window) {
     Mat mat = this -> getMat();
@@ -80,7 +89,3 @@ void img::Image::imgModifiedPreview(const string &window) {
     imshow(window, mat);
 }
 
-//
-//bool img::Image::saveImg(int filepath) {
-//
-//}

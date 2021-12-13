@@ -134,13 +134,13 @@ const double FRAMEPERSECOND = 10;
 
 void Video::ImageAnimator::RotateAnimation(double angle) {
     int num_frame = FRAMEPERSECOND*time;
-    double change_per_frame = angle/num_frame;
+    /*double change_per_frame = angle/num_frame;
     Image image_mat = img::Image(get_mat());
     for (int i=1;i<=num_frame;i++){
         image_mat.rotateImg(change_per_frame);
         img = image_mat.getMat();
         imshow( "Frame", img);
-    }
+    }*/
 }
 
 void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
