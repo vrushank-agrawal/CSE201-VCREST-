@@ -62,24 +62,25 @@ void Timeline::updateVideoLength(int length) {
     }
 }
 
-void Timeline::moveTimeline() {
-    qreal xPosition = indicator->x() - sceneShowingWidth / 2;
-    if (xPosition < 0) xPosition = 0;
-    if (xPosition + sceneShowingWidth > sceneWidth) xPosition = sceneWidth - sceneShowingWidth;
+void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
+    if (option == CenterIndicator) {
+        currentXPosition = indicator->x() - sceneShowingWidth / 2;
+        if (currentXPosition < 0) currentXPosition = 0;
+        if (currentXPosition + sceneShowingWidth > sceneWidth) currentXPosition = sceneWidth - sceneShowingWidth;
+    }
 
-    fitInView(xPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
+    fitInView(currentXPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
     ImageItem::parentTransform = transform();
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {
-    QGraphicsView::resizeEvent(event);
     moveTimeline();
 }
 
 void Timeline::updateIndicatorPosition(double time) {
     if (indicator->x() != time * xTimeOffset) {
         indicator->setPos(time * xTimeOffset, 0);
-        moveTimeline();
+        moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
     }
 }
@@ -213,4 +214,10 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
         iterator++;
     }
     item->updateDuration(newLength);
+}
+
+void Timeline::wheelEvent(QWheelEvent *event) {
+    QPointF visible_left_point = mapToScene(0, 0);
+    currentXPosition = visible_left_point.x();
+    QGraphicsView::wheelEvent(event);
 }

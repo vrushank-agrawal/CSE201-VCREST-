@@ -36,6 +36,7 @@ signals:
 private:
     int sceneWidth = 120, sceneHeight = 120;
     qreal sceneShowingWidth = 3000;
+    qreal currentXPosition = 0;
     int timeHeight = 20;
     int xTimeOffset = 100, yTime = 0;
     int lengthInSecond = 10 * 60;
@@ -43,7 +44,12 @@ private:
     Indicator *indicator = nullptr;
     QMultiMap<double, ImageItem*> map;
 
-    void moveTimeline();
+    enum TimelineMoveOption{
+        KeepCurrentPosition,
+        CenterIndicator,
+    };
+
+    void moveTimeline(TimelineMoveOption option);
     ImageItem* getImageItem(double time);
 
 private slots:
@@ -56,6 +62,7 @@ private slots:
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void wheelEvent(QWheelEvent *event);
 };
 
 #endif //VIDEO_EDITOR_BX23_TIMELINE_H
