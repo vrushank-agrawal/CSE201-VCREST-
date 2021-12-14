@@ -176,28 +176,29 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
     addImage(image, time, time + duration);
 }
 
+void Timeline::setItemPosition(ImageItem *item, double startTime) {
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
+    if (startTime < 0) return;
+
+    item->setX(startTime * xTimeOffset);
+}
+
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
-    if (startPos < 0) return;
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;
 
     // detect collision with other images
-    ImageItem* s = getImageItem(startTime);
-    if (s != nullptr && s != item) return;
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
-            startTime += iterator.key() - endTime;
-            ImageItem* s = getImageItem(startTime);
-            if (s != nullptr && s != item) return;
-            if (startTime < 0) return;
-            item->setX(startTime * xTimeOffset);
+            setItemPosition(item, startTime + iterator.key() - endTime);
             return;
         }
         iterator++;
     }
 
-    item->setX(startPos);
+    setItemPosition(item, startTime);
 }
 
 void Timeline::resizeImageItem(ImageItem *item, double newLength) {

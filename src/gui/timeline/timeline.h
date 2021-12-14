@@ -50,6 +50,7 @@ private:
     };
 
     void moveTimeline(TimelineMoveOption option);
+    void setItemPosition(ImageItem *item, double startTime);
     ImageItem* getImageItem(double time);
 
 private slots:
