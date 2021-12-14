@@ -82,12 +82,22 @@ void Timeline::updateIndicatorPosition(double time) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
+        QMultiMap<double, ImageItem*>::iterator iter = map.lowerBound(time);
+        if (iter == map.begin()) return;
+        iter--;
+        if (iter.value() == nullptr) return;
+        emit changeFrame(iter.value()->image->getMat());
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
+    QMultiMap<double, ImageItem*>::iterator iter = map.lowerBound(time);
+    if (iter == map.begin()) return;
+    iter--;
+    if (iter.value() == nullptr) return;
+    emit changeFrame(iter.value()->image->getMat());
 }
 
 void Timeline::addImage(Image *image, double start, double end) {

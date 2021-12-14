@@ -31,6 +31,7 @@ public:
 signals:
     void videoLengthChanged(int length);
     void timeIndicatorChanged(qreal time);
+    void changeFrame(cv::Mat frame);
 
 
 private:

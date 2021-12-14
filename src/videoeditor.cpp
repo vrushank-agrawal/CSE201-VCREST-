@@ -117,6 +117,9 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->timeline, &Timeline::timeIndicatorChanged,
             this, &VideoEditor::updateCurrentTime);
 
+    connect(ui->timeline, &Timeline::changeFrame,
+            ui->preview, &VideoPlayer::updateFrame);
+
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
