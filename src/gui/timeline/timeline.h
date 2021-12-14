@@ -62,6 +62,7 @@ private slots:
     void deleteImage(ImageItem*);
 
 protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
     virtual void wheelEvent(QWheelEvent *event);
 };

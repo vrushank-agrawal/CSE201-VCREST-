@@ -222,3 +222,13 @@ void Timeline::wheelEvent(QWheelEvent *event) {
     currentXPosition = visible_left_point.x();
     QGraphicsView::wheelEvent(event);
 }
+
+void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = mapToScene(event->pos());
+        if (pos.y() < timeHeight) {
+            indicator->setX(pos.x());
+            updateTime(pos.x());
+        }
+    }
+}
