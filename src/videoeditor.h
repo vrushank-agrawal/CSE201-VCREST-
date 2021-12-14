@@ -25,7 +25,7 @@ public:
 signals:
     void imageChanged();
     void positionChanged(int position);
-    void timeIndicatorChanged(double timeInSec);
+    void currentTimeChanged(double timeInSec);
 
 public slots:
     void importMedia();
@@ -33,7 +33,7 @@ public slots:
     void importAudios();
     void blurImage();
     void updatePosition(int position);
-    void updateTimeIndicator(double time);
+    void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
 
 private:

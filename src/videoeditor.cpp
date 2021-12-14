@@ -94,28 +94,28 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
     // connect controlSlider with position
-    connect(ui->controlSlider, SIGNAL(sliderPressed()),
-            ui->preview, SLOT(sliderPressed()));
-    connect(ui->controlSlider, SIGNAL(sliderReleased()),
-            ui->preview, SLOT(sliderReleased()));
-    connect(ui->controlSlider, SIGNAL(frameChanged(int)),
-            this, SLOT(updatePosition(int)));
+    connect(ui->controlSlider, &ProgressBar::sliderPressed,
+            ui->preview, &VideoPlayer::sliderPressed);
+    connect(ui->controlSlider, &ProgressBar::sliderReleased,
+            ui->preview, &VideoPlayer::sliderReleased);
+    connect(ui->controlSlider, &ProgressBar::frameChanged,
+            this, &VideoEditor::updatePosition);
 
     // connect frameUpdated in preview to update position in this class
-    connect(ui->preview, SIGNAL(frameUpdated(int)),
-            this, SLOT(updatePosition(int)));
+    connect(ui->preview, &VideoPlayer::timeUpdated,
+            this, &VideoEditor::updateCurrentTime);
 
     // connect positionChanged in this class to slider and preview
-    connect(this, SIGNAL(positionChanged(int)),
-            ui->controlSlider, SLOT(setValue(int)));
-    connect(this, SIGNAL(positionChanged(int)),
-            ui->preview, SLOT(updateFrame(int)));
+    connect(this, &VideoEditor::positionChanged,
+            ui->controlSlider, &ProgressBar::setValue);
 
-    // connect timeInSecChanged with
-    connect(this, SIGNAL(timeIndicatorChanged(double)),
-            ui->timeline, SLOT(updateIndicatorPosition(double)));
-    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
-            this, SLOT(updateTimeIndicator(double)));
+    // connect timeInSecChanged with timeline and preview
+    connect(this, &VideoEditor::currentTimeChanged,
+            ui->preview, &VideoPlayer::updateCurrentTime);
+    connect(this, &VideoEditor::currentTimeChanged,
+            ui->timeline, &Timeline::updateIndicatorPosition);
+    connect(ui->timeline, &Timeline::timeIndicatorChanged,
+            this, &VideoEditor::updateCurrentTime);
 
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
@@ -196,17 +196,17 @@ void VideoEditor::updatePosition(int position) {
         this->position = position;
         this->timeInSec = 1.0 * position / fps;
         emit positionChanged(position);
-        emit timeIndicatorChanged(timeInSec);
+        emit currentTimeChanged(timeInSec);
     }
 }
 
 
-void VideoEditor::updateTimeIndicator(double time) {
+void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
         this->timeInSec = time;
         this->position = int(time * fps);
         emit positionChanged(position);
-        emit timeIndicatorChanged(timeInSec);
+        emit currentTimeChanged(timeInSec);
     }
 }
 

@@ -53,9 +53,11 @@ private:
     void setItemPosition(ImageItem *item, double startTime);
     ImageItem* getImageItem(double time);
 
+public slots:
+    void updateIndicatorPosition(double);
+
 private slots:
     void moveImageItem(ImageItem *item, double startPos, double endPos);
-    void updateIndicatorPosition(double);
     void updateTime(qreal xPosition);
     void updateImagePosition(ImageItem* item, double start, double end);
     void resizeImageItem(ImageItem *item, double newLength);

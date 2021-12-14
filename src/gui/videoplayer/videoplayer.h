@@ -31,22 +31,27 @@ public:
     void updateVideo(const cv::VideoCapture &video);
 
 signals:
-    void frameUpdated(int position);
+    void timeUpdated(double currentTime);
 
-private slots:
-    void updatePicture();
-    void play();
+public slots:
+    void updateCurrentTime(double time);
+    void updateFrame(cv::Mat frame);
     void sliderPressed();
-    void updateFrame(int position);
     void sliderReleased();
     void forward();
     void backward();
+
+private slots:
+    void updateTime();
+    void play();
 
 private:
     void updatePlayButton();
 
     bool isPlaying = false;
     bool isMoving = false;
+    int fps = 30;
+    double currentTime = 0, videoLength = 0;
     QToolButton *playButton;
     QTimer *timer = nullptr;
     VideoWindow *label;
