@@ -77,12 +77,10 @@ void Timeline::resizeEvent(QResizeEvent *event) {
     moveTimeline();
 }
 
-void Timeline::timeIndicatorChanged(qreal time) {
-    QMultiMap<double, ImageItem*>::iterator iter = map.lowerBound(time);
-    if (iter == map.begin()) return;
-    iter--;
-    if (iter.value() == nullptr) return;
-    emit changeFrame(iter.value()->image->getModifiedImg());
+void Timeline::updateFrame(double time){
+    Image *image = getImage(time);
+    if (image == nullptr) return;
+    emit changeFrame(image->getModifiedImg());
 }
 
 void Timeline::updateIndicatorPosition(double time) {
@@ -90,12 +88,14 @@ void Timeline::updateIndicatorPosition(double time) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
+        updateFrame(time);
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
+    updateFrame(time);
 }
 
 void Timeline::addImage(Image *image, double start, double end) {

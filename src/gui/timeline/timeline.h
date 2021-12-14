@@ -50,8 +50,10 @@ private:
         CenterIndicator,
     };
 
+private:
     void moveTimeline(TimelineMoveOption option);
     void setItemPosition(ImageItem *item, double startTime);
+    void updateFrame(double time);
     ImageItem* getImageItem(double time);
 
 public slots:
