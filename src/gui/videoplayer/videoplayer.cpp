@@ -42,7 +42,7 @@ void VideoPlayer::updateTime(){
 void VideoPlayer::updateCurrentTime(double time) {
     if (currentTime == time) return;
     currentTime = time;
-    int position = currentTime / fps;
+    int position = currentTime * fps;
     video.set(cv::CAP_PROP_POS_FRAMES, position);
 
     cv::Mat frame;
