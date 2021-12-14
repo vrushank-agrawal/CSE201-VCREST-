@@ -231,4 +231,5 @@ void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
             updateTime(pos.x());
         }
     }
+    QGraphicsView::mouseDoubleClickEvent(event);
 }
