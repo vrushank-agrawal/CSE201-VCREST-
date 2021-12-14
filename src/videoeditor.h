@@ -29,9 +29,7 @@ signals:
 
 public slots:
     void importMedia();
-    void importImage();
     void importImages();
-    void importAudio();
     void importAudios();
     void blurImage();
     void updatePosition(int position);
@@ -52,7 +50,6 @@ private:
     void setupVideoPlayer();
     void setupMenus();
     void setupWidgets();
-    QString importFile(const QString& caption, const QString& startingDirectory, const QString& filter);
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
     void importAudio(const QString& dir);

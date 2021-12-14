@@ -123,12 +123,6 @@ void VideoEditor::setupVideoPlayer() {
 }
 
 
-void VideoEditor::importImage() {
-    QString fileName = importFile("Import Image", "/", imageFileTypesFilter);
-    importImage(fileName);
-}
-
-
 void VideoEditor::importImages() {
     QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
     for (auto & file : files) {
@@ -136,12 +130,6 @@ void VideoEditor::importImages() {
             importImage(file);
         }
     }
-}
-
-
-void VideoEditor::importAudio() {
-    QString fileName = importFile("Import Audio", "/", audioFileTypesFilter);
-    importAudio(fileName);
 }
 
 
@@ -179,12 +167,6 @@ void VideoEditor::importMedia() {
             qDebug() << "Invalid file:" << file;
         }
     }
-}
-
-
-QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
-    QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
-    return fileName;
 }
 
 
