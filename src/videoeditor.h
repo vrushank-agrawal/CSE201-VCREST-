@@ -59,7 +59,9 @@ private:
     ThumbnailManager *thumbnailManager;
     AudioManager *audioManager;
 
-    std::string outputPath = "2.mp4";
+    int fourcc;
+
+    std::string outputPath = "D:/Downloads/2.mp4";
 };
 
 

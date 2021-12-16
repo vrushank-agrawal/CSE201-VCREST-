@@ -73,6 +73,13 @@ void VideoEditor::setupMenus() {
             this, SLOT(importMedia()));
     connect(ui->actionExport, &QAction::triggered,
             this, &VideoEditor::writeVideo);
+
+    QString os = QSysInfo::productType();
+    if (os == "osx") {
+        fourcc = cv::VideoWriter::fourcc('a', 'v', 'c', '1');
+    } else {
+        fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
+    }
 }
 
 
@@ -232,7 +239,13 @@ void VideoEditor::writeVideo() {
     qDebug() << outputPath.c_str();
 
     remove(outputPath.c_str());
-    bool isOk = outputVideo.open(outputPath.c_str(), cv::VideoWriter::fourcc('a', 'v', 'c', '1'), 30.0, sizeFrame, true);
+    bool isOk = outputVideo.open(outputPath.c_str(), fourcc, 30.0, sizeFrame, true);
+    if (!isOk) {
+        QMessageBox errorMsg;
+        errorMsg.setWindowTitle("Error");
+        errorMsg.setText("Export is not supported on this platform");
+        errorMsg.exec();
+    }
     int length = 10 * fps;
     qDebug() << "start exporting" << isOk;
     for (int i = 0; i < length; i++){
