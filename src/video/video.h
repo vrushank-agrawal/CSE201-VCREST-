@@ -47,7 +47,7 @@ namespace vid {
             void ZoomAnimationDisplay();
             void ZoomAnimationWrite(VideoWriter video_writer);
             void RotateAnimation();
-            void FlyAnimation();
+            void CropAnimation();
             Mat Create_blank(int* color, int* size);
             Mat get_mat() {
                 return this -> img;
