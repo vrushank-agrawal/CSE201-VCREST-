@@ -28,8 +28,11 @@ namespace img {
                 vector<Image> getModifiedImageArr();
                 void setModifiedImage(Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();
-            private:
 
+                void setFourStitchRecImgArr(Mat image);
+                const vector<Image>& getFourStitchRecImgArr();
+            private:
+                vector <Image> fourStitchRecImgArr;
                 int numImages;
                 int modifiedNumImages;
                 vector <double> ratios;

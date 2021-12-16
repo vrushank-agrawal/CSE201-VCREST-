@@ -1,8 +1,12 @@
 #include "collage.h"
+#include <thread>
 #include <algorithm>
+#include <future>
+
 // #include <typeinfo>
 using namespace img;
 using namespace cv;
+
 
 
 Mat hstitch(Image img1, Image img2) {
@@ -53,7 +57,6 @@ void img::Collage::setModifiedImageArr(vector<Image> imageArrModified){
     modifiedRatios.clear();
     for (int i = 0; i < this-> modifiedNumImages ; i ++ ){
         modifiedRatios.push_back(this->imageArrModified.at(i).getRatio());
-
     }
 
 }
@@ -163,6 +166,10 @@ void img::Collage::threeStitch() {
         std::cout << "A different amount of images than 3!";
     }
 }
+
+Collage createCollage(vector<Image> *imageArr){
+    return Collage(*imageArr);
+}
 void img::Collage::fourStitch(bool original= true) {
     if (this->getNumImages() == 4) {
         vector<double> ratios;
@@ -176,8 +183,6 @@ void img::Collage::fourStitch(bool original= true) {
         }
 
         int maximum = getMaxIndex(ratios);
-        // std::cout << "maximum: " << typeid(maximum).name();
-
         vector<Image> subImageArr2;
         //split into two collages of double stitch and then stitch all of them together
         vector<Image>::iterator maxIndex = subImageArr1.begin() + maximum ;
@@ -189,8 +194,14 @@ void img::Collage::fourStitch(bool original= true) {
         vector<Image>::iterator secondMaxIndex = subImageArr1.begin() + secondMaximum ;
         subImageArr1.erase(secondMaxIndex);
         subImageArr2.push_back(*secondMaxIndex);
-        Collage subCollage1(subImageArr1);
-        Collage subCollage2(subImageArr2);
+        std::promise<Collage> subCollage1;
+        std::promise<Collage> subCollage2;
+        std::future<Collage> futureCollage1 = subCollage1.get_future();
+        std::thread th1(Collage, subImageArr1);
+        std::future<Collage> futureCollage2 = subCollage1.get_future();
+        std::thread th2(Collage, subImageArr2);
+        th1.join();
+        th2.join();
         subCollage1.twoStitch();
         subCollage2.twoStitch();
         vector<Image> imageArrModified ={subCollage1.getModifiedImage(), subCollage2.getModifiedImage()};
@@ -204,14 +215,21 @@ void img::Collage::fourStitch(bool original= true) {
     }
 
 }
+void img::Collage::setFourStitchRecImgArr(Mat Image){
+    this->fourStitchRecImgArr.clear();
+    for (int i = 0; i < 4; i++){
+        this->fourStitchRecImgArr.push_back(Image);
+    }
+
+}
+const vector<Image>& img::Collage::getFourStitchRecImgArr(){
+    return this -> fourStitchRecImgArr;
+}
 void img::Collage::fourStitchRecAux(bool original = false, int times= 0){
     if (times > 0) {
         this->fourStitch(original);
-        Image img1(this->getModifiedImage());
-        Image img2(this->getModifiedImage());
-        Image img3(this->getModifiedImage());
-        Image img4(this->getModifiedImage());
-        this->setModifiedImageArr({img1, img2, img3, img4});
+        this-> setFourStitchRecImgArr(this->getModifiedImage());
+        this->setModifiedImageArr(this-> getFourStitchRecImgArr());
         times--;
         fourStitchRecAux(original = false, times);
     }
