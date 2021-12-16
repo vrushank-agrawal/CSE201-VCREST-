@@ -23,6 +23,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
     QString videoPath = "D:/Downloads/1.mp4";
     QString prefix = "videoPath=";
     QString prefix2 = "imagePath=";
+    QString prefix3 = "outputPath=";
 
     for (int i = 0; i < arguments.size(); i++) {
         QString arg = arguments.at(i);
@@ -32,9 +33,13 @@ VideoEditor::VideoEditor(QWidget *parent) :
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }
+        if (arg.startsWith(prefix3)) {
+            outputPath = arg.right(arg.size() - prefix.size()).toStdString();
+        }
     }
 
-    updateVideo(cv::VideoCapture(videoPath.toStdString()));
+    video = cv::VideoCapture(videoPath.toStdString());
+    updateVideo(video);
 }
 
 
@@ -66,6 +71,8 @@ void VideoEditor::setupMenus() {
             this, SLOT(importAudios()));
     connect(ui->actionImport_Media, SIGNAL(triggered(bool)),
             this, SLOT(importMedia()));
+    connect(ui->actionExport, &QAction::triggered,
+            this, &VideoEditor::writeVideo);
 }
 
 
@@ -216,5 +223,26 @@ void VideoEditor::updateCurrentTime(double time) {
 
 VideoEditor::~VideoEditor() {
     delete ui;
+}
+
+void VideoEditor::writeVideo() {
+    cv::VideoWriter outputVideo;
+    cv::Size sizeFrame(640, 480);
+
+    remove(outputPath.c_str());
+    bool isOk = outputVideo.open(outputPath.c_str(), cv::VideoWriter::fourcc('a', 'v', 'c', '1'), 30.0, sizeFrame, true);
+    int length = 10 * fps;
+    qDebug() << "start exporting" << isOk;
+    for (int i = 0; i < length; i++){
+        double time = 1.0 * i / fps;
+        Image* image = ui->timeline->getImage(time);
+        cv::Mat frame;
+        video >> frame;
+        if (image != nullptr) frame = image->getModifiedImg();
+        cv::resize(frame, frame, sizeFrame);
+        outputVideo << frame;
+    }
+    outputVideo.release();
+    qDebug() << "end exporting";
 }
 
