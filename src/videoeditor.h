@@ -59,7 +59,7 @@ private:
     ThumbnailManager *thumbnailManager;
     AudioManager *audioManager;
 
-    std::string outputPath = "/Users/minhtung0404/Downloads/2.mp4";
+    std::string outputPath = "2.mp4";
 };
 
 

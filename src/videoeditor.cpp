@@ -34,7 +34,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
             importImage(arg.right(arg.size() - prefix2.size()));
         }
         if (arg.startsWith(prefix3)) {
-            outputPath = arg.right(arg.size() - prefix.size()).toStdString();
+            outputPath = arg.right(arg.size() - prefix3.size()).toStdString();
         }
     }
 
@@ -228,6 +228,8 @@ VideoEditor::~VideoEditor() {
 void VideoEditor::writeVideo() {
     cv::VideoWriter outputVideo;
     cv::Size sizeFrame(640, 480);
+
+    qDebug() << outputPath.c_str();
 
     remove(outputPath.c_str());
     bool isOk = outputVideo.open(outputPath.c_str(), cv::VideoWriter::fourcc('a', 'v', 'c', '1'), 30.0, sizeFrame, true);
