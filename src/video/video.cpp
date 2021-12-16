@@ -166,7 +166,7 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
 }
 
 void Video::ImageAnimator::FlyAnimation() {
-    int num_frame = FRAMEPERSECOND*time;
+    /*int num_frame = FRAMEPERSECOND*time;
     int h = img.rows;
     int w = img.cols;
     int window_h = h/2;
@@ -179,7 +179,7 @@ void Video::ImageAnimator::FlyAnimation() {
         img.
     }
 
-    /*
+
      * def create_blank(width, height, rgb_color=(0, 0, 0)):
     """Create new image(numpy array) filled with certain color in RGB"""
     # Create black blank image
@@ -197,6 +197,5 @@ void Video::ImageAnimator::FlyAnimation() {
     }*/
 }
 
-Mat Create_blank(int* color, int*size){
-
-}
+//Mat Create_blank(int* color, int*size){
+//}
