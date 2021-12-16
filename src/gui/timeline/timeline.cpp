@@ -77,17 +77,25 @@ void Timeline::resizeEvent(QResizeEvent *event) {
     moveTimeline();
 }
 
+void Timeline::updateFrame(double time){
+    Image *image = getImage(time);
+    if (image == nullptr) return;
+    emit changeFrame(image->getModifiedImg());
+}
+
 void Timeline::updateIndicatorPosition(double time) {
     if (indicator->x() != time * xTimeOffset) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
+        updateFrame(time);
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
+    updateFrame(time);
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
