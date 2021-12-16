@@ -24,27 +24,19 @@ namespace img {
         Mat img_matrix;
         Mat img_matrix_modified;
         string filename;
-        string save_filename;
 
     public:
 
         Image (Mat mat);
-
-        Image(const string &    filename);
-
+        Image (const string &    filename);
         ~Image();
-
-        int return_img_error(int a);
 
         // returns the Matrix associated to the image
         Mat getMat();
         String getFilename();
         Mat getModifiedImg();
         void setModifiedImg(Mat mat);
-
-        //counts number of images if a multi image file
-        size_t countImg(const string & 	filename,
-                        int 	        flags = IMREAD_ANYCOLOR);
+        int return_img_error(int a);
 
         // returns true if input image is of valid format
         bool validImg(const string & 	filename);
@@ -53,14 +45,10 @@ namespace img {
         Mat decodeImg(const String & 	filename,
                       int 	            flags = IMREAD_COLOR);
 
-        // saves img in a certain file format
-        bool saveImg(const String & 	filename,
-                     InputArray 	img,
-                     const std::vector< int > & 	params = std::vector< int >()
-        );
         //Returns ratio from dimensions:
         double getRatio();
         double getModifiedImageRatio();
+
         // Image matrix preview functions
         void imgPreview( const String & 	winname);
         void imgModifiedPreview( const string & winname);
