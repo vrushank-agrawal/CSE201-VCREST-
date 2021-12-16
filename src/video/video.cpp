@@ -76,7 +76,7 @@ void Video::DisplayCurrentVideo() {
     for (int i = 0; i < number_of_animations; i++){
         animators[i].Display();
         cout << "Done" << endl;
-        animators[i].RotateAnimation(10);
+        animators[i].RotateAnimation();
     }
     destroyAllWindows();
 }
@@ -134,7 +134,8 @@ void Video::ImageAnimator::Write(VideoWriter video_writer) {
 
 const double FRAMEPERSECOND = 10;
 
-void Video::ImageAnimator::RotateAnimation(double angle) {
+void Video::ImageAnimator::RotateAnimation() {
+    int angle = 5;
     int num_frame = FRAMEPERSECOND*time;
     double frame_angle = angle;
     for (int i=1;i<=this->time;i++){
