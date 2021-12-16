@@ -16,6 +16,26 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
+
+    // add video to preview
+    QStringList arguments = QApplication::arguments();
+
+    QString videoPath = "D:/Downloads/1.mp4";
+    QString prefix = "videoPath=";
+    QString prefix2 = "imagePath=";
+
+    for (int i = 0; i < arguments.size(); i++) {
+        QString arg = arguments.at(i);
+        if (arg.startsWith(prefix)) {
+            videoPath = arg.right(arg.size() - prefix.size());
+        }
+        if (arg.startsWith(prefix2)) {
+            importImage(arg.right(arg.size() - prefix2.size()));
+        }
+    }
+
+    video = cv::VideoCapture(videoPath.toStdString());
+    updateVideo(video);
 }
 
 
@@ -41,12 +61,22 @@ void VideoEditor::setupMenus() {
     audioFileTypesFilter = "Waveform Audio (*.wmv)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
+    ui->actionExport->setShortcut(QKeySequence::Save);
     connect(ui->actionImport_Image, SIGNAL(triggered(bool)),
             this, SLOT(importImages()));
     connect(ui->actionImport_Audio, SIGNAL(triggered(bool)),
             this, SLOT(importAudios()));
     connect(ui->actionImport_Media, SIGNAL(triggered(bool)),
             this, SLOT(importMedia()));
+    connect(ui->actionExport, &QAction::triggered,
+            this, &VideoEditor::writeVideo);
+
+    QString os = QSysInfo::productType();
+    if (os == "osx") {
+        fourcc = cv::VideoWriter::fourcc('a', 'v', 'c', '1');
+    } else {
+        fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
+    }
 }
 
 
@@ -75,53 +105,35 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
 
     // connect controlSlider with position
-    connect(ui->controlSlider, SIGNAL(sliderPressed()),
-            ui->preview, SLOT(sliderPressed()));
-    connect(ui->controlSlider, SIGNAL(sliderReleased()),
-            ui->preview, SLOT(sliderReleased()));
-    connect(ui->controlSlider, SIGNAL(frameChanged(int)),
-            this, SLOT(updatePosition(int)));
+    connect(ui->controlSlider, &ProgressBar::sliderPressed,
+            ui->preview, &VideoPlayer::sliderPressed);
+    connect(ui->controlSlider, &ProgressBar::sliderReleased,
+            ui->preview, &VideoPlayer::sliderReleased);
+    connect(ui->controlSlider, &ProgressBar::frameChanged,
+            this, &VideoEditor::updatePosition);
 
     // connect frameUpdated in preview to update position in this class
-    connect(ui->preview, SIGNAL(frameUpdated(int)),
-            this, SLOT(updatePosition(int)));
+    connect(ui->preview, &VideoPlayer::timeUpdated,
+            this, &VideoEditor::updateCurrentTime);
 
     // connect positionChanged in this class to slider and preview
-    connect(this, SIGNAL(positionChanged(int)),
-            ui->controlSlider, SLOT(setValue(int)));
-    connect(this, SIGNAL(positionChanged(int)),
-            ui->preview, SLOT(updateFrame(int)));
+    connect(this, &VideoEditor::positionChanged,
+            ui->controlSlider, &ProgressBar::setValue);
 
-    // connect timeInSecChanged with
-    connect(this, SIGNAL(timeIndicatorChanged(double)),
-            ui->timeline, SLOT(updateIndicatorPosition(double)));
-    connect(ui->timeline, SIGNAL(timeIndicatorChanged(qreal)),
-            this, SLOT(updateTimeIndicator(double)));
+    // connect timeInSecChanged with timeline and preview
+    connect(this, &VideoEditor::currentTimeChanged,
+            ui->preview, &VideoPlayer::updateCurrentTime);
+    connect(this, &VideoEditor::currentTimeChanged,
+            ui->timeline, &Timeline::updateIndicatorPosition);
+    connect(ui->timeline, &Timeline::timeIndicatorChanged,
+            this, &VideoEditor::updateCurrentTime);
+
+    connect(ui->timeline, &Timeline::changeFrame,
+            ui->preview, &VideoPlayer::updateFrame);
 
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
-
-    // add video to preview
-    QStringList arguments = QApplication::arguments();
-
-    QString videoPath = "D:/Downloads/1.mp4";
-    QString prefix = "videoPath=";
-
-    for (int i = 0; i < arguments.size(); i++) {
-        QString arg = arguments.at(i);
-        if (arg.startsWith(prefix)) {
-            videoPath = arg.right(arg.size() - prefix.size());
-        }
-    }
-
-    updateVideo(cv::VideoCapture(videoPath.toStdString()));
-}
-
-
-void VideoEditor::importImage() {
-    QString fileName = importFile("Import Image", "/", imageFileTypesFilter);
-    importImage(fileName);
 }
 
 
@@ -132,12 +144,6 @@ void VideoEditor::importImages() {
             importImage(file);
         }
     }
-}
-
-
-void VideoEditor::importAudio() {
-    QString fileName = importFile("Import Audio", "/", audioFileTypesFilter);
-    importAudio(fileName);
 }
 
 
@@ -178,12 +184,6 @@ void VideoEditor::importMedia() {
 }
 
 
-QString VideoEditor::importFile(const QString& caption, const QString& dir, const QString& filter) {
-    QString fileName = QFileDialog::getOpenFileName(this, caption, dir, filter);
-    return fileName;
-}
-
-
 QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
     QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
     return files;
@@ -210,22 +210,64 @@ void VideoEditor::updatePosition(int position) {
         this->position = position;
         this->timeInSec = 1.0 * position / fps;
         emit positionChanged(position);
-        emit timeIndicatorChanged(timeInSec);
+        emit currentTimeChanged(timeInSec);
     }
 }
 
 
-void VideoEditor::updateTimeIndicator(double time) {
+void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
         this->timeInSec = time;
         this->position = int(time * fps);
         emit positionChanged(position);
-        emit timeIndicatorChanged(timeInSec);
+        emit currentTimeChanged(timeInSec);
     }
 }
 
 
 VideoEditor::~VideoEditor() {
     delete ui;
+}
+
+void VideoEditor::writeVideo() {
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("MP4 video (*.mp4)");
+    std::string outputPath;
+    if (dialog.exec()) {
+        QString qOutputPath = dialog.selectedFiles()[0];
+        if (qOutputPath.right(4) != ".mp4")
+            qOutputPath.append(".mp4");
+        outputPath = qOutputPath.toStdString();
+    } else {
+        return;
+    }
+    cv::VideoWriter outputVideo;
+    cv::Size sizeFrame(640, 480);
+
+    qDebug() << outputPath.c_str();
+
+    remove(outputPath.c_str());
+    bool isOk = outputVideo.open(outputPath, fourcc, 30.0, sizeFrame, true);
+    if (!isOk) {
+        QMessageBox errorMsg;
+        errorMsg.setWindowTitle("Error");
+        errorMsg.setText("Export is not supported on this platform");
+        errorMsg.exec();
+        return;
+    }
+    int length = 10 * fps;
+    qDebug() << "start exporting";
+    for (int i = 0; i < length; i++){
+        double time = 1.0 * i / fps;
+        Image* image = ui->timeline->getImage(time);
+        cv::Mat frame;
+        video >> frame;
+        if (image != nullptr) frame = image->getModifiedImg();
+        cv::resize(frame, frame, sizeFrame);
+        outputVideo << frame;
+    }
+    outputVideo.release();
+    qDebug() << "end exporting";
 }
 

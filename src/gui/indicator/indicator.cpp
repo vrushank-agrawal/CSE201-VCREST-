@@ -3,6 +3,8 @@
 //
 
 #include "indicator.h"
+#include "time.h"
+#include <thread>
 
 Indicator::Indicator(qreal height): QGraphicsItem ()
 {
@@ -62,10 +64,21 @@ void Indicator::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPolygon(&points[0], points.size());
 }
 
+void Indicator::updateWhenPressed() {
+    while (pressed) {
+        if (difftime(time(0), lastUpdateTime) > 0.045) {
+            emit positionChanged(this->x());
+            lastUpdateTime = time(0);
+        }
+    }
+}
+
 void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = true;
-
+    lastUpdateTime = std::time(0);
+    std::thread updateThread(&Indicator::updateWhenPressed, this);
+    updateThread.detach();
     QGraphicsItem::mousePressEvent(event);
     update();
 }

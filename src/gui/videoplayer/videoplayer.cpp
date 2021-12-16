@@ -16,23 +16,44 @@ VideoPlayer::~VideoPlayer()
     delete timer;
 }
 
-void VideoPlayer::updatePicture(){
+void VideoPlayer::updateFrame(cv::Mat frame){
+    QImage qimg(frame.data,
+                frame.cols,
+                frame.rows,
+                frame.step,
+                QImage::Format_RGB888);
+    label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
+    label->updatePixmap();
+}
+
+void VideoPlayer::updateTime(){
+    currentTime += 1.0 / fps;
     cv::Mat frame;
     if (video.isOpened())
     {
         video >> frame;
-        if(!frame.empty())
-        {
-            QImage qimg(frame.data,
-                        frame.cols,
-                        frame.rows,
-                        frame.step,
-                        QImage::Format_RGB888);
-            label->setOriginalPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
-            label->updatePixmap();
-            emit frameUpdated(video.get(cv::CAP_PROP_POS_FRAMES));
-        }
+
+        if(!frame.empty()) updateFrame(frame);
     }
+
+    emit timeUpdated(currentTime);
+}
+
+void VideoPlayer::updateCurrentTime(double time) {
+    if (currentTime == time) return;
+    currentTime = time;
+    int position = currentTime * fps;
+    video.set(cv::CAP_PROP_POS_FRAMES, position);
+
+    cv::Mat frame;
+    if (video.isOpened())
+    {
+        video >> frame;
+
+        if(!frame.empty()) updateFrame(frame);
+    }
+
+    emit timeUpdated(currentTime);
 }
 
 void VideoPlayer::setChild(VideoWindow *label,
@@ -51,9 +72,8 @@ void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
     if (timer != nullptr) delete timer;
 
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updatePicture()));
-    double fps = this->video.get(cv::CAP_PROP_FPS);
-    timer->start(int(1000 / fps));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+    timer->start(1000 / fps);
     timer->stop();
 }
 
@@ -67,13 +87,6 @@ void VideoPlayer::sliderPressed(){
     updatePlayButton();
 }
 
-void VideoPlayer::updateFrame(int position){
-    if (position != video.get(cv::CAP_PROP_POS_FRAMES)) {
-        video.set(cv::CAP_PROP_POS_FRAMES, position-1);
-        updatePicture();
-    }
-}
-
 void VideoPlayer::sliderReleased() {
     isMoving = false;
     updatePlayButton();
@@ -84,7 +97,8 @@ void VideoPlayer::forward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::min(int(video.get(cv::CAP_PROP_FRAME_COUNT)), currentFrame + fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit frameUpdated(newFrame);
+    currentTime = std::max(currentTime + 5, 0.0);
+    emit timeUpdated(currentTime);
 }
 
 void VideoPlayer::backward(){
@@ -92,7 +106,8 @@ void VideoPlayer::backward(){
     int fps = video.get(cv::CAP_PROP_FPS);
     int newFrame = std::max(0, currentFrame - fps * 5);
     video.set(cv::CAP_PROP_POS_FRAMES, newFrame);
-    emit frameUpdated(newFrame);
+    currentTime = std::min(currentTime - 5, videoLength);
+    emit timeUpdated(currentTime);
 }
 
 void VideoPlayer::updatePlayButton(){
