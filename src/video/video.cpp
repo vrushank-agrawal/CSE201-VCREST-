@@ -158,12 +158,38 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
     }
 }
 
-void Video::ImageAnimator::FlyAnimation(Mat background) {
+void Video::ImageAnimator::FlyAnimation() {
     int num_frame = FRAMEPERSECOND*time;
     int h = img.rows;
     int w = img.cols;
-    /*int diff_h =
+    int window_h = h/2;
+    int window_w = window_h;
+    int clr [3] = {255, 255, 255};
+    int* color = clr;
+    Mat original = img.clone();
+    for (int i=1;i<=num_frame;i++){
+        cv::Rect myROI(10, 10, window_h, window_h);
+        img.
+    }
+
+    /*
+     * def create_blank(width, height, rgb_color=(0, 0, 0)):
+    """Create new image(numpy array) filled with certain color in RGB"""
+    # Create black blank image
+    image = np.zeros((height, width, 3), np.uint8)
+
+    # Since OpenCV uses BGR, convert the color first
+    color = tuple(reversed(rgb_color))
+    # Fill image with color
+    image[:] = color
+
+    return image
+     * int diff_h =
     for (int i=1;i<=num_frame;i++){
         background[]
     }*/
+}
+
+Mat Create_blank(int* color, int*size){
+
 }
