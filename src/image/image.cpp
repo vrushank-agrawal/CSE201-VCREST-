@@ -1,9 +1,17 @@
 //
 // Created by Vrushank on 11/12/2021.
 //
-#include <stdio.h>
+
+#ifndef IMAGEFILES
+#define IMAGEFILES
+
 #include "image.h"
-#include <stdarg.h>
+#include "collage/collage.cpp"
+#include "blurs.cpp"
+#include "rotate_resize.cpp"
+
+#endif
+
 
 using namespace img;
 
@@ -11,7 +19,6 @@ img::Image::Image(Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
     filename = std::string();
-    save_filename = std::string();
 }
 
 img::Image::Image(const string & file) {
@@ -30,7 +37,6 @@ img::Image::Image(const string & file) {
 
 //        printf("img is valid can be read") ;
     return_img_error(0) ;
-    save_filename = std::string();
 }
 
 img::Image::~Image() {}
@@ -64,8 +70,9 @@ String img::Image::getFilename() {
 }
 
 double img::Image::getRatio(){
-            return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
-        }
+    return  (1.0* this -> getMat().size().height)/ (1.0 * this -> getMat().size().width);
+}
+
 double img::Image::getModifiedImageRatio() {
     return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
 }

@@ -20,18 +20,21 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
     qListWidget->setUniformItemSizes(true);
     qListWidget->setAutoScrollMargin(100);
 
-    brush = new QBrush(Qt::white);
+    brush = QBrush(Qt::white);
+    map = QMap<QListWidgetItem*, Image>();
 }
 
-void ThumbnailManager::addImage(const cv::Mat& image, const QString& name) {
-    QImage qImage(image.data, image.cols, image.rows, image.step, QImage::Format_RGB888);
+void ThumbnailManager::addImage(Image image, const QString& name) {
+    Mat mat = image.getModifiedImg();
+    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
-            QPixmap::fromImage(qImage),
-            name
+            QPixmap::fromImage(qImage.rgbSwapped()),
+            name,
+            &image
             );
 }
 
-void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
+void ThumbnailManager::addImage(const QPixmap& image, const QString& name, Image *img) {
     QString displayName;
     if (name.lastIndexOf("/") >= 0) {
         displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
@@ -41,13 +44,26 @@ void ThumbnailManager::addImage(const QPixmap& image, const QString& name) {
     }
 
     auto *item = new QListWidgetItem(QIcon(image),displayName);
-    item->setBackground(*brush);
+    if (img != nullptr)
+        map.insert(item, *img);
+    item->setBackground(brush);
     item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);
 }
 
 ThumbnailManager::~ThumbnailManager() {
     delete listWidget;
-    delete brush;
 }
+
+int ThumbnailManager::getImagesCount() {
+    return map.size();
+}
+
+Image *ThumbnailManager::getImage(QListWidgetItem *item) {
+    return &map.find(item).value();
+}
+
+void ThumbnailManager::removeImage(int index) {
+}
+
 

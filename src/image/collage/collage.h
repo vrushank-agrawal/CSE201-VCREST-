@@ -1,4 +1,4 @@
-#include "image.h"
+#include "../image.h"
 
 #include <iostream>
 #include <stdarg.h>
@@ -41,6 +41,5 @@ namespace img {
                 Mat modifiedImage;
                 vector <Image> imageArrModified;
                 void fourStitchRecAux(bool, int times);
-
     };
 }
