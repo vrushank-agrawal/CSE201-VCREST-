@@ -151,9 +151,10 @@ void Video::ImageAnimator::RotateAnimation() {
     }
 }
 
-void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
+void Video::ImageAnimator::ZoomAnimationDisplay() {
+    int ratio = 0.2;
     int num_frame = FRAMEPERSECOND*time;
-    double change_per_frame = 1+(ratio-1)/num_frame;
+    double change_per_frame = 1+ratio;
     int img_h = img.size().height;
     int img_w = img.size().width;
     Image image_mat = img::Image(this->img);
@@ -161,8 +162,13 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
         img_h *= change_per_frame;
         img_w *= change_per_frame;
         image_mat.resizeImg(img_w, img_h);
-        img = image_mat.getMat();
-        imshow( "Frame", img);
+        Mat new_img = image_mat.getModifiedImg();
+        imshow( "Frame", new_img);
+        char c = (char)waitKey(1);
+        if( c == 27 )
+            break;
+        change_per_frame += ratio;
+
     }
 }
 

@@ -44,7 +44,7 @@ namespace vid {
         public:
             ImageAnimator(Mat img, int display_time);
             ~ImageAnimator();
-            void ZoomAnimationDisplay(double ratio);
+            void ZoomAnimationDisplay();
             void ZoomAnimationWrite(VideoWriter video_writer);
             void RotateAnimation();
             void FlyAnimation();
