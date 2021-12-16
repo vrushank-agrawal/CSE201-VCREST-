@@ -23,7 +23,6 @@ VideoEditor::VideoEditor(QWidget *parent) :
     QString videoPath = "D:/Downloads/1.mp4";
     QString prefix = "videoPath=";
     QString prefix2 = "imagePath=";
-    QString prefix3 = "outputPath=";
 
     for (int i = 0; i < arguments.size(); i++) {
         QString arg = arguments.at(i);
@@ -32,9 +31,6 @@ VideoEditor::VideoEditor(QWidget *parent) :
         }
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
-        }
-        if (arg.startsWith(prefix3)) {
-            outputPath = arg.right(arg.size() - prefix3.size()).toStdString();
         }
     }
 
@@ -65,6 +61,7 @@ void VideoEditor::setupMenus() {
     audioFileTypesFilter = "Waveform Audio (*.wmv)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
+    ui->actionExport->setShortcut(QKeySequence::Save);
     connect(ui->actionImport_Image, SIGNAL(triggered(bool)),
             this, SLOT(importImages()));
     connect(ui->actionImport_Audio, SIGNAL(triggered(bool)),
@@ -233,21 +230,34 @@ VideoEditor::~VideoEditor() {
 }
 
 void VideoEditor::writeVideo() {
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter("MP4 video (*.mp4)");
+    std::string outputPath;
+    if (dialog.exec()) {
+        QString qOutputPath = dialog.selectedFiles()[0];
+        if (qOutputPath.right(4) != ".mp4")
+            qOutputPath.append(".mp4");
+        outputPath = qOutputPath.toStdString();
+    } else {
+        return;
+    }
     cv::VideoWriter outputVideo;
     cv::Size sizeFrame(640, 480);
 
     qDebug() << outputPath.c_str();
 
     remove(outputPath.c_str());
-    bool isOk = outputVideo.open(outputPath.c_str(), fourcc, 30.0, sizeFrame, true);
+    bool isOk = outputVideo.open(outputPath, fourcc, 30.0, sizeFrame, true);
     if (!isOk) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
+        return;
     }
     int length = 10 * fps;
-    qDebug() << "start exporting" << isOk;
+    qDebug() << "start exporting";
     for (int i = 0; i < length; i++){
         double time = 1.0 * i / fps;
         Image* image = ui->timeline->getImage(time);

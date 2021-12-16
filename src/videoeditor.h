@@ -61,7 +61,7 @@ private:
 
     int fourcc;
 
-    std::string outputPath = "D:/Downloads/2.mp4";
+//    std::string outputPath = "D:/Downloads/2.mp4";
 };
 
 
