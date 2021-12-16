@@ -23,7 +23,10 @@ void VideoWindow::updatePixmap() {
         delete graphicsPixmap;
         graphicsPixmap = new QGraphicsPixmapItem(original_pixmap);
         scene->addItem(graphicsPixmap);
+        QRectF rect = graphicsPixmap->boundingRect();
+        scene->setSceneRect(0, 0, rect.width(), rect.height());
         fitInView(graphicsPixmap, Qt::KeepAspectRatio);
+        centerOn(graphicsPixmap);
     }
 }
 
