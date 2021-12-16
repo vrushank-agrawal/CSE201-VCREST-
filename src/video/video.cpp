@@ -75,6 +75,8 @@ void Video::Clear() {
 void Video::DisplayCurrentVideo() {
     for (int i = 0; i < number_of_animations; i++){
         animators[i].Display();
+        cout << "Done" << endl;
+        animators[i].RotateAnimation(10);
     }
     destroyAllWindows();
 }
@@ -134,13 +136,18 @@ const double FRAMEPERSECOND = 10;
 
 void Video::ImageAnimator::RotateAnimation(double angle) {
     int num_frame = FRAMEPERSECOND*time;
-    /*double change_per_frame = angle/num_frame;
-    Image image_mat = img::Image(get_mat());
-    for (int i=1;i<=num_frame;i++){
-        image_mat.rotateImg(change_per_frame);
-        img = image_mat.getMat();
-        imshow( "Frame", img);
-    }*/
+    double frame_angle = angle;
+    for (int i=1;i<=this->time;i++){
+        Image image_mat = img::Image(this->img);
+        image_mat.rotateImg(frame_angle);
+        Mat img_fuck = image_mat.getModifiedImg();
+        imshow( "Frame", img_fuck);
+        char c = (char)waitKey(1);
+        if( c == 27 )
+            break;
+
+        frame_angle += angle;
+    }
 }
 
 void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
@@ -148,7 +155,7 @@ void Video::ImageAnimator::ZoomAnimationDisplay(double ratio) {
     double change_per_frame = 1+(ratio-1)/num_frame;
     int img_h = img.size().height;
     int img_w = img.size().width;
-    Image image_mat = img::Image(get_mat());
+    Image image_mat = img::Image(this->img);
     for (int i=1;i<=num_frame;i++){
         img_h *= change_per_frame;
         img_w *= change_per_frame;

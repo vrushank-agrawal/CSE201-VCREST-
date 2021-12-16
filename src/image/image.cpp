@@ -19,7 +19,6 @@ img::Image::Image(Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
     filename = std::string();
-    save_filename = std::string();
 }
 
 img::Image::Image(const string & file) {
@@ -38,7 +37,6 @@ img::Image::Image(const string & file) {
 
 //        printf("img is valid can be read") ;
     return_img_error(0) ;
-    save_filename = std::string();
 }
 
 img::Image::~Image() {}

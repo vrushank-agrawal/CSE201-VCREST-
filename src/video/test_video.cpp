@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include "video.h"
+#include "../image/image.cpp"
+
 
 using namespace std;
 using namespace cv;
@@ -74,8 +76,17 @@ int main(){
     cout << v.AnimationNumber() << endl;
     v.Add(img1, 50);
     v.Resize(img1.size().width, img1.size().height);
+    v.DisplayCurrentVideo();
     //v.WriteVideo("..//YESSS.avi");
+    //img1 = image_mat.getMat();
+    //imshow( "Frame", img);
 
+    cout << "We are here" << endl;
+    //Image image_mat = img::Image(img1);
+    //image_mat.rotateImg(30);
+    //Mat img_fuck = image_mat.getModifiedImg();
+    //image_mat.imgModifiedPreview("testing_img_rotate");
+    //waitKey(0);
     cout << "Everything done, opencv works" << endl;
     return 0;
 }
