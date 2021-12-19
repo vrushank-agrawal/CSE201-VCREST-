@@ -26,6 +26,8 @@ public:
                        QPoint position
                        );
     ~ImageItem();
+    static ImageItem* getSelectedImageItem() {return selectedImageItem;}
+
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
     QMultiMap<double, ImageItem*>::iterator start, end;
@@ -38,10 +40,10 @@ public:
 
 private:
     SizeGripItem *sizeGripItem = nullptr;
-    static QBrush brush;
-    static QPen pen;
+    static QBrush brush, selectedBrush;
+    static QPen pen, selectedPen;
+    static ImageItem *selectedImageItem;
     QSizeF size;
-    QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;
 

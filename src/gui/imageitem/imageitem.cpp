@@ -7,22 +7,23 @@
 double ImageItem::yHeight = 40;
 double ImageItem::yOffset = 20;
 double ImageItem::xTimeOffset = 100;
+ImageItem* ImageItem::selectedImageItem = nullptr;
 QBrush ImageItem::brush = QBrush(Qt::black);
 QPen ImageItem::pen = QPen(Qt::black, border);
+QBrush ImageItem::selectedBrush = QBrush(Qt::gray);
+QPen ImageItem::selectedPen = QPen(Qt::blue, border);
 QTransform ImageItem::parentTransform = QTransform();
 
 ImageItem::ImageItem(Image *image,
                      QPoint position
                      ): image(image) {
-    Mat mat = image->getModifiedImg();
-    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
-    thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
 }
 
 
 ImageItem::~ImageItem() {
+    selectedImageItem = nullptr;
     delete image;
     delete sizeGripItem;
 }
@@ -43,9 +44,14 @@ void ImageItem::calculateSize() {
 }
 
 void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    painter->setPen(pen);
-    painter->setBrush(brush);
+    painter->setPen(selectedImageItem == this ? selectedPen : pen);
+    painter->setBrush(selectedImageItem == this? selectedBrush : brush);
     painter->drawRoundedRect(boundingRect(), border, border);
+
+    Mat mat = image->getModifiedImg();
+    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+    QPixmap thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
+
     double wScale = size.width() / thumbnail.width();
     QRectF thumbnailRect(0,0, thumbnail.width(), thumbnail.height());
 
@@ -66,6 +72,15 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    if (selectedImageItem != this) {
+        auto oldSelected = selectedImageItem;
+        selectedImageItem = this;
+        this->update();
+        if (oldSelected != nullptr) oldSelected->update();
+    }
+    else {
+        selectedImageItem = nullptr;
+    }
     pressed = true;
     oldMousePos = event->scenePos();
     oldPos = scenePos();
