@@ -62,31 +62,40 @@ void Timeline::updateVideoLength(int length) {
     }
 }
 
-void Timeline::moveTimeline() {
-    qreal xPosition = indicator->x() - sceneShowingWidth / 2;
-    if (xPosition < 0) xPosition = 0;
-    if (xPosition + sceneShowingWidth > sceneWidth) xPosition = sceneWidth - sceneShowingWidth;
+void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
+    if (option == CenterIndicator) {
+        currentXPosition = indicator->x() - sceneShowingWidth / 2;
+        if (currentXPosition < 0) currentXPosition = 0;
+        if (currentXPosition + sceneShowingWidth > sceneWidth) currentXPosition = sceneWidth - sceneShowingWidth;
+    }
 
-    fitInView(xPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
+    fitInView(currentXPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
+    ImageItem::parentTransform = transform();
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {
-    QGraphicsView::resizeEvent(event);
     moveTimeline();
+}
+
+void Timeline::updateFrame(double time){
+    Image *image = getImage(time);
+    if (image == nullptr) return;
+    emit changeFrame(image->getModifiedImg());
 }
 
 void Timeline::updateIndicatorPosition(double time) {
     if (indicator->x() != time * xTimeOffset) {
         indicator->setPos(time * xTimeOffset, 0);
-        moveTimeline();
+        moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
+        updateFrame(time);
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    qDebug() << getImageAtIndicator();
+    updateFrame(time);
 }
 
 void Timeline::addImage(Image *image, double start, double end) {
@@ -96,7 +105,6 @@ void Timeline::addImage(Image *image, double start, double end) {
     item->calculateSize();
     scene->addItem(item);
 
-//    qDebug() << map;
     connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
             this, SLOT(moveImageItem(ImageItem *, double, double)));
     connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
@@ -126,12 +134,12 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
 
 
 ImageItem* Timeline::getImageItem(double time) {
-    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(time);
+    QMultiMap<double, ImageItem*>::iterator iterator = map.upperBound(time);
+
     // find the greatest key smaller than this key
-    if (iterator.key() > time) {
-        iterator--;
-        iterator = map.find(iterator.key());
-    }
+    if (iterator == map.begin()) return nullptr;
+    iterator--;
+    iterator = map.find(iterator.key());
 
     // ignore nullptr
     while (iterator != map.end() && iterator.key() <= time) {
@@ -156,7 +164,6 @@ Image* Timeline::getImageAtIndicator() {
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
-//    qDebug() << map;
 }
 
 void Timeline::addImageAtIndicator(Image *image, double max_length) {
@@ -177,24 +184,29 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
     addImage(image, time, time + duration);
 }
 
+void Timeline::setItemPosition(ImageItem *item, double startTime) {
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
+    if (startTime < 0) return;
+
+    item->setX(startTime * xTimeOffset);
+}
+
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;
 
     // detect collision with other images
-    ImageItem* s = getImageItem(startTime);
-    if (s != nullptr && s != item) return;
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
-            startTime += iterator.key() - endTime;
-            item->setX(startTime * xTimeOffset);
+            setItemPosition(item, startTime + iterator.key() - endTime);
             return;
         }
         iterator++;
     }
 
-    item->setX(startPos);
+    setItemPosition(item, startTime);
 }
 
 void Timeline::resizeImageItem(ImageItem *item, double newLength) {
@@ -211,4 +223,21 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
         iterator++;
     }
     item->updateDuration(newLength);
+}
+
+void Timeline::wheelEvent(QWheelEvent *event) {
+    QPointF visible_left_point = mapToScene(0, 0);
+    currentXPosition = visible_left_point.x();
+    QGraphicsView::wheelEvent(event);
+}
+
+void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = mapToScene(event->pos());
+        if (pos.y() < timeHeight) {
+            indicator->setX(pos.x());
+            updateTime(pos.x());
+        }
+    }
+    QGraphicsView::mouseDoubleClickEvent(event);
 }

@@ -348,6 +348,12 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                <property name="styleSheet">
                 <string notr="true">background:rgb(68, 255, 82)</string>
                </property>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
               </widget>
              </item>
              <item>
@@ -465,7 +471,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1077</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
