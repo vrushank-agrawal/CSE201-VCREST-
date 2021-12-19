@@ -4,7 +4,10 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <string>
-#include "cmake-build-debug/Video.h"
+#include "video.h"
+#include "video.cpp"
+#include "../image/image.h"
+
 
 using namespace std;
 using namespace cv;
@@ -41,41 +44,41 @@ using namespace cv;
 }*/
 
 int main(){
+    Mat mat1, mat2, mat3;
+    string imgpath = "..\\..\\video_samples\\A.png";
+    mat1 = imread(imgpath);
+    imgpath = "..\\..\\video_samples\\B.png";
+    mat2 = imread(imgpath);
+    imgpath = "..\\..\\video_samples\\C.jpg";
+    mat3 = imread(imgpath);
+    Image img1, img2, img3;
+    img1 = Image(mat1);
+    img2 = Image(mat2);
+    img3 = Image(mat3);
 
-
-    //string imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\A.png";
-    Mat img1 = imread(imgpath);
-    //imgpath = "D:\\Dimitri\\Homeworks\\YEAR2\\CSE201_Project\\New folder\\video_editor_BX23\\src\\video\\B.png";
-    Mat img2 = imread(imgpath);
-    Mat images[10];
-    int times[10];
-    images[0] = img1;
-    images[1] = img2;
-    times[0] = 100;
-    times[1] = 100;
-    vid::Video v(images, times, 2);
+    vid::Video v(img1.getMat().size().width, img1.getMat().size().height);
     v.test();
-    v.DisplayCurrentVideo();
-    v.Remove(0);
-    v.DisplayCurrentVideo();
+    v.Add(img3, 50);
+    v.Add(img1, 50);
+    v.Add(img2, 50);
+    v.Add(img3, 50, 2);
+    cout << v.AnimationNumber() << endl;
+    //v.DisplayCurrentVideo();
 
-    /*VideoWriter video("outcpp.avi", VideoWriter::fourcc('M','J','P','G'),
-                      10, Size(img.size().width, img.size().height));
-    int i = 0;
-    while(i < 50){
+    v.Clear();
+    cout << v.AnimationNumber() << endl;
+    v.Add(img2, 50);
+    v.Resize(img2.getMat().size().width, img2.getMat().size().height);
+    //v.DisplayCurrentVideo();
+    //v.WriteVideo("..//YESSS.mp4");
+    //img1 = image_mat.getMat();
+    //imshow( "Frame", img);
 
-        video.write(img);
-        imshow( "Frame", img);
-
-        char c = (char)waitKey(1);
-        if( c == 27 )
-            break;
-        i++;
-    }
-    video.release();
-    destroyAllWindows();*/
-
-    // in the end the avi file must be created and you must see the video
+    cout << "We are here" << endl;
+    img2.rotateImg(30);
+    Mat img_fuck = img2.getModifiedImg();
+    img2.imgModifiedPreview("testing_img_rotate");
+    waitKey(0);
     cout << "Everything done, opencv works" << endl;
     return 0;
 }

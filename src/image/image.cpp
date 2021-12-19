@@ -12,8 +12,11 @@
 
 #endif
 
-
 using namespace img;
+
+img::Image::Image() {
+
+}
 
 img::Image::Image(Mat mat) {
     img_matrix = mat;
