@@ -46,12 +46,21 @@ This is a unique video editing software developed to help a user create a video 
 
 ## Third parties
 - Qt6.2.1
+- FFmpeg 4.2.5
 - OpenCV 4.5.2
 
 ## Setting for CLion
 - In Setting(Preferences)/Build, Execute and Deployment
     - Toolchain to change your compiler
     - In CMake: -DCMAKE_PREFIX_PATH=path/to/your/Qt (example ~/Qt/6.2.1/MacOS)
+
+
+## Setup for FFmpeg
+### Windows
+1. Download the latest version of FFmpeg from this [link](https://www.ffmpeg.org/download.html)
+2. Unpack the files in `C:\ffmpeg` (folder name is very important)
+3. Add this path to environment variables `C:\ffmpeg`
+4. If Clion is already open, then restart the IDE so that the environment variables can be updated.
 
 ## Setup for OpenCV
 ### Windows

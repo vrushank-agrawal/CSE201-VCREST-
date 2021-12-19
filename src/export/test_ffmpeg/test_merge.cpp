@@ -3,6 +3,7 @@
 //
 
 #include "test_merge.h"
+#include "..\export.cpp"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int main() {
     char* last_backslash = strrchr(add, '\\');
 //    address.erase(remove(address.begin(), address.end(), "\cmake-build-debug"), address.end());
 
-    cout << "Current working directory: " << last_backslash << endl;
+//    cout << "Current working directory: " << last_backslash << endl;
     char video_path[200];
     strcpy(video_path, R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\export\test_ffmpeg\test_files\video.mp4)");
     char audio_path[200];
@@ -40,14 +41,15 @@ int main() {
     strcpy(export_address, R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\export\test_ffmpeg\test_files\output.mkv)");
 
 
-    char cmd[256];
-    strcpy(cmd,"ffmpeg -i ");
-    strcat(cmd, video_path);
-    strcat(cmd, " -i ");
-    strcat(cmd, audio_path);
-    strcat(cmd, " -c copy ");
-    strcat(cmd, export_address);
-    system(cmd);
+    exp::exporter(video_path, audio_path, export_address);
+//    char cmd[256];
+//    strcpy(cmd,"ffmpeg -i ");
+//    strcat(cmd, video_path);
+//    strcat(cmd, " -i ");
+//    strcat(cmd, audio_path);
+//    strcat(cmd, " -c copy ");
+//    strcat(cmd, export_address);
+//    system(cmd);
 
     exit(0);
 
