@@ -21,6 +21,7 @@
 class Indicator: public QObject, public QGraphicsItem
 {
 Q_OBJECT
+Q_INTERFACES(QGraphicsItem)
 public:
     explicit Indicator(qreal height);
     ~Indicator();

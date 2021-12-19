@@ -64,6 +64,7 @@ public:
     class Resizer
     {
     public:
+        virtual ~Resizer() = default;
         virtual void operator()(QGraphicsItem* item,
                                 const QRectF& rect) = 0;
     };
