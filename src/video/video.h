@@ -32,8 +32,8 @@ namespace vid {
         void test();
         void WriteVideo(string output_name);
         void DisplayCurrentVideo();
-        void Add(Image image, int time_to_display);
-        void Add(Image image, int time_to_display, int index);
+        void Add(Mat image_mat, int time_to_display);
+        void Add(Mat image_mat, int time_to_display, int index);
         void Remove(int index);
         void ApplyAnimation(int index);
         void Resize(int width, int height);
@@ -59,7 +59,7 @@ namespace vid {
         };
 
     private:
-        vector<Image> images;
+        vector<Mat> image_mats;
         vector<ImageAnimator> animators;
         int number_of_animations;
         int width, height;

@@ -29,21 +29,23 @@ Video::~Video() {
     this->Clear();
 }
 
-void Video::Add(Image image, int time_to_display) {
-    this->images.push_back(image);
-    ImageAnimator new_animator = ImageAnimator(image, time_to_display);
+void Video::Add(Mat image_mat, int time_to_display) {
+    this->image_mats.push_back(image_mat);
+    Image new_image = Image(image_mat);
+    ImageAnimator new_animator = ImageAnimator(new_image, time_to_display);
     this->animators.push_back(new_animator);
     this->number_of_animations ++;
 }
 
-void Video::Add(Image image, int time_to_display, int index) {
+void Video::Add(Mat image_mat, int time_to_display, int index) {
     if (index > this->number_of_animations){
         cout << "Index is out of reach";
     } else if (index == this->number_of_animations) {
-        this->Add(image, time_to_display);
+        this->Add(image_mat, time_to_display);
     } else {
-        this->images.insert(this->images.begin() + index, image);
-        ImageAnimator new_animator = ImageAnimator(image, time_to_display);
+        this->image_mats.insert(this->image_mats.begin() + index, image_mat);
+        Image new_image = Image(image_mat);
+        ImageAnimator new_animator = ImageAnimator(new_image, time_to_display);
         this->animators.insert(this->animators.begin() + index, new_animator);
         this->number_of_animations++;
     }
@@ -54,13 +56,13 @@ void Video::Remove(int index) {
         cout << "Index out of reach" << endl;
         return;
     }
-    this->images.erase(this->images.begin() + index);
+    this->image_mats.erase(this->image_mats.begin() + index);
     this->animators.erase(this->animators.begin() + index);
     number_of_animations --;
 }
 
 void Video::Clear() {
-    this->images.clear();
+    this->image_mats.clear();
     this->animators.clear();
     this->number_of_animations = 0;
     this->width = 0;
@@ -71,8 +73,8 @@ void Video::DisplayCurrentVideo() {
     cout << number_of_animations << endl;
     for (int i = 0; i < number_of_animations; i++){
         animators[i].Display();
-        cout << "Done" << endl;
-        animators[i].RotateAnimation();
+        //cout << "Done" << endl;
+        //animators[i].RotateAnimation();
     }
     destroyAllWindows();
 }
@@ -136,9 +138,12 @@ void Video::ImageAnimator::RotateAnimation() {
     int angle = 5;
     int num_frame = FRAMEPERSECOND*time;
     double frame_angle = angle;
+
+    Mat modified_image = this->image.getModifiedImg();
     for (int i=1;i<=this->time;i++){
-        this->image.rotateImg(frame_angle);
-        imshow( "Frame", this->image.getModifiedImg());
+        Image new_image = Image(modified_image);
+        new_image.rotateImg(frame_angle);
+        imshow( "Frame", new_image.getModifiedImg());
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -162,7 +167,6 @@ void Video::ImageAnimator::ZoomAnimationDisplay() {
         if( c == 27 )
             break;
         change_per_frame += ratio;
-
     }
 }
 

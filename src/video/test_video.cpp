@@ -51,34 +51,30 @@ int main(){
     mat2 = imread(imgpath);
     imgpath = "..\\..\\video_samples\\C.jpg";
     mat3 = imread(imgpath);
-    Image img1, img2, img3;
-    img1 = Image(mat1);
-    img2 = Image(mat2);
-    img3 = Image(mat3);
 
-    vid::Video v(img1.getMat().size().width, img1.getMat().size().height);
+    vid::Video v(mat1.size().width, mat1.size().height);
     v.test();
-    v.Add(img3, 50);
-    v.Add(img1, 50);
-    v.Add(img2, 50);
-    v.Add(img3, 50, 2);
+    v.Add(mat3, 50);
+    v.Add(mat2, 50);
+    v.Add(mat1, 50);
+    v.Add(mat3, 50, 2);
     cout << v.AnimationNumber() << endl;
-    //v.DisplayCurrentVideo();
+    v.DisplayCurrentVideo();
 
     v.Clear();
     cout << v.AnimationNumber() << endl;
-    v.Add(img2, 50);
-    v.Resize(img2.getMat().size().width, img2.getMat().size().height);
-    //v.DisplayCurrentVideo();
+    v.Add(mat2, 50);
+    v.Resize(mat2.size().width, mat2.size().height);
+    v.DisplayCurrentVideo();
     //v.WriteVideo("..//YESSS.mp4");
     //img1 = image_mat.getMat();
     //imshow( "Frame", img);
 
     cout << "We are here" << endl;
-    img2.rotateImg(30);
-    Mat img_fuck = img2.getModifiedImg();
-    img2.imgModifiedPreview("testing_img_rotate");
-    waitKey(0);
+    //img2.rotateImg(30);
+    //Mat img_fuck = img2.getModifiedImg();
+    //img2.imgModifiedPreview("testing_img_rotate");
+    //waitKey(0);
     cout << "Everything done, opencv works" << endl;
     return 0;
 }
