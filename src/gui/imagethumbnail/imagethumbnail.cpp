@@ -25,7 +25,7 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
 }
 
 void ThumbnailManager::addImage(Image image, const QString& name) {
-    Mat mat = image.getModifiedImg();
+    cv::Mat mat = image.getMat();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
             QPixmap::fromImage(qImage.rgbSwapped()),

@@ -200,7 +200,7 @@ void VideoEditor::blurImage() {
 
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    Image *image = thumbnailManager->getImage(item);
+    Image *image = new Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
 

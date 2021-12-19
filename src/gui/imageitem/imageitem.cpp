@@ -23,6 +23,7 @@ ImageItem::ImageItem(Image *image,
 
 
 ImageItem::~ImageItem() {
+    delete image;
     delete sizeGripItem;
 }
 
