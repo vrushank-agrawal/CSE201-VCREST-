@@ -52,7 +52,7 @@ private:
 
 private:
     void moveTimeline(TimelineMoveOption option);
-    void setItemPosition(ImageItem *item, double startTime);
+    void setItemPosition(ImageItem *item, double startTime, double endTime);
     void updateFrame(double time);
     ImageItem* getImageItem(double time);
 
