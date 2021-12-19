@@ -27,6 +27,8 @@ namespace img {
 
     public:
 
+        Image();
+
         Image (Mat mat);
 
         Image (const string &    filename);

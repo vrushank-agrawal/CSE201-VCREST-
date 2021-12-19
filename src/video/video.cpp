@@ -2,12 +2,10 @@
 // Created by korkot on 11/21/2021.
 //
 #include "video.h"
-#include "../image/image.h"
 
 using namespace vid;
 using namespace std;
 using namespace img;
-
 
 
 void Video::test(){
@@ -22,7 +20,6 @@ Video::Video(int width, int height) {
 
 Video::Video(Mat *images, int *times_of_display, int size, int width, int height) : Video(width, height) {
     for (int index = 0; index < size; index++) {
-        cout << "Here" << endl;
         this->Add(images[index], times_of_display[index]);
         number_of_animations++;
     }
@@ -32,21 +29,21 @@ Video::~Video() {
     this->Clear();
 }
 
-void Video::Add(Mat img, int time_to_display) {
-    this->images.push_back(img);
-    ImageAnimator new_animator = ImageAnimator(img, time_to_display);
+void Video::Add(Image image, int time_to_display) {
+    this->images.push_back(image);
+    ImageAnimator new_animator = ImageAnimator(image, time_to_display);
     this->animators.push_back(new_animator);
     this->number_of_animations ++;
 }
 
-void Video::Add(Mat img, int time_to_display, int index) {
+void Video::Add(Image image, int time_to_display, int index) {
     if (index > this->number_of_animations){
         cout << "Index is out of reach";
     } else if (index == this->number_of_animations) {
-        this->Add(img, time_to_display);
+        this->Add(image, time_to_display);
     } else {
-        this->images.insert(this->images.begin() + index, img);
-        ImageAnimator new_animator = ImageAnimator(img, time_to_display);
+        this->images.insert(this->images.begin() + index, image);
+        ImageAnimator new_animator = ImageAnimator(image, time_to_display);
         this->animators.insert(this->animators.begin() + index, new_animator);
         this->number_of_animations++;
     }
@@ -63,8 +60,6 @@ void Video::Remove(int index) {
 }
 
 void Video::Clear() {
-    for (int i = 0; i < number_of_animations; i++){
-    }
     this->images.clear();
     this->animators.clear();
     this->number_of_animations = 0;
@@ -73,6 +68,7 @@ void Video::Clear() {
 }
 
 void Video::DisplayCurrentVideo() {
+    cout << number_of_animations << endl;
     for (int i = 0; i < number_of_animations; i++){
         animators[i].Display();
         cout << "Done" << endl;
@@ -82,7 +78,7 @@ void Video::DisplayCurrentVideo() {
 }
 
 void Video::WriteVideo(string output_name) {
-    VideoWriter video_writer(output_name, VideoWriter::fourcc('M','J','P','G'),
+    VideoWriter video_writer(output_name, VideoWriter::fourcc('m','p','4','v'),
                              10, Size(this->width, this->height));
     for (int i = 0; i < this->number_of_animations; i++){
         this->animators[i].Write(video_writer);
@@ -100,11 +96,13 @@ int Video::AnimationNumber(){
     return this->number_of_animations;
 }
 
-Video::ImageAnimator::ImageAnimator(Mat img, int display_time) {
-    this->img = img;
+
+Video::ImageAnimator::ImageAnimator(Image image, int display_time) {
+    this->image = image;
     this->time = display_time;
     this->animation_type = -1;
 }
+
 
 Video::ImageAnimator::~ImageAnimator() {
 }
@@ -112,7 +110,7 @@ Video::ImageAnimator::~ImageAnimator() {
 void Video::ImageAnimator::Display() {
     int i = 0;
     while(i < time){
-        imshow( "Frame", img);
+        imshow( "Frame", this->image.getMat());
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -123,7 +121,7 @@ void Video::ImageAnimator::Display() {
 void Video::ImageAnimator::Write(VideoWriter video_writer) {
     int i = 0;
     while(i < this->time){
-        video_writer.write(img);
+        video_writer.write(this->image.getMat());
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -139,10 +137,8 @@ void Video::ImageAnimator::RotateAnimation() {
     int num_frame = FRAMEPERSECOND*time;
     double frame_angle = angle;
     for (int i=1;i<=this->time;i++){
-        Image image_mat = img::Image(this->img);
-        image_mat.rotateImg(frame_angle);
-        Mat img_fuck = image_mat.getModifiedImg();
-        imshow( "Frame", img_fuck);
+        this->image.rotateImg(frame_angle);
+        imshow( "Frame", this->image.getModifiedImg());
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -155,15 +151,13 @@ void Video::ImageAnimator::ZoomAnimationDisplay() {
     int ratio = 0.2;
     int num_frame = FRAMEPERSECOND*time;
     double change_per_frame = 1+ratio;
-    int img_h = img.size().height;
-    int img_w = img.size().width;
-    Image image_mat = img::Image(this->img);
+    int img_h = this->image.getMat().size().height;
+    int img_w = this->image.getMat().size().width;
     for (int i=1;i<=num_frame;i++){
         img_h *= change_per_frame;
         img_w *= change_per_frame;
-        image_mat.resizeImg(img_w, img_h);
-        Mat new_img = image_mat.getModifiedImg();
-        imshow( "Frame", new_img);
+        this->image.resizeImg(img_w, img_h);
+        imshow( "Frame", this->image.getModifiedImg());
         char c = (char)waitKey(1);
         if( c == 27 )
             break;
@@ -174,13 +168,13 @@ void Video::ImageAnimator::ZoomAnimationDisplay() {
 
 void Video::ImageAnimator::CropAnimation() {
     int num_frame = FRAMEPERSECOND*time;
-    int h = img.rows;
-    int w = img.cols;
+    int h = this->image.getMat().rows;
+    int w = this->image.getMat().cols;
     int window_h = h/2;
 
     for (int i=1;i<=num_frame;i++){
         while (10*i+window_h<h and 10*i+window_h<w) {
-            Mat new_img = this->img.clone();
+            Mat new_img = this->image.getMat().clone();
             cv::Rect myROI(10 * i, 10 * i, window_h, window_h);
             Mat cropped = new_img(myROI);
             imshow("Frame", cropped);
@@ -188,7 +182,6 @@ void Video::ImageAnimator::CropAnimation() {
             if (c == 27)
                 break;
         }
-
 
     }
 

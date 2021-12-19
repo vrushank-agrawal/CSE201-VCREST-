@@ -5,7 +5,8 @@
 #include <iostream>
 #include <string>
 #include "video.h"
-#include "../image/image.cpp"
+#include "video.cpp"
+#include "../image/image.h"
 
 
 using namespace std;
@@ -43,50 +44,41 @@ using namespace cv;
 }*/
 
 int main(){
+    Mat mat1, mat2, mat3;
     string imgpath = "..\\..\\video_samples\\A.png";
-    Mat img1 = imread(imgpath);
+    mat1 = imread(imgpath);
     imgpath = "..\\..\\video_samples\\B.png";
-    Mat img2 = imread(imgpath);
+    mat2 = imread(imgpath);
     imgpath = "..\\..\\video_samples\\C.jpg";
-    Mat img3 = imread(imgpath);
+    mat3 = imread(imgpath);
+    Image img1, img2, img3;
+    img1 = Image(mat1);
+    img2 = Image(mat2);
+    img3 = Image(mat3);
 
-
-    Mat images[10];
-    int times[10];
-    images[0] = img1;
-    images[1] = img2;
-    images[2] = img3;
-    times[0] = 100;
-    times[1] = 100;
-    times[2] = 100;
-    vid::Video v(images, times, 3, img1.size().width, img1.size().height);
-    //v.DisplayCurrentVideo();
-    //v.test();
-    v.Add(img3, 50, 0);
-    v.Add(img1, 50, 4);
-    v.Add(img2, 50, 4);
+    vid::Video v(img1.getMat().size().width, img1.getMat().size().height);
+    v.test();
+    v.Add(img3, 50);
+    v.Add(img1, 50);
+    v.Add(img2, 50);
     v.Add(img3, 50, 2);
     cout << v.AnimationNumber() << endl;
-    //v.DisplayCurrentVideo();
-    v.Remove(1);
-    v.Remove(0);
     //v.DisplayCurrentVideo();
 
     v.Clear();
     cout << v.AnimationNumber() << endl;
-    v.Add(img1, 50);
-    v.Resize(img1.size().width, img1.size().height);
-    v.DisplayCurrentVideo();
-    //v.WriteVideo("..//YESSS.avi");
+    v.Add(img2, 50);
+    v.Resize(img2.getMat().size().width, img2.getMat().size().height);
+    //v.DisplayCurrentVideo();
+    //v.WriteVideo("..//YESSS.mp4");
     //img1 = image_mat.getMat();
     //imshow( "Frame", img);
 
     cout << "We are here" << endl;
-    //Image image_mat = img::Image(img1);
-    //image_mat.rotateImg(30);
-    //Mat img_fuck = image_mat.getModifiedImg();
-    //image_mat.imgModifiedPreview("testing_img_rotate");
-    //waitKey(0);
+    img2.rotateImg(30);
+    Mat img_fuck = img2.getModifiedImg();
+    img2.imgModifiedPreview("testing_img_rotate");
+    waitKey(0);
     cout << "Everything done, opencv works" << endl;
     return 0;
 }

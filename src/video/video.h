@@ -8,10 +8,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "../image/image.cpp"
 #endif //OPENCV
 
 using namespace cv;
 using namespace std;
+using namespace img;
 
 #ifndef VIDEO_CLASS
 #define VIDEO_CLASS
@@ -30,8 +32,8 @@ namespace vid {
         void test();
         void WriteVideo(string output_name);
         void DisplayCurrentVideo();
-        void Add(Mat img, int time_to_display);
-        void Add(Mat img, int time_to_display, int index);
+        void Add(Image image, int time_to_display);
+        void Add(Image image, int time_to_display, int index);
         void Remove(int index);
         void ApplyAnimation(int index);
         void Resize(int width, int height);
@@ -42,25 +44,22 @@ namespace vid {
         //current image for that time and applying the animation
         struct ImageAnimator{
         public:
-            ImageAnimator(Mat img, int display_time);
+            ImageAnimator(Image image, int display_time);
             ~ImageAnimator();
             void ZoomAnimationDisplay();
             void ZoomAnimationWrite(VideoWriter video_writer);
             void RotateAnimation();
             void CropAnimation();
             Mat Create_blank(int* color, int* size);
-            Mat get_mat() {
-                return this -> img;
-            }
             void Display();
             void Write(VideoWriter video_writer);
 
-            Mat img;
+            Image image;
             int time, animation_type;
         };
 
     private:
-        vector<Mat> images;
+        vector<Image> images;
         vector<ImageAnimator> animators;
         int number_of_animations;
         int width, height;

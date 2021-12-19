@@ -1,5 +1,6 @@
-#include "../image.h"
+#pragma once
 
+#include "../image.h"
 #include <iostream>
 #include <stdarg.h>
 
