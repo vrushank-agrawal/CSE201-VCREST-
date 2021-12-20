@@ -2,7 +2,13 @@
 
 #include "../image.h"
 #include <iostream>
-#include <stdarg.h>
+
+using cv::Mat;
+using std::vector;
+using img::Image;
+
+#ifndef COLLAGE_CLASS
+#define COLLAGE_CLASS
 
 namespace img {
 
@@ -12,7 +18,7 @@ namespace img {
                 ~ Collage();
 
                 //create an array of coordinates of corners of each of the images, variable
-//                int subImageCorners[numImages * 4];
+                //int subImageCorners[numImages * 4];
 
                 void twoStitch(bool );
                 void threeStitch();
@@ -41,3 +47,5 @@ namespace img {
                 void fourStitchRecAux(bool, int times);
     };
 }
+
+#endif // COLLAGE_CLASS

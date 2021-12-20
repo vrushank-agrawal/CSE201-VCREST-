@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef OPENCV
 #define OPENCV
 
@@ -7,12 +9,10 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 #include <opencv2/core/utility.hpp>
-#include <iostream>
 
 #endif //OPENCV
 
-using namespace cv;
-using namespace std;
+#include <iostream>
 
 #ifndef IMAGE_CLASS
 #define IMAGE_CLASS
@@ -20,54 +20,56 @@ using namespace std;
 namespace img {
 
     class Image {
-
-        Mat img_matrix;
-        Mat img_matrix_modified;
-        string filename;
+        cv::Mat img_matrix;
+        cv::Mat img_matrix_modified;
+        std::string filename;
 
     public:
-
         Image();
-
-        Image (Mat mat);
-        Image (const string &    filename);
+        Image (cv::Mat mat);
+        Image (const std::string &    filename);
         ~Image();
 
         // returns the Matrix associated to the image
-        Mat getMat();
-        String getFilename();
-        Mat getModifiedImg();
-        void setModifiedImg(Mat mat);
+        cv::Mat getMat();
+        std::string getFilename();
+        cv::Mat getModifiedImg();
+        void setModifiedImg(cv::Mat mat);
         int return_img_error(int a);
 
         // returns true if input image is of valid format
-        bool validImg(const string & 	filename);
+        bool validImg(const std::string & 	filename);
 
         // returns a Matrix of the image color values
-        Mat decodeImg(const String & 	filename,
-                      int 	            flags = IMREAD_COLOR);
+        cv::Mat decodeImg(const std::string & 	filename,
+                      int 	            flags = cv::IMREAD_COLOR);
+
+        //resets image dimensions by adding black areas
+        cv::Mat equalizeImgDim();
 
         //Returns ratio from dimensions:
         double getRatio();
         double getModifiedImageRatio();
 
         // Image matrix preview functions
-        void imgPreview( const String & 	winname);
-        void imgModifiedPreview( const string & winname);
+        void imgPreview( const std::string & 	winname);
+        void imgModifiedPreview( const std::string & winname);
 
-        // Basic editing functions in rotate_resize.cpp
+        // Basic editing functions
         void resizeImg(int width, int height);
         void rotateImg(double angle);
 
-        //Blurs in blurs.cpp
+        //Blurs
         void bilateralFilter(int distance);
         void blur(int width, int height);
         void boxBlur(int width, int height, int depth);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
 
-    };
-}
+    }; // Image() class
 
+} //namespace
 
 #endif // IMAGE_CLASS
+
+#include "collage/collage.h"

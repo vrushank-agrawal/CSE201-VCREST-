@@ -28,7 +28,7 @@ void exp::exporter::merge_av (const char* video_path, const char* audio_path, co
     strcat(cmd, audio_path);
     strcat(cmd, " -c copy ");
     strcat(cmd, export_address);
-    cout << cmd << endl;
+//    cout << cmd << endl;
     system(cmd);
 
 }

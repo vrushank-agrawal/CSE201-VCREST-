@@ -10,10 +10,11 @@
 #include <algorithm>
 #include <sstream>
 
+#include "export.cpp"
+
+
 #ifndef EXPORT_CLASS
 #define EXPORT_CLASS
-
-using namespace std;
 
 namespace exp {
 
@@ -31,4 +32,4 @@ namespace exp {
 
 }
 
-#endif EXPORT_CLASS
+#endif //EXPORT_CLASS
