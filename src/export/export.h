@@ -1,6 +1,7 @@
 //
 // Created by Vrushank on 12/17/2021.
 //
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -9,9 +10,6 @@
 #include <windows.h>
 #include <algorithm>
 #include <sstream>
-
-#include "export.cpp"
-
 
 #ifndef EXPORT_CLASS
 #define EXPORT_CLASS
