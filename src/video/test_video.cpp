@@ -52,23 +52,24 @@ int main(){
     imgpath = "..\\..\\video_samples\\C.jpg";
     mat3 = imread(imgpath);
 
-    vid::Video v(mat1.size().width, mat1.size().height);
-    v.test();
-    v.Add(mat3, 50);
-    v.Add(mat2, 50);
-    v.Add(mat1, 50);
-    v.Add(mat3, 50, 2);
-    cout << v.AnimationNumber() << endl;
-    v.DisplayCurrentVideo();
+    Image img1, img2, img3;
+    img1 = Image(mat1);
+    img2 = Image(mat2);
+    img3 = Image(mat3);
 
-    v.Clear();
+    cout << img1.getMat().size().width << " " << img1.getMat().size().height << endl;
+    //imshow("Frame", img1.getModifiedImg());
+    //waitKey(2000);
+    Video v(1000, 500, 30);
+    v.Add(&img1, 2, 2);
+    v.Add(&img2, 5, 3);
+    v.Add(&img3, 8, 2);
     cout << v.AnimationNumber() << endl;
-    v.Add(mat2, 50);
-    v.Resize(mat2.size().width, mat2.size().height);
-    v.DisplayCurrentVideo();
+    v.ApplyAnimation(&img1, Rotation);
+    v.WriteVideo("..//YESSS.mp4");
+    //v.DisplayCurrentVideo();
+
     //v.WriteVideo("..//YESSS.mp4");
-    //img1 = image_mat.getMat();
-    //imshow( "Frame", img);
 
     cout << "We are here" << endl;
     //img2.rotateImg(30);
