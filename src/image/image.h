@@ -35,6 +35,14 @@ namespace img {
         std::string getFilename();
         cv::Mat getModifiedImg();
         void setModifiedImg(cv::Mat mat);
+
+        // returns current path of the directory
+        std::string getPath();
+
+        // returns path to black image
+        std::string getBlackImgPath();
+
+        // returns error if loaded image can't be read
         int return_img_error(int a);
 
         // returns true if input image is of valid format
@@ -45,11 +53,17 @@ namespace img {
                       int 	            flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
-        cv::Mat equalizeImgDim();
+        void equalizeImgDim( int width, int height );
 
         //Returns ratio from dimensions:
         double getRatio();
         double getModifiedImageRatio();
+
+        // return dimensions
+        int getHeight();
+        int getWidth();
+        int getModifiedHeight();
+        int getModifiedWidth();
 
         // Image matrix preview functions
         void imgPreview( const std::string & 	winname);

@@ -77,3 +77,85 @@ void img::Image::imgModifiedPreview(const std::string &window) {
     cv::Mat mat = this -> getModifiedImg();
     imshow(window, mat);
 }
+
+int img::Image::getHeight () {
+    return this -> getMat().size().height;
+}
+
+int img::Image::getWidth() {
+    return this -> getMat().size().width;
+}
+
+int img::Image::getModifiedHeight() {
+    return this -> getModifiedImg().size().height;
+}
+
+int img::Image::getModifiedWidth() {
+    return this -> getModifiedImg().size().width;
+}
+
+std::string img::Image::getPath() {
+    char path[256];
+    return path;
+}
+
+std::string img::Image::getBlackImgPath() {
+    return "default_images/black.jpg";
+}
+
+// adds black areas to image
+void img::Image::equalizeImgDim( int width, int height) {
+    double fixedRatio = height / width;
+    double imgRatio = this -> getRatio();
+
+    if (imgRatio == fixedRatio) {
+        this -> resizeImg( width, height );
+        return;
+    }
+
+    if (( imgRatio > fixedRatio ) ) {
+
+        if ( this -> getModifiedHeight() > height ) {
+
+            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
+            this ->resizeImg( new_width, height );
+
+            Image Black = img::Image(this -> getBlackImgPath());
+            std::vector<Image> arr = {  };
+
+            return;
+
+        } else if (this -> getModifiedHeight() < height) {
+
+            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
+            this ->resizeImg( new_width, height );
+
+
+
+            return;
+        }
+
+    }
+
+    if (( imgRatio < fixedRatio ) ) {
+
+        if ( this -> getModifiedWidth() > width ) {
+            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
+            this -> resizeImg( width, new_height );
+
+
+            return;
+
+        } else if (this -> getModifiedWidth() < width) {
+
+            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
+            this -> resizeImg( width, new_height );
+
+
+
+            return;
+        }
+
+    }
+
+}
