@@ -50,6 +50,7 @@ namespace vid {
             void ZoomAnimationWrite(VideoWriter video_writer);
             void RotateAnimation();
             void CropAnimation();
+            void CollageAnimation();
             Mat Create_blank(int* color, int* size);
             void Display();
             void Write(VideoWriter video_writer);
