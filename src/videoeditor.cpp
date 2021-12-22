@@ -92,17 +92,17 @@ void VideoEditor::setupWidgets() {
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
-    connect(ui->playButton, SIGNAL(clicked()), ui->preview, SLOT(play()));
+    connect(ui->playButton, &QToolButton::clicked, ui->preview, &VideoPlayer::play);
 
     // set up skipForward button
     ui->skipForward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
     ui->skipForward->setToolTip(tr("Forward"));
-    connect(ui->skipForward, SIGNAL(clicked()), ui->preview, SLOT(forward()));
+    connect(ui->skipForward, &QToolButton::clicked, ui->preview, &VideoPlayer::forward);
 
     // set up skipBackward button
     ui->skipBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
     ui->skipBackward->setToolTip(tr("Backward"));
-    connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
+    connect(ui->skipBackward, &QToolButton::clicked, ui->preview, &VideoPlayer::backward);
 
     // connect controlSlider with position
     connect(ui->controlSlider, &ProgressBar::sliderPressed,

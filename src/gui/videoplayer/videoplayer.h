@@ -40,10 +40,10 @@ public slots:
     void sliderReleased();
     void forward();
     void backward();
+    void play();
 
 private slots:
     void updateTime();
-    void play();
 
 private:
     void updatePlayButton();

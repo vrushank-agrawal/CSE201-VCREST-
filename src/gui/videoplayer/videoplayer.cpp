@@ -72,7 +72,7 @@ void VideoPlayer::updateVideo(const cv::VideoCapture &video) {
     if (timer != nullptr) delete timer;
 
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+    connect(timer, &QTimer::timeout, this, &VideoPlayer::updateTime);
     timer->start(1000 / fps);
     timer->stop();
 }
