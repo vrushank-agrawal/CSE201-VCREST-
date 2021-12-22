@@ -62,7 +62,6 @@ namespace vid {
             ImageAnimator(Image *image, double start_time, double display_time, int fps);
             ImageAnimator(Image *image, double start_time, double display_time, int fps, animation animation_type);
             ~ImageAnimator();
-
             void Display();
             void Write(VideoWriter video_writer);
             void SetAnimation(animation animation_type);

@@ -293,6 +293,54 @@ void Video::ImageAnimator::CropAnimation() {
         }
 
     }
-
 }
- */
+    
+    
+
+//Needs testing... 
+//The collage animation using stitching / collage functions from image class 
+void Video::ImageAnimator::CollageAnimation() { 
+    
+        Image image_mat = img::Image(this->img); // transforming matrix from video class into image so that we can use image functions 
+        
+        imshow( "Frame", image_mat);
+        char c = (char)waitKey(time/4);
+        if( c == 27 )
+            break;
+
+        int initial_width = image_mat.getMat().size().width;
+        int initial_height = image_mat.getMat().size().height; 
+        
+        vector<Image> imageArr2 = {image_mat, image_mat}; 
+        Collage collage2 = Collage(imageArr2);
+        collage2.twoStitch();
+        Image collage_img2 = Image(collage2.getModifiedImage());
+        collage_img2.resizeImg(int initial_width, int initial_height);// resize the image after collage using intial height and width
+
+        imshow( "Frame", collage_img2);
+        char c = (char)waitKey(time/4);
+        if( c == 27 )
+            break;
+        
+        vector<Image> imageArr3 = {image_mat, image_mat, image_mat}; 
+        Collage collage3 = Collage(imageArr3);
+        collage3.threeStitch();
+        Image collage_img3 = Image(collage3.getModifiedImage());
+        collage_img3.resizeImg(int initial_width, int initial_height);
+        imshow( "Frame", collage_img3);
+        char c = (char)waitKey(time/4);
+        if( c == 27 )
+            break;
+
+        vector<Image> imageArr4 = {image_mat, image_mat, image_mat, image_mat}; 
+        Collage collage4 = Collage(imageArr4);
+        collage4.fourStitch();
+        Image collage_img4 = Image(collage4.getModifiedImage());
+        collage_img4.resizeImg(int initial_width, int initial_height);
+        imshow( "Frame", collage_img4);
+        char c = (char)waitKey(time/4);
+        if( c == 27 )
+            break;
+    }
+}
+*/
