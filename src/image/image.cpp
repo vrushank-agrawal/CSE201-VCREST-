@@ -120,8 +120,20 @@ void img::Image::equalizeImgDim( int width, int height) {
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
+            // get the width of black image
+            int black_width = floor( abs(width - new_width) / 2 );
+
+            // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
-            std::vector<Image> arr = {  };
+            Black.resizeImg( black_width, height );
+
+            //create collage vector
+            std::vector<Image> arr = { Black, *this, Black };
+
+            // set new image
+            Collage newStichedImage = Collage(arr);
+            newStichedImage.threeStitch();
+            this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
 
@@ -130,7 +142,20 @@ void img::Image::equalizeImgDim( int width, int height) {
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
+            // get the width of black image
+            int black_width = floor( abs(width - new_width) / 2 );
 
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( black_width, height );
+
+            //create collage vector
+            std::vector<Image> arr = { Black, *this, Black };
+
+            // set new image
+            Collage newStichedImage = Collage(arr);
+            newStichedImage.threeStitch();
+            this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
         }
@@ -143,6 +168,20 @@ void img::Image::equalizeImgDim( int width, int height) {
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
+            // get the width of black image
+            int black_height = floor( abs(height - new_height) / 2 );
+
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( width, black_height );
+
+            //create collage vector
+            std::vector<Image> arr = { Black, *this, Black };
+
+            // set new image
+            Collage newStichedImage = Collage(arr);
+            newStichedImage.threeStitch();
+            this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
 
@@ -151,7 +190,20 @@ void img::Image::equalizeImgDim( int width, int height) {
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
+            // get the width of black image
+            int black_height = floor( abs(height - new_height) / 2 );
 
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( width, black_height );
+
+            //create collage vector
+            std::vector<Image> arr = { Black, *this, Black };
+
+            // set new image
+            Collage newStichedImage = Collage(arr);
+            newStichedImage.threeStitch();
+            this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
         }

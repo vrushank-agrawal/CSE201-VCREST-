@@ -13,6 +13,7 @@
 #endif //OPENCV
 
 #include <iostream>
+#include <cstdlib>
 
 #ifndef IMAGE_CLASS
 #define IMAGE_CLASS
