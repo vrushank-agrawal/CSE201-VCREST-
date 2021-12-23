@@ -54,7 +54,7 @@ namespace img {
                       int 	            flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
-        void equalizeImgDim( int width, int height );
+        void equalizeImgDim( double width, double height );
 
         //Returns ratio from dimensions:
         double getRatio();

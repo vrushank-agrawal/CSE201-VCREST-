@@ -9,7 +9,7 @@ img::Image::Image() {}
 img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
-    filename = std::string();
+    filename = "no file path provided";
 }
 
 img::Image::Image(const std::string & file) {
@@ -100,18 +100,21 @@ std::string img::Image::getPath() {
 }
 
 std::string img::Image::getBlackImgPath() {
-    return "default_images/black.jpg";
+    return R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\default_images\black.jpg)";
 }
 
 // adds black areas to image
-void img::Image::equalizeImgDim( int width, int height) {
+void img::Image::equalizeImgDim( double width, double height) {
     double fixedRatio = height / width;
     double imgRatio = this -> getRatio();
 
+    // just resizing works
     if (imgRatio == fixedRatio) {
         this -> resizeImg( width, height );
         return;
     }
+
+    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
 
     if (( imgRatio > fixedRatio ) ) {
 
@@ -132,7 +135,7 @@ void img::Image::equalizeImgDim( int width, int height) {
 
             // set new image
             Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitch();
+            newStichedImage.threeStitchInline( 0 );
             this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
@@ -147,14 +150,19 @@ void img::Image::equalizeImgDim( int width, int height) {
 
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
+//            Black.imgPreview("testBlack");
+//            int a = cv::waitKey(0);
             Black.resizeImg( black_width, height );
 
             //create collage vector
-            std::vector<Image> arr = { Black, *this, Black };
+            Image img_copy = Image(this->getModifiedImg());
+            std::vector<Image> arr = { Black, img_copy, Black };
 
             // set new image
             Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitch();
+            newStichedImage.threeStitchInline( 0 );
+//            std::cout<<newStichedImage.getRatios()<<std::endl;
+//            newStichedImage.imgModifiedPreview("black test");
             this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
@@ -165,6 +173,7 @@ void img::Image::equalizeImgDim( int width, int height) {
     if (( imgRatio < fixedRatio ) ) {
 
         if ( this -> getModifiedWidth() > width ) {
+
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
@@ -180,7 +189,7 @@ void img::Image::equalizeImgDim( int width, int height) {
 
             // set new image
             Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitch();
+            newStichedImage.threeStitchInline( 1 );
             this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
@@ -202,12 +211,10 @@ void img::Image::equalizeImgDim( int width, int height) {
 
             // set new image
             Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitch();
+            newStichedImage.threeStitchInline( 1 );
             this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
         }
-
     }
-
 }
