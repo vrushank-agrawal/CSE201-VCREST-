@@ -1,12 +1,15 @@
 #include <QApplication>
 #include "videoeditor.h"
+#include "audio.hpp"
 
-#include "src/Audio/Audio.hpp"
+#include<iostream>
+
+using namespace std;
 
 int main(int argc, char *argv[]) {
-    QApplication application(argc, argv);
-    application.setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; }");
-    VideoEditor videoEditor;
-    videoEditor.show();
-    return QApplication::exec();
+    audio::Audio a("C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/test.wav");
+    audio::Audio b("C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/test1.wav");
+    audio::merge(a, b);
+    audio::trim(b, 12000, false);
+    return 0;
 }
