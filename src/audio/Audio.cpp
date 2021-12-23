@@ -11,6 +11,9 @@ using namespace std;
 
 namespace audio {
 
+    int Audio::num = 0;
+    string Audio::out = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output";;
+
     Audio::Audio(const std::string &uri) {
 
         std::string ext = uri.substr(uri.length() - 3);
@@ -18,8 +21,9 @@ namespace audio {
         char cstr[uri.length() + 1];
         strcpy(cstr, uri.c_str());
 
-        string mp3out = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output.mp3";
-        string wavout = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output.wav";
+        string mp3out = out + ".mp3";
+        string wavout = out + to_string(num) + ".wav";
+        num++;
 
         if (ext == "wav") {
 
@@ -37,7 +41,9 @@ namespace audio {
             return;
         }
 
-        ifstream infile(uri);
+        this->uri = wavout;
+
+        ifstream infile(this->uri, ios_base::binary);
         if (!infile.is_open()) {
             cout << "ERROR WHILE READING THE FILE!" << endl;
             return;
@@ -52,11 +58,6 @@ namespace audio {
 
         infile.read(file, length);
         infile.close();
-
-        for (int i = 44; i < 100; i++) {
-            cout << int(file[i]) << endl;
-        }
-
 
     }
 
@@ -99,17 +100,24 @@ namespace audio {
 
     }
 
-    void merge(Audio a1, Audio a2) {
-        char *merged_file = new char[a1.size + a2.size - 44];
+    string merge(const Audio &a1, const Audio &a2) {
+        int size = a1.size + a2.size - 44;
+        char *merged_file = new char[size];
         for (int i = 0; i < a1.size; i++) {
             merged_file[i] = a1.file[i];
         }
         for (int i = 44; i < a2.size; i++) {
             merged_file[a1.size + i] = a2.file[i];
         }
-        int curr_size = *(int *) merged_file[40];
-        curr_size += *(int *) a2.file[40];
-        *(int *) merged_file[40] = curr_size;
+        int curr_size = *((int *) (merged_file + 40));
+        curr_size += *((int *) (a2.file + 40));
+        *((int *) (merged_file + 40)) = curr_size;
+        string out = Audio::out + to_string(Audio::num) + ".wav";
+        ofstream outfile(out, ios_base::binary);
+        Audio::num++;
+        outfile.write(merged_file, size);
+        outfile.close();
+        return out;
     }
 
 }

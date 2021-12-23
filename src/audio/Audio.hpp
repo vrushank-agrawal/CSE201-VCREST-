@@ -10,6 +10,8 @@
 #include "aubio/aubio.h"
 #include "lameHelper.hpp"
 
+using namespace std;
+
 namespace audio {
 
     class Audio {
@@ -34,12 +36,19 @@ namespace audio {
         char *file;
         int size;
 
+        static int num;
+        static string out;
+
     public:
         Audio(const std::string &uri);
 
         std::vector<int> getBeatPositions();
 
     };
+
+    string merge(const Audio &a1, const Audio &a2);
+
+    string trim(const Audio &a);
 
 }
 
