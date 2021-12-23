@@ -48,7 +48,7 @@ namespace audio {
 
     string merge(const Audio &a1, const Audio &a2);
 
-    string trim(const Audio &a);
+    string trim(const Audio &a, int ms, bool isStart);
 
 }
 

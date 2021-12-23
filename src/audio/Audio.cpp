@@ -120,4 +120,30 @@ namespace audio {
         return out;
     }
 
+    string trim(const Audio &a, int ms, bool isStart) {
+        int trim_size = ms * 4 * 44100 / 1000;
+        int audio_size = *((int *) (a.file + 40));
+        int final_size = isStart ? trim_size : (audio_size - trim_size);
+        char *trimmed_file = new char[final_size + 44];
+        for (int i = 0; i < 44; i++) {
+            trimmed_file[i] = a.file[i];
+        }
+        if (isStart) {
+            for (int i = 44; i < 44 + final_size; i++) {
+                trimmed_file[i] = a.file[i];
+            }
+        } else {
+            for (int i = 44; i < a.size - trim_size; i++) {
+                trimmed_file[i] = a.file[i + trim_size];
+            }
+        }
+        *((int *) (trimmed_file + 40)) = final_size;
+        string out = Audio::out + to_string(Audio::num) + ".wav";
+        ofstream outfile(out, ios_base::binary);
+        Audio::num++;
+        outfile.write(trimmed_file, final_size + 44);
+        outfile.close();
+        return out;
+    }
+
 }
