@@ -100,6 +100,7 @@ std::string img::Image::getPath() {
 }
 
 std::string img::Image::getBlackImgPath() {
+    // change black image file path to your own directory
     return R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\default_images\black.jpg)";
 }
 
@@ -150,8 +151,6 @@ void img::Image::equalizeImgDim( double width, double height) {
 
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
-//            Black.imgPreview("testBlack");
-//            int a = cv::waitKey(0);
             Black.resizeImg( black_width, height );
 
             //create collage vector
@@ -161,8 +160,6 @@ void img::Image::equalizeImgDim( double width, double height) {
             // set new image
             Collage newStichedImage = Collage(arr);
             newStichedImage.threeStitchInline( 0 );
-//            std::cout<<newStichedImage.getRatios()<<std::endl;
-//            newStichedImage.imgModifiedPreview("black test");
             this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
