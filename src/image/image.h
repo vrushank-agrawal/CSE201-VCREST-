@@ -13,6 +13,7 @@
 #endif //OPENCV
 
 #include <iostream>
+#include <cstdlib>
 
 #ifndef IMAGE_CLASS
 #define IMAGE_CLASS
@@ -35,6 +36,11 @@ namespace img {
         std::string getFilename();
         cv::Mat getModifiedImg();
         void setModifiedImg(cv::Mat mat);
+
+        // returns path to black image
+        std::string getBlackImgPath();
+
+        // returns error if loaded image can't be read
         int return_img_error(int a);
 
         // returns true if input image is of valid format
@@ -45,11 +51,20 @@ namespace img {
                       int 	            flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
-        cv::Mat equalizeImgDim();
+        void equalizeImgDim( double width, double height );
+        void sendToStitch(int val, Image * img);
+        void hcon (Image * img );
+        void vcon (Image * img );
 
         //Returns ratio from dimensions:
         double getRatio();
         double getModifiedImageRatio();
+
+        // return dimensions
+        int getHeight();
+        int getWidth();
+        int getModifiedHeight();
+        int getModifiedWidth();
 
         // Image matrix preview functions
         void imgPreview( const std::string & 	winname);

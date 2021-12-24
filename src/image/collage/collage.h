@@ -24,9 +24,14 @@ namespace img {
                 void threeStitch();
                 void fourStitch(bool );
                 void fourStitchRec(int times);
-                void flip();
 
-                const std::vector<int>& testVect();
+                // creates inline stitching for black image adding
+                void threeStitchInline(int val);
+
+                void flip();
+                void imgModifiedPreview( const std::string & winname);
+
+                // get and set functions
                 int getNumImages();
                 const std::vector<double>& getRatios();
                 const std::vector<Image>& getImageArr();
@@ -35,6 +40,7 @@ namespace img {
                 vector<Image> getModifiedImageArr();
                 void setModifiedImage(Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();
+
             private:
 
                 int numImages;

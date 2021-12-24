@@ -48,7 +48,7 @@ img::Collage::Collage(vector<Image> inImageArr){
     }
 
     // set image mat to NULL initially
-    modifiedImage = imageArr.at(0).getModifiedImg();
+    modifiedImage = cv::Mat() ;
 }
 
 img::Collage::~Collage() {}
@@ -84,6 +84,11 @@ void img::Collage::setModifiedImage(Mat modifiedMat) {
 
 Mat img::Collage::getModifiedImage() {
     return this -> modifiedImage;
+}
+
+void img::Collage::imgModifiedPreview(const std::string &window) {
+    cv::Mat mat = this -> getModifiedImage();
+    imshow(window, mat);
 }
 
 vector<Image> img::Collage::getModifiedImageArr(){
@@ -144,6 +149,40 @@ int getMaxIndex(std::vector<T> arr){
     return maxIndex;
 }
 
+// slow method for inline stitching (not used anymore)
+void img::Collage::threeStitchInline(int val) {
+
+    if (this->getNumImages() == 3) {
+        // val = 0 = horizontal
+        if (val == 0 ) {
+            cv::Mat output;
+
+            Image img1 = this -> getImageArr()[0];
+            Image img2 = this -> getImageArr()[1];
+            Image img3 = this -> getImageArr()[2];
+
+            cv::hconcat(img1.getModifiedImg(), img2.getModifiedImg(), output);
+            cv::hconcat(output, img3.getModifiedImg(), output);
+
+            this ->setModifiedImage(output);
+        }
+        // val = 1 = vertical
+        else if (val == 1) {
+            cv::Mat output;
+
+            Image img1 = this -> getImageArr()[0];
+            Image img2 = this -> getImageArr()[1];
+            Image img3 = this -> getImageArr()[2];
+
+            cv::vconcat(img1.getModifiedImg(), img2.getModifiedImg(), output);
+            cv::vconcat(output, img3.getModifiedImg(), output);
+
+            this ->setModifiedImage(output);
+        }
+    } else{
+        std::cout << "A different amount of images than 3!";
+    }
+}
 
 void img::Collage::threeStitch() {
     if (this->getNumImages() == 3) {
@@ -152,7 +191,7 @@ void img::Collage::threeStitch() {
         int maximum = getMaxIndex(this-> getRatios());
         // std::cout << "maximum: " << typeid(maximum).name();
         vector<Image> subImageArr = this->getImageArr();
-        vector<Image>::iterator maxIndex = subImageArr.begin() + maximum ;
+        auto maxIndex = subImageArr.begin() + maximum ;
         subImageArr.erase(maxIndex);
         Collage subCollage(subImageArr);
         subCollage.twoStitch();
@@ -172,27 +211,27 @@ void img::Collage::threeStitch() {
 
 void img::Collage::fourStitch(bool original= true) {
     if (this->getNumImages() == 4) {
-        vector<double> ratios;
+        vector<double> ratios_vector;
         vector<Image> subImageArr1;
         if (original){
-            ratios = this-> getRatios();
+            ratios_vector = this-> getRatios();
             subImageArr1 = this->getImageArr();
         } else{
-            ratios = this-> getModifiedRatios();
+            ratios_vector = this-> getModifiedRatios();
             subImageArr1 = this->getModifiedImageArr();
         }
 
-        int maximum = getMaxIndex(ratios);
+        int maximum = getMaxIndex(ratios_vector);
         // std::cout << "maximum: " << typeid(maximum).name();
 
         vector<Image> subImageArr2;
         //split into two collages of double stitch and then stitch all of them together
         vector<Image>::iterator maxIndex = subImageArr1.begin() + maximum ;
-        vector<double>::iterator maxRatiosIndex = ratios.begin() + maximum ;
+        vector<double>::iterator maxRatiosIndex = ratios_vector.begin() + maximum ;
         subImageArr2.push_back(*maxIndex);
-        ratios.erase(maxRatiosIndex);
+        ratios_vector.erase(maxRatiosIndex);
         subImageArr1.erase(maxIndex);
-        int secondMaximum = getMaxIndex(ratios);
+        int secondMaximum = getMaxIndex(ratios_vector);
         vector<Image>::iterator secondMaxIndex = subImageArr1.begin() + secondMaximum ;
         subImageArr1.erase(secondMaxIndex);
         subImageArr2.push_back(*secondMaxIndex);

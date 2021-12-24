@@ -9,7 +9,7 @@ img::Image::Image() {}
 img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
-    filename = std::string();
+    filename = "no file path provided";
 }
 
 img::Image::Image(const std::string & file) {
@@ -76,4 +76,144 @@ void img::Image::imgPreview(const std::string &window) {
 void img::Image::imgModifiedPreview(const std::string &window) {
     cv::Mat mat = this -> getModifiedImg();
     imshow(window, mat);
+}
+
+int img::Image::getHeight () {
+    return this -> getMat().size().height;
+}
+
+int img::Image::getWidth() {
+    return this -> getMat().size().width;
+}
+
+int img::Image::getModifiedHeight() {
+    return this -> getModifiedImg().size().height;
+}
+
+int img::Image::getModifiedWidth() {
+    return this -> getModifiedImg().size().width;
+}
+
+std::string img::Image::getBlackImgPath() {
+    // change black image file path to your own directory
+    return R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\default_images\black.jpg)";
+}
+
+// adds black areas to image
+void img::Image::equalizeImgDim( double width, double height) {
+    double fixedRatio = height / width;
+    double imgRatio = this -> getRatio();
+
+    // just resizing works
+    if (imgRatio == fixedRatio) {
+        this -> resizeImg( width, height );
+        return;
+    }
+
+//    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
+
+    if (( imgRatio > fixedRatio ) ) {
+
+        if ( this -> getModifiedHeight() > height ) {
+
+            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
+            this ->resizeImg( new_width, height );
+
+            // get the width of black image
+            int black_width = floor( abs(width - new_width) / 2 );
+
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( black_width, height );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 0, blackptr );
+
+            //create collage vector (slow method)
+//            std::vector<Image> arr = { Black, *this, Black };
+//
+//            // set new image
+//            Collage newStichedImage = Collage(arr);
+//            newStichedImage.threeStitchInline( 0 );
+//            this ->setModifiedImg( newStichedImage.getModifiedImage() );
+
+            return;
+
+        } else if (this -> getModifiedHeight() < height) {
+
+            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
+            this ->resizeImg( new_width, height );
+
+            // get the width of black image
+            int black_width = floor( abs(width - new_width) / 2 );
+
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Image* blackptr = &Black;
+            Black.resizeImg( black_width, height );
+            this -> sendToStitch( 0, blackptr );
+
+            return;
+        }
+
+    }
+
+    if (( imgRatio < fixedRatio ) ) {
+
+        if ( this -> getModifiedWidth() > width ) {
+
+            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
+            this -> resizeImg( width, new_height );
+
+            // get the width of black image
+            int black_height = floor( abs(height - new_height) / 2 );
+
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( width, black_height );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 1, blackptr );
+
+            return;
+
+        } else if (this -> getModifiedWidth() < width) {
+
+            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
+            this -> resizeImg( width, new_height );
+
+            // get the width of black image
+            int black_height = floor( abs(height - new_height) / 2 );
+
+            // create black image and resize it
+            Image Black = img::Image(this -> getBlackImgPath());
+            Black.resizeImg( width, black_height );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 1, blackptr );
+
+            return;
+        }
+    }
+}
+
+void img::Image::sendToStitch(int val, Image *img) {
+    if (val == 0) {
+        this ->hcon( img );
+    } else if ( val == 1) {
+        this -> vcon( img );
+    }
+}
+
+void img::Image::hcon(Image *black) {
+    cv::Mat out;
+    cv::hconcat(black -> getModifiedImg(), this -> getModifiedImg(), out);
+    cv::hconcat(out, black -> getModifiedImg(), out);
+
+    this ->setModifiedImg( out );
+}
+
+void img::Image::vcon(Image *black) {
+    cv::Mat out;
+    cv::vconcat(black -> getModifiedImg(), this -> getModifiedImg(), out);
+    cv::vconcat(out, black -> getModifiedImg(), out);
+
+    this ->setModifiedImg( out );
 }
