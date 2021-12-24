@@ -48,7 +48,7 @@ img::Collage::Collage(vector<Image> inImageArr){
     }
 
     // set image mat to NULL initially
-    modifiedImage = imageArr.at(0).getModifiedImg();
+    modifiedImage = cv::Mat() ;
 }
 
 img::Collage::~Collage() {}
@@ -149,10 +149,10 @@ int getMaxIndex(std::vector<T> arr){
     return maxIndex;
 }
 
+// slow method for inline stitching (not used anymore)
 void img::Collage::threeStitchInline(int val) {
 
     if (this->getNumImages() == 3) {
-
         // val = 0 = horizontal
         if (val == 0 ) {
             cv::Mat output;
@@ -166,7 +166,6 @@ void img::Collage::threeStitchInline(int val) {
 
             this ->setModifiedImage(output);
         }
-
         // val = 1 = vertical
         else if (val == 1) {
             cv::Mat output;
@@ -180,7 +179,6 @@ void img::Collage::threeStitchInline(int val) {
 
             this ->setModifiedImage(output);
         }
-
     } else{
         std::cout << "A different amount of images than 3!";
     }

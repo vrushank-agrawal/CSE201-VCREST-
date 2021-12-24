@@ -37,9 +37,6 @@ namespace img {
         cv::Mat getModifiedImg();
         void setModifiedImg(cv::Mat mat);
 
-        // returns current path of the directory
-        std::string getPath();
-
         // returns path to black image
         std::string getBlackImgPath();
 
@@ -55,6 +52,9 @@ namespace img {
 
         //resets image dimensions by adding black areas
         void equalizeImgDim( double width, double height );
+        void sendToStitch(int val, Image * img);
+        void hcon (Image * img );
+        void vcon (Image * img );
 
         //Returns ratio from dimensions:
         double getRatio();

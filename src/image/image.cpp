@@ -94,11 +94,6 @@ int img::Image::getModifiedWidth() {
     return this -> getModifiedImg().size().width;
 }
 
-std::string img::Image::getPath() {
-    char path[256];
-    return path;
-}
-
 std::string img::Image::getBlackImgPath() {
     // change black image file path to your own directory
     return R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\default_images\black.jpg)";
@@ -115,7 +110,7 @@ void img::Image::equalizeImgDim( double width, double height) {
         return;
     }
 
-    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
+//    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
 
     if (( imgRatio > fixedRatio ) ) {
 
@@ -130,14 +125,16 @@ void img::Image::equalizeImgDim( double width, double height) {
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
             Black.resizeImg( black_width, height );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 0, blackptr );
 
-            //create collage vector
-            std::vector<Image> arr = { Black, *this, Black };
-
-            // set new image
-            Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitchInline( 0 );
-            this ->setModifiedImg( newStichedImage.getModifiedImage() );
+            //create collage vector (slow method)
+//            std::vector<Image> arr = { Black, *this, Black };
+//
+//            // set new image
+//            Collage newStichedImage = Collage(arr);
+//            newStichedImage.threeStitchInline( 0 );
+//            this ->setModifiedImg( newStichedImage.getModifiedImage() );
 
             return;
 
@@ -151,16 +148,9 @@ void img::Image::equalizeImgDim( double width, double height) {
 
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
+            Image* blackptr = &Black;
             Black.resizeImg( black_width, height );
-
-            //create collage vector
-            Image img_copy = Image(this->getModifiedImg());
-            std::vector<Image> arr = { Black, img_copy, Black };
-
-            // set new image
-            Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitchInline( 0 );
-            this ->setModifiedImg( newStichedImage.getModifiedImage() );
+            this -> sendToStitch( 0, blackptr );
 
             return;
         }
@@ -180,14 +170,8 @@ void img::Image::equalizeImgDim( double width, double height) {
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
             Black.resizeImg( width, black_height );
-
-            //create collage vector
-            std::vector<Image> arr = { Black, *this, Black };
-
-            // set new image
-            Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitchInline( 1 );
-            this ->setModifiedImg( newStichedImage.getModifiedImage() );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 1, blackptr );
 
             return;
 
@@ -202,16 +186,34 @@ void img::Image::equalizeImgDim( double width, double height) {
             // create black image and resize it
             Image Black = img::Image(this -> getBlackImgPath());
             Black.resizeImg( width, black_height );
-
-            //create collage vector
-            std::vector<Image> arr = { Black, *this, Black };
-
-            // set new image
-            Collage newStichedImage = Collage(arr);
-            newStichedImage.threeStitchInline( 1 );
-            this ->setModifiedImg( newStichedImage.getModifiedImage() );
+            Image* blackptr = &Black;
+            this -> sendToStitch( 1, blackptr );
 
             return;
         }
     }
+}
+
+void img::Image::sendToStitch(int val, Image *img) {
+    if (val == 0) {
+        this ->hcon( img );
+    } else if ( val == 1) {
+        this -> vcon( img );
+    }
+}
+
+void img::Image::hcon(Image *black) {
+    cv::Mat out;
+    cv::hconcat(black -> getModifiedImg(), this -> getModifiedImg(), out);
+    cv::hconcat(out, black -> getModifiedImg(), out);
+
+    this ->setModifiedImg( out );
+}
+
+void img::Image::vcon(Image *black) {
+    cv::Mat out;
+    cv::vconcat(black -> getModifiedImg(), this -> getModifiedImg(), out);
+    cv::vconcat(out, black -> getModifiedImg(), out);
+
+    this ->setModifiedImg( out );
 }
