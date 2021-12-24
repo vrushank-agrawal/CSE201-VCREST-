@@ -2,32 +2,20 @@
 // Created by Vrushank on 11/12/2021.
 //
 
-#ifndef IMAGEFILES
-#define IMAGEFILES
-
 #include "image.h"
-#include "collage/collage.cpp"
-#include "blurs.cpp"
-#include "rotate_resize.cpp"
 
-#endif
+img::Image::Image() {}
 
-using namespace img;
-
-img::Image::Image() {
-
-}
-
-img::Image::Image(Mat mat) {
+img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
     filename = std::string();
 }
 
-img::Image::Image(const string & file) {
+img::Image::Image(const std::string & file) {
     filename = file;
     if (validImg( filename )) {
-        img_matrix = decodeImg( filename, IMREAD_COLOR);
+        img_matrix = decodeImg( filename, cv::IMREAD_COLOR);
         if ( getMat().empty()) {
 //            printf("improper image exception - file is corrupt/invalid") ;
             return_img_error(1) ;
@@ -48,27 +36,27 @@ int img::Image::return_img_error (int val) {
     return val;
 }
 
-bool img::Image::validImg(const string &filename) {
-    return haveImageReader(filename);
+bool img::Image::validImg(const std::string &filename) {
+    return cv::haveImageReader(filename);
 }
 
-Mat img::Image::getMat(){
+cv::Mat img::Image::getMat(){
     return this -> img_matrix;
 }
 
-Mat img::Image::getModifiedImg() {
+cv::Mat img::Image::getModifiedImg() {
     return this-> img_matrix_modified;
 }
 
-void img::Image::setModifiedImg(Mat matrix) {
+void img::Image::setModifiedImg(cv::Mat matrix) {
     this -> img_matrix_modified = matrix;
 }
 
-Mat img::Image::decodeImg(const String &filename, int flags) {
-    return imread( filename, IMREAD_COLOR);
+cv::Mat img::Image::decodeImg(const std::string &filename, int flags) {
+    return imread( filename, cv::IMREAD_COLOR);
 }
 
-String img::Image::getFilename() {
+std::string img::Image::getFilename() {
     return this -> filename;
 }
 
@@ -80,13 +68,12 @@ double img::Image::getModifiedImageRatio() {
     return this -> getModifiedImg().size().height/ this -> getModifiedImg().size().width;
 }
 
-void img::Image::imgPreview(const String &window) {
-    Mat mat = this -> getMat();
+void img::Image::imgPreview(const std::string &window) {
+    cv::Mat mat = this -> getMat();
     imshow(window, mat);
 }
 
-void img::Image::imgModifiedPreview(const string &window) {
-    Mat mat = this -> getModifiedImg();
+void img::Image::imgModifiedPreview(const std::string &window) {
+    cv::Mat mat = this -> getModifiedImg();
     imshow(window, mat);
 }
-

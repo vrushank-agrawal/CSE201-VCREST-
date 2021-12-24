@@ -1,15 +1,15 @@
 #include "collage.h"
 #include <algorithm>
-// #include <typeinfo>
-using namespace img;
-using namespace cv;
 
+using cv::Mat;
+using std::vector;
+using img::Image;
 
-Mat hstitch(Image img1, Image img2) {
+cv::Mat hstitch(Image img1, Image img2) {
 
     //later on we can add the division (currently)
-    Mat output;
-    int out_height = min(img1.getMat().size().height, img2.getMat().size().height);
+    cv::Mat output;
+    int out_height = std::min(img1.getMat().size().height, img2.getMat().size().height);
 
     //allocate temp1 and temp2 matrices to concatenate and then delete them later. so that we don't modify the original images.
     Image temp1(img1.getMat()), temp2(img2.getMat());
@@ -21,11 +21,11 @@ Mat hstitch(Image img1, Image img2) {
 }
 
 
-Mat vstitch(Image img1, Image img2){
+cv::Mat vstitch(Image img1, Image img2){
 
     //later on we can add the division (currently)
-    Mat output;
-    int out_width = min(img1.getMat().size().width, img2.getMat().size().width);
+    cv::Mat output;
+    int out_width = std::min(img1.getMat().size().width, img2.getMat().size().width);
 
     //allocate temp1 and temp2 matrices to concatenate and then delete them later. so that we don't modify the original images.
     Image temp1(img1.getMat()), temp2(img2.getMat());
@@ -103,8 +103,8 @@ void img::Collage::twoStitch(bool original= true ) {
 
         //default stitching based on ratio
         //if both ratios h/w < 1 then it's better to do vertical stacking
-        double minimum = min(arr.at(0).getRatio(), arr.at(1).getRatio());
-        double maximum = max(arr.at(0).getRatio(), arr.at(1).getRatio());
+        double minimum = cv::min(arr.at(0).getRatio(), arr.at(1).getRatio());
+        double maximum = cv::max(arr.at(0).getRatio(), arr.at(1).getRatio());
         if (arr.at(0).getRatio() < 1 && arr.at(1).getRatio() < 1) {
             //width dominant
             this->setModifiedImage(vstitch(arr.at(0), arr.at(1)));

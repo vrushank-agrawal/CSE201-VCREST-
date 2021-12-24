@@ -34,6 +34,7 @@ public:
     void calculateSize();
     void updateDuration(double newLength);
     void createSizeGripItem(SizeGripItem *sizeGripItem);
+    static QTransform parentTransform;
 
 private:
     SizeGripItem *sizeGripItem = nullptr;

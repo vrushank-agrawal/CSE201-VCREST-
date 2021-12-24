@@ -3,18 +3,21 @@
 //
 
 #include "../image.cpp"
+#include "../blurs.cpp"
+#include "../collage/collage.cpp"
 
-using namespace img;
-using namespace cv;
+using img::Image;
+using img::Collage;
+using cv::waitKey;
 
 int main(){
-    std::string image_path = samples::findFile("lena.jpg");
+    std::string image_path = cv::samples::findFile("lena.jpg");
     Image img1 = Image(image_path);
     Image img2 = Image(image_path);
     Image img3 = Image(image_path);
     Image img4 = Image(image_path);
 
-    string file = img1.getFilename();
+    std::string file = img1.getFilename();
     Mat matrix = img1.getMat();
 //    cout<<file<<endl;
 
@@ -52,30 +55,31 @@ int main(){
     // test stitching functions
 
     //define vectors
-    vector<Image> imageArr2 = {img1, img2};
-//    vector<Image> imageArr3 = {img1, img2, img3};
-//    vector<Image> imageArr4 = {img1, img2, img3, img4};
+//    std::vector<Image> imageArr2 = {img1, img2};
+//    std::vector<Image> imageArr3 = {img1, img2, img3};
+    std::vector<Image> imageArr4 = {img1, img2, img3, img4};
 
     //define collages
-    Collage collage2 = Collage(imageArr2);
+//    Collage collage2 = Collage(imageArr2);
 //    Collage collage3 = Collage(imageArr3);
-//    Collage collage4 = Collage(imageArr4);
+    Collage collage4 = Collage(imageArr4);
 
     //run collage functions
-    collage2.twoStitch();
+//    collage2.twoStitch();
 //    collage3.threeStitch();
-//    collage4.fourStitch();
+    collage4.fourStitch();
 //    collage2.fourStitchRec(2);
 
     // display collage
-    Image collage_img2 = Image(collage2.getModifiedImage());
+//    Image collage_img2 = Image(collage2.getModifiedImage());
 //    Image collage_img3 = Image(collage3.getModifiedImage());
-//    Image collage_img4 = Image(collage4.getModifiedImage());
+    Image collage_img4 = Image(collage4.getModifiedImage());
 
-    collage_img2.imgPreview("test_lena_collage2");
+//    collage_img2.imgPreview("test_lena_collage2");
 //    collage_img3.imgPreview("test_lena_collage3");
-//    collage_img4.imgPreview("test_lena_collage4");
-    int r = waitKey(0);
+    collage_img4.imgPreview("test_lena_collage4");
+//    int r = waitKey(0);
 
     int j = waitKey(0);
+    exit(0);
 }
