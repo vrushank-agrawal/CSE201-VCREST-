@@ -52,30 +52,31 @@ int main(){
     imgpath = "..\\..\\video_samples\\C.jpg";
     mat3 = imread(imgpath);
 
-    Image img1, img2, img3;
+    Image img1, img2, img3, img4;
     img1 = Image(mat1);
     img2 = Image(mat2);
     img3 = Image(mat3);
+    img4 = Image(mat3);
 
     cout << img1.getMat().size().width << " " << img1.getMat().size().height << endl;
     //imshow("Frame", img1.getModifiedImg());
     //waitKey(2000);
     Video v(1000, 500, 30);
     v.Add(&img1, 2, 2);
-    v.Add(&img2, 5, 3);
-    v.Add(&img3, 8, 2);
+    v.Add(&img4, 4, 3);
+    v.Add(&img2, 7, 3);
+    v.Add(&img3, 12, 2);
     cout << v.AnimationNumber() << endl;
+    v.Delete(&img3);
     v.ApplyAnimation(&img1, Rotation);
     v.WriteVideo("..//YESSS.mp4");
-    //v.DisplayCurrentVideo();
 
-    //v.WriteVideo("..//YESSS.mp4");
+    for (int i = 60; i < 310; i++) {
+        Mat toshow = v.GetMatAtFrame(i);
+        imshow("Frame", toshow);
+        waitKey(5);
+    }
 
-    cout << "We are here" << endl;
-    //img2.rotateImg(30);
-    //Mat img_fuck = img2.getModifiedImg();
-    //img2.imgModifiedPreview("testing_img_rotate");
-    //waitKey(0);
     cout << "Everything done, opencv works" << endl;
     return 0;
 }

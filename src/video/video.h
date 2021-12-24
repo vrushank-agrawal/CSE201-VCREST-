@@ -40,7 +40,7 @@ namespace vid {
         void ApplyAnimation(Image *img, animation animation_type);
         void Remove(int index);
         Mat GetMat(double time);
-        Mat GetMat(int frame_index);
+        Mat GetMatAtFrame(int frame_index);
 
         void WriteVideo(string output_name);
 
@@ -65,11 +65,12 @@ namespace vid {
             void Display();
             void Write(VideoWriter video_writer);
             void SetAnimation(animation animation_type);
+            Mat GetMatAt(int frame_number);
 
             Mat NormalDisplay(int frame_number);
             Mat RotateAnimation(int frame_number);
             //Functions below should be of type Mat as well, not tested yet
-            void ZoomAnimation();
+            void ZoomAnimation(int frame_number);
             void CropAnimation();
 
             void InitFunctions();
