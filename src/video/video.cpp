@@ -14,34 +14,34 @@ void Video::test() {
 
 Video::Video(int width, int height, int fps) {
     this->number_of_animations = 0;
-    this->Clear();
+    this->clear();
     this->fps = fps;
     Mat blank_img_mat(500, 1000, CV_8UC3, Scalar(0, 0, 0));
     this->blank = Image(blank_img_mat);
-    this->Resize(width, height);
+    this->resize(width, height);
 }
 
 Video::Video(Image **images, double *start_times, double *times_of_display, int size, int width, int height, int fps)
         : Video(width, height, fps) {
     for (int index = 0; index < size; index++) {
-        this->Insert(images[index], start_times[index], times_of_display[index]);
+        this->insertImage(images[index], start_times[index], times_of_display[index]);
         number_of_animations++;
     }
 }
 
 Video::~Video() {
-    this->Clear();
+    this->clear();
 }
 
 void Video::addImage(Image *img, double start_time, double time_to_display) {
-    int index = this->GetPlace(start_time);
-    this->Insert(img, start_time, time_to_display, index);
+    int index = this->getPlace(start_time);
+    this->insertImage(img, start_time, time_to_display, index);
 }
 
 void Video::deleteImage(Image *img) {
-    int to_remove = this->GetIndex(img);
+    int to_remove = this->getIndex(img);
     if (to_remove != -1) {
-        this->Remove(to_remove);
+        this->removeImageAtIndex(to_remove);
     }
 }
 
@@ -59,7 +59,7 @@ void Video::insertImage(Image *image, double start_time, double time_to_display,
     if (index > this->number_of_animations) {
         cout << "Index is out of reach";
     } else if (index == this->number_of_animations) {
-        this->Insert(image, start_time, time_to_display);
+        this->insertImage(image, start_time, time_to_display);
     } else {
         this->image_pointers.insert(this->image_pointers.begin() + index, image);
         ImageAnimator new_animator = ImageAnimator(image, start_time, time_to_display, this->fps);
@@ -91,7 +91,7 @@ Mat Video::getMatAtFrame(int frame_number) {
         int start = (int) this->animators[i].start_time * fps;
         int end = (int) (this->animators[i].start_time + this->animators[i].time) * fps;
         if (start <= frame_number && frame_number <= end) {
-            return this->animators[i].GetMatAt(frame_number - start);
+            return this->animators[i].getMatAt(frame_number - start);
         }
         if (i < number_of_animations - 1) {
             int next_start = (int) this->animators[i + 1].start_time * fps;
@@ -107,7 +107,7 @@ Mat Video::getMatAtFrame(int frame_number) {
 
 Mat Video::getMatByTime(double time) {
     int frame_number = time * fps;
-    return this->GetMat(frame_number);
+    return this->getMatAtFrame(frame_number);
 }
 
 void Video::resize(int width, int height) {
@@ -128,9 +128,9 @@ void Video::displayCurrentVideo() {
     for (int i = 0; i < number_of_animations; i++) {
         double blank_time_dur = animators[i].time - cur_time;
         if (blank_time_dur > 0) {
-            this->ShowBlank(blank_time_dur);
+            this->showBlank(blank_time_dur);
         }
-        animators[i].Display();
+        animators[i].display();
     }
     destroyAllWindows();
 }
@@ -143,9 +143,9 @@ void Video::writeVideo(string output_name) {
     for (int i = 0; i < this->number_of_animations; i++) {
         double blank_time_dur = animators[i].start_time - cur_time;
         if (blank_time_dur > 0) {
-            this->AddBlank(video_writer, blank_time_dur);
+            this->addBlank(video_writer, blank_time_dur);
         }
-        this->animators[i].Write(video_writer);
+        this->animators[i].write(video_writer);
         cur_time = this->animators[i].start_time + this->animators[i].time;
     }
     video_writer.release();
@@ -204,8 +204,8 @@ void Video::addBlank(VideoWriter video_writer, double time) {
 }
 
 void Video::applyAnimation(Image *img, Animation animation_type) {
-    int index = this->GetIndex(img);
-    this->animators[index].SetAnimation(animation_type);
+    int index = this->getIndex(img);
+    this->animators[index].setAnimation(animation_type);
 }
 
 
@@ -217,12 +217,12 @@ Video::ImageAnimator::ImageAnimator(Image *image, double start_time, double disp
     this->time = display_time;
     this->fps = fps;
     this->animation_type = Normal;
-    this->InitFunctions();
+    this->initFunctions();
 }
 
 
 Video::ImageAnimator::ImageAnimator(Image *image, double start_time, double display_time, int fps,
-                                    animation animation_type)
+                                    Animation animation_type)
         : ImageAnimator(image, start_time, display_time, fps) {
     this->animation_type = animation_type;
 }
@@ -237,8 +237,8 @@ Video::ImageAnimator::ImageAnimator() {
 }
 
 void Video::ImageAnimator::initFunctions() {
-    this->anim_functions[0] = &ImageAnimator::NormalDisplay;
-    this->anim_functions[1] = &ImageAnimator::RotateAnimation;
+    this->anim_functions[0] = &vid::Video::ImageAnimator::normalDisplay;
+    this->anim_functions[1] = &vid::Video::ImageAnimator::rotateAnimation;
 }
 
 void Video::ImageAnimator::setAnimation(Animation animation_type) {
@@ -262,7 +262,7 @@ void Video::ImageAnimator::write(VideoWriter video_writer) {
     int i = 0;
     int num_fames = this->time * this->fps;
     while (i < num_fames) {
-        Mat disp = this->GetMatAt(i);
+        Mat disp = this->getMatAt(i);
         video_writer.write(disp);
         i++;
     }
@@ -292,7 +292,7 @@ Mat Video::ImageAnimator::rotateAnimation(int frame_number) {
 
 //Not tested
 void Video::ImageAnimator::zoomAnimation(int frame_number) {
-    int ratio = 0.2;
+    double ratio = 0.2;
     int num_frame = fps * time;
     double change_per_frame = 1 + ratio;
     int img_h = this->image->getMat().size().height;

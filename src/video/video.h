@@ -11,14 +11,14 @@
 
 #endif //OPENCV
 
-using namespace cv;
-using namespace std;
-using namespace img;
-
 #include <iostream>
 #include <vector>
 #include <string>
 #include "image.h"
+
+using namespace cv;
+using namespace std;
+using namespace img;
 
 namespace vid {
 

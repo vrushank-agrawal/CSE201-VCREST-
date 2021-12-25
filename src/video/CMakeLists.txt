@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-add_library(video)
+add_library(video video.cpp)
 
 target_include_directories(gui
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
