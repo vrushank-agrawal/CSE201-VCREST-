@@ -1,7 +1,14 @@
-#include "../image.h"
+#pragma once
 
+#include "../image.h"
 #include <iostream>
-#include <stdarg.h>
+
+using cv::Mat;
+using std::vector;
+using img::Image;
+
+#ifndef COLLAGE_CLASS
+#define COLLAGE_CLASS
 
 namespace img {
 
@@ -11,15 +18,20 @@ namespace img {
                 ~ Collage();
 
                 //create an array of coordinates of corners of each of the images, variable
-//                int subImageCorners[numImages * 4];
+                //int subImageCorners[numImages * 4];
 
                 void twoStitch(bool );
                 void threeStitch();
                 void fourStitch(bool );
                 void fourStitchRec(int times);
-                void flip();
 
-                const std::vector<int>& testVect();
+                // creates inline stitching for black image adding
+                void threeStitchInline(int val);
+
+                void flip();
+                void imgModifiedPreview( const std::string & winname);
+
+                // get and set functions
                 int getNumImages();
                 const std::vector<double>& getRatios();
                 const std::vector<Image>& getImageArr();
@@ -28,6 +40,7 @@ namespace img {
                 vector<Image> getModifiedImageArr();
                 void setModifiedImage(Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();
+
             private:
 
                 int numImages;
@@ -40,3 +53,5 @@ namespace img {
                 void fourStitchRecAux(bool, int times);
     };
 }
+
+#endif // COLLAGE_CLASS
