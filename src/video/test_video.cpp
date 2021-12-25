@@ -6,8 +6,6 @@
 #include <string>
 #include "video.h"
 #include "video.cpp"
-#include "../image/image.h"
-
 
 using namespace std;
 using namespace cv;
@@ -52,30 +50,40 @@ int main(){
     imgpath = "..\\..\\video_samples\\C.jpg";
     mat3 = imread(imgpath);
 
-    Image img1, img2, img3, img4;
+    Image img1, img2, img3, img4, img5;
     img1 = Image(mat1);
     img2 = Image(mat2);
     img3 = Image(mat3);
     img4 = Image(mat3);
+    img5 = Image(mat3);
 
-    cout << img1.getMat().size().width << " " << img1.getMat().size().height << endl;
     //imshow("Frame", img1.getModifiedImg());
     //waitKey(2000);
     Video v(1000, 500, 30);
-    v.Add(&img1, 2, 2);
-    v.Add(&img4, 4, 3);
-    v.Add(&img2, 7, 3);
+    v.Add(&img1, 2.5, 2.5);
+    v.Add(&img4, 5.1, 3);
+    v.Add(&img2, 8.1, 3);
     v.Add(&img3, 12, 2);
     cout << v.AnimationNumber() << endl;
-    v.Delete(&img3);
+    v.WriteVideo("..//Before.mp4");
+
+
+    //v.Delete(&img4);
     v.ApplyAnimation(&img1, Rotation);
+    v.ApplyAnimation(&img3, Rotation);
+    cout << v.AnimationNumber() << endl;
     v.WriteVideo("..//YESSS.mp4");
 
-    for (int i = 60; i < 310; i++) {
+    /*for (int i = 60; i < 310; i++) {
         Mat toshow = v.GetMatAtFrame(i);
         imshow("Frame", toshow);
         waitKey(5);
     }
+
+    img5.equalizeImgDim(1000, 600);
+    Mat toshow = img5.getModifiedImg();
+    imshow("Frame", toshow);
+    waitKey(3000);*/
 
     cout << "Everything done, opencv works" << endl;
     return 0;

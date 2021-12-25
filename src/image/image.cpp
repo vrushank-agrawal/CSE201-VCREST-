@@ -96,17 +96,19 @@ int img::Image::getModifiedWidth() {
 
 std::string img::Image::getBlackImgPath() {
     // change black image file path to your own directory
-    return R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\default_images\black.jpg)";
+    return R"(D:\Dimitri\Homeworks\YEAR2\CSE201_Project\Video_part\video_editor_BX23\src\image\default_images\black.jpg)";
 }
 
 // adds black areas to image
+
+
 void img::Image::equalizeImgDim( double width, double height) {
     double fixedRatio = height / width;
     double imgRatio = this -> getRatio();
 
     // just resizing works
     if (imgRatio == fixedRatio) {
-        this -> resizeImg( width, height );
+        this->resizeImg(width, height);
         return;
     }
 
@@ -128,6 +130,8 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image* blackptr = &Black;
             this -> sendToStitch( 0, blackptr );
 
+            this -> resizeImg(width, height);
+            return;
             //create collage vector (slow method)
 //            std::vector<Image> arr = { Black, *this, Black };
 //
@@ -135,9 +139,6 @@ void img::Image::equalizeImgDim( double width, double height) {
 //            Collage newStichedImage = Collage(arr);
 //            newStichedImage.threeStitchInline( 0 );
 //            this ->setModifiedImg( newStichedImage.getModifiedImage() );
-
-            return;
-
         } else if (this -> getModifiedHeight() < height) {
 
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
@@ -152,6 +153,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             Black.resizeImg( black_width, height );
             this -> sendToStitch( 0, blackptr );
 
+            this -> resizeImg(width, height);
             return;
         }
 
@@ -173,6 +175,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image* blackptr = &Black;
             this -> sendToStitch( 1, blackptr );
 
+            this -> resizeImg(width, height);
             return;
 
         } else if (this -> getModifiedWidth() < width) {
@@ -187,8 +190,9 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(this -> getBlackImgPath());
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
-            this -> sendToStitch( 1, blackptr );
 
+            this -> resizeImg(width, height);
+            this -> sendToStitch( 1, blackptr );
             return;
         }
     }

@@ -11,7 +11,7 @@ using img::Collage;
 using cv::waitKey;
 
 int main(){
-    std::string image_path = cv::samples::findFile(R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\image\test_image_class\htest.jpg)");
+    std::string image_path = cv::samples::findFile(R"(D:\Dimitri\Homeworks\YEAR2\CSE201_Project\Video_part\video_editor_BX23\src\image\test_image_class\htest.jpg)");
     Image img1 = Image(image_path);
     Image img2 = Image(image_path);
     Image img3 = Image(image_path);
