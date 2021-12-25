@@ -14,7 +14,7 @@ QBrush ImageItem::selectedBrush = QBrush(Qt::gray);
 QPen ImageItem::selectedPen = QPen(Qt::blue, border);
 QTransform ImageItem::parentTransform = QTransform();
 
-ImageItem::ImageItem(Image *image,
+ImageItem::ImageItem(img::Image *image,
                      QPoint position
                      ): image(image) {
     setPos(QPoint(position.x(), position.y() + yOffset));
@@ -48,7 +48,7 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(selectedImageItem == this? selectedBrush : brush);
     painter->drawRoundedRect(boundingRect(), border, border);
 
-    Mat mat = image->getModifiedImg();
+    cv::Mat mat = image->getModifiedImg();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     QPixmap thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
 

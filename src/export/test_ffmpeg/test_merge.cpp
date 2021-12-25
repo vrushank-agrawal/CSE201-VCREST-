@@ -3,9 +3,7 @@
 //
 
 #include "test_merge.h"
-#include "..\export.cpp"
-
-using namespace std;
+#include "../export.h"
 
 std::string get_curr_dir() {
     char tmp[256];

@@ -216,7 +216,7 @@ void VideoEditor::blurImage() {
 
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    Image *image = new Image(thumbnailManager->getImage(item)->getMat());
+    img::Image *image = new img::Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
 
@@ -290,7 +290,7 @@ void VideoEditor::writeVideo() {
     qDebug() << "start exporting";
     for (int i = 0; i < length; i++){
         double time = 1.0 * i / fps;
-        Image* image = ui->timeline->getImage(time);
+        img::Image* image = ui->timeline->getImage(time);
         cv::Mat frame;
         video >> frame;
         if (image != nullptr) frame = image->getModifiedImg();

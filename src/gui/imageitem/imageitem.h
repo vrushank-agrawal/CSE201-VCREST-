@@ -14,15 +14,13 @@
 #include "image.h"
 #include "sizegripitem.h"
 
-using namespace img;
-
 class ImageItem: public QObject, public QGraphicsItem
 {
 Q_OBJECT
 Q_INTERFACES(QGraphicsItem)
 
 public:
-    explicit ImageItem(Image *image,
+    explicit ImageItem(img::Image *image,
                        QPoint position
                        );
     ~ImageItem();
@@ -31,7 +29,7 @@ public:
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
     QMultiMap<double, ImageItem*>::iterator start, end;
-    Image *image;
+    img::Image *image;
     void setSize(QSizeF size);
     void calculateSize();
     void updateDuration(double newLength);
