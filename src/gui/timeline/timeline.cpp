@@ -120,10 +120,12 @@ void Timeline::appendImage(img::Image *image, double length) {
 void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // delete old duration
     deleteImage(item);
+    emit imageDeleted(item->image);
 
     // add new duration
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
+    emit imageAdded(item->image, start, end-start);
 }
 
 
@@ -185,9 +187,7 @@ void Timeline::setItemPosition(ImageItem *item, double startTime, double endTime
         }
         iterator++;
     }
-    emit imageDeleted(item->image);
     item->setX(startTime * xTimeOffset);
-    emit imageAdded(item->image, startTime, endTime - startTime);
 }
 
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
@@ -215,12 +215,16 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
+            emit imageDeleted(item->image);
             item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            emit imageAdded(item->image, startTime, iterator.key() - startTime);
             return;
         }
         iterator++;
     }
+    emit imageDeleted(item->image);
     item->updateDuration(newLength);
+    emit imageAdded(item->image, startTime, newLength / xTimeOffset);
 }
 
 void Timeline::wheelEvent(QWheelEvent *event) {
