@@ -80,6 +80,7 @@ void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
     else {
         selectedImageItem = nullptr;
+        this->update();
     }
     pressed = true;
     oldMousePos = event->scenePos();
