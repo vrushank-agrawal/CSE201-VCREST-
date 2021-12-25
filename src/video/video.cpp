@@ -84,13 +84,13 @@ namespace vid {
 
     cv::Mat Video::getMatAtFrame(int frame_number) {
         for (int i = 0; i < this->number_of_animations; i++) {
-            int start = (int) this->animators[i].start_time * fps;
-            int end = (int) (this->animators[i].start_time + this->animators[i].time) * fps;
+            int start = this->animators[i].start_time * fps;
+            int end = (this->animators[i].start_time + this->animators[i].time) * fps;
             if (start <= frame_number && frame_number <= end) {
                 return this->animators[i].getMatAt(frame_number - start);
             }
             if (i < number_of_animations - 1) {
-                int next_start = (int) this->animators[i + 1].start_time * fps;
+                int next_start = this->animators[i + 1].start_time * fps;
                 if (end < frame_number && frame_number < next_start) {
                     return this->blank.getModifiedImg();
                 }
