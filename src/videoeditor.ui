@@ -715,7 +715,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   </action>
   <action name="actionDelete_Project">
    <property name="text">
-    <string>Delete Project</string>
+    <string>deleteImage Project</string>
    </property>
   </action>
   <action name="actionOpen_Recent">
@@ -775,12 +775,12 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   </action>
   <action name="actionDelete">
    <property name="text">
-    <string>Delete</string>
+    <string>deleteImage</string>
    </property>
   </action>
   <action name="actionDelete_Keyframes">
    <property name="text">
-    <string>Delete Keyframes</string>
+    <string>deleteImage Keyframes</string>
    </property>
   </action>
   <action name="actionDuplicate_Project">
@@ -810,12 +810,12 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   </action>
   <action name="actionAdd_to_Video">
    <property name="text">
-    <string>Add to Video</string>
+    <string>addImage to Video</string>
    </property>
   </action>
   <action name="actionInsert">
    <property name="text">
-    <string>Insert</string>
+    <string>insertImage</string>
    </property>
   </action>
   <action name="actionFind">
@@ -840,12 +840,12 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   </action>
   <action name="actionAdd_Marker">
    <property name="text">
-    <string>Add Marker</string>
+    <string>addImage Marker</string>
    </property>
   </action>
   <action name="actionDelete_Marker">
    <property name="text">
-    <string>Delete Marker</string>
+    <string>deleteImage Marker</string>
    </property>
   </action>
   <action name="actionEnhance">
@@ -915,7 +915,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
   </action>
   <action name="actionAdd_Freeze_Frame">
    <property name="text">
-    <string>Add Freeze Frame</string>
+    <string>addImage Freeze Frame</string>
    </property>
   </action>
   <action name="actionReset_Speed">

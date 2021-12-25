@@ -13,6 +13,7 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
+    setupVideoClass();
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
@@ -34,14 +35,22 @@ VideoEditor::VideoEditor(QWidget *parent) :
         }
     }
 
-    video = cv::VideoCapture(videoPath.toStdString());
-    updateVideo(video);
+//    video = cv::VideoCapture(videoPath.toStdString());
+//    updateVideo(video);
+}
+
+void VideoEditor::setupVideoClass() {
+    // create an instance of Video class
+    resultVideo = new vid::Video(640, 360, fps);
+
+    ui->controlSlider->setRange(0, numberFrame);
+    ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
 
 void VideoEditor::updateVideo(const cv::VideoCapture &video){
-    ui->preview->updateVideo(video);
-
     int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
         fps = video.get(cv::CAP_PROP_FPS);
 
@@ -83,10 +92,10 @@ void VideoEditor::setupMenus() {
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
-    connect(ui->blurButton, SIGNAL(clicked()),
-            this, SLOT(blurImage()));
-    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+    connect(ui->blurButton, &QToolButton::clicked,
+            this, &VideoEditor::blurImage);
+    connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
+            this, &VideoEditor::appendImageToThumbnail);
 }
 
 
@@ -128,7 +137,11 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->timeline, &Timeline::timeIndicatorChanged,
             this, &VideoEditor::updateCurrentTime);
 
-    connect(ui->timeline, &Timeline::changeFrame,
+    connect(ui->timeline, &Timeline::imageAdded,
+            this, &VideoEditor::addImageToResultVideo);
+
+    // connect changeFrame in VideoEditor with updateFrame VideoPlayer
+    connect(this, &VideoEditor::changeFrame,
             ui->preview, &VideoPlayer::updateFrame);
 
     // add label and playButton to preview
@@ -206,6 +219,11 @@ void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
 }
 
 
+void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration) {
+    resultVideo->addImage(image, startTime, duration);
+}
+
+
 void VideoEditor::updatePosition(int position) {
     if (this->position != position) {
         this->position = position;
@@ -218,6 +236,9 @@ void VideoEditor::updatePosition(int position) {
 
 void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
+        cv::Mat frame = resultVideo->getMatByTime(time);
+        emit changeFrame(frame);
+
         this->timeInSec = time;
         this->position = int(time * fps);
         emit positionChanged(position);
@@ -228,6 +249,7 @@ void VideoEditor::updateCurrentTime(double time) {
 
 VideoEditor::~VideoEditor() {
     delete ui;
+    delete resultVideo;
 }
 
 void VideoEditor::writeVideo() {

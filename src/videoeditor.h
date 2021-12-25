@@ -7,9 +7,10 @@
 
 #include <QMainWindow>
 #include <QListView>
+#include <string>
 #include <audiomanager.h>
 #include <imagethumbnail.h>
-#include <string>
+#include <video.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,7 @@ signals:
     void imageChanged();
     void positionChanged(int position);
     void currentTimeChanged(double timeInSec);
+    void changeFrame(cv::Mat frame);
 
 public slots:
     void importMedia();
@@ -37,14 +39,17 @@ public slots:
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
     void writeVideo();
+    void addImageToResultVideo(img::Image *image, double startTime, double duration);
 
 private:
+    vid::Video *resultVideo;
     cv::VideoCapture video;
     QSet<QString> imageFileTypes;
     QSet<QString> audioFileTypes;
     QString imageFileTypesFilter;
     QString audioFileTypesFilter;
-    int position = 0, fps = 30;
+    int fourcc;
+    int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;
     Ui::VideoEditor *ui;
     std::vector<QPixmap> images;
@@ -53,15 +58,12 @@ private:
     void setupVideoPlayer();
     void setupMenus();
     void setupWidgets();
+    void setupVideoClass();
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
     void importAudio(const QString& dir);
     ThumbnailManager *thumbnailManager;
     AudioManager *audioManager;
-
-    int fourcc;
-
-//    std::string outputPath = "D:/Downloads/2.mp4";
 };
 
 

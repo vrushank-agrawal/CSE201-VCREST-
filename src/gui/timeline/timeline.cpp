@@ -77,28 +77,20 @@ void Timeline::resizeEvent(QResizeEvent *event) {
     moveTimeline();
 }
 
-void Timeline::updateFrame(double time){
-    Image *image = getImage(time);
-    if (image == nullptr) return;
-    emit changeFrame(image->getModifiedImg());
-}
-
 void Timeline::updateIndicatorPosition(double time) {
     if (indicator->x() != time * xTimeOffset) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
-        updateFrame(time);
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    updateFrame(time);
 }
 
-void Timeline::addImage(Image *image, double start, double end) {
+void Timeline::addImage(img::Image *image, double start, double end) {
     auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
@@ -115,9 +107,11 @@ void Timeline::addImage(Image *image, double start, double end) {
             this, SLOT(deleteImage(ImageItem *)));
 
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
+
+    emit imageAdded(image, start, end-start);
 }
 
-void Timeline::appendImage(Image *image, double length) {
+void Timeline::appendImage(img::Image *image, double length) {
     double start = map.isEmpty() ? 0 : map.lastKey();
     addImage(image, start, start + length);
 }
@@ -150,13 +144,13 @@ ImageItem* Timeline::getImageItem(double time) {
     return nullptr;
 }
 
-Image* Timeline::getImage(double time) {
+img::Image* Timeline::getImage(double time) {
     ImageItem *item = getImageItem(time);
     if (item != nullptr) return item->image;
     return nullptr;
 }
 
-Image* Timeline::getImageAtIndicator() {
+img::Image* Timeline::getImageAtIndicator() {
     double time = indicator->x() / xTimeOffset;
     return getImage(time);
 }
@@ -166,7 +160,7 @@ void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->end);
 }
 
-void Timeline::addImageAtIndicator(Image *image, double max_length) {
+void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
     // image already exists

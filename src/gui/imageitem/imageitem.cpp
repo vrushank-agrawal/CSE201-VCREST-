@@ -57,7 +57,7 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     qreal height = size.height() + border;
     qreal width = (size.height() + border) * parentTransform.m22() / thumbnail.height() * thumbnail.width() / parentTransform.m11();
-    width = min(width, size.width());
+    width = std::min(width, size.width());
 
     painter->drawPixmap(
             QRectF(

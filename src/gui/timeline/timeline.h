@@ -9,11 +9,9 @@
 #include <QGraphicsItem>
 #include <QResizeEvent>
 #include <QListWidgetItem>
-#include <imageitem.h>
+#include "imageitem.h"
 #include "indicator.h"
 #include "image.h"
-
-using namespace img;
 
 class Timeline: public QGraphicsView {
 Q_OBJECT
@@ -22,17 +20,16 @@ public:
     ~Timeline();
     static double default_image_length;
     void updateVideoLength(int length);
-    void addImage(Image *image, double start, double end); // add an Image at the specified location
-    void appendImage(Image *image, double length=default_image_length); // append an Image to the end of the timeline
-    void addImageAtIndicator(Image *image, double max_length = default_image_length); // call appendImage if an image already exists
-    Image* getImage(qreal time);
-    Image* getImageAtIndicator();
+    void addImage(img::Image *image, double start, double end); // add an Image at the specified location
+    void appendImage(img::Image *image, double length=default_image_length); // append an Image to the end of the timeline
+    void addImageAtIndicator(img::Image *image, double max_length = default_image_length); // call appendImage if an image already exists
+    img::Image* getImage(qreal time);
+    img::Image* getImageAtIndicator();
 
 signals:
     void videoLengthChanged(int length);
     void timeIndicatorChanged(qreal time);
-    void changeFrame(cv::Mat frame);
-
+    void imageAdded(img::Image *image, double startTime, double duration);
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
