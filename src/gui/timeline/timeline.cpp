@@ -150,11 +150,6 @@ img::Image* Timeline::getImage(double time) {
     return nullptr;
 }
 
-img::Image* Timeline::getImageAtIndicator() {
-    double time = indicator->x() / xTimeOffset;
-    return getImage(time);
-}
-
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
@@ -189,7 +184,9 @@ void Timeline::setItemPosition(ImageItem *item, double startTime, double endTime
         }
         iterator++;
     }
+    emit imageDeleted(item->image);
     item->setX(startTime * xTimeOffset);
+    emit imageAdded(item->image, startTime, endTime - startTime);
 }
 
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {

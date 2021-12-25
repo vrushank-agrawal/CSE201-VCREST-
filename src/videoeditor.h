@@ -40,6 +40,7 @@ public slots:
     void appendImageToThumbnail(QListWidgetItem*);
     void writeVideo();
     void addImageToResultVideo(img::Image *image, double startTime, double duration);
+    void deleteImageFromResultVideo(img::Image *image);
 
 private:
     vid::Video *resultVideo;

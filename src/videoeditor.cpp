@@ -139,6 +139,8 @@ void VideoEditor::setupVideoPlayer() {
 
     connect(ui->timeline, &Timeline::imageAdded,
             this, &VideoEditor::addImageToResultVideo);
+    connect(ui->timeline, &Timeline::imageDeleted,
+            this, &VideoEditor::deleteImageFromResultVideo);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
@@ -221,6 +223,11 @@ void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
 
 void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration) {
     resultVideo->addImage(image, startTime, duration);
+}
+
+
+void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
+    resultVideo->deleteImage(image);
 }
 
 
