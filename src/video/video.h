@@ -1,3 +1,6 @@
+#ifndef VIDEO_CLASS
+#define VIDEO_CLASS
+
 #ifndef OPENCV
 #define OPENCV
 
@@ -5,11 +8,6 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
-#include <iostream>
-#include <vector>
-#include <string>
-#include "../image/image.cpp"
-#include "../image/blurs.cpp"
 
 #endif //OPENCV
 
@@ -17,13 +15,15 @@ using namespace cv;
 using namespace std;
 using namespace img;
 
-#ifndef VIDEO_CLASS
-#define VIDEO_CLASS
+#include <iostream>
+#include <vector>
+#include <string>
+#include "image.h"
 
 namespace vid {
 
     const int total_number_of_animations = 5;
-    enum animation {
+    enum Animation {
         Normal = 0, Rotation = 1, Zooming = 2, Cropping = 3
     };
 
@@ -44,87 +44,87 @@ namespace vid {
         //Main working functions
 
         //adds Image pointer at specific time for some duration
-        void Add(Image *img, double start_time, double time_to_display);
+        void addImage(Image *img, double start_time, double time_to_display);
 
         //adds Image pointer in the end(normally user won't use this)
-        void Insert(Image *img, double start_time, double time_to_display);
+        void insertImage(Image *img, double start_time, double time_to_display);
 
         //adds Image pointer at certain index (not meant to be used by user)
-        void Insert(Image *img, double start_time, double time_to_display, int index);
+        void insertImage(Image *img, double start_time, double time_to_display, int index);
 
         //Deletes everything associated to image pointer.
-        void Delete(Image *img);
+        void deleteImage(Image *img);
 
-        //Applies animation (receives image pointer and animation type)
-        void ApplyAnimation(Image *img, animation animation_type);
+        //Applies Animation (receives image pointer and Animation type)
+        void applyAnimation(Image *img, Animation animation_type);
 
         //Removes from the vector at certain index(not meant to be used by user)
-        void Remove(int index);
+        void removeImageAtIndex(int index);
 
         //gets mat at certain time
-        Mat GetMat(double time);
+        Mat getMatByTime(double time);
 
         //gets mat at certain frame
-        Mat GetMatAtFrame(int frame_index);
+        Mat getMatAtFrame(int frame_index);
 
         //gets image pointer from certain index
-        Image *GetImgAtIndex(int index);
+        Image *getImgAtIndex(int index);
 
-        void WriteVideo(string output_name);
+        void writeVideo(string output_name);
 
         //User doesn't need these functions
-        void DisplayCurrentVideo();
+        void displayCurrentVideo();
 
-        int GetPlace(double time);
+        int getPlace(double time);
 
-        int GetIndex(Image *img);
+        int getIndex(Image *img);
 
-        void Resize(int width, int height);
+        void resize(int width, int height);
 
-        void AddBlank(VideoWriter video_writer, double time);
+        void addBlank(VideoWriter video_writer, double time);
 
-        void ShowBlank(double time);
+        void showBlank(double time);
 
-        int AnimationNumber();
+        int animationNumber();
 
-        void Clear();
+        void clear();
 
         //Animator structure which is capable of displaying
-        //current image for that time and applying the animation
+        //current image for that time and applying the Animation
         struct ImageAnimator {
         public:
             ImageAnimator();
 
             ImageAnimator(Image *image, double start_time, double display_time, int fps);
 
-            ImageAnimator(Image *image, double start_time, double display_time, int fps, animation animation_type);
+            ImageAnimator(Image *image, double start_time, double display_time, int fps, Animation animation_type);
 
             ~ImageAnimator();
 
-            void Display();
+            void display();
 
-            void Write(VideoWriter video_writer);
+            void write(VideoWriter video_writer);
 
-            void SetAnimation(animation animation_type);
+            void setAnimation(Animation animation_type);
 
-            Mat GetMatAt(int frame_number);
+            Mat getMatAt(int frame_number);
 
-            Mat NormalDisplay(int frame_number);
+            Mat normalDisplay(int frame_number);
 
-            Mat RotateAnimation(int frame_number);
+            Mat rotateAnimation(int frame_number);
 
             //Functions below should be of type Mat as well, not tested yet
-            void ZoomAnimation(int frame_number);
+            void zoomAnimation(int frame_number);
 
-            void CropAnimation();
+            void cropAnimation();
 
-            void InitFunctions();
+            void initFunctions();
 
-            Mat Create_blank(int *color, int *size);
+            Mat createBlank(int *color, int *size);
 
             Image *image;
             double time, start_time, fps;
-            animation animation_type;
+            Animation animation_type;
 
             Mat (ImageAnimator::*anim_functions[total_number_of_animations + 1 ])(int);
         };
