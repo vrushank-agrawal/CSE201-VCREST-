@@ -37,9 +37,6 @@ namespace img {
         cv::Mat getModifiedImg();
         void setModifiedImg(cv::Mat mat);
 
-        // returns path to black image
-        std::string getBlackImgPath();
-
         // returns error if loaded image can't be read
         int return_img_error(int a);
 
@@ -83,6 +80,7 @@ namespace img {
 
     }; // Image() class
 
+    const cv::Mat blackMat = cv::Mat(1920, 1080, CV_8UC3, cv::Scalar(0, 0, 0));
 } //namespace
 
 #endif // IMAGE_CLASS

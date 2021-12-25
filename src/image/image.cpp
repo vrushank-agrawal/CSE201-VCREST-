@@ -94,11 +94,6 @@ int img::Image::getModifiedWidth() {
     return this -> getModifiedImg().size().width;
 }
 
-std::string img::Image::getBlackImgPath() {
-    // change black image file path to your own directory
-    return R"(D:\Dimitri\Homeworks\YEAR2\CSE201_Project\Video_part\video_editor_BX23\src\image\default_images\black.jpg)";
-}
-
 // adds black areas to image
 
 
@@ -125,7 +120,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             int black_width = floor( abs(width - new_width) / 2 );
 
             // create black image and resize it
-            Image Black = img::Image(this -> getBlackImgPath());
+            Image Black = img::Image(blackMat);
             Black.resizeImg( black_width, height );
             Image* blackptr = &Black;
             this -> sendToStitch( 0, blackptr );
@@ -148,7 +143,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             int black_width = floor( abs(width - new_width) / 2 );
 
             // create black image and resize it
-            Image Black = img::Image(this -> getBlackImgPath());
+            Image Black = img::Image(blackMat);
             Image* blackptr = &Black;
             Black.resizeImg( black_width, height );
             this -> sendToStitch( 0, blackptr );
@@ -170,7 +165,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             int black_height = floor( abs(height - new_height) / 2 );
 
             // create black image and resize it
-            Image Black = img::Image(this -> getBlackImgPath());
+            Image Black = img::Image(blackMat);
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
             this -> sendToStitch( 1, blackptr );
@@ -187,7 +182,7 @@ void img::Image::equalizeImgDim( double width, double height) {
             int black_height = floor( abs(height - new_height) / 2 );
 
             // create black image and resize it
-            Image Black = img::Image(this -> getBlackImgPath());
+            Image Black = img::Image(blackMat);
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
 
