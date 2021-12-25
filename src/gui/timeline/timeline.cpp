@@ -153,6 +153,7 @@ img::Image* Timeline::getImage(double time) {
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
+    emit imageDeleted(item->image);
 }
 
 void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
