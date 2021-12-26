@@ -5,29 +5,19 @@
 #include "export.h"
 
 exp::exporter::exporter(std::string video_path, std::string audio_path, std::string export_address) {
+    this -> export_address = export_address;
+    this -> video_path = video_path;
+    this -> audio_path = audio_path;
 
-    const char* vid = video_path.c_str();
-    const char* aud = audio_path.c_str();
-    const char* exp = export_address.c_str();
-
-    this -> export_address = exp;
-    this -> video_path = vid;
-    this -> audio_path = aud;
-
+    remove(this->export_address.c_str());
     merge_av(this -> video_path, this -> audio_path, this -> export_address);
 }
 
 exp::exporter::~exporter() {}
 
-void exp::exporter::merge_av (const char* video_path, const char* audio_path, const char* export_address) {
+void exp::exporter::merge_av (std::string video_path, std::string audio_path, std::string export_address) {
 
-    char cmd[256];
-    strcpy(cmd,"ffmpeg -i ");
-    strcat(cmd, video_path);
-    strcat(cmd, " -i ");
-    strcat(cmd, audio_path);
-    strcat(cmd, " -c copy ");
-    strcat(cmd, export_address);
-    system(cmd);
+    std::string cmd = "ffmpeg -i " + video_path + " -i " + audio_path + " -c copy " + export_address;
 
+    system(cmd.c_str());
 }

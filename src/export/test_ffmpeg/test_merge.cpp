@@ -2,7 +2,6 @@
 // Created by Vrushank on 12/17/2021.
 //
 
-#include "test_merge.h"
 #include "../export.h"
 
 std::string get_curr_dir() {
@@ -32,22 +31,14 @@ int main() {
 
 //    cout << "Current working directory: " << last_backslash << endl;
     char video_path[200];
-    strcpy(video_path, R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\export\test_ffmpeg\test_files\video.mp4)");
+    strcpy(video_path, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/video.mp4");
     char audio_path[200];
-    strcpy(audio_path, R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\export\test_ffmpeg\test_files\audio.wav)");
+    strcpy(audio_path, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/audio.wav");
     char export_address[200];
-    strcpy(export_address, R"(C:\Users\minht\CLionProjects\video_editor_BX23\src\export\test_ffmpeg\test_files\output.mkv)");
+    strcpy(export_address, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/output.mkv");
 
 
     exp::exporter(video_path, audio_path, export_address);
-//    char cmd[256];
-//    strcpy(cmd,"ffmpeg -i ");
-//    strcat(cmd, video_path);
-//    strcat(cmd, " -i ");
-//    strcat(cmd, audio_path);
-//    strcat(cmd, " -c copy ");
-//    strcat(cmd, export_address);
-//    system(cmd);
 
     exit(0);
 
