@@ -81,7 +81,7 @@ void VideoEditor::setupMenus() {
             this, &VideoEditor::writeVideo);
 
     QString os = QSysInfo::productType();
-    if (os == "osx") {
+    if (os == "osx" || os == "macos") {
         fourcc = cv::VideoWriter::fourcc('a', 'v', 'c', '1');
     } else {
         fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
@@ -262,6 +262,7 @@ VideoEditor::~VideoEditor() {
 void VideoEditor::writeVideo() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setNameFilter("MP4 video (*.mp4)");
     std::string outputPath;
     if (dialog.exec()) {
@@ -272,32 +273,14 @@ void VideoEditor::writeVideo() {
     } else {
         return;
     }
-    cv::VideoWriter outputVideo;
-    cv::Size sizeFrame(640, 480);
-
-    qDebug() << outputPath.c_str();
 
     remove(outputPath.c_str());
-    bool isOk = outputVideo.open(outputPath, fourcc, 30.0, sizeFrame, true);
-    if (!isOk) {
+
+    if (!resultVideo->writeVideo(outputPath, fourcc)) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
-        return;
     }
-    int length = 10 * fps;
-    qDebug() << "start exporting";
-    for (int i = 0; i < length; i++){
-        double time = 1.0 * i / fps;
-        img::Image* image = ui->timeline->getImage(time);
-        cv::Mat frame;
-        video >> frame;
-        if (image != nullptr) frame = image->getModifiedImg();
-        cv::resize(frame, frame, sizeFrame);
-        outputVideo << frame;
-    }
-    outputVideo.release();
-    qDebug() << "end exporting";
 }
 

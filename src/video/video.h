@@ -57,7 +57,7 @@ namespace vid {
         //gets image pointer from certain index
         img::Image *getImgAtIndex(int index);
 
-        void writeVideo(std::string output_name);
+        bool writeVideo(std::string output_name, int fourcc);
 
         int getPlace(double time);
 

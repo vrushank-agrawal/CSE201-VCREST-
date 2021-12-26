@@ -131,9 +131,12 @@ namespace vid {
         cv::destroyAllWindows();
     }
 
-    void Video::writeVideo(std::string output_name) {
-        cv::VideoWriter video_writer(output_name, cv::VideoWriter::fourcc('m', 'p', '4', 'v'),
-                                     this->fps, cv::Size(this->width, this->height));
+    bool Video::writeVideo(std::string output_name, int fourcc) {
+        cv::VideoWriter video_writer;
+        bool isOpened = video_writer.open(output_name, fourcc,
+                                     this->fps, cv::Size(this->width, this->height), true);
+
+        if (!isOpened) return false;
 
         double cur_time = 0;
         for (int i = 0; i < this->number_of_animations; i++) {
@@ -146,6 +149,8 @@ namespace vid {
         }
         video_writer.release();
         cv::destroyAllWindows();
+
+        return true;
     }
 
 //Supposed to be a binary search
