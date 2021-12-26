@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-
 add_library(sizeGripItem sizegripitem.cpp)
 
 target_include_directories(sizeGripItem
@@ -7,7 +5,5 @@ target_include_directories(sizeGripItem
         )
 
 target_link_libraries(sizeGripItem
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
         )

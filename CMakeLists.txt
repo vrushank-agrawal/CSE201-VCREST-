@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(video_editor_BX23)
 
+add_subdirectory(libs/opencv)
+add_subdirectory(libs/qt)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -9,6 +12,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package( OpenCV REQUIRED )
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -18,11 +22,10 @@ find_package(Qt6 COMPONENTS
 add_subdirectory(src)
 
 add_executable(video_editor_BX23 main.cpp application.qrc)
-target_link_libraries(video_editor_BX23 PUBLIC
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        videoEditor
+target_link_libraries(video_editor_BX23
+        PUBLIC videoEditor
+        INTERFACE qtExternalLibrary
+        INTERFACE opencvExternalLibrary
         )
 
 # add warning
