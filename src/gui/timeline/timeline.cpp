@@ -120,7 +120,6 @@ void Timeline::appendImage(img::Image *image, double length) {
 void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // delete old duration
     deleteImage(item);
-    emit imageDeleted(item->image);
 
     // add new duration
     item->start = map.insert(start, item);

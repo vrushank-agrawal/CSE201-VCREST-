@@ -152,7 +152,7 @@ namespace vid {
     int Video::getPlace(double time) {
         int index = 0;
         for (int i = 0; i < this->number_of_animations; i++) {
-            if (time < this->animators[i].time) {
+            if (time < this->animators[i].start_time) {
                 break;
             }
             index++;
