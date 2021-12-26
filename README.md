@@ -5,19 +5,19 @@ This is a unique video creating software developed to help a user build a video 
 
 ## Members
 
-| Name Surname                      | Role              | Github username       | Trello username   |
-|:---------------------------------:|:-----------------:|:---------------------:|:-----------------:|
-| Vrushank Agrawal                  |project leader     | vrushank-agrawal      | vrushank_agrawal  |
-| Duy Nhat Vo                       |git leader         | nhat-vo               | lavawolf          |
-| Lucia Carai                       |trello assistant   | LuciaCarai            | luciacarai        |
-| Dimitri Korkotashvilli            |video manager      | Dimitri-Korkotashvili | dkorkot           |
-| Lasha Koroshinadze                |auido manager      | lashahub              | lashakoroshinadze |
-| Hieu Le                           |                   | Hieu-Lee              | hieule203         |
-| Minh Tung Nguyen                  |                   | minhtung0404          | minhtung0404      |
-| Minjoo Kim                        |                   | minjoo-johanna        | minjookim44       |
-| Hayate Sasaki                     |                   | hayate0s              | hayatesasaki      |
-| Yufei Liu                         |                   | elisabeth04           | user24392150      |
-| Yi Yao Tan                        |                   | yao-creative          | yiyaotan          |
+| Name Surname                      |       Role       | Github username       | Trello username   |
+|:---------------------------------:|:----------------:|:---------------------:|:-----------------:|
+| Vrushank Agrawal                  |  project leader  | vrushank-agrawal      | vrushank_agrawal  |
+| Duy Nhat Vo                       |    git leader    | nhat-vo               | lavawolf          |
+| Lucia Carai                       | trello assistant | LuciaCarai            | luciacarai        |
+| Dimitri Korkotashvilli            |  video manager   | Dimitri-Korkotashvili | dkorkot           |
+| Lasha Koroshinadze                |  audio manager   | lashahub              | lashakoroshinadze |
+| Hieu Le                           |                  | Hieu-Lee              | hieule203         |
+| Minh Tung Nguyen                  |                  | minhtung0404          | minhtung0404      |
+| Minjoo Kim                        |                  | minjoo-johanna        | minjookim44       |
+| Hayate Sasaki                     |                  | hayate0s              | hayatesasaki      |
+| Yufei Liu                         |                  | elisabeth04           | user24392150      |
+| Yi Yao Tan                        |                  | yao-creative          | yiyaotan          |
 
 ## Teams
 
