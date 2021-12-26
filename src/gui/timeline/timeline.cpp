@@ -217,16 +217,12 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
-            emit imageDeleted(item->image);
             item->updateDuration((iterator.key() - startTime) * xTimeOffset);
-            emit imageAdded(item->image, startTime, iterator.key() - startTime);
             return;
         }
         iterator++;
     }
-    emit imageDeleted(item->image);
     item->updateDuration(newLength);
-    emit imageAdded(item->image, startTime, newLength / xTimeOffset);
 }
 
 void Timeline::wheelEvent(QWheelEvent *event) {
