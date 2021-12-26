@@ -42,20 +42,11 @@ namespace vid {
         //adds Image pointer at specific time for some duration
         void addImage(img::Image *img, double start_time, double time_to_display);
 
-        //adds Image pointer in the end(normally user won't use this)
-        void insertImage(img::Image *img, double start_time, double time_to_display);
-
-        //adds Image pointer at certain index (not meant to be used by user)
-        void insertImage(img::Image *img, double start_time, double time_to_display, int index);
-
         //Deletes everything associated to image pointer.
         void deleteImage(img::Image *img);
 
         //Applies Animation (receives image pointer and Animation type)
         void applyAnimation(img::Image *img, Animation animation_type);
-
-        //Removes from the vector at certain index(not meant to be used by user)
-        void removeImageAtIndex(int index);
 
         //gets mat at certain time
         cv::Mat getMatByTime(double time);
@@ -67,9 +58,6 @@ namespace vid {
         img::Image *getImgAtIndex(int index);
 
         void writeVideo(std::string output_name);
-
-        //User doesn't need these functions
-        void displayCurrentVideo();
 
         int getPlace(double time);
 
@@ -84,6 +72,20 @@ namespace vid {
         int animationNumber();
 
         void clear();
+
+    private:
+        //adds Image pointer in the end(normally user won't use this)
+        void insertImage(img::Image *img, double start_time, double time_to_display);
+
+        //adds Image pointer at certain index (not meant to be used by user)
+        void insertImage(img::Image *img, double start_time, double time_to_display, int index);
+
+        //Removes from the vector at certain index(not meant to be used by user)
+        void removeImageAtIndex(int index);
+
+        //User doesn't need these functions
+        void displayCurrentVideo();
+
 
         //Animator structure which is capable of displaying
         //current image for that time and applying the Animation
