@@ -25,18 +25,9 @@ int main() {
     std::string video_path;
     std::string export_address;
 
-    audio_path = address + R"(\..\test_files\audio.wav)";
-    video_path = address + R"(\..\test_files\video.mp4)";
-    export_address = address + R"(\..\test_files\output.mkv)";
-
-//    char video_path[200];
-//    strcpy(video_path, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/video.mp4");
-//    char audio_path[200];
-//    strcpy(audio_path, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/audio.wav");
-//    std::string audio_path = address;
-//    char export_address[200];
-//    strcpy(export_address, "/Users/minhtung0404/Documents/CS/github/video_editor_BX23/src/export/test_ffmpeg/test_files/output.mkv");
-
+    audio_path = address + "/../test_files/audio.wav";
+    video_path = address + "/../test_files/video.mp4";
+    export_address = address + "/../test_files/output.mkv";
 
     exp::exporter(video_path, audio_path, export_address);
 
