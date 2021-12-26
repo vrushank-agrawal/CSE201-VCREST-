@@ -219,17 +219,16 @@ void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
 
 
 void VideoEditor::updatePosition(int newPosition) {
-    if (this->position != newPosition) {
-        this->position = newPosition;
-        this->timeInSec = 1.0 * newPosition / fps;
-        emit positionChanged(newPosition);
-        emit currentTimeChanged(timeInSec);
-    }
+    updateCurrentTime(1.0 * newPosition / fps);
 }
 
 
 void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
+        if (time * fps > numberFrame) {
+            time = 1.0 * numberFrame / fps;
+            ui->playButton->clicked();
+        }
         cv::Mat frame = resultVideo->getMatByTime(time);
         emit changeFrame(frame);
 
