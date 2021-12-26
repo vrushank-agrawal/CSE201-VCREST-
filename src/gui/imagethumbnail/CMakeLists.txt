@@ -11,6 +11,5 @@ target_link_libraries(imageThumbnail
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        imageLibrary
         )
-
-target_link_libraries(videoPlayer ${OpenCV_LIBS})

@@ -1,0 +1,1232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VideoEditor</class>
+ <widget class="QMainWindow" name="VideoEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1077</width>
+    <height>633</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>VideoEditor</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <item>
+     <widget class="QWidget" name="imgEditor" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>10</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="imgThumbnail" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>12</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(0, 85, 0)rgb(170, 170, 255)</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QListWidget" name="audioListWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>5</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: rgb(85, 255, 255)rgb(255, 170, 255)</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout"/>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="imgListWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>10</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: rgb(85, 255, 0)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="imgPreview" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>15</horstretch>
+           <verstretch>20</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(255, 255, 127);
+QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="imgToolbar" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>2</horstretch>
+              <verstretch>10</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: red;
+QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>12</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QToolButton" name="blurButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string comment="blur the image" extracomment="ahihi">blur</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/img-blur.png</normaloff>:/img-blur.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="resizeButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>crop</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/img-resize.png</normaloff>:/img-resize.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>22</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="rotateButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>zoom</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/img-rotate.png</normaloff>:/img-rotate.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>22</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="padding" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="VideoPlayer" name="preview" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>2</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: rgb(255, 170, 0)</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+             <property name="spacing">
+              <number>5</number>
+             </property>
+             <property name="leftMargin">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="VideoWindow" name="label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>7</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background:rgb(68, 255, 82)</string>
+               </property>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="controller" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>1</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: rgb(126, 154, 255)</string>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>10</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>10</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QToolButton" name="skipBackward">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="sizeIncrement">
+                   <size>
+                    <width>1</width>
+                    <height>1</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="playButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>1</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="skipForward">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="ProgressBar" name="controlSlider">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="Timeline" name="timeline">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>5</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: rgb(12, 255, 0)</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1077</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuSave_Project">
+     <property name="title">
+      <string>Save Project</string>
+     </property>
+     <addaction name="actionSave_Project_2"/>
+     <addaction name="actionSave_Project_As"/>
+     <addaction name="actionBackup_Project"/>
+    </widget>
+    <addaction name="actionNew_Video"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_Media"/>
+    <addaction name="actionImport_Image"/>
+    <addaction name="actionImport_Audio"/>
+    <addaction name="actionImport_VEST_Projects_3"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Library"/>
+    <addaction name="actionOpen_Recent"/>
+    <addaction name="actionClose_Library"/>
+    <addaction name="actionCopy_To_Library"/>
+    <addaction name="actionMove_To_Library"/>
+    <addaction name="actionMerge_Events"/>
+    <addaction name="actionConsolidate_Library_Files"/>
+    <addaction name="separator"/>
+    <addaction name="menuSave_Project"/>
+    <addaction name="actionExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionShare"/>
+    <addaction name="separator"/>
+    <addaction name="actionUpdate_Projects_and_Events"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete_Project"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionPaste"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste_2"/>
+    <addaction name="actionPaste_Adjustments"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionDelete_Keyframes"/>
+    <addaction name="separator"/>
+    <addaction name="actionDuplicate_Project"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="actionSelect_Entire_Clip"/>
+    <addaction name="actionSelect_in_Video"/>
+    <addaction name="actionDeselect_All"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_to_Video"/>
+    <addaction name="actionInsert"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionPlay"/>
+    <addaction name="actionPlay_Selection"/>
+    <addaction name="actionPlay_from_Beginning"/>
+    <addaction name="actionPlay_Full_Screen"/>
+    <addaction name="actionLoop_Playback"/>
+    <addaction name="separator"/>
+    <addaction name="actionSort_Events_By"/>
+    <addaction name="actionSort_By"/>
+    <addaction name="actionShow_Separate_Days_in_Events"/>
+    <addaction name="actionShow_Audio_Waveforms"/>
+    <addaction name="actionShow_Used_Media_Ranges"/>
+    <addaction name="actionShow_Skimmer_Info"/>
+    <addaction name="separator"/>
+    <addaction name="actionZoom_In"/>
+    <addaction name="actionZoom_Out"/>
+    <addaction name="actionZoom_All_Clips"/>
+    <addaction name="separator"/>
+    <addaction name="actionSnapping"/>
+    <addaction name="actionAudio_Skimming"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionMinimize"/>
+    <addaction name="actionMinimize_All"/>
+    <addaction name="actionZoom"/>
+    <addaction name="actionMove_Window_to_Left_Side_of_Screen"/>
+    <addaction name="actionMove_Window_to_Right_Side_of_Screen"/>
+    <addaction name="separator"/>
+    <addaction name="actionGo_to_Media"/>
+    <addaction name="actionGo_to_Projects"/>
+    <addaction name="actionShow_Libraries"/>
+    <addaction name="actionContent_Library"/>
+    <addaction name="actionTheme_Chooser"/>
+    <addaction name="separator"/>
+    <addaction name="actionClip_Trimmer"/>
+    <addaction name="actionPrecision_Editor"/>
+    <addaction name="actionRecord_Voiceover"/>
+    <addaction name="separator"/>
+    <addaction name="actionRevert_to_Original_Layout"/>
+    <addaction name="separator"/>
+    <addaction name="actionBring_All_to_Front"/>
+    <addaction name="separator"/>
+    <addaction name="actionEnter_Full_Screen"/>
+    <addaction name="separator"/>
+    <addaction name="actionVEST"/>
+    <addaction name="actionWelcome_to_VEST"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionSearch"/>
+    <addaction name="separator"/>
+    <addaction name="actionVEST_Help"/>
+    <addaction name="separator"/>
+    <addaction name="actionWhat_s_New_in_VEST"/>
+    <addaction name="actionKeyboard_Shortcuts"/>
+    <addaction name="actionSupported_Cameras"/>
+    <addaction name="separator"/>
+    <addaction name="actionService_and_Support"/>
+   </widget>
+   <widget class="QMenu" name="menuModify">
+    <property name="title">
+     <string>Modify</string>
+    </property>
+    <addaction name="actionEnhance"/>
+    <addaction name="actionFade_to"/>
+    <addaction name="actionFlash_and_Freeze_Frame"/>
+    <addaction name="actionMute_Audio"/>
+    <addaction name="separator"/>
+    <addaction name="actionTrim_to_Selection"/>
+    <addaction name="actionTrim_Clip_Edge"/>
+    <addaction name="actionSplit_Clip"/>
+    <addaction name="actionJoin_Clips"/>
+    <addaction name="actionDetach_Audio"/>
+    <addaction name="separator"/>
+    <addaction name="actionSlow_Motion"/>
+    <addaction name="actionFast_Forward"/>
+    <addaction name="actionInstant_Reply"/>
+    <addaction name="actionRewind"/>
+    <addaction name="actionAdd_Freeze_Frame"/>
+    <addaction name="actionReset_Speed"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdjust_Clip_Date_and_Time"/>
+   </widget>
+   <widget class="QMenu" name="menuMark">
+    <property name="title">
+     <string>Mark</string>
+    </property>
+    <addaction name="actionFavorite"/>
+    <addaction name="actionReject"/>
+    <addaction name="actionUnrate"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_Marker"/>
+    <addaction name="actionDelete_Marker"/>
+   </widget>
+   <widget class="QMenu" name="menuAudio">
+    <property name="title">
+     <string>Audio</string>
+    </property>
+    <addaction name="actionEdit"/>
+   </widget>
+   <widget class="QMenu" name="menuImages">
+    <property name="title">
+     <string>Images</string>
+    </property>
+    <addaction name="actionImages"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuAudio"/>
+   <addaction name="menuImages"/>
+   <addaction name="menuMark"/>
+   <addaction name="menuModify"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionNew_Video">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionNew_Event">
+   <property name="text">
+    <string>New Event</string>
+   </property>
+  </action>
+  <action name="actionOpen_Library">
+   <property name="text">
+    <string>Open Library</string>
+   </property>
+  </action>
+  <action name="actionClose_Library">
+   <property name="text">
+    <string>Close Library</string>
+   </property>
+  </action>
+  <action name="actionCopy_To_Library">
+   <property name="text">
+    <string>Copy To Library</string>
+   </property>
+  </action>
+  <action name="actionMove_To_Library">
+   <property name="text">
+    <string>Move To Library</string>
+   </property>
+  </action>
+  <action name="actionMerge_Events">
+   <property name="text">
+    <string>Merge Events</string>
+   </property>
+  </action>
+  <action name="actionConsolidate_Library_Files">
+   <property name="text">
+    <string>Consolidate Library Files...</string>
+   </property>
+  </action>
+  <action name="actionShare">
+   <property name="text">
+    <string>Share</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Projects_and_Events">
+   <property name="text">
+    <string>Update Projects and Events...</string>
+   </property>
+  </action>
+  <action name="actionDelete_Project">
+   <property name="text">
+    <string>deleteImage Project</string>
+   </property>
+  </action>
+  <action name="actionOpen_Recent">
+   <property name="text">
+    <string>Open Recent</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionSave_Project_2">
+   <property name="text">
+    <string>Save Project</string>
+   </property>
+  </action>
+  <action name="actionSave_Project_As">
+   <property name="text">
+    <string>Save Project As...</string>
+   </property>
+  </action>
+  <action name="actionBackup_Project">
+   <property name="text">
+    <string>Backup Project...</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="text">
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste_2">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionPaste_Adjustments">
+   <property name="text">
+    <string>Paste Adjustments</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>deleteImage</string>
+   </property>
+  </action>
+  <action name="actionDelete_Keyframes">
+   <property name="text">
+    <string>deleteImage Keyframes</string>
+   </property>
+  </action>
+  <action name="actionDuplicate_Project">
+   <property name="text">
+    <string>Duplicate Project</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionSelect_Entire_Clip">
+   <property name="text">
+    <string>Select Entire Clip</string>
+   </property>
+  </action>
+  <action name="actionSelect_in_Video">
+   <property name="text">
+    <string>Select in Video</string>
+   </property>
+  </action>
+  <action name="actionDeselect_All">
+   <property name="text">
+    <string>Deselect All</string>
+   </property>
+  </action>
+  <action name="actionAdd_to_Video">
+   <property name="text">
+    <string>addImage to Video</string>
+   </property>
+  </action>
+  <action name="actionInsert">
+   <property name="text">
+    <string>insertImage</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find... </string>
+   </property>
+  </action>
+  <action name="actionFavorite">
+   <property name="text">
+    <string>Favorite</string>
+   </property>
+  </action>
+  <action name="actionReject">
+   <property name="text">
+    <string>Reject</string>
+   </property>
+  </action>
+  <action name="actionUnrate">
+   <property name="text">
+    <string>Unrate</string>
+   </property>
+  </action>
+  <action name="actionAdd_Marker">
+   <property name="text">
+    <string>addImage Marker</string>
+   </property>
+  </action>
+  <action name="actionDelete_Marker">
+   <property name="text">
+    <string>deleteImage Marker</string>
+   </property>
+  </action>
+  <action name="actionEnhance">
+   <property name="text">
+    <string>Enhance</string>
+   </property>
+  </action>
+  <action name="actionFade_to">
+   <property name="text">
+    <string>Fade to</string>
+   </property>
+  </action>
+  <action name="actionFlash_and_Freeze_Frame">
+   <property name="text">
+    <string>Flash and Freeze Frame</string>
+   </property>
+  </action>
+  <action name="actionMute_Audio">
+   <property name="text">
+    <string>Mute Audio</string>
+   </property>
+  </action>
+  <action name="actionTrim_to_Selection">
+   <property name="text">
+    <string>Trim to Selection</string>
+   </property>
+  </action>
+  <action name="actionTrim_Clip_Edge">
+   <property name="text">
+    <string>Trim Clip Edge</string>
+   </property>
+  </action>
+  <action name="actionSplit_Clip">
+   <property name="text">
+    <string>Split Clip</string>
+   </property>
+  </action>
+  <action name="actionJoin_Clips">
+   <property name="text">
+    <string>Join Clips</string>
+   </property>
+  </action>
+  <action name="actionDetach_Audio">
+   <property name="text">
+    <string>Detach Audio</string>
+   </property>
+  </action>
+  <action name="actionSlow_Motion">
+   <property name="text">
+    <string>Slow Motion</string>
+   </property>
+  </action>
+  <action name="actionFast_Forward">
+   <property name="text">
+    <string>Fast Forward</string>
+   </property>
+  </action>
+  <action name="actionInstant_Reply">
+   <property name="text">
+    <string>Instant Reply</string>
+   </property>
+  </action>
+  <action name="actionRewind">
+   <property name="text">
+    <string>Rewind</string>
+   </property>
+  </action>
+  <action name="actionAdd_Freeze_Frame">
+   <property name="text">
+    <string>addImage Freeze Frame</string>
+   </property>
+  </action>
+  <action name="actionReset_Speed">
+   <property name="text">
+    <string>Reset Speed</string>
+   </property>
+  </action>
+  <action name="actionAdjust_Clip_Date_and_Time">
+   <property name="text">
+    <string>Adjust Clip Date and Time...</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionPlay_Selection">
+   <property name="text">
+    <string>Play Selection</string>
+   </property>
+  </action>
+  <action name="actionPlay_from_Beginning">
+   <property name="text">
+    <string>Play from Beginning</string>
+   </property>
+  </action>
+  <action name="actionPlay_Full_Screen">
+   <property name="text">
+    <string>Play Full Screen</string>
+   </property>
+  </action>
+  <action name="actionLoop_Playback">
+   <property name="text">
+    <string>Loop Playback</string>
+   </property>
+  </action>
+  <action name="actionSort_Events_By">
+   <property name="text">
+    <string>Sort Events By</string>
+   </property>
+  </action>
+  <action name="actionSort_By">
+   <property name="text">
+    <string>Sort By</string>
+   </property>
+  </action>
+  <action name="actionShow_Separate_Days_in_Events">
+   <property name="text">
+    <string>Show Separate Days in Events</string>
+   </property>
+  </action>
+  <action name="actionShow_Audio_Waveforms">
+   <property name="text">
+    <string>Show Audio Waveforms</string>
+   </property>
+  </action>
+  <action name="actionShow_Used_Media_Ranges">
+   <property name="text">
+    <string>Show Used Media Ranges</string>
+   </property>
+  </action>
+  <action name="actionShow_Skimmer_Info">
+   <property name="text">
+    <string>Show Skimmer Info</string>
+   </property>
+  </action>
+  <action name="actionZoom_In">
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+  </action>
+  <action name="actionZoom_Out">
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionZoom_All_Clips">
+   <property name="text">
+    <string>Zoom All Clips</string>
+   </property>
+  </action>
+  <action name="actionSnapping">
+   <property name="text">
+    <string>Snapping</string>
+   </property>
+  </action>
+  <action name="actionAudio_Skimming">
+   <property name="text">
+    <string>Audio Skimming</string>
+   </property>
+  </action>
+  <action name="actionMinimize">
+   <property name="text">
+    <string>Minimize</string>
+   </property>
+  </action>
+  <action name="actionMinimize_All">
+   <property name="text">
+    <string>Minimize All</string>
+   </property>
+  </action>
+  <action name="actionZoom">
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+  </action>
+  <action name="actionMove_Window_to_Left_Side_of_Screen">
+   <property name="text">
+    <string>Move Window to Left Side of Screen</string>
+   </property>
+  </action>
+  <action name="actionMove_Window_to_Right_Side_of_Screen">
+   <property name="text">
+    <string>Move Window to Right Side of Screen</string>
+   </property>
+  </action>
+  <action name="actionGo_to_Media">
+   <property name="text">
+    <string>Go to Media</string>
+   </property>
+  </action>
+  <action name="actionGo_to_Projects">
+   <property name="text">
+    <string>Go to Projects</string>
+   </property>
+  </action>
+  <action name="actionShow_Libraries">
+   <property name="text">
+    <string>Show Libraries</string>
+   </property>
+  </action>
+  <action name="actionContent_Library">
+   <property name="text">
+    <string>Content Library</string>
+   </property>
+  </action>
+  <action name="actionTheme_Chooser">
+   <property name="text">
+    <string>Theme Chooser...</string>
+   </property>
+  </action>
+  <action name="actionClip_Trimmer">
+   <property name="text">
+    <string>Clip Trimmer</string>
+   </property>
+  </action>
+  <action name="actionPrecision_Editor">
+   <property name="text">
+    <string>Precision Editor</string>
+   </property>
+  </action>
+  <action name="actionRecord_Voiceover">
+   <property name="text">
+    <string>Record Voiceover</string>
+   </property>
+  </action>
+  <action name="actionRevert_to_Original_Layout">
+   <property name="text">
+    <string>Revert to Original Layout</string>
+   </property>
+  </action>
+  <action name="actionBring_All_to_Front">
+   <property name="text">
+    <string>Bring All to Front</string>
+   </property>
+  </action>
+  <action name="actionEnter_Full_Screen">
+   <property name="text">
+    <string>Enter Full Screen</string>
+   </property>
+  </action>
+  <action name="actionVEST">
+   <property name="text">
+    <string>VEST</string>
+   </property>
+  </action>
+  <action name="actionWelcome_to_VEST">
+   <property name="text">
+    <string>Welcome to VEST</string>
+   </property>
+  </action>
+  <action name="actionSearch">
+   <property name="text">
+    <string>Search</string>
+   </property>
+  </action>
+  <action name="actionVEST_Help">
+   <property name="text">
+    <string>VEST Help</string>
+   </property>
+  </action>
+  <action name="actionWhat_s_New_in_VEST">
+   <property name="text">
+    <string>What's New in VEST</string>
+   </property>
+  </action>
+  <action name="actionKeyboard_Shortcuts">
+   <property name="text">
+    <string>Keyboard Shortcuts</string>
+   </property>
+  </action>
+  <action name="actionSupported_Cameras">
+   <property name="text">
+    <string>Supported Cameras</string>
+   </property>
+  </action>
+  <action name="actionService_and_Support">
+   <property name="text">
+    <string>Service and Support</string>
+   </property>
+  </action>
+  <action name="actionAbout_VEST">
+   <property name="text">
+    <string>About VEST</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences...</string>
+   </property>
+  </action>
+  <action name="actionProvide_VEST_Feedback">
+   <property name="text">
+    <string>Provide VEST Feedback...</string>
+   </property>
+  </action>
+  <action name="actionServices">
+   <property name="text">
+    <string>Services</string>
+   </property>
+  </action>
+  <action name="actionHide_VEST">
+   <property name="text">
+    <string>Hide VEST</string>
+   </property>
+  </action>
+  <action name="actionHide_Others">
+   <property name="text">
+    <string>Hide Others</string>
+   </property>
+  </action>
+  <action name="actionShow_All">
+   <property name="text">
+    <string>Show All</string>
+   </property>
+  </action>
+  <action name="actionQuit_VEST">
+   <property name="text">
+    <string>Quit VEST</string>
+   </property>
+  </action>
+  <action name="actionImport_Image">
+   <property name="text">
+    <string>Import Image</string>
+   </property>
+  </action>
+  <action name="actionImport_VEST_Projects_3">
+   <property name="text">
+    <string>Import VEST Projects</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Audio</string>
+   </property>
+  </action>
+  <action name="actionImages">
+   <property name="text">
+    <string>Images</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionImport_Audio">
+   <property name="text">
+    <string>Import Audio</string>
+   </property>
+  </action>
+  <action name="actionImport_Media">
+   <property name="text">
+    <string>Import Media...</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VideoPlayer</class>
+   <extends>QWidget</extends>
+   <header>videoplayer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ProgressBar</class>
+   <extends>QSlider</extends>
+   <header>progressbar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Timeline</class>
+   <extends>QGraphicsView</extends>
+   <header>timeline.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VideoWindow</class>
+   <extends>QGraphicsView</extends>
+   <header>videowindow.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

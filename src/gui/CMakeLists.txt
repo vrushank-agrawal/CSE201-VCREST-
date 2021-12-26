@@ -1,20 +1,32 @@
 cmake_minimum_required(VERSION 3.20)
 
 add_subdirectory(videoplayer)
+add_subdirectory(videowindow)
 add_subdirectory(imagethumbnail)
 add_subdirectory(audiomanager)
+add_subdirectory(progressbar)
+add_subdirectory(timeline)
+add_subdirectory(indicator)
+add_subdirectory(imageitem)
+add_subdirectory(sizegripitem)
+add_subdirectory(imageitemmenu)
 
-add_library(gui videoeditor.cpp)
+add_library(gui)
 
 target_include_directories(gui
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
 target_link_libraries(gui
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
         videoPlayer
+        videoWindow
         imageThumbnail
         audioManager
+        progressBar
+        timeline
+        indicator
+        imageItem
+        sizeGripItem
+        imageItemMenu
+        video
         )

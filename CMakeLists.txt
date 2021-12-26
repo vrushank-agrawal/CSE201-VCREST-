@@ -15,8 +15,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_subdirectory(src/gui)
-add_subdirectory(src/audio)
+add_subdirectory(src)
 
 add_executable(video_editor_BX23 main.cpp application.qrc)
 target_link_libraries(video_editor_BX23 PUBLIC
@@ -25,12 +24,13 @@ target_link_libraries(video_editor_BX23 PUBLIC
         Qt::Widgets
         gui
         audio
+        videoEditor
         )
 
 # add warning
 target_compile_options(video_editor_BX23 PRIVATE
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-        -Wall>
+        -Wall -Werror=return-type>
         $<$<CXX_COMPILER_ID:MSVC>:
         /W4>)
 if (WIN32)

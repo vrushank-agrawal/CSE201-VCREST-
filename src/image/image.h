@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef OPENCV
 #define OPENCV
 
@@ -7,12 +9,11 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 #include <opencv2/core/utility.hpp>
-#include <iostream>
 
 #endif //OPENCV
 
-using namespace cv;
-using namespace std;
+#include <iostream>
+#include <cstdlib>
 
 #ifndef IMAGE_CLASS
 #define IMAGE_CLASS
@@ -20,61 +21,68 @@ using namespace std;
 namespace img {
 
     class Image {
-
-        Mat img_matrix;
-        Mat img_matrix_modified;
-        string filename;
-        string save_filename;
+        cv::Mat img_matrix;
+        cv::Mat img_matrix_modified;
+        std::string filename;
 
     public:
-        
-        Image(const string &    filename);
-
+        Image();
+        Image (cv::Mat mat);
+        Image (const std::string &    filename);
         ~Image();
-        
 
         // returns the Matrix associated to the image
-        Mat getMat();
-        String getFilename();
-        Mat getModifiedImg();
-        void setModifiedImg(Mat mat);
+        cv::Mat getMat();
+        std::string getFilename();
+        cv::Mat getModifiedImg();
+        void setModifiedImg(cv::Mat mat);
 
-        //counts number of images if a multi image file
-        size_t countImg(const string & 	filename,
-                        int 	        flags = IMREAD_ANYCOLOR);
+        // returns error if loaded image can't be read
+        int return_img_error(int a);
 
         // returns true if input image is of valid format
-        bool validImg(const string & 	filename);
+        bool validImg(const std::string & 	filename);
 
         // returns a Matrix of the image color values
-        Mat decodeImg(const String & 	filename,
-                      int 	            flags = IMREAD_COLOR);
+        cv::Mat decodeImg(const std::string & 	filename,
+                      int 	            flags = cv::IMREAD_COLOR);
 
-        // saves img in a certain file format
-        bool saveImg(const String & 	filename,
-                     InputArray 	img,
-                     const std::vector< int > & 	params = std::vector< int >()
-        );
+        //resets image dimensions by adding black areas
+        void equalizeImgDim( double width, double height );
+        void sendToStitch(int val, Image * img);
+        void hcon (Image * img );
+        void vcon (Image * img );
+
         //Returns ratio from dimensions:
         double getRatio();
-        
-        // Image matrix preview functions
-        void imgPreview( const String & 	winname);
-        void imgModifiedPreview( const string & winname);
+        double getModifiedImageRatio();
 
-        // Basic editing functions in rotate_resize.cpp
+        // return dimensions
+        int getHeight();
+        int getWidth();
+        int getModifiedHeight();
+        int getModifiedWidth();
+
+        // Image matrix preview functions
+        void imgPreview( const std::string & 	winname);
+        void imgModifiedPreview( const std::string & winname);
+
+        // Basic editing functions
         void resizeImg(int width, int height);
         void rotateImg(double angle);
 
-        //Blurs in blurs.cpp
+        //Blurs
         void bilateralFilter(int distance);
         void blur(int width, int height);
         void boxBlur(int width, int height, int depth);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
 
-    };
-}
+    }; // Image() class
 
+    const cv::Mat blackMat = cv::Mat(1920, 1080, CV_8UC3, cv::Scalar(0, 0, 0));
+} //namespace
 
 #endif // IMAGE_CLASS
+
+#include "collage/collage.h"

@@ -10,6 +10,7 @@ target_include_directories(audio PUBLIC
 target_link_directories(audio PUBLIC
         ../../libs/lame/lib
         ../../libs/aubio/lib
+        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
 target_link_libraries(audio PUBLIC libaubio.a libmp3lame.a)
