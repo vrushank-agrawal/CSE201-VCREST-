@@ -44,8 +44,4 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 
 ImageItemMenu::~ImageItemMenu() {
     delete animationMenu;
-    delete normalAnimationAction;
-    delete rotationAnimationAction;
-    delete zoomingAnimationAction;
-    delete croppingAnimationAction;
 }
