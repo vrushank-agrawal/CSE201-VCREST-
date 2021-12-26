@@ -41,6 +41,7 @@ public slots:
     void writeVideo();
     void addImageToResultVideo(img::Image *image, double startTime, double duration);
     void deleteImageFromResultVideo(img::Image *image);
+    void applyAnimation(img::Image *image, vid::Animation animation);
 
 private:
     vid::Video *resultVideo;

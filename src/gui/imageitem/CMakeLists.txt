@@ -12,4 +12,5 @@ target_link_libraries(imageItem
         Qt::Widgets
         imageLibrary
         sizeGripItem
+        imageItemMenu
         )

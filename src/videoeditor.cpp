@@ -123,6 +123,10 @@ void VideoEditor::setupVideoPlayer() {
     connect(this, &VideoEditor::changeFrame,
             ui->preview, &VideoPlayer::updateFrame);
 
+    // connect animationApplied to apply animation
+    connect(ui->timeline, &Timeline::animationApplied,
+            this, &VideoEditor::applyAnimation);
+
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
@@ -205,6 +209,11 @@ void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, dou
 
 void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
     resultVideo->deleteImage(image);
+}
+
+
+void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
+    resultVideo->applyAnimation(image, animation);
 }
 
 

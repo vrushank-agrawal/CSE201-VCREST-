@@ -19,6 +19,8 @@ ImageItem::ImageItem(img::Image *image,
                      ): image(image) {
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
+    menu = new ImageItemMenu();
+    connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
 }
 
 
@@ -26,6 +28,7 @@ ImageItem::~ImageItem() {
     selectedImageItem = nullptr;
     delete image;
     delete sizeGripItem;
+    delete menu;
 }
 
 QRectF ImageItem::boundingRect() const {
@@ -71,20 +74,29 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
             );
 }
 
+void ImageItem::applyAnimation(vid::Animation animation) {
+    emit animationApplied(image, animation);
+}
+
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if (selectedImageItem != this) {
-        auto oldSelected = selectedImageItem;
-        selectedImageItem = this;
-        this->update();
-        if (oldSelected != nullptr) oldSelected->update();
+    if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem != this) {
+            auto oldSelected = selectedImageItem;
+            selectedImageItem = this;
+            this->update();
+            if (oldSelected != nullptr) oldSelected->update();
+        }
+        else {
+            selectedImageItem = nullptr;
+            this->update();
+        }
+        pressed = true;
+        oldMousePos = event->scenePos();
+        oldPos = scenePos();
     }
-    else {
-        selectedImageItem = nullptr;
-        this->update();
+    else if (event->button() == Qt::RightButton) {
+        menu->exec(event->screenPos());
     }
-    pressed = true;
-    oldMousePos = event->scenePos();
-    oldPos = scenePos();
 }
 
 void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

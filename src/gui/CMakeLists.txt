@@ -9,6 +9,7 @@ add_subdirectory(timeline)
 add_subdirectory(indicator)
 add_subdirectory(imageitem)
 add_subdirectory(sizegripitem)
+add_subdirectory(imageitemmenu)
 
 add_library(gui)
 
@@ -26,4 +27,6 @@ target_link_libraries(gui
         indicator
         imageItem
         sizeGripItem
+        imageItemMenu
+        video
         )

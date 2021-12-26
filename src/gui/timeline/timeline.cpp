@@ -106,6 +106,9 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
 
+    connect(item, &ImageItem::animationApplied,
+            this, &Timeline::animationApplied);
+
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 
     emit imageAdded(image, start, end-start);

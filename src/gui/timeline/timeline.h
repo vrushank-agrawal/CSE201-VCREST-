@@ -30,6 +30,7 @@ signals:
     void timeIndicatorChanged(qreal time);
     void imageDeleted(img::Image *image);
     void imageAdded(img::Image *image, double startTime, double duration);
+    void animationApplied(img::Image *image, vid::Animation animation);
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
