@@ -96,6 +96,8 @@ namespace audio {
             }
         }
 
+        del_aubio_tempo(tempo);
+
         return output;
 
     }
@@ -145,5 +147,54 @@ namespace audio {
         outfile.close();
         return out;
     }
+
+    arr3d Audio::getSpectrumVisualizer() {
+
+        arr3d res;
+
+        sample_rate = 0;
+        hop_size = 512;
+
+        source = new_aubio_source(uri.c_str(), sample_rate, hop_size);
+        channels = aubio_source_get_channels(source);
+        sample_rate = aubio_source_get_samplerate(source);
+        duration = aubio_source_get_duration(source);
+
+        int win_size = hop_size * 2;
+
+        aubio_fft_t *fft = new_aubio_fft(win_size);
+
+        uint_t i, n_iters = 100;
+        fvec_t *in = new_fvec(win_size);
+        cvec_t *fftgrain = new_cvec(win_size);
+        fvec_t *fout = new_fvec(win_size);
+
+        in->data[0] = 1;
+        in->data[1] = 2;
+        in->data[2] = 3;
+        in->data[3] = 4;
+        in->data[4] = 5;
+        in->data[5] = 6;
+        in->data[6] = 5;
+        in->data[7] = 6;
+
+        for (i = 0; i < n_iters; i++) {
+
+            aubio_fft_do(fft, in, fftgrain);
+            cvec_print(fftgrain);
+
+            aubio_fft_rdo(fft, fftgrain, fout);
+        }
+
+        del_aubio_fft(fft);
+        del_fvec(in);
+        del_cvec(fftgrain);
+        del_fvec(fout);
+        aubio_cleanup();
+
+        return res;
+
+    }
+
 
 }

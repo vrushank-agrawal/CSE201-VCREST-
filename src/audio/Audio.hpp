@@ -7,8 +7,11 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include "aubio/aubio.h"
 #include "lameHelper.hpp"
+
+typedef std::array<std::array<std::array<int, 2>, 2>, 2> arr3d;
 
 using namespace std;
 
@@ -43,6 +46,8 @@ namespace audio {
         Audio(const std::string &uri);
 
         std::vector<int> getBeatPositions();
+
+        arr3d getSpectrumVisualizer();
 
     };
 
