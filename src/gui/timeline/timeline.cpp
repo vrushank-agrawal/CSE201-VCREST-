@@ -111,7 +111,7 @@ void Timeline::addImage(img::Image *image, double start, double end) {
 
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 
-    emit imageAdded(image, start, end-start);
+    emit imageAdded(image, start, end-start, vid::Normal);
 }
 
 void Timeline::appendImage(img::Image *image, double length) {
@@ -127,7 +127,7 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // add new duration
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
-    emit imageAdded(item->image, start, end-start);
+    emit imageAdded(item->image, start, end-start, item->animation);
 }
 
 

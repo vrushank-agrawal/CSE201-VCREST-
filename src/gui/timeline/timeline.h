@@ -29,7 +29,7 @@ signals:
     void videoLengthChanged(int length);
     void timeIndicatorChanged(qreal time);
     void imageDeleted(img::Image *image);
-    void imageAdded(img::Image *image, double startTime, double duration);
+    void imageAdded(img::Image *image, double startTime, double duration, vid::Animation animation);
     void animationApplied(img::Image *image, vid::Animation animation);
 
 private:

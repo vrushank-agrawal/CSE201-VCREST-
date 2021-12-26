@@ -39,7 +39,7 @@ public slots:
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
     void writeVideo();
-    void addImageToResultVideo(img::Image *image, double startTime, double duration);
+    void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
     void deleteImageFromResultVideo(img::Image *image);
     void applyAnimation(img::Image *image, vid::Animation animation);
 

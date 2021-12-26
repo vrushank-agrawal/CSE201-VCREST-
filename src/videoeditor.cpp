@@ -202,8 +202,9 @@ void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
 }
 
 
-void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration) {
+void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
     resultVideo->addImage(image, startTime, duration);
+    resultVideo->applyAnimation(image, animation);
 }
 
 

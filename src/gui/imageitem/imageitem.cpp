@@ -75,6 +75,7 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void ImageItem::applyAnimation(vid::Animation animation) {
+    this->animation = animation;
     emit animationApplied(image, animation);
 }
 
