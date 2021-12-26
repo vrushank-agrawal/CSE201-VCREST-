@@ -35,7 +35,7 @@ public slots:
     void importImages();
     void importAudios();
     void blurImage();
-    void updatePosition(int position);
+    void updatePosition(int newPosition);
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
     void writeVideo();
@@ -44,7 +44,6 @@ public slots:
 
 private:
     vid::Video *resultVideo;
-    cv::VideoCapture video;
     QSet<QString> imageFileTypes;
     QSet<QString> audioFileTypes;
     QString imageFileTypesFilter;
@@ -53,9 +52,6 @@ private:
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;
     Ui::VideoEditor *ui;
-    std::vector<QPixmap> images;
-    int imageIndex = -1; // index of image need to displayed in images
-    void updateVideo(const cv::VideoCapture &video);
     void setupVideoPlayer();
     void setupMenus();
     void setupWidgets();

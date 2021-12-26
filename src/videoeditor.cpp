@@ -20,23 +20,13 @@ VideoEditor::VideoEditor(QWidget *parent) :
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
-
-    QString videoPath = "D:/Downloads/1.mp4";
-    QString prefix = "videoPath=";
     QString prefix2 = "imagePath=";
 
-    for (int i = 0; i < arguments.size(); i++) {
-        QString arg = arguments.at(i);
-        if (arg.startsWith(prefix)) {
-            videoPath = arg.right(arg.size() - prefix.size());
-        }
+    for (const auto& arg : arguments) {
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }
     }
-
-//    video = cv::VideoCapture(videoPath.toStdString());
-//    updateVideo(video);
 }
 
 void VideoEditor::setupVideoClass() {
@@ -44,19 +34,6 @@ void VideoEditor::setupVideoClass() {
     resultVideo = new vid::Video(640, 360, fps);
 
     ui->controlSlider->setRange(0, numberFrame);
-    ui->controlSlider->setTracking(true);
-
-    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
-}
-
-
-void VideoEditor::updateVideo(const cv::VideoCapture &video){
-    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
-        fps = video.get(cv::CAP_PROP_FPS);
-
-    this->fps = fps;
-
-    ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
     ui->controlSlider->setTracking(true);
 
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
@@ -216,7 +193,7 @@ void VideoEditor::blurImage() {
 
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    img::Image *image = new img::Image(thumbnailManager->getImage(item)->getMat());
+    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
 
@@ -231,11 +208,11 @@ void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
 }
 
 
-void VideoEditor::updatePosition(int position) {
-    if (this->position != position) {
-        this->position = position;
-        this->timeInSec = 1.0 * position / fps;
-        emit positionChanged(position);
+void VideoEditor::updatePosition(int newPosition) {
+    if (this->position != newPosition) {
+        this->position = newPosition;
+        this->timeInSec = 1.0 * newPosition / fps;
+        emit positionChanged(newPosition);
         emit currentTimeChanged(timeInSec);
     }
 }
