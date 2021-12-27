@@ -19,9 +19,8 @@ std::string get_curr_dir() {
 
     // convert char to string
     std::string address;
-    for (int i =0; i< strlen(add); i++){
+    for (int i =0; i< strlen(add); i++)
         address += add[i];
-    }
     return address;
 }
 
@@ -35,7 +34,7 @@ int main(){
     std::string file = img1.getFilename();
     Mat matrix = img1.getMat();
 
-// --------------------------BASIC FUNCTIONS---------------------------
+// ------------------------BASIC FUNCTIONS---------------------------
 
 //    img1.imgPreview("testing");
 //    cout<<file<<endl;
@@ -53,29 +52,37 @@ int main(){
 //    img1.bilateralFilter(51 );
 //    img1.imgModifiedPreview("testing_bilateral_filter");
 
-// ----------------------------BLURS----------------------------------
 
-    // testing dynamic image blurs
+// ---------------------------BLUR PREVIEW----------------------------
+
+    // testing dynamic image blurPreview function
 
     // equalize image first
 //    img1.equalizeImgDim(1920, 1080);
-
-//    img1.blur(30 ,30 );
-//    img1.imgModifiedPreview("testing_blur_0");
+//
+//    img1.blurPreview(30 ,30 );
+//    img1.imgBlurPreview("testing_blur_0");
+////    img1.imgModifiedPreview("testing_blur_0");
 //
 //    int i = cv::waitKey(0);
-//    img1.blur(1 ,1 );
-//    img1.imgModifiedPreview("testing_blur_1");
+//    img1.blurPreview(1 ,1 );
+//    img1.imgBlurPreview("testing_blur_1");
+////    img1.imgModifiedPreview("testing_blur_1");
 //
 //    int a = cv::waitKey(0);
-//    img1.blur(50 ,50 );
-//    img1.imgModifiedPreview("testing_blur_2");
+//    img1.blurPreview(50 ,50 );
+//    img1.imgBlurPreview("testing_blur_2");
+////    img1.imgModifiedPreview("testing_blur_2");
 //
 //    int b = cv::waitKey(0);
-//    img1.blur(1 ,1 );
-//    img1.imgModifiedPreview("testing_blur_3");
+//    img1.blurPreview(1 ,1 );
+//    img1.imgBlurPreview("testing_blur_3");
+////    img1.imgModifiedPreview("testing_blur_3");
 
-//              ---------OTHER BLURS----------
+//  -----------------------------BLURS-------------------------------
+
+//    img1.blur(30 ,30 );
+//    img1.imgModifiedPreview("testing_blur");
 
 //    img1.gaussianBlur(4, 6);
 //    img1.imgModifiedPreview("testing_gaussian_blur");
@@ -87,7 +94,7 @@ int main(){
 //    img1.imgModifiedPreview("testing_box_filter");
 
 
-// --------------------------STITCHING----------------------------------
+// ----------------------------STITCHING------------------------------
 
     //define images and vectors
 
@@ -119,7 +126,7 @@ int main(){
 //    collage_img4.imgPreview("test_lena_collage4");
 
 
-// --------------------------------EXIT----------------------------------
+// --------------------------------EXIT--------------------------------
 
     int j = cv::waitKey(0);
     exit(0);

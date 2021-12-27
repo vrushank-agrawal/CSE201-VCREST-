@@ -23,7 +23,7 @@ namespace img {
     class Image {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
-        cv::Mat img_matrix_noblur;
+        cv::Mat img_matrix_blur;
         std::string filename;
 
     public:
@@ -36,10 +36,10 @@ namespace img {
         cv::Mat getMat();
         std::string getFilename();
         cv::Mat getModifiedImg();
-        cv::Mat getNoBlurImg();
+        cv::Mat getBlurImg();
         void setModifiedImg(cv::Mat mat);
         void setOriginalImg(cv::Mat mat);
-        void setNoBlurImg(cv::Mat mat);
+        void setBlurImg(cv::Mat mat);
 
         // returns error if loaded image can't be read
         int return_img_error(int a);
@@ -70,6 +70,7 @@ namespace img {
         // Image matrix preview functions
         void imgPreview( const std::string & 	winname);
         void imgModifiedPreview( const std::string & winname);
+        void imgBlurPreview( const std::string & winname);
 
         // Basic editing functions
         void resizeImg(int width, int height);
@@ -77,6 +78,7 @@ namespace img {
 
         //Blurs
         void bilateralFilter(int distance);
+        void blurPreview(int width, int height);
         void blur(int width, int height);
         void boxBlur(int width, int height, int depth);
         void gaussianBlur(int width, int height);

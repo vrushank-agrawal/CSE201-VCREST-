@@ -149,40 +149,6 @@ int getMaxIndex(std::vector<T> arr){
     return maxIndex;
 }
 
-// slow method for inline stitching (not used anymore)
-void img::Collage::threeStitchInline(int val) {
-
-    if (this->getNumImages() == 3) {
-        // val = 0 = horizontal
-        if (val == 0 ) {
-            cv::Mat output;
-
-            Image img1 = this -> getImageArr()[0];
-            Image img2 = this -> getImageArr()[1];
-            Image img3 = this -> getImageArr()[2];
-
-            cv::hconcat(img1.getModifiedImg(), img2.getModifiedImg(), output);
-            cv::hconcat(output, img3.getModifiedImg(), output);
-
-            this ->setModifiedImage(output);
-        }
-        // val = 1 = vertical
-        else if (val == 1) {
-            cv::Mat output;
-
-            Image img1 = this -> getImageArr()[0];
-            Image img2 = this -> getImageArr()[1];
-            Image img3 = this -> getImageArr()[2];
-
-            cv::vconcat(img1.getModifiedImg(), img2.getModifiedImg(), output);
-            cv::vconcat(output, img3.getModifiedImg(), output);
-
-            this ->setModifiedImage(output);
-        }
-    } else{
-        std::cout << "A different amount of images than 3!";
-    }
-}
 
 void img::Collage::threeStitch() {
     if (this->getNumImages() == 3) {

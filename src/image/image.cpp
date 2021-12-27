@@ -9,7 +9,6 @@ img::Image::Image() {}
 img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
-    img_matrix_noblur = img_matrix_modified.clone();
     filename = "no file path provided";
 }
 
@@ -24,7 +23,6 @@ img::Image::Image(const std::string & file) {
         return_img_error(2) ; //printf("file reading exception - file cannot be read by VEST")
     }
     img_matrix_modified = img_matrix.clone();
-    img_matrix_noblur = img_matrix_modified.clone();
     return_img_error(0) ; //printf("img is valid can be read")
 }
 
@@ -46,10 +44,9 @@ cv::Mat img::Image::getModifiedImg() {
     return this-> img_matrix_modified;
 }
 
-cv::Mat img::Image::getNoBlurImg() {
-    return this-> img_matrix_noblur;
+cv::Mat img::Image::getBlurImg() {
+    return this-> img_matrix_blur;
 }
-
 
 void img::Image::setModifiedImg(cv::Mat matrix) {
     this -> img_matrix_modified = matrix;
@@ -59,8 +56,8 @@ void img::Image::setOriginalImg(cv::Mat matrix) {
     this -> img_matrix = matrix;
 }
 
-void img::Image::setNoBlurImg(cv::Mat matrix) {
-    this -> img_matrix_noblur = matrix;
+void img::Image::setBlurImg(cv::Mat matrix) {
+    this -> img_matrix_blur = matrix;
 }
 
 cv::Mat img::Image::decodeImg(const std::string &filename, int flags) {
@@ -89,6 +86,11 @@ void img::Image::imgModifiedPreview(const std::string &window) {
     imshow(window, mat);
 }
 
+void img::Image::imgBlurPreview(const std::string &window) {
+    cv::Mat mat = this -> getBlurImg();
+    imshow(window, mat);
+}
+
 int img::Image::getHeight () {
     return this -> getMat().size().height;
 }
@@ -106,8 +108,6 @@ int img::Image::getModifiedWidth() {
 }
 
 // adds black areas to image
-
-
 void img::Image::equalizeImgDim( double width, double height) {
     double fixedRatio = height / width;
     double imgRatio = this -> getRatio();
@@ -118,12 +118,11 @@ void img::Image::equalizeImgDim( double width, double height) {
         return;
     }
 
-//    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
-
+    // change image because ratios are different
     if (( imgRatio > fixedRatio ) ) {
-
         if ( this -> getModifiedHeight() > height ) {
 
+            // calculate new width for the image
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
@@ -137,14 +136,13 @@ void img::Image::equalizeImgDim( double width, double height) {
 
             // adding black matrices
             // resizing image again
-            // updating no_blur
             this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
-            this -> setNoBlurImg(this -> getModifiedImg());
 
             return;
         } else if (this -> getModifiedHeight() < height) {
 
+            // calculate new width for the image
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
@@ -156,19 +154,18 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image* blackptr = &Black;
             Black.resizeImg( black_width, height );
 
+            // adding black matrices
+            // resizing image again
             this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
-            this -> setNoBlurImg(this -> getModifiedImg());
 
             return;
         }
-
     }
-
     if (( imgRatio < fixedRatio ) ) {
-
         if ( this -> getModifiedWidth() > width ) {
 
+            // calculate new height for the image
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
@@ -180,13 +177,15 @@ void img::Image::equalizeImgDim( double width, double height) {
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
 
+            // adding black matrices
+            // resizing image again
             this -> sendToStitch( 1, blackptr );
             this -> resizeImg(width, height);
-            this -> setNoBlurImg(this -> getModifiedImg());
 
             return;
         } else if (this -> getModifiedWidth() < width) {
 
+            // calculate new height for the image
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
@@ -198,9 +197,10 @@ void img::Image::equalizeImgDim( double width, double height) {
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
 
+            // adding black matrices
+            // resizing image again
             this -> sendToStitch( 1, blackptr );
             this -> resizeImg(width, height);
-            this -> setNoBlurImg(this -> getModifiedImg());
 
             return;
         }

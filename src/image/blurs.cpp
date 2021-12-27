@@ -8,29 +8,39 @@
 
 #include "image.h"
 
+void img::Image::blurPreview(int width, int height) {
+    if (width != 0 && height != 0) {
+        cv::Mat temp = (this->getModifiedImg()).clone();
+        cv::blur(temp, temp, cv::Size(width, height));
+        this->setBlurImg(temp);
+    }
+}
+
 void img::Image::blur(int width, int height){
-    cv::Mat temp = (this -> getNoBlurImg()).clone();
-
-    cv::blur(temp, temp, cv::Size(width, height));
-
-    this -> setModifiedImg( temp );
+    if (width != 0 && height != 0) {
+        cv::Mat temp = this -> getModifiedImg();
+        cv::blur(temp, temp, cv::Size(width, height));
+        this -> setModifiedImg( temp );
+    }
 }
 
 void img::Image::bilateralFilter(int distance) {
-    cv::bilateralFilter(this->getModifiedImg(), this->getModifiedImg(), distance, distance * 2, distance / 2);
+    if (distance != 0)
+        cv::bilateralFilter(this->getModifiedImg(), this->getModifiedImg(), distance, distance * 2, distance / 2);
 }
 
 void img::Image::boxBlur(int width, int height, int ddepth = -1){
-    cv::boxFilter(this->getModifiedImg(), this->getModifiedImg(), ddepth, cv::Size(width, height));
+    if (width != 0 && height != 0)
+        cv::boxFilter(this->getModifiedImg(), this->getModifiedImg(), ddepth, cv::Size(width, height));
 }
 
 void img::Image::gaussianBlur(int width, int height){
-    if (width % 2 == 0) {
-        width --;
-    } if (height % 2 == 0) {
-        height --;
-    }
-    cv::GaussianBlur(this->getModifiedImg(), this->getModifiedImg(), cv::Size(width, height), 0);
+    // fix height and width as necessary
+    if (width % 2 == 0 && width != 0) width --;
+    if (height % 2 == 0 && height != 0) height --;
+
+    if (width != 0 && height != 0)
+        cv::GaussianBlur(this->getModifiedImg(), this->getModifiedImg(), cv::Size(width, height), 0);
 }
 
 void img::Image::medianBlur(int kernel_size){
