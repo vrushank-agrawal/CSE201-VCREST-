@@ -3,13 +3,17 @@
 //
 
 // Using open cv build-ins modify the image class's img_matrix
-// Height and width in most cases is to determine the kernel sizes, too big, whole image is blurred,
-// too small noise remains in the image.
+// Height and width in most cases is to determine the kernel sizes,
+// too big, whole image is blurred, too small noise remains in the image.
 
 #include "image.h"
 
 void img::Image::blur(int width, int height){
-    cv::blur(this->getModifiedImg(), this->getModifiedImg(), cv::Size(width, height));
+    cv::Mat temp = (this -> getNoBlurImg()).clone();
+
+    cv::blur(temp, temp, cv::Size(width, height));
+
+    this -> setModifiedImg( temp );
 }
 
 void img::Image::bilateralFilter(int distance) {

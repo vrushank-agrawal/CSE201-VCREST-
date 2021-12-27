@@ -23,6 +23,7 @@ namespace img {
     class Image {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
+        cv::Mat img_matrix_noblur;
         std::string filename;
 
     public:
@@ -35,7 +36,10 @@ namespace img {
         cv::Mat getMat();
         std::string getFilename();
         cv::Mat getModifiedImg();
+        cv::Mat getNoBlurImg();
         void setModifiedImg(cv::Mat mat);
+        void setOriginalImg(cv::Mat mat);
+        void setNoBlurImg(cv::Mat mat);
 
         // returns error if loaded image can't be read
         int return_img_error(int a);

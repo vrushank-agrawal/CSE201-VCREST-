@@ -9,6 +9,7 @@ img::Image::Image() {}
 img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
     img_matrix_modified = img_matrix.clone();
+    img_matrix_noblur = img_matrix_modified.clone();
     filename = "no file path provided";
 }
 
@@ -17,17 +18,14 @@ img::Image::Image(const std::string & file) {
     if (validImg( filename )) {
         img_matrix = decodeImg( filename, cv::IMREAD_COLOR);
         if ( getMat().empty()) {
-//            printf("improper image exception - file is corrupt/invalid") ;
-            return_img_error(1) ;
+            return_img_error(1) ; //"improper image exception - file is corrupt/invalid")
         }
     } else {
-//        printf("file reading exception - file cannot be read by VEST") ;
-        return_img_error(2) ;
+        return_img_error(2) ; //printf("file reading exception - file cannot be read by VEST")
     }
     img_matrix_modified = img_matrix.clone();
-
-//        printf("img is valid can be read") ;
-    return_img_error(0) ;
+    img_matrix_noblur = img_matrix_modified.clone();
+    return_img_error(0) ; //printf("img is valid can be read")
 }
 
 img::Image::~Image() {}
@@ -48,8 +46,21 @@ cv::Mat img::Image::getModifiedImg() {
     return this-> img_matrix_modified;
 }
 
+cv::Mat img::Image::getNoBlurImg() {
+    return this-> img_matrix_noblur;
+}
+
+
 void img::Image::setModifiedImg(cv::Mat matrix) {
     this -> img_matrix_modified = matrix;
+}
+
+void img::Image::setOriginalImg(cv::Mat matrix) {
+    this -> img_matrix = matrix;
+}
+
+void img::Image::setNoBlurImg(cv::Mat matrix) {
+    this -> img_matrix_noblur = matrix;
 }
 
 cv::Mat img::Image::decodeImg(const std::string &filename, int flags) {
@@ -123,17 +134,15 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Black.resizeImg( black_width, height );
             Image* blackptr = &Black;
-            this -> sendToStitch( 0, blackptr );
 
+            // adding black matrices
+            // resizing image again
+            // updating no_blur
+            this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
+            this -> setNoBlurImg(this -> getModifiedImg());
+
             return;
-            //create collage vector (slow method)
-//            std::vector<Image> arr = { Black, *this, Black };
-//
-//            // set new image
-//            Collage newStichedImage = Collage(arr);
-//            newStichedImage.threeStitchInline( 0 );
-//            this ->setModifiedImg( newStichedImage.getModifiedImage() );
         } else if (this -> getModifiedHeight() < height) {
 
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
@@ -146,9 +155,11 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Image* blackptr = &Black;
             Black.resizeImg( black_width, height );
-            this -> sendToStitch( 0, blackptr );
 
+            this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
+            this -> setNoBlurImg(this -> getModifiedImg());
+
             return;
         }
 
@@ -168,11 +179,12 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
+
             this -> sendToStitch( 1, blackptr );
-
             this -> resizeImg(width, height);
-            return;
+            this -> setNoBlurImg(this -> getModifiedImg());
 
+            return;
         } else if (this -> getModifiedWidth() < width) {
 
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
@@ -186,8 +198,10 @@ void img::Image::equalizeImgDim( double width, double height) {
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
 
-            this -> resizeImg(width, height);
             this -> sendToStitch( 1, blackptr );
+            this -> resizeImg(width, height);
+            this -> setNoBlurImg(this -> getModifiedImg());
+
             return;
         }
     }
