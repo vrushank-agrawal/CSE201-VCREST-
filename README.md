@@ -56,10 +56,10 @@ This is a unique video creating software developed to help a user build a video 
 
 
 ## Setup for FFmpeg
-### Windows
+
 1. Download the latest version of FFmpeg from this [link](https://www.ffmpeg.org/download.html)
-2. Unpack the files in `C:\ffmpeg` (folder name is very important)
-3. Add this path to environment variables `C:\ffmpeg`
+2. Unpack the files in a directory with the folder name `ffmpeg` (folder name is important)
+3. Add the path to ffmpeg in environment variables
 4. If Clion is already open, then restart the IDE so that the environment variables can be updated.
 
 
