@@ -28,7 +28,6 @@ public:
     ~VideoPlayer();
     void setChild(VideoWindow *label,
                   QToolButton *playButton);
-    void updateVideo(const cv::VideoCapture &video);
 
 signals:
     void timeUpdated(double currentTime);
@@ -40,10 +39,10 @@ public slots:
     void sliderReleased();
     void forward();
     void backward();
+    void play();
 
 private slots:
     void updateTime();
-    void play();
 
 private:
     void updatePlayButton();
@@ -55,7 +54,6 @@ private:
     QToolButton *playButton;
     QTimer *timer = nullptr;
     VideoWindow *label;
-    cv::VideoCapture video;
 };
 
 #endif //VIDEO_EDITOR_BX23_VIDEOPLAYER_H

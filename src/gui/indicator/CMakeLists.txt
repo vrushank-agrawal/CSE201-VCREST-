@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-
 add_library(indicator indicator.cpp)
 
 target_include_directories(indicator
@@ -7,7 +5,5 @@ target_include_directories(indicator
         )
 
 target_link_libraries(indicator
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
         )

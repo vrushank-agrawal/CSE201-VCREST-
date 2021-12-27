@@ -7,9 +7,10 @@
 
 #include <QMainWindow>
 #include <QListView>
+#include <string>
 #include <audiomanager.h>
 #include <imagethumbnail.h>
-#include <string>
+#include <video.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -27,41 +28,40 @@ signals:
     void imageChanged();
     void positionChanged(int position);
     void currentTimeChanged(double timeInSec);
+    void changeFrame(cv::Mat frame);
 
 public slots:
     void importMedia();
     void importImages();
     void importAudios();
     void blurImage();
-    void updatePosition(int position);
+    void updatePosition(int newPosition);
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
     void writeVideo();
+    void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
+    void deleteImageFromResultVideo(img::Image *image);
+    void applyAnimation(img::Image *image, vid::Animation animation);
 
 private:
-    cv::VideoCapture video;
+    vid::Video *resultVideo;
     QSet<QString> imageFileTypes;
     QSet<QString> audioFileTypes;
     QString imageFileTypesFilter;
     QString audioFileTypesFilter;
-    int position = 0, fps = 30;
+    int fourcc;
+    int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;
     Ui::VideoEditor *ui;
-    std::vector<QPixmap> images;
-    int imageIndex = -1; // index of image need to displayed in images
-    void updateVideo(const cv::VideoCapture &video);
     void setupVideoPlayer();
     void setupMenus();
     void setupWidgets();
+    void setupVideoClass();
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
     void importAudio(const QString& dir);
     ThumbnailManager *thumbnailManager;
     AudioManager *audioManager;
-
-    int fourcc;
-
-//    std::string outputPath = "D:/Downloads/2.mp4";
 };
 
 

@@ -7,23 +7,28 @@
 double ImageItem::yHeight = 40;
 double ImageItem::yOffset = 20;
 double ImageItem::xTimeOffset = 100;
+ImageItem* ImageItem::selectedImageItem = nullptr;
 QBrush ImageItem::brush = QBrush(Qt::black);
 QPen ImageItem::pen = QPen(Qt::black, border);
+QBrush ImageItem::selectedBrush = QBrush(Qt::gray);
+QPen ImageItem::selectedPen = QPen(Qt::blue, border);
 QTransform ImageItem::parentTransform = QTransform();
 
-ImageItem::ImageItem(Image *image,
+ImageItem::ImageItem(img::Image *image,
                      QPoint position
                      ): image(image) {
-    Mat mat = image->getModifiedImg();
-    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
-    thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
+    menu = new ImageItemMenu();
+    connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
 }
 
 
 ImageItem::~ImageItem() {
+    selectedImageItem = nullptr;
+    delete image;
     delete sizeGripItem;
+    delete menu;
 }
 
 QRectF ImageItem::boundingRect() const {
@@ -42,15 +47,20 @@ void ImageItem::calculateSize() {
 }
 
 void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    painter->setPen(pen);
-    painter->setBrush(brush);
+    painter->setPen(selectedImageItem == this ? selectedPen : pen);
+    painter->setBrush(selectedImageItem == this? selectedBrush : brush);
     painter->drawRoundedRect(boundingRect(), border, border);
+
+    cv::Mat mat = image->getModifiedImg();
+    QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+    QPixmap thumbnail = QPixmap::fromImage(qImage.rgbSwapped());
+
     double wScale = size.width() / thumbnail.width();
     QRectF thumbnailRect(0,0, thumbnail.width(), thumbnail.height());
 
     qreal height = size.height() + border;
     qreal width = (size.height() + border) * parentTransform.m22() / thumbnail.height() * thumbnail.width() / parentTransform.m11();
-    width = min(width, size.width());
+    width = std::min(width, size.width());
 
     painter->drawPixmap(
             QRectF(
@@ -64,10 +74,30 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
             );
 }
 
+void ImageItem::applyAnimation(vid::Animation animation) {
+    this->animation = animation;
+    emit animationApplied(image, animation);
+}
+
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    pressed = true;
-    oldMousePos = event->scenePos();
-    oldPos = scenePos();
+    if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem != this) {
+            auto oldSelected = selectedImageItem;
+            selectedImageItem = this;
+            this->update();
+            if (oldSelected != nullptr) oldSelected->update();
+        }
+        else {
+            selectedImageItem = nullptr;
+            this->update();
+        }
+        pressed = true;
+        oldMousePos = event->scenePos();
+        oldPos = scenePos();
+    }
+    else if (event->button() == Qt::RightButton) {
+        menu->exec(event->screenPos());
+    }
 }
 
 void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

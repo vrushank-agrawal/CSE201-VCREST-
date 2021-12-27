@@ -1,42 +1,53 @@
-#include "../image.h"
+#pragma once
 
+#include "../image.h"
 #include <iostream>
-#include <stdarg.h>
+
+#ifndef COLLAGE_CLASS
+#define COLLAGE_CLASS
 
 namespace img {
 
     class Collage {
             public:
-                Collage( vector<Image> imageArr);
+                Collage( std::vector<img::Image> imageArr);
                 ~ Collage();
 
                 //create an array of coordinates of corners of each of the images, variable
-//                int subImageCorners[numImages * 4];
+                //int subImageCorners[numImages * 4];
 
                 void twoStitch(bool );
                 void threeStitch();
                 void fourStitch(bool );
                 void fourStitchRec(int times);
-                void flip();
 
-                const std::vector<int>& testVect();
+                // creates inline stitching for black img::Image adding
+                void threeStitchInline(int val);
+
+                void flip();
+                void imgModifiedPreview( const std::string & winname);
+
+                // get and set functions
                 int getNumImages();
                 const std::vector<double>& getRatios();
-                const std::vector<Image>& getImageArr();
-                Mat getModifiedImage();
-                void setModifiedImageArr(vector<Image> imageArrModified);
-                vector<Image> getModifiedImageArr();
-                void setModifiedImage(Mat modifiedMat);
+                const std::vector<img::Image>& getImageArr();
+                cv::Mat getModifiedImage();
+                void setModifiedImageArr(std::vector<img::Image> imageArrModified);
+                std::vector<img::Image> getModifiedImageArr();
+                void setModifiedImage(cv::Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();
+
             private:
 
                 int numImages;
                 int modifiedNumImages;
-                vector <double> ratios;
-                vector <double> modifiedRatios;
-                vector <Image> imageArr;
-                Mat modifiedImage;
-                vector <Image> imageArrModified;
+                std::vector <double> ratios;
+                std::vector <double> modifiedRatios;
+                std::vector <img::Image> imageArr;
+                cv::Mat modifiedImage;
+                std::vector <img::Image> imageArrModified;
                 void fourStitchRecAux(bool, int times);
     };
 }
+
+#endif // COLLAGE_CLASS

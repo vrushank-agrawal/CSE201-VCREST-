@@ -31,6 +31,8 @@ void ProgressBar::mouseReleaseEvent(QMouseEvent *event) {
         pressed = false;
         x_pos = event->pos().x();
         int position = minimum() + ((maximum()-minimum()) * event->pos().x()) / width();
+        position = std::max(position, minimum());
+        position = std::min(position, maximum());
         setValue(position) ;
         event->accept();
         emit frameChanged(position);

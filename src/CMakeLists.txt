@@ -1,20 +1,19 @@
-cmake_minimum_required(VERSION 3.20)
+add_library(videoEditor videoeditor.cpp)
 
 add_subdirectory(gui)
 add_subdirectory(image)
 add_subdirectory(audio)
-
-add_library(videoEditor videoeditor.cpp)
+add_subdirectory(video)
 
 target_include_directories(videoEditor
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(videoEditor
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+target_link_libraries(videoEditor PUBLIC
         gui
         imageLibrary
         audio
+        video
+        qtExternalLibrary
+        opencvExternalLibrary
         )

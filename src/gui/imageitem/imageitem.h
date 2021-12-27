@@ -13,8 +13,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include "image.h"
 #include "sizegripitem.h"
-
-using namespace img;
+#include "imageitemmenu.h"
 
 class ImageItem: public QObject, public QGraphicsItem
 {
@@ -22,38 +21,46 @@ Q_OBJECT
 Q_INTERFACES(QGraphicsItem)
 
 public:
-    explicit ImageItem(Image *image,
+    explicit ImageItem(img::Image *image,
                        QPoint position
                        );
     ~ImageItem();
+    static ImageItem* getSelectedImageItem() {return selectedImageItem;}
+
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
     QMultiMap<double, ImageItem*>::iterator start, end;
-    Image *image;
+    img::Image *image;
     void setSize(QSizeF size);
     void calculateSize();
     void updateDuration(double newLength);
     void createSizeGripItem(SizeGripItem *sizeGripItem);
     static QTransform parentTransform;
+    vid::Animation animation = vid::Normal;
 
 private:
     SizeGripItem *sizeGripItem = nullptr;
-    static QBrush brush;
-    static QPen pen;
+    static QBrush brush, selectedBrush;
+    static QPen pen, selectedPen;
+    static ImageItem *selectedImageItem;
     QSizeF size;
-    QPixmap thumbnail;
     bool pressed=false;
     QPointF oldPos,oldMousePos;
+    ImageItemMenu *menu;
 
 signals:
     void itemMoved(ImageItem *item, double start, double end);
     void positionChanged(ImageItem* item, double start, double end);
     void resized(ImageItem* item, double newLength);
     void deleted(ImageItem*);
+    void animationApplied(img::Image* image, vid::Animation animation);
 
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+public slots:
+    void applyAnimation(vid::Animation);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

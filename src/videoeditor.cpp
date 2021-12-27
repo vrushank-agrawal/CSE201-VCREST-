@@ -13,41 +13,27 @@
 VideoEditor::VideoEditor(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::VideoEditor) {
     ui->setupUi(this);
+    setupVideoClass();
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
-
-    QString videoPath = "D:/Downloads/1.mp4";
-    QString prefix = "videoPath=";
     QString prefix2 = "imagePath=";
 
-    for (int i = 0; i < arguments.size(); i++) {
-        QString arg = arguments.at(i);
-        if (arg.startsWith(prefix)) {
-            videoPath = arg.right(arg.size() - prefix.size());
-        }
+    for (const auto& arg : arguments) {
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }
     }
-
-    video = cv::VideoCapture(videoPath.toStdString());
-    updateVideo(video);
 }
 
+void VideoEditor::setupVideoClass() {
+    // create an instance of Video class
+    resultVideo = new vid::Video(640, 360, fps);
 
-void VideoEditor::updateVideo(const cv::VideoCapture &video){
-    ui->preview->updateVideo(video);
-
-    int numberFrame = video.get(cv::CAP_PROP_FRAME_COUNT),
-        fps = video.get(cv::CAP_PROP_FPS);
-
-    this->fps = fps;
-
-    ui->controlSlider->setRange(0, video.get(cv::CAP_PROP_FRAME_COUNT));
+    ui->controlSlider->setRange(0, numberFrame);
     ui->controlSlider->setTracking(true);
 
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
@@ -72,7 +58,7 @@ void VideoEditor::setupMenus() {
             this, &VideoEditor::writeVideo);
 
     QString os = QSysInfo::productType();
-    if (os == "osx") {
+    if (os == "osx" || os == "macos") {
         fourcc = cv::VideoWriter::fourcc('a', 'v', 'c', '1');
     } else {
         fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
@@ -83,26 +69,26 @@ void VideoEditor::setupMenus() {
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
-    connect(ui->blurButton, SIGNAL(clicked()),
-            this, SLOT(blurImage()));
-    connect(ui->imgListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-            this, SLOT(appendImageToThumbnail(QListWidgetItem *)));
+    connect(ui->blurButton, &QToolButton::clicked,
+            this, &VideoEditor::blurImage);
+    connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
+            this, &VideoEditor::appendImageToThumbnail);
 }
 
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
-    connect(ui->playButton, SIGNAL(clicked()), ui->preview, SLOT(play()));
+    connect(ui->playButton, &QToolButton::clicked, ui->preview, &VideoPlayer::play);
 
     // set up skipForward button
     ui->skipForward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
     ui->skipForward->setToolTip(tr("Forward"));
-    connect(ui->skipForward, SIGNAL(clicked()), ui->preview, SLOT(forward()));
+    connect(ui->skipForward, &QToolButton::clicked, ui->preview, &VideoPlayer::forward);
 
     // set up skipBackward button
     ui->skipBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
     ui->skipBackward->setToolTip(tr("Backward"));
-    connect(ui->skipBackward, SIGNAL(clicked()), ui->preview, SLOT(backward()));
+    connect(ui->skipBackward, &QToolButton::clicked, ui->preview, &VideoPlayer::backward);
 
     // connect controlSlider with position
     connect(ui->controlSlider, &ProgressBar::sliderPressed,
@@ -128,8 +114,18 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->timeline, &Timeline::timeIndicatorChanged,
             this, &VideoEditor::updateCurrentTime);
 
-    connect(ui->timeline, &Timeline::changeFrame,
+    connect(ui->timeline, &Timeline::imageAdded,
+            this, &VideoEditor::addImageToResultVideo);
+    connect(ui->timeline, &Timeline::imageDeleted,
+            this, &VideoEditor::deleteImageFromResultVideo);
+
+    // connect changeFrame in VideoEditor with updateFrame VideoPlayer
+    connect(this, &VideoEditor::changeFrame,
             ui->preview, &VideoPlayer::updateFrame);
+
+    // connect animationApplied to apply animation
+    connect(ui->timeline, &Timeline::animationApplied,
+            this, &VideoEditor::applyAnimation);
 
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
@@ -191,32 +187,51 @@ QStringList VideoEditor::importFiles(const QString &caption, const QString &dir,
 
 
 void VideoEditor::blurImage() {
-    img::Image *image = ui->timeline->getImageAtIndicator();
-    if (image == nullptr) return;
-    image->blur(100, 100);
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->image->blur(5, 5);
+    imageItem->update();
 
     emit imageChanged();
 }
 
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    Image *image = thumbnailManager->getImage(item);
+    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
 
 
-void VideoEditor::updatePosition(int position) {
-    if (this->position != position) {
-        this->position = position;
-        this->timeInSec = 1.0 * position / fps;
-        emit positionChanged(position);
-        emit currentTimeChanged(timeInSec);
-    }
+void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
+    resultVideo->addImage(image, startTime, duration);
+    resultVideo->applyAnimation(image, animation);
+}
+
+
+void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
+    resultVideo->deleteImage(image);
+}
+
+
+void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
+    resultVideo->applyAnimation(image, animation);
+}
+
+
+void VideoEditor::updatePosition(int newPosition) {
+    updateCurrentTime(1.0 * newPosition / fps);
 }
 
 
 void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
+        if (time * fps > numberFrame) {
+            time = 1.0 * numberFrame / fps;
+            ui->playButton->clicked();
+        }
+        cv::Mat frame = resultVideo->getMatByTime(time);
+        emit changeFrame(frame);
+
         this->timeInSec = time;
         this->position = int(time * fps);
         emit positionChanged(position);
@@ -227,11 +242,13 @@ void VideoEditor::updateCurrentTime(double time) {
 
 VideoEditor::~VideoEditor() {
     delete ui;
+    delete resultVideo;
 }
 
 void VideoEditor::writeVideo() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setNameFilter("MP4 video (*.mp4)");
     std::string outputPath;
     if (dialog.exec()) {
@@ -242,32 +259,14 @@ void VideoEditor::writeVideo() {
     } else {
         return;
     }
-    cv::VideoWriter outputVideo;
-    cv::Size sizeFrame(640, 480);
-
-    qDebug() << outputPath.c_str();
 
     remove(outputPath.c_str());
-    bool isOk = outputVideo.open(outputPath, fourcc, 30.0, sizeFrame, true);
-    if (!isOk) {
+
+    if (!resultVideo->writeVideo(outputPath, fourcc)) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
-        return;
     }
-    int length = 10 * fps;
-    qDebug() << "start exporting";
-    for (int i = 0; i < length; i++){
-        double time = 1.0 * i / fps;
-        Image* image = ui->timeline->getImage(time);
-        cv::Mat frame;
-        video >> frame;
-        if (image != nullptr) frame = image->getModifiedImg();
-        cv::resize(frame, frame, sizeFrame);
-        outputVideo << frame;
-    }
-    outputVideo.release();
-    qDebug() << "end exporting";
 }
 

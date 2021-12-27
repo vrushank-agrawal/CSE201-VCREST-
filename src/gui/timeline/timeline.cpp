@@ -77,28 +77,20 @@ void Timeline::resizeEvent(QResizeEvent *event) {
     moveTimeline();
 }
 
-void Timeline::updateFrame(double time){
-    Image *image = getImage(time);
-    if (image == nullptr) return;
-    emit changeFrame(image->getModifiedImg());
-}
-
 void Timeline::updateIndicatorPosition(double time) {
     if (indicator->x() != time * xTimeOffset) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
-        updateFrame(time);
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
-    updateFrame(time);
 }
 
-void Timeline::addImage(Image *image, double start, double end) {
+void Timeline::addImage(img::Image *image, double start, double end) {
     auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
@@ -114,10 +106,15 @@ void Timeline::addImage(Image *image, double start, double end) {
     connect(item, SIGNAL(deleted(ImageItem *)),
             this, SLOT(deleteImage(ImageItem *)));
 
+    connect(item, &ImageItem::animationApplied,
+            this, &Timeline::animationApplied);
+
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
+
+    emit imageAdded(image, start, end-start, vid::Normal);
 }
 
-void Timeline::appendImage(Image *image, double length) {
+void Timeline::appendImage(img::Image *image, double length) {
     double start = map.isEmpty() ? 0 : map.lastKey();
     addImage(image, start, start + length);
 }
@@ -130,6 +127,7 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // add new duration
     item->start = map.insert(start, item);
     item->end = map.insert(end, nullptr);
+    emit imageAdded(item->image, start, end-start, item->animation);
 }
 
 
@@ -150,23 +148,19 @@ ImageItem* Timeline::getImageItem(double time) {
     return nullptr;
 }
 
-Image* Timeline::getImage(double time) {
+img::Image* Timeline::getImage(double time) {
     ImageItem *item = getImageItem(time);
     if (item != nullptr) return item->image;
     return nullptr;
 }
 
-Image* Timeline::getImageAtIndicator() {
-    double time = indicator->x() / xTimeOffset;
-    return getImage(time);
-}
-
 void Timeline::deleteImage(ImageItem *item) {
     map.erase(item->start);
     map.erase(item->end);
+    emit imageDeleted(item->image);
 }
 
-void Timeline::addImageAtIndicator(Image *image, double max_length) {
+void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
     // image already exists
@@ -184,11 +178,17 @@ void Timeline::addImageAtIndicator(Image *image, double max_length) {
     addImage(image, time, time + duration);
 }
 
-void Timeline::setItemPosition(ImageItem *item, double startTime) {
+void Timeline::setItemPosition(ImageItem *item, double startTime, double endTime) {
     ImageItem* s = getImageItem(startTime);
     if (s != nullptr && s != item) return;
     if (startTime < 0) return;
-
+    QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
+    while (iterator != map.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            return;
+        }
+        iterator++;
+    }
     item->setX(startTime * xTimeOffset);
 }
 
@@ -200,13 +200,13 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     QMultiMap<double, ImageItem*>::iterator iterator = map.lowerBound(startTime);
     while (iterator != map.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
-            setItemPosition(item, startTime + iterator.key() - endTime);
+            setItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
             return;
         }
         iterator++;
     }
 
-    setItemPosition(item, startTime);
+    setItemPosition(item, startTime, endTime);
 }
 
 void Timeline::resizeImageItem(ImageItem *item, double newLength) {
