@@ -5,8 +5,6 @@ target_include_directories(imageItemMenu
         )
 
 target_link_libraries(imageItemMenu
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
         video
         )

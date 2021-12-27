@@ -7,9 +7,7 @@ target_include_directories(imageItem
         )
 
 target_link_libraries(imageItem
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
         imageLibrary
         sizeGripItem
         imageItemMenu
