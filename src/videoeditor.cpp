@@ -192,7 +192,9 @@ void VideoEditor::blurImage() {
     imageItem->image->blur(5, 5);
     imageItem->update();
 
-    emit imageChanged();
+
+    cv::Mat frame = resultVideo->getMatByTime(this->timeInSec);
+    emit changeFrame(frame);
 }
 
 
