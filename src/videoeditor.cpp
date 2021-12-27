@@ -189,7 +189,7 @@ QStringList VideoEditor::importFiles(const QString &caption, const QString &dir,
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->image->blur(100, 100);
+    imageItem->image->blur(5, 5);
     imageItem->update();
 
     emit imageChanged();
