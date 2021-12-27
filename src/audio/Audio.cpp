@@ -2,19 +2,19 @@
 // Created by lasha on 14-Nov-21.
 //
 
-#include "audio.hpp"
-
-#include <iostream>
-#include <fstream>
+#include "Audio.hpp"
 
 using namespace std;
 
 namespace audio {
 
     int Audio::num = 0;
-    string Audio::out = "C:/Users/lasha/Documents/GitHub/video_editor_BX23/media/audio/output";;
+    string folder = "temp_media";
+    string Audio::out = folder + "/output";
 
     Audio::Audio(const std::string &uri) {
+
+        mkdir(folder.c_str());
 
         std::string ext = uri.substr(uri.length() - 3);
 
