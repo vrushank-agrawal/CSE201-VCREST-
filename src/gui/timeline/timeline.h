@@ -37,6 +37,8 @@ signals:
     void imageDeleted(img::Image *image);
     void imageAdded(img::Image *image, double startTime, double duration, vid::Animation animation);
     void animationApplied(img::Image *image, vid::Animation animation);
+    void audioAdded(QString audio, double startTime, double duration);
+    void audioDeleted(QString audio);
 
 private:
     int sceneWidth = 120, sceneHeight = 120;
@@ -58,6 +60,7 @@ private:
 private:
     void moveTimeline(TimelineMoveOption option);
     void setItemPosition(ImageItem *item, double startTime, double endTime);
+    void setAudioItemPosition(AudioItem *item, double startTime, double endTime);
     void updateFrame(double time);
     ImageItem* getImageItem(double time);
     AudioItem* getAudioItem(double time);
@@ -71,6 +74,11 @@ private slots:
     void updateImagePosition(ImageItem* item, double start, double end);
     void resizeImageItem(ImageItem *item, double newLength);
     void deleteImage(ImageItem*);
+
+    void moveAudioItem(AudioItem *item, double startPos, double endPos);
+    void updateAudioPosition(AudioItem* item, double start, double end);
+    void resizeAudioItem(AudioItem *item, double newLength);
+    void deleteAudio(AudioItem*);
 
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event);

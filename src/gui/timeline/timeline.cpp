@@ -197,6 +197,20 @@ void Timeline::setItemPosition(ImageItem *item, double startTime, double endTime
     item->setX(startTime * xTimeOffset);
 }
 
+void Timeline::setAudioItemPosition(AudioItem *item, double startTime, double endTime) {
+    AudioItem* s = getAudioItem(startTime);
+    if (s != nullptr && s != item) return;
+    if (startTime < 0) return;
+    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.lowerBound(startTime);
+    while (iterator != audioMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            return;
+        }
+        iterator++;
+    }
+    item->setX(startTime * xTimeOffset);
+}
+
 void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;
@@ -249,6 +263,7 @@ void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
 
 void Timeline::addAudio(QString audioSource, double start, double end) {
     auto *item = new AudioItem(audioSource, QPoint(start * xTimeOffset, AudioItem::border));
+    qDebug() << audioSource << item->audioSource;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
     item->calculateSize();
@@ -257,7 +272,7 @@ void Timeline::addAudio(QString audioSource, double start, double end) {
     connect(item, SIGNAL(itemMoved(AudioItem *, double, double)),
             this, SLOT(moveAudioItem(AudioItem *, double, double)));
     connect(item, SIGNAL(positionChanged(AudioItem*, double, double)),
-            this, SLOT(updateImagePosition(AudioItem*, double, double)));
+            this, SLOT(updateAudioPosition(AudioItem*, double, double)));
     connect(item, SIGNAL(resized(AudioItem *, double)),
             this, SLOT(resizeAudioItem(AudioItem *, double)));
     connect(item, SIGNAL(deleted(AudioItem *)),
@@ -310,4 +325,53 @@ AudioItem* Timeline::getAudioItem(double time) {
         iterator++;
     }
     return nullptr;
+}
+
+void Timeline::moveAudioItem(AudioItem *item, double startPos, double endPos) {
+    double startTime = startPos / xTimeOffset;
+    double endTime = endPos / xTimeOffset;
+
+    // detect collision with other images
+    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.lowerBound(startTime);
+    while (iterator != audioMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            setAudioItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
+            return;
+        }
+        iterator++;
+    }
+
+    setAudioItemPosition(item, startTime, endTime);
+}
+
+void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
+    // delete old duration
+    deleteAudio(item);
+
+    // add new duration
+    item->start = audioMap.insert(start, item);
+    item->end = audioMap.insert(end, nullptr);
+    emit audioAdded(item->audioSource, start, end-start);
+}
+
+void Timeline::resizeAudioItem(AudioItem *item, double newLength) {
+    double startTime = item->x() / xTimeOffset;
+    double endTime = (item->x() + newLength) / xTimeOffset;
+
+    // detect collision with other audios
+    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.lowerBound(startTime);
+    while (iterator != audioMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            return;
+        }
+        iterator++;
+    }
+    item->updateDuration(newLength);
+}
+
+void Timeline::deleteAudio(AudioItem *item) {
+    audioMap.erase(item->start);
+    audioMap.erase(item->end);
+    emit audioDeleted(item->audioSource);
 }
