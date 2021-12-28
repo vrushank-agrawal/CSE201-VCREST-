@@ -102,6 +102,11 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->preview, &VideoPlayer::timeUpdated,
             this, &VideoEditor::updateCurrentTime);
 
+    // connect blurLevelChanged in this class to slider
+    ui->blurSlider->setValue(blurLevel - 1);
+    connect(ui->blurSlider, &QSlider::valueChanged,
+            this, &VideoEditor::updateBlurLevel);
+
     // connect positionChanged in this class to slider and preview
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
@@ -191,7 +196,7 @@ QStringList VideoEditor::importFiles(const QString &caption, const QString &dir,
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->image->blur(5, 5);
+    imageItem->image->blur(blurLevel, blurLevel);
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
@@ -278,5 +283,9 @@ void VideoEditor::writeVideo() {
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
     }
+}
+
+void VideoEditor::updateBlurLevel() {
+    blurLevel = ui->blurSlider->value() + 1;
 }
 
