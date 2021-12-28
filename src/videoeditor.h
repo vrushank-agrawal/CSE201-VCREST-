@@ -31,6 +31,7 @@ signals:
     void changeFrame(cv::Mat frame);
 
 public slots:
+    void imageSelected();
     void importMedia();
     void importImages();
     void importAudios();

@@ -54,10 +54,12 @@ signals:
     void resized(ImageItem* item, double newLength);
     void deleted(ImageItem*);
     void animationApplied(img::Image* image, vid::Animation animation);
+    void imageSelected();
 
 public:
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual double getTimeOfFrame();
 
 public slots:
     void applyAnimation(vid::Animation);

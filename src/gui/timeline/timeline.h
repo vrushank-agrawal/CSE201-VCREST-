@@ -31,6 +31,7 @@ signals:
     void imageDeleted(img::Image *image);
     void imageAdded(img::Image *image, double startTime, double duration, vid::Animation animation);
     void animationApplied(img::Image *image, vid::Animation animation);
+    void imageSelected();
 
 private:
     int sceneWidth = 120, sceneHeight = 120;

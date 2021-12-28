@@ -94,6 +94,7 @@ void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         pressed = true;
         oldMousePos = event->scenePos();
         oldPos = scenePos();
+        emit imageSelected();
     }
     else if (event->button() == Qt::RightButton) {
         menu->exec(event->screenPos());
@@ -133,6 +134,10 @@ void ImageItem::updateDuration(double newLength) {
 
 void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
     this->sizeGripItem = sizeGripItem;
+}
+
+double ImageItem::getTimeOfFrame() {
+    return ((this->pos().x() + this->size.width()/2.0)/100.0);
 }
 
 
