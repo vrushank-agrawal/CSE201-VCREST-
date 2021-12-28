@@ -31,6 +31,7 @@ signals:
     void changeFrame(cv::Mat frame);
 
 public slots:
+    void updateBlurLevel();
     void imageSelected();
     void importMedia();
     void importImages();
@@ -50,6 +51,7 @@ private:
     QSet<QString> audioFileTypes;
     QString imageFileTypesFilter;
     QString audioFileTypesFilter;
+    int blurLevel = 5;
     int fourcc;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;

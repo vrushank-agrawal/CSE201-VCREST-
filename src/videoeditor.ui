@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1077</width>
-    <height>633</height>
+    <width>1067</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -112,6 +112,16 @@ QToolTip { color: #ffffff; background-color: #232323; border: 0px; }</string>
             </property>
             <property name="styleSheet">
              <string notr="true">background: rgb(51,51,51)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="blurSlider">
+            <property name="styleSheet">
+             <string notr="true">padding: 5px;</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
@@ -492,7 +502,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1077</width>
+     <width>1067</width>
      <height>21</height>
     </rect>
    </property>
