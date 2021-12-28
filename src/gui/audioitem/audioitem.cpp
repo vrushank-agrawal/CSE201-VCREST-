@@ -10,9 +10,6 @@ double AudioItem::yOffset = 60;
 double AudioItem::xTimeOffset = 100;
 QBrush AudioItem::brush = QBrush(Qt::black);
 QPen AudioItem::pen = QPen(Qt::black, border);
-QBrush AudioItem::selectedBrush = QBrush(Qt::gray);
-QPen AudioItem::selectedPen = QPen(Qt::blue, border);
-
 
 
 AudioItem::AudioItem(QString audioSource, QPoint position) : audioSource(audioSource) {
