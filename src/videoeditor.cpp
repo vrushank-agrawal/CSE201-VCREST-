@@ -17,6 +17,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
+    setupAudio();
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
@@ -130,6 +131,15 @@ void VideoEditor::setupVideoPlayer() {
     // add label and playButton to preview
     ui->preview->setChild(ui->label,
                           ui->playButton);
+}
+
+
+void VideoEditor::setupAudio() {
+    audioPlayer.setAudioOutput(&audioOutput);
+    qDebug() << "playing";
+    audioPlayer.setSource(QUrl("../media/audio/test.mp3"));
+    audioOutput.setVolume(50);
+    audioPlayer.play();
 }
 
 

@@ -11,6 +11,8 @@
 #include <audiomanager.h>
 #include <imagethumbnail.h>
 #include <video.h>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 
 QT_BEGIN_NAMESPACE
@@ -57,11 +59,14 @@ private:
     void setupMenus();
     void setupWidgets();
     void setupVideoClass();
+    void setupAudio();
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
     void importAudio(const QString& dir);
     ThumbnailManager *thumbnailManager;
     AudioManager *audioManager;
+    QMediaPlayer audioPlayer;
+    QAudioOutput audioOutput;
 };
 
 
