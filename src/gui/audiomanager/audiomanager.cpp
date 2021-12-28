@@ -19,9 +19,15 @@ AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
 
 void AudioManager::addAudio(QString name) {
     auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), name);
+    item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);
+    map.insert(item, name);
 }
 
 AudioManager::~AudioManager() {
     delete listWidget;
+}
+
+QString *AudioManager::getAudio(QListWidgetItem *item) {
+    return &map.find(item).value();
 }

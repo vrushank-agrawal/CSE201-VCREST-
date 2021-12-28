@@ -13,9 +13,11 @@ public:
     explicit AudioManager(QListWidget *qListWidget);
     ~AudioManager();
     void addAudio(QString name);
+    QString* getAudio(QListWidgetItem *item);
 
 private:
     QListWidget *listWidget;
+    QMap<QListWidgetItem*, QString> map;
 };
 
 

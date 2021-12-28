@@ -40,6 +40,7 @@ public slots:
     void updatePosition(int newPosition);
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
+    void appendAudioToThumbnail(QListWidgetItem *item);
     void writeVideo();
     void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
     void deleteImageFromResultVideo(img::Image *image);

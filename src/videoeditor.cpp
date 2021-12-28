@@ -43,9 +43,9 @@ void VideoEditor::setupVideoClass() {
 
 void VideoEditor::setupMenus() {
     imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
-    imageFileTypesFilter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    audioFileTypes << ".wmv";
-    audioFileTypesFilter = "Waveform Audio (*.wmv)";
+    imageFileTypesFilter = "Images (*.jpg *.png *.gif *.svg)";
+    audioFileTypes << ".wmv" << ".mp3";
+    audioFileTypesFilter = "Audio (*.wmv *.mp3)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
     ui->actionExport->setShortcut(QKeySequence::Save);
@@ -74,6 +74,8 @@ void VideoEditor::setupWidgets() {
             this, &VideoEditor::blurImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
+    connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
+            this, &VideoEditor::appendAudioToThumbnail);
 }
 
 
@@ -136,10 +138,12 @@ void VideoEditor::setupVideoPlayer() {
 
 void VideoEditor::setupAudio() {
     audioPlayer.setAudioOutput(&audioOutput);
-    qDebug() << "playing";
     audioPlayer.setSource(QUrl("../media/audio/test.mp3"));
     audioOutput.setVolume(50);
     audioPlayer.play();
+    audioPlayer.setPosition(0);
+    qDebug() << "duration" << audioPlayer.duration();
+    qDebug() << "seek" << audioPlayer.isSeekable();
 }
 
 
@@ -209,6 +213,11 @@ void VideoEditor::blurImage() {
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
     auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
+}
+
+
+void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
+    ui->timeline->addAudioAtIndicator(*audioManager->getAudio(item));
 }
 
 

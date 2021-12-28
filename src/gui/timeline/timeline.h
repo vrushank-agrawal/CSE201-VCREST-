@@ -9,6 +9,7 @@
 #include <QGraphicsItem>
 #include <QResizeEvent>
 #include <QListWidgetItem>
+#include <audioitem.h>
 #include "imageitem.h"
 #include "indicator.h"
 #include "image.h"
@@ -19,11 +20,16 @@ public:
     explicit Timeline(QWidget *parent = 0);
     ~Timeline();
     static double default_image_length;
+    static double default_audio_length;
     void updateVideoLength(int length);
+    void addAudio(QString audioSource, double start, double end);
     void addImage(img::Image *image, double start, double end); // add an Image at the specified location
+    void appendAudio(QString audioSource, double length=default_image_length);
     void appendImage(img::Image *image, double length=default_image_length); // append an Image to the end of the timeline
+    void addAudioAtIndicator(QString audioSource, double max_length = default_audio_length);
     void addImageAtIndicator(img::Image *image, double max_length = default_image_length); // call appendImage if an image already exists
     img::Image* getImage(qreal time);
+    QString getAudio(qreal time);
 
 signals:
     void videoLengthChanged(int length);
@@ -41,7 +47,8 @@ private:
     int lengthInSecond = 10 * 60;
     QGraphicsScene *scene = nullptr;
     Indicator *indicator = nullptr;
-    QMultiMap<double, ImageItem*> map;
+    QMultiMap<double, ImageItem*> imageMap;
+    QMultiMap<double, AudioItem*> audioMap;
 
     enum TimelineMoveOption{
         KeepCurrentPosition,
@@ -53,6 +60,7 @@ private:
     void setItemPosition(ImageItem *item, double startTime, double endTime);
     void updateFrame(double time);
     ImageItem* getImageItem(double time);
+    AudioItem* getAudioItem(double time);
 
 public slots:
     void updateIndicatorPosition(double);
