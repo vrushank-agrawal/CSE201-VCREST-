@@ -9,6 +9,10 @@
 #include "timeline.h"
 #include "sizegripitem.h"
 
+/*###################
+ *      GENERIC
+ ####################*/
+
 double Timeline::default_audio_length = 5;
 double Timeline::default_image_length = 5;
 
@@ -66,6 +70,17 @@ void Timeline::updateVideoLength(int length) {
     }
 }
 
+void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = mapToScene(event->pos());
+        if (pos.y() < timeHeight) {
+            indicator->setX(pos.x());
+            updateTime(pos.x());
+        }
+    }
+    QGraphicsView::mouseDoubleClickEvent(event);
+}
+
 void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
     if (option == CenterIndicator) {
         currentXPosition = indicator->x() - sceneShowingWidth / 2;
@@ -95,171 +110,19 @@ void Timeline::updateTime(qreal xPosition) {
     emit timeIndicatorChanged(time);
 }
 
-void Timeline::addImage(img::Image *image, double start, double end) {
-    auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
-    item->start = imageMap.insert(start, item);
-    item->end = imageMap.insert(end, nullptr);
-    item->calculateSize();
-    scene->addItem(item);
-
-    connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
-            this, SLOT(moveImageItem(ImageItem *, double, double)));
-    connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
-            this, SLOT(updateImagePosition(ImageItem*, double, double)));
-    connect(item, SIGNAL(resized(ImageItem *, double)),
-            this, SLOT(resizeImageItem(ImageItem *, double)));
-    connect(item, SIGNAL(deleted(ImageItem *)),
-            this, SLOT(deleteImage(ImageItem *)));
-
-    connect(item, &ImageItem::animationApplied,
-            this, &Timeline::animationApplied);
-
-    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
-
-    emit imageAdded(image, start, end-start, vid::Normal);
-}
-
-void Timeline::appendImage(img::Image *image, double length) {
-    double start = imageMap.isEmpty() ? 0 : imageMap.lastKey();
-    addImage(image, start, start + length);
-}
-
-
-void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
-    // delete old duration
-    deleteImage(item);
-
-    // add new duration
-    item->start = imageMap.insert(start, item);
-    item->end = imageMap.insert(end, nullptr);
-    emit imageAdded(item->image, start, end-start, item->animation);
-}
-
-
-ImageItem* Timeline::getImageItem(double time) {
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.upperBound(time);
-
-    // find the greatest key smaller than this key
-    if (iterator == imageMap.begin()) return nullptr;
-    iterator--;
-    iterator = imageMap.find(iterator.key());
-
-    // ignore nullptr
-    while (iterator != imageMap.end() && iterator.key() <= time) {
-        if (iterator.value() != nullptr)
-            return iterator.value();
-        iterator++;
-    }
-    return nullptr;
-}
-
-img::Image* Timeline::getImage(double time) {
-    ImageItem *item = getImageItem(time);
-    if (item != nullptr) return item->image;
-    return nullptr;
-}
-
-void Timeline::deleteImage(ImageItem *item) {
-    imageMap.erase(item->start);
-    imageMap.erase(item->end);
-    emit imageDeleted(item->image);
-}
-
-void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
-    double time = indicator->x() / xTimeOffset;
-
-    // image already exists
-    if (getImage(time) != nullptr) {
-        appendImage(image, max_length);
-        return;
-    }
-
-    QMultiMap<double, ImageItem*>::iterator end = imageMap.upperBound(time);
-    double duration;
-    if (end == imageMap.end()) // trying to append image at the end of timeline
-        duration = max_length;
-    else
-        duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addImage(image, time, time + duration);
-}
-
-void Timeline::setImageItemPosition(ImageItem *item, double startTime, double endTime) {
-    ImageItem* s = getImageItem(startTime);
-    if (s != nullptr && s != item) return;
-    if (startTime < 0) return;
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
-    while (iterator != imageMap.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item) {
-            return;
-        }
-        iterator++;
-    }
-    item->setX(startTime * xTimeOffset);
-}
-
-void Timeline::setAudioItemPosition(AudioItem *item, double startTime, double endTime) {
-    AudioItem* s = getAudioItem(startTime);
-    if (s != nullptr && s != item) return;
-    if (startTime < 0) return;
-    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.lowerBound(startTime);
-    while (iterator != audioMap.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item) {
-            return;
-        }
-        iterator++;
-    }
-    item->setX(startTime * xTimeOffset);
-}
-
-void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
-    double startTime = startPos / xTimeOffset;
-    double endTime = endPos / xTimeOffset;
-
-    // detect collision with other images
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
-    while (iterator != imageMap.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item) {
-            setImageItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
-            return;
-        }
-        iterator++;
-    }
-
-    setImageItemPosition(item, startTime, endTime);
-}
-
-void Timeline::resizeImageItem(ImageItem *item, double newLength) {
-    double startTime = item->x() / xTimeOffset;
-    double endTime = (item->x() + newLength) / xTimeOffset;
-
-    // detect collision with other images
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
-    while (iterator != imageMap.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item) {
-            item->updateDuration((iterator.key() - startTime) * xTimeOffset);
-            return;
-        }
-        iterator++;
-    }
-    item->updateDuration(newLength);
-}
-
 void Timeline::wheelEvent(QWheelEvent *event) {
     QPointF visible_left_point = mapToScene(0, 0);
     currentXPosition = visible_left_point.x();
     QGraphicsView::wheelEvent(event);
 }
 
-void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
-        QPointF pos = mapToScene(event->pos());
-        if (pos.y() < timeHeight) {
-            indicator->setX(pos.x());
-            updateTime(pos.x());
-        }
-    }
-    QGraphicsView::mouseDoubleClickEvent(event);
-}
+
+
+
+
+/*###################
+ *      AUDIO
+ ####################*/
 
 void Timeline::addAudio(QString audioSource, double start, double end) {
     auto *item = new AudioItem(audioSource, QPoint(start * xTimeOffset, AudioItem::border));
@@ -304,6 +167,12 @@ void Timeline::addAudioAtIndicator(QString audioSource, double max_length) {
     addAudio(audioSource, time, time + duration);
 }
 
+void Timeline::deleteAudio(AudioItem *item) {
+    audioMap.erase(item->start);
+    audioMap.erase(item->end);
+    emit audioDeleted(item->audioSource);
+}
+
 QString Timeline::getAudio(qreal time) {
     AudioItem *item = getAudioItem(time);
     if (item != nullptr) return item->audioSource;
@@ -344,16 +213,6 @@ void Timeline::moveAudioItem(AudioItem *item, double startPos, double endPos) {
     setAudioItemPosition(item, startTime, endTime);
 }
 
-void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
-    // delete old duration
-    deleteAudio(item);
-
-    // add new duration
-    item->start = audioMap.insert(start, item);
-    item->end = audioMap.insert(end, nullptr);
-    emit audioAdded(item->audioSource, start, end-start);
-}
-
 void Timeline::resizeAudioItem(AudioItem *item, double newLength) {
     double startTime = item->x() / xTimeOffset;
     double endTime = (item->x() + newLength) / xTimeOffset;
@@ -370,8 +229,167 @@ void Timeline::resizeAudioItem(AudioItem *item, double newLength) {
     item->updateDuration(newLength);
 }
 
-void Timeline::deleteAudio(AudioItem *item) {
-    audioMap.erase(item->start);
-    audioMap.erase(item->end);
-    emit audioDeleted(item->audioSource);
+void Timeline::setAudioItemPosition(AudioItem *item, double startTime, double endTime) {
+    AudioItem* s = getAudioItem(startTime);
+    if (s != nullptr && s != item) return;
+    if (startTime < 0) return;
+    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.lowerBound(startTime);
+    while (iterator != audioMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            return;
+        }
+        iterator++;
+    }
+    item->setX(startTime * xTimeOffset);
+}
+
+void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
+    // delete old duration
+    deleteAudio(item);
+
+    // add new duration
+    item->start = audioMap.insert(start, item);
+    item->end = audioMap.insert(end, nullptr);
+    emit audioAdded(item->audioSource, start, end-start);
+}
+
+
+
+
+
+/*###################
+ *      IMAGE
+ ####################*/
+
+void Timeline::addImage(img::Image *image, double start, double end) {
+    auto *item = new ImageItem(image, QPoint(start * xTimeOffset, ImageItem::border));
+    item->start = imageMap.insert(start, item);
+    item->end = imageMap.insert(end, nullptr);
+    item->calculateSize();
+    scene->addItem(item);
+
+    connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
+            this, SLOT(moveImageItem(ImageItem *, double, double)));
+    connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
+            this, SLOT(updateImagePosition(ImageItem*, double, double)));
+    connect(item, SIGNAL(resized(ImageItem *, double)),
+            this, SLOT(resizeImageItem(ImageItem *, double)));
+    connect(item, SIGNAL(deleted(ImageItem *)),
+            this, SLOT(deleteImage(ImageItem *)));
+
+    connect(item, &ImageItem::animationApplied,
+            this, &Timeline::animationApplied);
+
+    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
+
+    emit imageAdded(image, start, end-start, vid::Normal);
+}
+
+void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
+    double time = indicator->x() / xTimeOffset;
+
+    // image already exists
+    if (getImage(time) != nullptr) {
+        appendImage(image, max_length);
+        return;
+    }
+
+    QMultiMap<double, ImageItem*>::iterator end = imageMap.upperBound(time);
+    double duration;
+    if (end == imageMap.end()) // trying to append image at the end of timeline
+        duration = max_length;
+    else
+        duration = (end.key() - time > max_length) ? max_length : end.key() - time;
+    addImage(image, time, time + duration);
+}
+
+void Timeline::appendImage(img::Image *image, double length) {
+    double start = imageMap.isEmpty() ? 0 : imageMap.lastKey();
+    addImage(image, start, start + length);
+}
+
+void Timeline::deleteImage(ImageItem *item) {
+    imageMap.erase(item->start);
+    imageMap.erase(item->end);
+    emit imageDeleted(item->image);
+}
+
+img::Image* Timeline::getImage(double time) {
+    ImageItem *item = getImageItem(time);
+    if (item != nullptr) return item->image;
+    return nullptr;
+}
+
+ImageItem* Timeline::getImageItem(double time) {
+    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.upperBound(time);
+
+    // find the greatest key smaller than this key
+    if (iterator == imageMap.begin()) return nullptr;
+    iterator--;
+    iterator = imageMap.find(iterator.key());
+
+    // ignore nullptr
+    while (iterator != imageMap.end() && iterator.key() <= time) {
+        if (iterator.value() != nullptr)
+            return iterator.value();
+        iterator++;
+    }
+    return nullptr;
+}
+
+void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
+    double startTime = startPos / xTimeOffset;
+    double endTime = endPos / xTimeOffset;
+
+    // detect collision with other images
+    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
+    while (iterator != imageMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            setImageItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
+            return;
+        }
+        iterator++;
+    }
+
+    setImageItemPosition(item, startTime, endTime);
+}
+
+void Timeline::resizeImageItem(ImageItem *item, double newLength) {
+    double startTime = item->x() / xTimeOffset;
+    double endTime = (item->x() + newLength) / xTimeOffset;
+
+    // detect collision with other images
+    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
+    while (iterator != imageMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            return;
+        }
+        iterator++;
+    }
+    item->updateDuration(newLength);
+}
+
+void Timeline::setImageItemPosition(ImageItem *item, double startTime, double endTime) {
+    ImageItem* s = getImageItem(startTime);
+    if (s != nullptr && s != item) return;
+    if (startTime < 0) return;
+    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
+    while (iterator != imageMap.end() && iterator.key() < endTime) {
+        if (iterator.value() != nullptr && iterator.value() != item) {
+            return;
+        }
+        iterator++;
+    }
+    item->setX(startTime * xTimeOffset);
+}
+
+void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
+    // delete old duration
+    deleteImage(item);
+
+    // add new duration
+    item->start = imageMap.insert(start, item);
+    item->end = imageMap.insert(end, nullptr);
+    emit imageAdded(item->image, start, end-start, item->animation);
 }
