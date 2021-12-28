@@ -26,48 +26,80 @@ public:
     explicit VideoEditor(QWidget *parent = nullptr);
     ~VideoEditor() override;
 
+
+
 signals:
+    void changeFrame(cv::Mat frame);
+    void currentTimeChanged(double timeInSec);
     void imageChanged();
     void positionChanged(int position);
-    void currentTimeChanged(double timeInSec);
-    void changeFrame(cv::Mat frame);
+
+
 
 public slots:
-    void importMedia();
-    void importImages();
-    void importAudios();
-    void blurImage();
+    /*###################
+    *     GENERIC
+    ####################*/
     void updatePosition(int newPosition);
     void updateCurrentTime(double time);
-    void appendImageToThumbnail(QListWidgetItem*);
-    void appendAudioToThumbnail(QListWidgetItem *item);
     void writeVideo();
+
+    /*###################
+    *      IMPORT
+    ####################*/
+    void importAudios();
+    void importImages();
+    void importMedia();
+
+    /*###################
+    *       AUDIO
+    ####################*/
+    void appendAudioToThumbnail(QListWidgetItem *item);
+
+    /*###################
+    *       IMAGE
+    ####################*/
     void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
-    void deleteImageFromResultVideo(img::Image *image);
+    void appendImageToThumbnail(QListWidgetItem*);
     void applyAnimation(img::Image *image, vid::Animation animation);
+    void blurImage();
+    void deleteImageFromResultVideo(img::Image *image);
+
+
 
 private:
+    /*###################
+    *       SETUP
+    ####################*/
+    void setupAudio();
+    void setupMenus();
+    void setupWidgets();
+    void setupVideoClass();
+    void setupVideoPlayer();
+
+    /*###################
+    *      IMPORT
+    ####################*/
+    void importAudio(const QString& dir);
+    QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
+    void importImage(const QString& dir);
+
+    QSet<QString> audioFileTypes, imageFileTypes;
+    QString audioFileTypesFilter, imageFileTypesFilter;
+
+    /*###################
+    *     ATTRIBUTE
+    ####################*/
+    AudioManager *audioManager;
+    QMediaPlayer audioPlayer;
+    QAudioOutput audioOutput;
+    ThumbnailManager *thumbnailManager;
     vid::Video *resultVideo;
-    QSet<QString> imageFileTypes;
-    QSet<QString> audioFileTypes;
-    QString imageFileTypesFilter;
-    QString audioFileTypesFilter;
+
     int fourcc;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;
     Ui::VideoEditor *ui;
-    void setupVideoPlayer();
-    void setupMenus();
-    void setupWidgets();
-    void setupVideoClass();
-    void setupAudio();
-    QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
-    void importImage(const QString& dir);
-    void importAudio(const QString& dir);
-    ThumbnailManager *thumbnailManager;
-    AudioManager *audioManager;
-    QMediaPlayer audioPlayer;
-    QAudioOutput audioOutput;
 };
 
 

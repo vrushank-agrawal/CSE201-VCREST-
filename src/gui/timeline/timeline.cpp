@@ -132,14 +132,14 @@ void Timeline::addAudio(QString audioSource, double start, double end) {
     item->calculateSize();
     scene->addItem(item);
 
-    connect(item, SIGNAL(itemMoved(AudioItem *, double, double)),
-            this, SLOT(moveAudioItem(AudioItem *, double, double)));
-    connect(item, SIGNAL(positionChanged(AudioItem*, double, double)),
-            this, SLOT(updateAudioPosition(AudioItem*, double, double)));
-    connect(item, SIGNAL(resized(AudioItem *, double)),
-            this, SLOT(resizeAudioItem(AudioItem *, double)));
-    connect(item, SIGNAL(deleted(AudioItem *)),
-            this, SLOT(deleteAudio(AudioItem *)));
+    connect(item, SIGNAL(itemMoved(AudioItem*,double,double)),
+            this, SLOT(moveAudioItem(AudioItem*,double,double)));
+    connect(item, SIGNAL(positionChanged(AudioItem*,double,double)),
+            this, SLOT(updateAudioPosition(AudioItem*,double,double)));
+    connect(item, SIGNAL(resized(AudioItem*,double)),
+            this, SLOT(resizeAudioItem(AudioItem*,double)));
+    connect(item, SIGNAL(deleted(AudioItem*)),
+            this, SLOT(deleteAudio(AudioItem*)));
 
     item->createSizeGripItem(new SizeGripItem(new AudioItemResizer, item));
 }
@@ -268,14 +268,14 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     item->calculateSize();
     scene->addItem(item);
 
-    connect(item, SIGNAL(itemMoved(ImageItem *, double, double)),
-            this, SLOT(moveImageItem(ImageItem *, double, double)));
-    connect(item, SIGNAL(positionChanged(ImageItem*, double, double)),
-            this, SLOT(updateImagePosition(ImageItem*, double, double)));
-    connect(item, SIGNAL(resized(ImageItem *, double)),
-            this, SLOT(resizeImageItem(ImageItem *, double)));
-    connect(item, SIGNAL(deleted(ImageItem *)),
-            this, SLOT(deleteImage(ImageItem *)));
+    connect(item, SIGNAL(itemMoved(ImageItem*,double,double)),
+            this, SLOT(moveImageItem(ImageItem*,double,double)));
+    connect(item, SIGNAL(positionChanged(ImageItem*,double,double)),
+            this, SLOT(updateImagePosition(ImageItem*,double,double)));
+    connect(item, SIGNAL(resized(ImageItem*,double)),
+            this, SLOT(resizeImageItem(ImageItem*,double)));
+    connect(item, SIGNAL(deleted(ImageItem*)),
+            this, SLOT(deleteImage(ImageItem*)));
 
     connect(item, &ImageItem::animationApplied,
             this, &Timeline::animationApplied);
