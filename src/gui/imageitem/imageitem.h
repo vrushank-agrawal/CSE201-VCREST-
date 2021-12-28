@@ -35,6 +35,7 @@ public:
     void calculateSize();
     void updateDuration(double newLength);
     void createSizeGripItem(SizeGripItem *sizeGripItem);
+    void resetImage();
     static QTransform parentTransform;
     vid::Animation animation = vid::Normal;
 

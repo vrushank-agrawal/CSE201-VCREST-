@@ -186,7 +186,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
              <string notr="true">background: #232323;
 QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0">
+            <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0,0">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -286,6 +286,38 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                  <width>22</width>
                  <height>30</height>
                 </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="resetButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>reset</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #ffffff;
+QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset theme=":/img-reset.png"/>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>22</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="arrowType">
+                <enum>Qt::NoArrow</enum>
                </property>
               </widget>
              </item>
