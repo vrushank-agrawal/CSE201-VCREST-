@@ -8,6 +8,7 @@
 
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include "audioitem.h"
 
 class AudioPlayer : public QObject {
 Q_OBJECT
@@ -16,17 +17,20 @@ public:
     explicit AudioPlayer();
     ~AudioPlayer();
 
-    void seek(double relativeTime);
+    void seek(AudioItem *source, double time);
     void setSource(QString source);
 
 
 public slots:
+    void handleIndicatorSignal(bool isPlaying);
     void updatePlayState(bool isPlaying);
 
 
 private:
+    bool isPlaying = false;
     QMediaPlayer player;
     QAudioOutput output;
+    QString source = "";
 };
 
 

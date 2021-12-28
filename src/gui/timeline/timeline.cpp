@@ -30,6 +30,8 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     indicator->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     connect(indicator, SIGNAL(positionChanged(qreal)),
             this, SLOT(updateTime(qreal)));
+    connect(indicator, SIGNAL(playStateChanged(bool)),
+            this, SLOT(relayPlayStateChanged(bool)));
 
     QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
@@ -54,7 +56,6 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     ImageItem::xTimeOffset = xTimeOffset;
     AudioItem::yOffset = (timeHeight + sceneHeight) / 2;
     ImageItem::xTimeOffset = xTimeOffset;
-    imageMap = QMultiMap<double, ImageItem*>();
 }
 
 Timeline::~Timeline() {
@@ -90,6 +91,10 @@ void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
 
     fitInView(currentXPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
     ImageItem::parentTransform = transform();
+}
+
+void Timeline::relayPlayStateChanged(bool isPlaying) {
+    emit playStateChanged(isPlaying);
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {
@@ -392,3 +397,5 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     item->end = imageMap.insert(end, nullptr);
     emit imageAdded(item->image, start, end-start, item->animation);
 }
+
+

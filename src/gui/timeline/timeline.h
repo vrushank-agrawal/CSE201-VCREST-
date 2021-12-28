@@ -50,11 +50,13 @@ private:
 
 
 signals:
+    void playStateChanged(bool isPlaying);
     void timeIndicatorChanged(qreal time);
     void videoLengthChanged(int length);
 
 
 public slots:
+    void relayPlayStateChanged(bool isPlaying);
     void updateIndicatorPosition(double);
 
 

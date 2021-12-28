@@ -88,6 +88,8 @@ void VideoEditor::setupWidgets() {
             this, &VideoEditor::appendAudioToThumbnail);
     connect(ui->preview, SIGNAL(playStateUpdated(bool)),
             audioPlayer, SLOT(updatePlayState(bool)));
+    connect(ui->timeline, SIGNAL(playStateChanged(bool)),
+            audioPlayer, SLOT(handleIndicatorSignal(bool)));
 
     audioPlayer->setSource("D:/Downloads/mp3_ex.mp3");
 }

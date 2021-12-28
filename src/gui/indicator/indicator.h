@@ -37,6 +37,7 @@ public:
     bool pressed=false;
 
 signals:
+    void playStateChanged(bool isMoved);
     void positionChanged(qreal time);
 
 public:
