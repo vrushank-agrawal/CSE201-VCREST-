@@ -118,6 +118,8 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::addImageToResultVideo);
     connect(ui->timeline, &Timeline::imageDeleted,
             this, &VideoEditor::deleteImageFromResultVideo);
+    connect(ui->timeline, &Timeline::imageSelected,
+            this, &VideoEditor::imageSelected);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
@@ -191,8 +193,8 @@ void VideoEditor::blurImage() {
     if (imageItem == nullptr) return;
     imageItem->image->blur(5, 5);
     imageItem->update();
-
-    emit imageChanged();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
 }
 
 
@@ -210,6 +212,14 @@ void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, dou
 
 void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
     resultVideo->deleteImage(image);
+}
+
+
+void VideoEditor::imageSelected() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
 }
 
 

@@ -109,6 +109,8 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     connect(item, &ImageItem::animationApplied,
             this, &Timeline::animationApplied);
 
+    connect(item, &ImageItem::imageSelected, this, &Timeline::imageSelected);
+
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 
     emit imageAdded(image, start, end-start, vid::Normal);
