@@ -20,7 +20,7 @@ signals:
 
 public slots:
     void applyNormalAnimation() {
-        normalAnimationAction->setText(QString::fromUtf8("Normal ✔"));
+        normalAnimationAction->setText(QString::fromUtf8("Normal ✓"));
         rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
         zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
         croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
