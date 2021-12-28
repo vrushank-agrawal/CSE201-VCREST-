@@ -71,6 +71,8 @@ void VideoEditor::setupWidgets() {
     audioManager = new AudioManager(ui->audioListWidget);
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
+    connect(ui->resetButton, &QToolButton::clicked,
+            this, &VideoEditor::resetImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
 }
@@ -198,6 +200,14 @@ void VideoEditor::blurImage() {
     if (imageItem == nullptr) return;
     imageItem->image->blur(blurLevel, blurLevel);
     imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::resetImage() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->resetImage();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }

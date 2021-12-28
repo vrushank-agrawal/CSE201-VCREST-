@@ -17,6 +17,7 @@ QTransform ImageItem::parentTransform = QTransform();
 ImageItem::ImageItem(img::Image *image,
                      QPoint position
                      ): image(image) {
+    img::Image tmp = *this->image;
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     menu = new ImageItemMenu();
@@ -138,6 +139,11 @@ void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
 
 double ImageItem::getTimeOfFrame() {
     return ((this->pos().x() + this->size.width()/2.0)/100.0);
+}
+
+void ImageItem::resetImage() {
+    image->setModifiedImg(image->getMat().clone());
+    this->update();
 }
 
 

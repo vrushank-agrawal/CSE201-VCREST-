@@ -31,6 +31,7 @@ signals:
     void changeFrame(cv::Mat frame);
 
 public slots:
+    void resetImage();
     void updateBlurLevel();
     void imageSelected();
     void importMedia();
