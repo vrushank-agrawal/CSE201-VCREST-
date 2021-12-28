@@ -183,7 +183,7 @@ void Timeline::addImageAtIndicator(img::Image *image, double max_length) {
     addImage(image, time, time + duration);
 }
 
-void Timeline::setItemPosition(ImageItem *item, double startTime, double endTime) {
+void Timeline::setImageItemPosition(ImageItem *item, double startTime, double endTime) {
     ImageItem* s = getImageItem(startTime);
     if (s != nullptr && s != item) return;
     if (startTime < 0) return;
@@ -219,13 +219,13 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
     while (iterator != imageMap.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
-            setItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
+            setImageItemPosition(item, startTime + iterator.key() - endTime, iterator.key());
             return;
         }
         iterator++;
     }
 
-    setItemPosition(item, startTime, endTime);
+    setImageItemPosition(item, startTime, endTime);
 }
 
 void Timeline::resizeImageItem(ImageItem *item, double newLength) {
