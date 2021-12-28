@@ -33,6 +33,8 @@ VideoEditor::VideoEditor(QWidget *parent) :
 VideoEditor::~VideoEditor() {
     delete ui;
     delete resultVideo;
+    delete thumbnailManager;
+    delete audioManager;
 }
 
 /*###################
@@ -77,12 +79,17 @@ void VideoEditor::setupMenus() {
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
+    audioPlayer = new AudioPlayer();
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
     connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendAudioToThumbnail);
+    connect(ui->preview, SIGNAL(playStateUpdated(bool)),
+            audioPlayer, SLOT(updatePlayState(bool)));
+
+    audioPlayer->setSource("D:/Downloads/mp3_ex.mp3");
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -142,13 +149,6 @@ void VideoEditor::setupVideoPlayer() {
 }
 
 void VideoEditor::setupAudio() {
-    audioPlayer.setAudioOutput(&audioOutput);
-    audioPlayer.setSource(QUrl("../media/audio/test.mp3"));
-    audioOutput.setVolume(50);
-    audioPlayer.play();
-    audioPlayer.setPosition(0);
-    qDebug() << "duration" << audioPlayer.duration();
-    qDebug() << "seek" << audioPlayer.isSeekable();
 }
 
 

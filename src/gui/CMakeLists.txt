@@ -11,6 +11,7 @@ add_subdirectory(imageitem)
 add_subdirectory(sizegripitem)
 add_subdirectory(imageitemmenu)
 add_subdirectory(audioitem)
+add_subdirectory(audioplayer)
 
 target_include_directories(gui
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -29,4 +30,5 @@ target_link_libraries(gui
         imageItemMenu
         video
         audioItem
+        audioPlayer
         )

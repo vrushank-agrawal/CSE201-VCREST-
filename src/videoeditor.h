@@ -13,6 +13,7 @@
 #include <video.h>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <audioplayer.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -91,8 +92,7 @@ private:
     *     ATTRIBUTE
     ####################*/
     AudioManager *audioManager;
-    QMediaPlayer audioPlayer;
-    QAudioOutput audioOutput;
+    AudioPlayer *audioPlayer;
     ThumbnailManager *thumbnailManager;
     vid::Video *resultVideo;
 

@@ -30,6 +30,7 @@ public:
                   QToolButton *playButton);
 
 signals:
+    void playStateUpdated(bool isPlaying);
     void timeUpdated(double currentTime);
 
 public slots:

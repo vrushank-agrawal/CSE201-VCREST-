@@ -101,7 +101,6 @@ void Timeline::updateIndicatorPosition(double time) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
-        qDebug() << getAudio(time);
     }
 }
 
