@@ -24,8 +24,8 @@ void AudioPlayer::updatePlayState(bool isPlaying) {
 }
 
 void AudioPlayer::handleIndicatorSignal(bool isSuspending) {
-    if (player == nullptr) return;
     this->isSuspending = isSuspending;
+    if (player == nullptr) return;
     if (isSuspending && isPlaying)
         player->play();
     else
@@ -49,6 +49,6 @@ void AudioPlayer::seek(double time) {
     }
     double start = timeline->getAudioStartTime(time);
 
-    if (player != nullptr)
+    if (player != nullptr && start >= 0)
         player->setPosition((time - start) * 1000);
 }
