@@ -10,7 +10,6 @@
 #include <array>
 #include <iostream>
 #include <fstream>
-#include <io.h>
 #include "aubio/aubio.h"
 #include "lameHelper.hpp"
 

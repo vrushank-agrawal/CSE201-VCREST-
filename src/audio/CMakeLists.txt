@@ -13,4 +13,7 @@ target_link_directories(audio PUBLIC
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(audio PUBLIC libaubio.a libmp3lame.a)
+find_package(Qt6 COMPONENTS Core REQUIRED)
+
+target_link_libraries(audio PUBLIC libaubio.a libmp3lame.a Qt6::Core)
+

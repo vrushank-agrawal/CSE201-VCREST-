@@ -3,6 +3,7 @@
 //
 
 #include "Audio.hpp"
+#include <QDir>
 
 using namespace std;
 
@@ -14,9 +15,9 @@ namespace audio {
 
     Audio::Audio(const std::string &uri) {
 
-        mkdir(folder.c_str());
+        QDir().mkdir(folder.c_str());
 
-        std::string ext = uri.substr(uri.length() - 3);
+        string ext = uri.substr(uri.length() - 3);
 
         char cstr[uri.length() + 1];
         strcpy(cstr, uri.c_str());
