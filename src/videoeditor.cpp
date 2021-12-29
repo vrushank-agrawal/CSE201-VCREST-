@@ -260,7 +260,7 @@ void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
 void VideoEditor::imageSelected() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    ui->blurSlider->setValue(imageItem->blurLevel);
+    ui->blurSlider->setValue(imageItem->blurLevel - 1);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
