@@ -8,13 +8,15 @@
 
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include "audioitem.h"
+#include <audioitem.h>
+#include <audiomanager.h>
+#include <timeline.h>
 
 class AudioPlayer : public QObject {
 Q_OBJECT
 
 public:
-    explicit AudioPlayer();
+    explicit AudioPlayer(AudioManager* manager, Timeline* timeline);
     ~AudioPlayer();
 
     void seek(AudioItem *source, double time);
@@ -23,16 +25,18 @@ public:
 
 public slots:
     void handleIndicatorSignal(bool isSuspending);
+    void seek(double time);
     void updatePlayState(bool isPlaying);
 
 
 private:
     bool isPlaying = false;
     bool isSuspending = false;
-    QMediaPlayer player;
-    QAudioOutput output;
     QString source = "";
     AudioItem *currentItem;
+    AudioManager *manager;
+    QMediaPlayer *player;
+    Timeline *timeline;
 
     void initAudioSource();
 };

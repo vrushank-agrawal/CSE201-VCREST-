@@ -7,4 +7,6 @@ target_include_directories(audioPlayer
 target_link_libraries(audioPlayer
         qtExternalLibrary
         audioItem
+        audioManager
+        timeline
         )

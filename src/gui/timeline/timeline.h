@@ -77,7 +77,7 @@ public:
     void appendAudio(QString audioSource, double length=default_audio_length);
     QString getAudio(qreal time);
     AudioItem* getAudioItem(double time);
-
+    double getAudioStartTime(double time);
 
 private:
     QMultiMap<double, AudioItem*> audioMap;

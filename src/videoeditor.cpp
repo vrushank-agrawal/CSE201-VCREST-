@@ -83,7 +83,7 @@ void VideoEditor::setupMenus() {
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
-    audioPlayer = new AudioPlayer();
+    audioPlayer = new AudioPlayer(audioManager, ui->timeline);
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
@@ -95,7 +95,7 @@ void VideoEditor::setupWidgets() {
     connect(ui->timeline, SIGNAL(playStateChanged(bool)),
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
     connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
-            this, SLOT(seekAudio(double)));
+            audioPlayer, SLOT(seek(double)));
 
 //    QMediaPlayer *player1 = new QMediaPlayer;
 //    QMediaPlayer *player2 = new QMediaPlayer;

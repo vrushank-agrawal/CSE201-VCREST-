@@ -221,6 +221,11 @@ QMultiMap<double, AudioItem *>::iterator Timeline::getAudioIterator(double time)
     return audioMap.end();
 }
 
+double Timeline::getAudioStartTime(double time) {
+    QMultiMap<double, AudioItem *>::iterator iterator = getAudioIterator(time);
+    return (iterator == audioMap.end()) ? -1 : iterator.key();
+}
+
 void Timeline::moveAudioItem(AudioItem *item, double startPos, double endPos) {
     double startTime = startPos / xTimeOffset;
     double endTime = endPos / xTimeOffset;

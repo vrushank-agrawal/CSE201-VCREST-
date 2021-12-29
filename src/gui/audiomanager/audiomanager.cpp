@@ -27,10 +27,12 @@ void AudioManager::addAudio(const QString& name) {
 
     auto *player = new QMediaPlayer;
     player->setAudioOutput(new QAudioOutput);
+    player->setSource(QUrl(name));
     playerMap.insert(name, player);
 
     player->play();
-    QTimer::singleShot(50, player, &QMediaPlayer::pause);
+    connect(player, SIGNAL(seekableChanged(bool)),
+            player, SLOT(pause()));
 }
 
 AudioManager::~AudioManager() {

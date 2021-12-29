@@ -9,7 +9,9 @@
 #include <QListWidget>
 #include <QMediaPlayer>
 
-class AudioManager {
+class AudioManager : public QObject {
+Q_OBJECT
+
 public:
     explicit AudioManager(QListWidget *qListWidget);
     ~AudioManager();
