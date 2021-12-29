@@ -89,6 +89,11 @@ private:
     QString audioFileTypesFilter = "", imageFileTypesFilter = "";
 
     /*###################
+    *      IMAGE
+    ####################*/
+    void updateFrame();
+
+    /*###################
     *     ATTRIBUTE
     ####################*/
     AudioManager *audioManager = nullptr;

@@ -246,11 +246,10 @@ void VideoEditor::updateCurrentTime(double time) {
             time = 1.0 * numberFrame / fps;
             ui->playButton->clicked();
         }
-        cv::Mat frame = resultVideo->getMatByTime(time);
-        emit changeFrame(frame);
 
         this->timeInSec = time;
         this->position = int(time * fps);
+        updateFrame();
         emit positionChanged(position);
         emit currentTimeChanged(timeInSec);
     }
@@ -315,9 +314,16 @@ void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
 void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
     resultVideo->addImage(image, startTime, duration);
     resultVideo->applyAnimation(image, animation);
+    updateFrame();
 }
 
 void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
     resultVideo->deleteImage(image);
+    updateFrame();
+}
+
+void VideoEditor::updateFrame() {
+    cv::Mat frame = resultVideo->getMatByTime(timeInSec);
+    emit changeFrame(frame);
 }
 
