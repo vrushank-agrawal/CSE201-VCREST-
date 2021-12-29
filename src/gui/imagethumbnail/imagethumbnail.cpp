@@ -20,7 +20,7 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
     qListWidget->setUniformItemSizes(true);
     qListWidget->setAutoScrollMargin(100);
 
-    brush = QBrush(Qt::white);
+    brush = QBrush("#dddddd");
     map = QMap<QListWidgetItem*, img::Image>();
 }
 

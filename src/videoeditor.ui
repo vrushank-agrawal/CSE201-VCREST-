@@ -201,8 +201,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 <string comment="blur the image" extracomment="ahihi">blur</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff;
-QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -231,8 +231,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 <string>crop</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff;
-QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -261,8 +261,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 <string>zoom</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff;
-QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -291,8 +291,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 <string>reset</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff;
-QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string/>
@@ -321,7 +321,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff; color: #000000;</string>
+                <string notr="true">background: #eeeeee; color: #000000;</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -389,7 +389,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: #ffffff</string>
+                <string notr="true">background: #dddddd</string>
                </property>
                <property name="verticalScrollBarPolicy">
                 <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -441,7 +441,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background: #ffffff;</string>
+                   <string notr="true">background: #eeeeee;</string>
                   </property>
                   <property name="text">
                    <string>...</string>
@@ -457,7 +457,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background: #ffffff;</string>
+                   <string notr="true">background: #eeeeee;</string>
                   </property>
                   <property name="text">
                    <string>...</string>
@@ -473,7 +473,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background: #ffffff;</string>
+                   <string notr="true">background: #eeeeee;</string>
                   </property>
                   <property name="text">
                    <string>...</string>
@@ -495,7 +495,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     <item>
      <widget class="ProgressBar" name="controlSlider">
       <property name="styleSheet">
-       <string notr="true">background: #ffffff</string>
+       <string notr="true">background: #eeeeee</string>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>

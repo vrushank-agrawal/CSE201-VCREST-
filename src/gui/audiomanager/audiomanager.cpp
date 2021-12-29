@@ -29,8 +29,8 @@ void AudioManager::addAudio(const QString& name) {
     }
 
     auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), displayName);
-    QBrush brush = QBrush();
-    brush.setColor(Qt::white);
+    QBrush brush = QBrush(Qt::SolidPattern);
+    brush.setColor("#dddddd");
     item->setBackground(brush);
     item->setSizeHint(QSize(60, 30));
     listWidget->addItem(item);

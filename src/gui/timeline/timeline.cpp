@@ -33,7 +33,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     connect(indicator, SIGNAL(playStateChanged(bool)),
             this, SLOT(relayPlayStateChanged(bool)));
 
-    QPen pen(Qt::white);
+    QPen pen("#bbbbbb");
     QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
         QGraphicsItem *line = scene->addLine(separator, pen);
@@ -45,7 +45,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
 
     for (int i = 0; i <= lengthInSecond; i += 5){
         QGraphicsTextItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
-        item->setDefaultTextColor(Qt::white);
+        item->setDefaultTextColor("#bbbbbb");
         item->setPos(i*xTimeOffset,yTime);
         item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 
