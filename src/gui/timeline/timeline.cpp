@@ -144,8 +144,8 @@ void Timeline::wheelEvent(QWheelEvent *event) {
  *      AUDIO
  ####################*/
 
-void Timeline::addAudio(QString audioSource, double start, double end) {
-    auto *item = new AudioItem(audioSource, QPoint(start * xTimeOffset, AudioItem::border));
+void Timeline::addAudio(QString audioSource, double sourceLength, double start, double end) {
+    auto *item = new AudioItem(audioSource, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
     qDebug() << audioSource << item->audioSource;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
@@ -161,20 +161,21 @@ void Timeline::addAudio(QString audioSource, double start, double end) {
     connect(item, SIGNAL(deleted(AudioItem*)),
             this, SLOT(deleteAudio(AudioItem*)));
 
+
     item->createSizeGripItem(new SizeGripItem(new AudioItemResizer, item));
 }
 
-void Timeline::appendAudio(QString audioSource, double length) {
+void Timeline::appendAudio(QString audioSource, double sourceLength, double length) {
     double start = audioMap.isEmpty() ? 0 : audioMap.lastKey();
-    addAudio(audioSource, start, start + length);
+    addAudio(audioSource, sourceLength, start, start + length);
 }
 
-void Timeline::addAudioAtIndicator(QString audioSource, double max_length) {
+void Timeline::addAudioAtIndicator(QString audioSource, double sourceLength, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
     // image already exists
     if (getAudioItem(time) != nullptr) {
-        appendAudio(audioSource, max_length);
+        appendAudio(audioSource, sourceLength, max_length);
         return;
     }
 
@@ -184,7 +185,7 @@ void Timeline::addAudioAtIndicator(QString audioSource, double max_length) {
         duration = max_length;
     else
         duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addAudio(audioSource, time, time + duration);
+    addAudio(audioSource, sourceLength, time, time + duration);
 }
 
 void Timeline::deleteAudio(AudioItem *item) {
@@ -244,6 +245,7 @@ void Timeline::moveAudioItem(AudioItem *item, double startPos, double endPos) {
 }
 
 void Timeline::resizeAudioItem(AudioItem *item, double newLength) {
+    newLength = std::min(newLength, item->getMaxLength());
     double startTime = item->x() / xTimeOffset;
     double endTime = (item->x() + newLength) / xTimeOffset;
 

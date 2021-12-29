@@ -12,9 +12,14 @@ QBrush AudioItem::brush = QBrush(Qt::black);
 QPen AudioItem::pen = QPen(Qt::black, border);
 
 
-AudioItem::AudioItem(QString audioSource, QPoint position) : audioSource(audioSource) {
+AudioItem::AudioItem(QString audioSource,
+                     double sourceLength,
+                     QPoint position
+                     ) : audioSource(audioSource) {
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
+    maxLength = sourceLength * xTimeOffset / 1000;
+    qDebug() << sourceLength;
 }
 
 AudioItem::~AudioItem() {
@@ -34,7 +39,7 @@ void AudioItem::calculateSize() {
 
 void AudioItem::updateDuration(double newLength) {
     prepareGeometryChange();
-    size = QSizeF(newLength, size.height());
+    size = QSizeF(std::min(newLength, maxLength), size.height());
     sizeGripItem->resize(boundingRect());
     emit positionChanged(this, this->start.key(), this->start.key() + newLength / xTimeOffset);
 }
@@ -81,4 +86,12 @@ void AudioItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 void AudioItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     emit deleted(this);
     delete this;
+}
+
+void AudioItem::updateMaxLength(double length) {
+    maxLength = length;
+}
+
+double AudioItem::getMaxLength() {
+    return maxLength;
 }

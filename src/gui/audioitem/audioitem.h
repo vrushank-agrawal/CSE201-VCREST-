@@ -19,6 +19,7 @@ Q_INTERFACES(QGraphicsItem)
 
 public:
     explicit AudioItem(QString audioSource,
+                       double sourceLength,
                        QPoint position);
     ~AudioItem();
 
@@ -30,6 +31,7 @@ public:
 
     void calculateSize();
     void createSizeGripItem(SizeGripItem *sizeGripItem);
+    double getMaxLength();
     void updateDuration(double newLength);
     void setSize(QSizeF size);
 
@@ -45,6 +47,7 @@ private:
     bool pressed=false;
     SizeGripItem *sizeGripItem = nullptr;
     QSizeF size;
+    double maxLength;
 
 
 signals:
@@ -52,6 +55,9 @@ signals:
     void itemMoved(AudioItem *item, double start, double end);
     void positionChanged(AudioItem* item, double start, double end);
     void resized(AudioItem* item, double newLength);
+
+public slots:
+    void updateMaxLength(double length);
 
 
 protected:

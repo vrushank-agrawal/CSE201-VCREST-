@@ -293,7 +293,9 @@ void VideoEditor::writeVideo() {
 ####################*/
 
 void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
-    ui->timeline->addAudioAtIndicator(*audioManager->getAudio(item));
+    QString *source = audioManager->getAudio(item);
+    QMediaPlayer *player = audioManager->getPlayer(*source);
+    ui->timeline->addAudioAtIndicator(*source, player->duration());
 }
 
 
