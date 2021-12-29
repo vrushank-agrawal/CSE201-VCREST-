@@ -17,7 +17,6 @@ void AudioPlayer::updatePlayState(bool isPlaying) {
     this->isPlaying = isPlaying;
     if (player == nullptr) return;
     if (isPlaying) {
-        qDebug() << "playing" << player->position() << player->isSeekable();
         player->play();
     }
     else
@@ -36,12 +35,10 @@ void AudioPlayer::handleIndicatorSignal(bool isSuspending) {
 void AudioPlayer::seek(double time) {
     AudioItem *item = timeline->getAudioItem(time);
     if (item == nullptr) {
-        qDebug() << "no audio";
         if (player != nullptr) player->pause();
         player = nullptr;
         return;
     }
-    qDebug() << item->audioSource;
     QMediaPlayer *newPlayer = manager->getPlayer(item->audioSource);
     if (newPlayer != player) {
         qDebug() << "switching player";

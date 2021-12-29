@@ -19,7 +19,7 @@ AudioItem::AudioItem(QString audioSource,
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     maxLength = sourceLength * xTimeOffset / 1000;
-    qDebug() << sourceLength;
+    qDebug() << "Audio added with length " << maxLength;
 }
 
 AudioItem::~AudioItem() {

@@ -2,7 +2,7 @@
 // Created by Minh Tung Nguyen on 03/12/2021.
 //
 
-#include <QDebug>
+
 #include <QDateTime>
 #include <audioresizer.h>
 #include <imageresizer.h>
@@ -140,7 +140,6 @@ void Timeline::wheelEvent(QWheelEvent *event) {
 
 void Timeline::addAudio(QString audioSource, double sourceLength, double start, double end) {
     auto *item = new AudioItem(audioSource, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
-    qDebug() << audioSource << item->audioSource;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
     item->calculateSize();
