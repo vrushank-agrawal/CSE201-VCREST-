@@ -141,7 +141,9 @@ double ImageItem::getTimeOfFrame() {
 }
 
 void ImageItem::resetImage() {
+    int width = image->getModifiedWidth(), height = image->getModifiedHeight();
     image->setModifiedImg(image->getMat().clone());
+    image->equalizeImgDim(width, height);
 }
 
 

@@ -138,8 +138,12 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::updateCurrentTime);
 
     // connect blurLevelChanged in this class to slider
-    ui->blurSlider->setVisible(false);
-    connect(ui->blurSlider, &QSlider::valueChanged,
+    blurSlider = new QSlider(Qt::Vertical);
+    blurSlider->setWindowFlag(Qt::Popup);
+    blurSlider->setVisible(false);
+    blurSlider->setFixedSize(22, 200);
+    blurSlider->setRange(1, 100);
+    connect(blurSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBlurLevel);
 
     // connect positionChanged in this class to slider and preview
@@ -235,11 +239,13 @@ void VideoEditor::importMedia() {
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    if (ui->blurSlider->isVisible()) {
-        ui->blurSlider->setVisible(false);
+    if (blurSlider->isVisible()) {
+        blurSlider->setVisible(false);
         return;
     }
-    ui->blurSlider->setVisible(true);
+    QPoint pos = ui->blurButton->mapToGlobal(QPoint(0, 0));
+    blurSlider->move(pos.x()-blurSlider->width(), pos.y());
+    blurSlider->setVisible(true);
     imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
@@ -258,7 +264,7 @@ void VideoEditor::rotateImageRight() {
 void VideoEditor::updateBlurLevel() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->blurLevel = ui->blurSlider->value() + 1;
+    imageItem->blurLevel = blurSlider->value();
     imageItem->resetImage();
     imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
     imageItem->update();
@@ -272,7 +278,7 @@ void VideoEditor::resetImage() {
     imageItem->resetImage();
     imageItem->update();
     imageItem->blurLevel = 1;
-    ui->blurSlider->setValue(0);
+    blurSlider->setValue(1);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
@@ -370,7 +376,7 @@ void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
 void VideoEditor::imageSelected() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    ui->blurSlider->setValue(imageItem->blurLevel - 1);
+    blurSlider->setValue(imageItem->blurLevel);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }

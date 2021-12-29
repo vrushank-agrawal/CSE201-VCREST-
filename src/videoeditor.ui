@@ -115,16 +115,6 @@ QToolTip { color: #ffffff; background-color: #232323; border: 0px; }</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QSlider" name="blurSlider">
-            <property name="styleSheet">
-             <string notr="true">padding: 5px;</string>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
@@ -308,7 +298,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 <string/>
                </property>
                <property name="icon">
-                <iconset theme=":/img-reset.png"/>
+                <iconset theme=":/img-reset.png">
+                 <normaloff>.</normaloff>.</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -535,7 +526,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

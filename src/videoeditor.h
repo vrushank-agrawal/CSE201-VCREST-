@@ -104,6 +104,7 @@ private:
     AudioPlayer *audioPlayer = nullptr;
     ThumbnailManager *thumbnailManager = nullptr;
     vid::Video *resultVideo = nullptr;
+    QSlider *blurSlider = nullptr;
 
     int fourcc = -1;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
