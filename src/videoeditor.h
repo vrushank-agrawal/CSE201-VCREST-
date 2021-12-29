@@ -56,7 +56,6 @@ public slots:
     *       AUDIO
     ####################*/
     void appendAudioToThumbnail(QListWidgetItem *item);
-    void seekAudio(double time);
 
     /*###################
     *       IMAGE

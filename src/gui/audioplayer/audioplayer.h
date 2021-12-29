@@ -19,9 +19,6 @@ public:
     explicit AudioPlayer(AudioManager* manager, Timeline* timeline);
     ~AudioPlayer();
 
-    void seek(AudioItem *source, double time);
-    void setSource(QString source);
-
 
 public slots:
     void handleIndicatorSignal(bool isSuspending);
@@ -37,8 +34,6 @@ private:
     AudioManager *manager;
     QMediaPlayer *player;
     Timeline *timeline;
-
-    void initAudioSource();
 };
 
 

@@ -296,12 +296,6 @@ void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
     ui->timeline->addAudioAtIndicator(*audioManager->getAudio(item));
 }
 
-void VideoEditor::seekAudio(double time) {
-    AudioItem *item = ui->timeline->getAudioItem(time);
-    audioPlayer->seek(item, time);
-}
-
-
 
 /*###################
 *       IMAGE
