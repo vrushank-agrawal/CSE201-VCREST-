@@ -110,17 +110,11 @@ void Timeline::updateIndicatorPosition(double time) {
         QMultiMap<double, AudioItem*>::iterator iterator = audioMap.upperBound(time);
         // find the greatest key smaller than this key
         if (iterator != audioMap.begin()) {
-            if (std::abs(time - iterator.key()) <= 0.1) {
-                emit seekAudioRequested(time);
-                return;
-            }
             iterator--;
         }
-        if (std::abs(time - iterator.key()) <= 0.1) {
+        if (time - iterator.key() >= 0 && time - iterator.key() <= 0.1) {
             emit seekAudioRequested(time);
         }
-
-
     }
 }
 
