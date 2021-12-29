@@ -7,15 +7,22 @@
 
 
 #include <QListWidget>
+#include <QMediaPlayer>
 
-class AudioManager {
+class AudioManager : public QObject {
+Q_OBJECT
+
 public:
     explicit AudioManager(QListWidget *qListWidget);
     ~AudioManager();
-    void addAudio(QString name);
+    void addAudio(const QString& name);
+    QString* getAudio(QListWidgetItem *item);
+    QMediaPlayer* getPlayer(QString source);
 
 private:
-    QListWidget *listWidget;
+    QListWidget *listWidget = nullptr;
+    QMap<QListWidgetItem*, QString> map;
+    QMap<QString, QMediaPlayer*> playerMap;
 };
 
 

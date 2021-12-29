@@ -6,6 +6,7 @@ target_include_directories(timeline
 
 target_link_libraries(timeline
         qtExternalLibrary
+        audioItem
         indicator
         imageItem
         imageLibrary

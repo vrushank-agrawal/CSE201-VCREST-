@@ -33,10 +33,11 @@ public:
     QBrush brush;
     QPen pen;
     QLine line;
-    std::time_t lastUpdateTime;
+    std::time_t lastUpdateTime = time(nullptr);
     bool pressed=false;
 
 signals:
+    void playStateChanged(bool isMoved);
     void positionChanged(qreal time);
 
 public:

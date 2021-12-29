@@ -76,6 +76,7 @@ void Indicator::updateWhenPressed() {
 void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = true;
+    emit playStateChanged(false);
     lastUpdateTime = std::time(0);
     std::thread updateThread(&Indicator::updateWhenPressed, this);
     updateThread.detach();
@@ -96,6 +97,7 @@ void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = false;
+    emit playStateChanged(true);
     if (event->scenePos().x() >= 0) {
         emit positionChanged(event->scenePos().x());
     }
