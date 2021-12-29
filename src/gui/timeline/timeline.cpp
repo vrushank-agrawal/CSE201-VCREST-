@@ -33,9 +33,10 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     connect(indicator, SIGNAL(playStateChanged(bool)),
             this, SLOT(relayPlayStateChanged(bool)));
 
+    QPen pen(Qt::white);
     QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
-        QGraphicsItem *line = scene->addLine(separator);
+        QGraphicsItem *line = scene->addLine(separator, pen);
         line->setPos(0, timeHeight + i * (sceneHeight - timeHeight) / 2);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
@@ -43,14 +44,16 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     QLineF timestamp(0, 0, 0, 10);
 
     for (int i = 0; i <= lengthInSecond; i += 5){
-        QGraphicsItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
+        QGraphicsTextItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
+        item->setDefaultTextColor(Qt::white);
         item->setPos(i*xTimeOffset,yTime);
         item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 
-        QGraphicsItem *line = scene->addLine(timestamp);
+        QGraphicsItem *line = scene->addLine(timestamp, pen);
         line->setPos(i*xTimeOffset,yTime);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
+
 
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;
