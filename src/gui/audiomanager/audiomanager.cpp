@@ -3,6 +3,8 @@
 //
 
 #include "audiomanager.h"
+#include "QAudioOutput"
+#include <QTimer>
 
 AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
     qListWidget->setDragEnabled(true);
@@ -17,17 +19,32 @@ AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
     qListWidget->setAutoScrollMargin(100);
 }
 
-void AudioManager::addAudio(QString name) {
+void AudioManager::addAudio(const QString& name) {
     auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), name);
     item->setSizeHint(QSize(60, 70));
     listWidget->addItem(item);
     map.insert(item, name);
+
+    auto *player = new QMediaPlayer;
+    player->setAudioOutput(new QAudioOutput);
+    playerMap.insert(name, player);
+
+    player->play();
+    QTimer::singleShot(50, player, &QMediaPlayer::pause);
 }
 
 AudioManager::~AudioManager() {
     delete listWidget;
+    for (auto &player: playerMap) {
+        delete player->audioOutput();
+        delete player;
+    }
 }
 
 QString *AudioManager::getAudio(QListWidgetItem *item) {
     return &map.find(item).value();
+}
+
+QMediaPlayer *AudioManager::getPlayer(QString source) {
+    return playerMap.value(source, nullptr);
 }

@@ -96,6 +96,17 @@ void VideoEditor::setupWidgets() {
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
     connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
             this, SLOT(seekAudio(double)));
+
+//    QMediaPlayer *player1 = new QMediaPlayer;
+//    QMediaPlayer *player2 = new QMediaPlayer;
+//    QAudioOutput *output1 = new QAudioOutput;
+//    QAudioOutput *output2 = new QAudioOutput;
+//    player1->setAudioOutput(output1);
+//    player2->setAudioOutput(output2);
+//    player1->setSource(QUrl("D:/Downloads/mp3_ex.mp3"));
+//    player2->setSource(QUrl("../media/audio/test.mp3"));
+//    player1->play();
+//    player2->play();
 }
 
 void VideoEditor::setupVideoPlayer() {
