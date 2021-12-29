@@ -20,7 +20,7 @@ public:
     QMediaPlayer* getPlayer(QString source);
 
 private:
-    QListWidget *listWidget;
+    QListWidget *listWidget = nullptr;
     QMap<QListWidgetItem*, QString> map;
     QMap<QString, QMediaPlayer*> playerMap;
 };

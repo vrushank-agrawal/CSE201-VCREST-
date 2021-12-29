@@ -27,8 +27,8 @@ public:
     constexpr static const double border = 3;
     static QTransform parentTransform;
 
-    QString audioSource;
-    QString displayName;
+    QString audioSource = "";
+    QString displayName = "";
     QMultiMap<double, AudioItem*>::iterator start, end;
 
     void calculateSize();
@@ -46,10 +46,10 @@ private:
     static QPen pen;
 
     QPointF oldPos,oldMousePos;
-    bool pressed=false;
+    bool pressed = false;
     SizeGripItem *sizeGripItem = nullptr;
     QSizeF size;
-    double maxLength;
+    double maxLength = 0;
 
 
 signals:

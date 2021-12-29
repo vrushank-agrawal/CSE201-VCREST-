@@ -5,8 +5,7 @@
 #include "audioplayer.h"
 #include <QTimer>
 
-AudioPlayer::AudioPlayer(AudioManager* manager, Timeline* timeline) : manager(manager), timeline(timeline){
-}
+AudioPlayer::AudioPlayer(AudioManager* manager, Timeline* timeline) : manager(manager), timeline(timeline){}
 
 AudioPlayer::~AudioPlayer() {
 

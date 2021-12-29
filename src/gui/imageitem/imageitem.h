@@ -32,7 +32,7 @@ public:
     static QTransform parentTransform;
 
     vid::Animation animation = vid::Normal;
-    img::Image *image;
+    img::Image *image = nullptr;
     QMultiMap<double, ImageItem*>::iterator start, end;
 
     void calculateSize();
@@ -49,7 +49,7 @@ private:
     static QPen pen, selectedPen;
     static ImageItem *selectedImageItem;
 
-    ImageItemMenu *menu;
+    ImageItemMenu *menu = nullptr;
     QPointF oldPos,oldMousePos;
     bool pressed=false;
     QSizeF size;

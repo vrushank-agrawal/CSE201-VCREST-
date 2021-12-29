@@ -29,11 +29,9 @@ public slots:
 private:
     bool isPlaying = false;
     bool isSuspending = false;
-    QString source = "";
-    AudioItem *currentItem;
-    AudioManager *manager;
-    QMediaPlayer *player;
-    Timeline *timeline;
+    AudioManager *manager = nullptr;
+    QMediaPlayer *player = nullptr;
+    Timeline *timeline = nullptr;
 };
 
 
