@@ -22,15 +22,19 @@ public:
 
 
 public slots:
-    void handleIndicatorSignal(bool isPlaying);
+    void handleIndicatorSignal(bool isSuspending);
     void updatePlayState(bool isPlaying);
 
 
 private:
     bool isPlaying = false;
+    bool isSuspending = false;
     QMediaPlayer player;
     QAudioOutput output;
     QString source = "";
+    AudioItem *currentItem;
+
+    void initAudioSource();
 };
 
 

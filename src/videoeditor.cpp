@@ -90,8 +90,8 @@ void VideoEditor::setupWidgets() {
             audioPlayer, SLOT(updatePlayState(bool)));
     connect(ui->timeline, SIGNAL(playStateChanged(bool)),
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
-
-    audioPlayer->setSource("D:/Downloads/mp3_ex.mp3");
+    connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
+            this, SLOT(seekAudio(double)));
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -281,7 +281,10 @@ void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
     ui->timeline->addAudioAtIndicator(*audioManager->getAudio(item));
 }
 
-
+void VideoEditor::seekAudio(double time) {
+    AudioItem *item = ui->timeline->getAudioItem(time);
+    audioPlayer->seek(item, time);
+}
 
 
 

@@ -76,21 +76,23 @@ public:
     void addAudioAtIndicator(QString audioSource, double max_length = default_audio_length);
     void appendAudio(QString audioSource, double length=default_image_length);
     QString getAudio(qreal time);
+    AudioItem* getAudioItem(double time);
 
 
 private:
     QMultiMap<double, AudioItem*> audioMap;
 
-    AudioItem* getAudioItem(double time);
+    QMultiMap<double, AudioItem*>::iterator getAudioIterator(double time);
     void setAudioItemPosition(AudioItem *item, double startTime, double endTime);
 
 
 signals:
     void audioAdded(QString audio, double startTime, double duration);
     void audioDeleted(QString audio);
+    void seekAudioRequested(double time);
 
 
-    private slots:
+private slots:
     void deleteAudio(AudioItem*);
     void moveAudioItem(AudioItem *item, double startPos, double endPos);
     void updateAudioPosition(AudioItem* item, double start, double end);

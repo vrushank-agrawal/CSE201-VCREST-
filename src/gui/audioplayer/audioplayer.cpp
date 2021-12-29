@@ -3,6 +3,7 @@
 //
 
 #include "audioplayer.h"
+#include <QTimer>
 
 AudioPlayer::AudioPlayer() {
     player.setAudioOutput(&output);
@@ -13,6 +14,10 @@ AudioPlayer::~AudioPlayer() {
 }
 
 void AudioPlayer::seek(AudioItem *item, double time) {
+    if (item == nullptr) {
+        setSource("");
+        return;
+    }
     if (item->audioSource != source) {
         setSource(item->audioSource);
     }
@@ -24,20 +29,37 @@ void AudioPlayer::setSource(QString source) {
     player.pause();
     player.setSource(QUrl(source));
     this->source = source;
-    player.play();
-    player.pause();
+    if (!player.isSeekable()) {
+        player.play();
+        QTimer::singleShot(20, this, &AudioPlayer::initAudioSource);
+    } else
+        updatePlayState(isPlaying);
 }
+
+
+void AudioPlayer::initAudioSource() {
+    player.pause();
+    qDebug() << "Initializing Audio Source..." <<  player.isSeekable();
+    if (player.isSeekable()) {
+        player.setPosition(0);
+    }
+    updatePlayState(isPlaying);
+}
+
 
 void AudioPlayer::updatePlayState(bool isPlaying) {
     this->isPlaying = isPlaying;
-    if (isPlaying)
+    if (isPlaying) {
+        qDebug() << "played";
         player.play();
+    }
     else
         player.pause();
 }
 
-void AudioPlayer::handleIndicatorSignal(bool isPlaying) {
-    if (isPlaying && this->isPlaying)
+void AudioPlayer::handleIndicatorSignal(bool isSuspending) {
+    this->isSuspending = isSuspending;
+    if (isSuspending && isPlaying)
         player.play();
     else
         player.pause();

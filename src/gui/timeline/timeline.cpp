@@ -106,12 +106,28 @@ void Timeline::updateIndicatorPosition(double time) {
         indicator->setPos(time * xTimeOffset, 0);
         moveTimeline(CenterIndicator);
         emit timeIndicatorChanged(time);
+
+        QMultiMap<double, AudioItem*>::iterator iterator = audioMap.upperBound(time);
+        // find the greatest key smaller than this key
+        if (iterator != audioMap.begin()) {
+            if (std::abs(time - iterator.key()) <= 0.1) {
+                emit seekAudioRequested(time);
+                return;
+            }
+            iterator--;
+        }
+        if (std::abs(time - iterator.key()) <= 0.1) {
+            emit seekAudioRequested(time);
+        }
+
+
     }
 }
 
 void Timeline::updateTime(qreal xPosition) {
     double time = xPosition / xTimeOffset;
     emit timeIndicatorChanged(time);
+    emit seekAudioRequested(time);
 }
 
 void Timeline::wheelEvent(QWheelEvent *event) {
@@ -184,20 +200,25 @@ QString Timeline::getAudio(qreal time) {
 }
 
 AudioItem* Timeline::getAudioItem(double time) {
+    QMultiMap<double, AudioItem*>::iterator iterator = getAudioIterator(time);
+    return (iterator == audioMap.end()) ? nullptr : iterator.value();
+}
+
+QMultiMap<double, AudioItem *>::iterator Timeline::getAudioIterator(double time) {
     QMultiMap<double, AudioItem*>::iterator iterator = audioMap.upperBound(time);
 
     // find the greatest key smaller than this key
-    if (iterator == audioMap.begin()) return nullptr;
+    if (iterator == audioMap.begin()) return audioMap.end();
     iterator--;
     iterator = audioMap.find(iterator.key());
 
     // ignore nullptr
     while (iterator != audioMap.end() && iterator.key() <= time) {
         if (iterator.value() != nullptr)
-            return iterator.value();
+            return iterator;
         iterator++;
     }
-    return nullptr;
+    return audioMap.end();
 }
 
 void Timeline::moveAudioItem(AudioItem *item, double startPos, double endPos) {
