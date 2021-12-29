@@ -49,11 +49,11 @@ public slots:
     };
 
 private:
-    QMenu *animationMenu;
-    QAction *normalAnimationAction;
-    QAction *rotationAnimationAction;
-    QAction *zoomingAnimationAction;
-    QAction *croppingAnimationAction;
+    QMenu *animationMenu = nullptr;
+    QAction *normalAnimationAction = nullptr;
+    QAction *rotationAnimationAction = nullptr;
+    QAction *zoomingAnimationAction = nullptr;
+    QAction *croppingAnimationAction = nullptr;
 };
 
 #endif //VIDEO_EDITOR_BX23_IMAGEITEMMENU_H

@@ -3,6 +3,8 @@
 //
 
 #include "audiomanager.h"
+#include "QAudioOutput"
+#include <QTimer>
 
 AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
     qListWidget->setDragEnabled(true);
@@ -17,11 +19,38 @@ AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
     qListWidget->setAutoScrollMargin(100);
 }
 
-void AudioManager::addAudio(QString name) {
-    auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), name);
+void AudioManager::addAudio(const QString& name) {
+    QString displayName;
+    if (name.lastIndexOf("/") >= 0) {
+        displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
+    }
+    else {
+        displayName = name;
+    }
+
+    auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), displayName);
+    item->setSizeHint(QSize(60, 30));
     listWidget->addItem(item);
+    map.insert(item, name);
+
+    auto *player = new QMediaPlayer;
+    player->setAudioOutput(new QAudioOutput);
+    player->setSource(QUrl(name));
+    playerMap.insert(name, player);
 }
 
 AudioManager::~AudioManager() {
     delete listWidget;
+    for (auto &player: playerMap) {
+        delete player->audioOutput();
+        delete player;
+    }
+}
+
+QString *AudioManager::getAudio(QListWidgetItem *item) {
+    return &map.find(item).value();
+}
+
+QMediaPlayer *AudioManager::getPlayer(QString source) {
+    return playerMap.value(source, nullptr);
 }

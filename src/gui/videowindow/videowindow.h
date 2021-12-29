@@ -23,7 +23,7 @@ public:
 private:
     QPixmap original_pixmap;
     QGraphicsPixmapItem *graphicsPixmap = nullptr;
-    QGraphicsScene *scene;
+    QGraphicsScene *scene = nullptr;
 protected:
     virtual void resizeEvent(QResizeEvent *event);
 };

@@ -30,6 +30,7 @@ public:
                   QToolButton *playButton);
 
 signals:
+    void playStateUpdated(bool isPlaying);
     void timeUpdated(double currentTime);
 
 public slots:
@@ -51,9 +52,9 @@ private:
     bool isMoving = false;
     int fps = 30;
     double currentTime = 0, videoLength = 0;
-    QToolButton *playButton;
+    QToolButton *playButton = nullptr;
     QTimer *timer = nullptr;
-    VideoWindow *label;
+    VideoWindow *label = nullptr;
 };
 
 #endif //VIDEO_EDITOR_BX23_VIDEOPLAYER_H
