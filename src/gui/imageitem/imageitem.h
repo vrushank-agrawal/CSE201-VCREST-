@@ -29,6 +29,7 @@ public:
 
     static double yOffset, xTimeOffset, yHeight;
     constexpr static const double border = 3;
+    int blurLevel = 1;
     QMultiMap<double, ImageItem*>::iterator start, end;
     img::Image *image;
     void setSize(QSizeF size);

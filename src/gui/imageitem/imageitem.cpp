@@ -142,7 +142,6 @@ double ImageItem::getTimeOfFrame() {
 
 void ImageItem::resetImage() {
     image->setModifiedImg(image->getMat().clone());
-    this->update();
 }
 
 

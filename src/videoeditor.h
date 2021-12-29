@@ -25,7 +25,6 @@ public:
     ~VideoEditor() override;
 
 signals:
-    void imageChanged();
     void positionChanged(int position);
     void currentTimeChanged(double timeInSec);
     void changeFrame(cv::Mat frame);
@@ -38,6 +37,7 @@ public slots:
     void importImages();
     void importAudios();
     void blurImage();
+    void rotateImageRight();
     void updatePosition(int newPosition);
     void updateCurrentTime(double time);
     void appendImageToThumbnail(QListWidgetItem*);
@@ -52,7 +52,6 @@ private:
     QSet<QString> audioFileTypes;
     QString imageFileTypesFilter;
     QString audioFileTypesFilter;
-    int blurLevel = 5;
     int fourcc;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
     double timeInSec;

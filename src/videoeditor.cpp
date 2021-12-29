@@ -105,7 +105,7 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::updateCurrentTime);
 
     // connect blurLevelChanged in this class to slider
-    ui->blurSlider->setValue(blurLevel - 1);
+    ui->blurSlider->setVisible(false);
     connect(ui->blurSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBlurLevel);
 
@@ -198,7 +198,32 @@ QStringList VideoEditor::importFiles(const QString &caption, const QString &dir,
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->image->blur(blurLevel, blurLevel);
+    if (ui->blurSlider->isVisible()) {
+        ui->blurSlider->setVisible(false);
+        return;
+    }
+    ui->blurSlider->setVisible(true);
+    imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
+    imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::rotateImageRight() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->image->rotateImg(90.0);
+    imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::updateBlurLevel() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->blurLevel = ui->blurSlider->value() + 1;
+    imageItem->resetImage();
+    imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
@@ -208,6 +233,9 @@ void VideoEditor::resetImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
     imageItem->resetImage();
+    imageItem->update();
+    imageItem->blurLevel = 1;
+    ui->blurSlider->setValue(0);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
@@ -217,7 +245,6 @@ void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
     auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
-
 
 void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
     resultVideo->addImage(image, startTime, duration);
@@ -233,6 +260,7 @@ void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
 void VideoEditor::imageSelected() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
+    ui->blurSlider->setValue(imageItem->blurLevel);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
@@ -295,7 +323,5 @@ void VideoEditor::writeVideo() {
     }
 }
 
-void VideoEditor::updateBlurLevel() {
-    blurLevel = ui->blurSlider->value() + 1;
-}
+
 
