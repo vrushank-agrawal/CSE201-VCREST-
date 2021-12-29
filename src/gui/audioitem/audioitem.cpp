@@ -9,7 +9,7 @@ double AudioItem::yHeight = 40;
 double AudioItem::yOffset = 60;
 double AudioItem::xTimeOffset = 100;
 double AudioItem::textHeight = 15;
-QBrush AudioItem::brush = QBrush(Qt::white);
+QBrush AudioItem::brush = QBrush("#dddddd");
 QPen AudioItem::pen = QPen(Qt::black, border);
 QTransform AudioItem::parentTransform = QTransform();
 
