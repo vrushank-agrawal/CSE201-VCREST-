@@ -66,6 +66,7 @@ public slots:
     void blurImage();
     void deleteImageFromResultVideo(img::Image *image);
     void imageSelected();
+    void resetImage();
     void rotateImageRight();
     void updateBlurLevel();
 
