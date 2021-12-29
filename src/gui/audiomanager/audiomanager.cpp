@@ -20,8 +20,16 @@ AudioManager::AudioManager(QListWidget *qListWidget) : listWidget(qListWidget){
 }
 
 void AudioManager::addAudio(const QString& name) {
-    auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), name);
-    item->setSizeHint(QSize(60, 70));
+    QString displayName;
+    if (name.lastIndexOf("/") >= 0) {
+        displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
+    }
+    else {
+        displayName = name;
+    }
+
+    auto *item = new QListWidgetItem(QIcon(QPixmap(":/file-mp3.png")), displayName);
+    item->setSizeHint(QSize(60, 30));
     listWidget->addItem(item);
     map.insert(item, name);
 

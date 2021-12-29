@@ -91,6 +91,7 @@ void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
 
     fitInView(currentXPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
     ImageItem::parentTransform = transform();
+    AudioItem::parentTransform = transform();
 }
 
 void Timeline::relayPlayStateChanged(bool isPlaying) {

@@ -23,10 +23,12 @@ public:
                        QPoint position);
     ~AudioItem();
 
-    static double yOffset, xTimeOffset, yHeight;
+    static double yOffset, xTimeOffset, yHeight, textHeight;
     constexpr static const double border = 3;
+    static QTransform parentTransform;
 
     QString audioSource;
+    QString displayName;
     QMultiMap<double, AudioItem*>::iterator start, end;
 
     void calculateSize();

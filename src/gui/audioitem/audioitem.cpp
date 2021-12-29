@@ -8,8 +8,10 @@
 double AudioItem::yHeight = 40;
 double AudioItem::yOffset = 60;
 double AudioItem::xTimeOffset = 100;
-QBrush AudioItem::brush = QBrush(Qt::black);
+double AudioItem::textHeight = 15;
+QBrush AudioItem::brush = QBrush(Qt::white);
 QPen AudioItem::pen = QPen(Qt::black, border);
+QTransform AudioItem::parentTransform = QTransform();
 
 
 AudioItem::AudioItem(QString audioSource,
@@ -20,6 +22,13 @@ AudioItem::AudioItem(QString audioSource,
     size = QSizeF();
     maxLength = sourceLength * xTimeOffset / 1000;
     qDebug() << "Audio added with length " << maxLength;
+
+    if (audioSource.lastIndexOf("/") >= 0) {
+        displayName = audioSource.right(audioSource.length() - audioSource.lastIndexOf("/") - 1);
+    }
+    else {
+        displayName = audioSource;
+    }
 }
 
 AudioItem::~AudioItem() {
@@ -56,6 +65,10 @@ void AudioItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setPen(pen);
     painter->setBrush(brush);
     painter->drawRoundedRect(boundingRect(), border, border);
+
+    QRectF textRect(10, yHeight-5, std::max(boundingRect().width() - 20, 0.0), textHeight);
+    painter->scale(1 / parentTransform.m11(), 1 / parentTransform.m22());
+    painter->drawText(textRect, Qt::TextWordWrap, displayName);
 }
 
 void AudioItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
