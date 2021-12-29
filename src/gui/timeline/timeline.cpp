@@ -414,6 +414,8 @@ void Timeline::setImageItemPosition(ImageItem *item, double startTime, double en
 }
 
 void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
+    if (item->start.key() == start && item->end.key() == end)
+        return;
     // delete old duration
     deleteImage(item);
 
