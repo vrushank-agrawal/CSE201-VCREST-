@@ -74,7 +74,7 @@ protected:
 public:
     void addAudio(QString audioSource, double start, double end);
     void addAudioAtIndicator(QString audioSource, double max_length = default_audio_length);
-    void appendAudio(QString audioSource, double length=default_image_length);
+    void appendAudio(QString audioSource, double length=default_audio_length);
     QString getAudio(qreal time);
     AudioItem* getAudioItem(double time);
 

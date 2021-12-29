@@ -21,9 +21,13 @@ VideoEditor::VideoEditor(QWidget *parent) :
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
+    QString prefix = "audioPath=";
     QString prefix2 = "imagePath=";
 
     for (const auto& arg : arguments) {
+        if (arg.startsWith(prefix)) {
+            importAudio(arg.right(arg.size() - prefix2.size()));
+        }
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }

@@ -247,11 +247,13 @@ void Timeline::resizeAudioItem(AudioItem *item, double newLength) {
     while (iterator != audioMap.end() && iterator.key() < endTime) {
         if (iterator.value() != nullptr && iterator.value() != item) {
             item->updateDuration((iterator.key() - startTime) * xTimeOffset);
+            emit seekAudioRequested(indicator->x() / xTimeOffset);
             return;
         }
         iterator++;
     }
     item->updateDuration(newLength);
+    emit seekAudioRequested(indicator->x() / xTimeOffset);
 }
 
 void Timeline::setAudioItemPosition(AudioItem *item, double startTime, double endTime) {
@@ -276,6 +278,7 @@ void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
     emit audioAdded(item->audioSource, start, end-start);
+    emit seekAudioRequested(indicator->x() / xTimeOffset);
 }
 
 
