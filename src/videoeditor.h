@@ -86,19 +86,19 @@ private:
     void importImage(const QString& dir);
 
     QSet<QString> audioFileTypes, imageFileTypes;
-    QString audioFileTypesFilter, imageFileTypesFilter;
+    QString audioFileTypesFilter = "", imageFileTypesFilter = "";
 
     /*###################
     *     ATTRIBUTE
     ####################*/
-    AudioManager *audioManager;
-    AudioPlayer *audioPlayer;
-    ThumbnailManager *thumbnailManager;
-    vid::Video *resultVideo;
+    AudioManager *audioManager = nullptr;
+    AudioPlayer *audioPlayer = nullptr;
+    ThumbnailManager *thumbnailManager = nullptr;
+    vid::Video *resultVideo = nullptr;
 
-    int fourcc;
+    int fourcc = -1;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
-    double timeInSec;
+    double timeInSec = 0;
     Ui::VideoEditor *ui;
 };
 

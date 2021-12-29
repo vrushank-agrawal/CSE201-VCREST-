@@ -20,9 +20,8 @@ signals:
     void frameChanged(int position);
 
 private:
-    qreal x_pos;
-    std::time_t lastUpdateTime;
-    bool pressed;
+    std::time_t lastUpdateTime = 0;
+    bool pressed = false;
     virtual void updateWhenPress();
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
