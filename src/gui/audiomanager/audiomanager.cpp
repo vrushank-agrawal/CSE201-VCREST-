@@ -38,9 +38,10 @@ void AudioManager::addAudio(const QString& name) {
     player->setSource(QUrl(name));
     playerMap.insert(name, player);
 
-    player->play();
     connect(player, SIGNAL(seekableChanged(bool)),
             player, SLOT(pause()));
+    if (!player->isSeekable())
+        player->play();
 }
 
 AudioManager::~AudioManager() {
