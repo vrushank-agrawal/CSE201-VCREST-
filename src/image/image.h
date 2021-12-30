@@ -14,13 +14,16 @@
 #include <cstdlib>
 
 
-
 namespace img {
 
     class Image {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
         cv::Mat img_matrix_blur;
+        cv::Mat img_matrix_bilateralFilter;
+        cv::Mat img_matrix_boxBlur;
+        cv::Mat img_matrix_gaussianBlur;
+        cv::Mat img_matrix_medianBlur;
         std::string filename;
 
     public:
@@ -34,9 +37,17 @@ namespace img {
         std::string getFilename();
         cv::Mat getModifiedImg();
         cv::Mat getBlurImg();
+        cv::Mat getBilateralFilterImg();
+        cv::Mat getBoxBlurImg();
+        cv::Mat getGaussianBlurImg();
+        cv::Mat getMedianBlurImg();
         void setModifiedImg(cv::Mat mat);
         void setOriginalImg(cv::Mat mat);
         void setBlurImg(cv::Mat mat);
+        void setBilateralFilterImg(cv::Mat mat);
+        void setBoxBlurImg(cv::Mat mat);
+        void setGaussianBlurImg(cv::Mat mat);
+        void setMedianBlurImg(cv::Mat mat);
 
         // returns error if loaded image can't be read
         int return_img_error(int a);
@@ -68,6 +79,10 @@ namespace img {
         void imgPreview( const std::string & 	winname);
         void imgModifiedPreview( const std::string & winname);
         void imgBlurPreview( const std::string & winname);
+        void imgBilateralFilterPreview( const std::string & winname);
+        void imgBoxBlurPreview( const std::string & winname);
+        void imgGaussianBlurPreview( const std::string & winname);
+        void imgMedianBlurPreview( const std::string & winname);
 
         // Basic editing functions
         void resizeImg(int width, int height);
@@ -75,11 +90,15 @@ namespace img {
         void rotateImgFit(double angle);
 
         //Blurs
+        void bilateralFilterPreview(int distance);
         void bilateralFilter(int distance);
         void blurPreview(int width, int height);
         void blur(int width, int height);
+        void boxBlurPreview(int width, int height, int depth);
         void boxBlur(int width, int height, int depth);
+        void gaussianBlurPreview(int width, int height);
         void gaussianBlur(int width, int height);
+        void medianBlurPreview(int kernel_size);
         void medianBlur(int kernel_size);
 
     }; // Image() class
