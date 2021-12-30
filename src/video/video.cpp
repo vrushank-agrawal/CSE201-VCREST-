@@ -262,10 +262,12 @@ namespace vid {
 
     void Video::ImageAnimator::write(cv::VideoWriter video_writer) {
         int i = 0;
-        int num_fames = this->time * this->fps;
-        while (i < num_fames) {
+        int num_frames = this->time * this->fps;
+        while (i < num_frames) {
             cv::Mat disp = this->getMatAt(i);
-            video_writer.write(disp);
+            img::Image new_image(disp);
+            new_image.equalizeImgDim(width, height);
+            video_writer.write(new_image.getModifiedImg());
             i++;
         }
     }
