@@ -55,29 +55,61 @@ int main(){
 
 // ---------------------------BLUR PREVIEW----------------------------
 
-    // testing dynamic image blurPreview function
+    // testing dynamic image blur functions
 
     // equalize image first
-//    img1.equalizeImgDim(1920, 1080);
-//
+    img1.equalizeImgDim(1920, 1080);
+
 //    img1.blurPreview(30 ,30 );
 //    img1.imgBlurPreview("testing_blur_0");
-////    img1.imgModifiedPreview("testing_blur_0");
-//
-//    int i = cv::waitKey(0);
+//    img1.bilateralFilterPreview(31 );
+//    img1.imgBilateralFilterPreview("testing_blur_0");
+//    img1.boxBlurPreview(30 ,29 );
+//    img1.imgBoxBlurPreview("testing_blur_0");
+//    img1.gaussianBlurPreview(30 ,27 );
+//    img1.imgGaussianBlurPreview("testing_blur_0");
+    img1.medianBlurPreview(31 );
+    img1.imgMedianBlurPreview("testing_blur_0");
+//    img1.imgModifiedPreview("testing_blur_0");
+
+    int i = cv::waitKey(0);
 //    img1.blurPreview(1 ,1 );
 //    img1.imgBlurPreview("testing_blur_1");
-////    img1.imgModifiedPreview("testing_blur_1");
-//
-//    int a = cv::waitKey(0);
+//    img1.bilateralFilterPreview(1 );
+//    img1.imgBilateralFilterPreview("testing_blur_1");
+//    img1.boxBlurPreview(1 ,1 );
+//    img1.imgBoxBlurPreview("testing_blur_1");
+//    img1.gaussianBlurPreview(1 ,1 );
+//    img1.imgGaussianBlurPreview("testing_blur_1");
+    img1.medianBlurPreview(1 );
+    img1.imgMedianBlurPreview("testing_blur_1");
+//    img1.imgModifiedPreview("testing_blur_1");
+
+    int a = cv::waitKey(0);
 //    img1.blurPreview(50 ,50 );
 //    img1.imgBlurPreview("testing_blur_2");
-////    img1.imgModifiedPreview("testing_blur_2");
-//
-//    int b = cv::waitKey(0);
+//    img1.bilateralFilterPreview(51 );
+//    img1.imgBilateralFilterPreview("testing_blur_2");
+//    img1.boxBlurPreview(50 ,49 );
+//    img1.imgBoxBlurPreview("testing_blur_2");
+//    img1.gaussianBlurPreview(50 ,47 );
+//    img1.imgGaussianBlurPreview("testing_blur_2");
+    img1.medianBlurPreview(51 );
+    img1.imgMedianBlurPreview("testing_blur_2");
+//    img1.imgModifiedPreview("testing_blur_2");
+
+    int b = cv::waitKey(0);
 //    img1.blurPreview(1 ,1 );
 //    img1.imgBlurPreview("testing_blur_3");
-////    img1.imgModifiedPreview("testing_blur_3");
+//    img1.bilateralFilterPreview(1 );
+//    img1.imgBilateralFilterPreview("testing_blur_3");
+//    img1.boxBlurPreview(1 ,1 );
+//    img1.imgBoxBlurPreview("testing_blur_3");
+//    img1.gaussianBlurPreview(1 ,1 );
+//    img1.imgGaussianBlurPreview("testing_blur_3");
+    img1.medianBlurPreview(1 );
+    img1.imgMedianBlurPreview("testing_blur_3");
+//    img1.imgModifiedPreview("testing_blur_3");
 
 //  -----------------------------BLURS-------------------------------
 
