@@ -48,6 +48,7 @@ private:
     public:
         HandleItem(int positionFlags, SizeGripItem* parent);
         int positionFlags() const;
+        void setMaxWidth(double w);
 
     protected:
         virtual QVariant itemChange(GraphicsItemChange change,
@@ -55,7 +56,7 @@ private:
 
     private:
         QPointF restrictPosition(const QPointF& newPos);
-
+        double maxWidth;
         int positionFlags_;
         SizeGripItem* parent_;
     };
@@ -75,6 +76,7 @@ public:
     virtual void paint(QPainter* painter,
                        const QStyleOptionGraphicsItem* option,
                        QWidget* widget = 0);
+    void setMaxWidth(double maxWidth);
     void setTopLeft(const QPointF& pos);
     void setTop(qreal y);
     void setTopRight(const QPointF& pos);
@@ -88,6 +90,7 @@ public:
 private:
     void doResize();
     void updateHandleItemPositions();
+    double maxWidth;
     QRectF rect_;
     QList<HandleItem*> handleItems_;
     Resizer* resizer_;

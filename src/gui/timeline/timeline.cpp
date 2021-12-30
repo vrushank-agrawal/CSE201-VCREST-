@@ -158,7 +158,10 @@ void Timeline::addAudio(QString audioSource, double sourceLength, double start, 
     connect(item, SIGNAL(deleted(AudioItem*)),
             this, SLOT(deleteAudio(AudioItem*)));
 
-    item->createSizeGripItem(new SizeGripItem(new AudioItemResizer, item));
+    SizeGripItem *sizeGripItem = new SizeGripItem(new AudioItemResizer, item);
+    sizeGripItem->setMaxWidth(item->getMaxLength());
+
+    item->createSizeGripItem(sizeGripItem);
 }
 
 void Timeline::appendAudio(QString audioSource, double sourceLength, double length) {
