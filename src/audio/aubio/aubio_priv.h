@@ -58,7 +58,7 @@
 #include <math.h>
 #endif
 
-#ifdef HAVE_STRING_H
+#ifndef HAVE_STRING_H
 #include <string.h>
 #endif
 
