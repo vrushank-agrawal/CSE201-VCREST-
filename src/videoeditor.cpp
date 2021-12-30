@@ -61,6 +61,8 @@ void VideoEditor::setupMenus() {
     imageFileTypesFilter = "Images (*.jpg *.png *.gif *.svg)";
     audioFileTypes << ".wmv" << ".mp3";
     audioFileTypesFilter = "Audio (*.wmv *.mp3)";
+    mediaFileTypes << ".jpg" << ".png" << ".gif" << ".svg" << ".wmv" << ".mp3";
+    mediaFileTypesFilter = "Media (*.jpg *.png *.gif *.svg *.wmv *.mp3)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
     ui->actionExport->setShortcut(QKeySequence::Save);
@@ -226,8 +228,7 @@ void VideoEditor::importImages() {
 }
 
 void VideoEditor::importMedia() {
-    QString filter = imageFileTypesFilter + " ;; " + audioFileTypesFilter;
-    QStringList files = importFiles("Import Media", "/", filter);
+    QStringList files = importFiles("Import Media", "/", mediaFileTypesFilter);
 
     for (auto & file : files) {
         if (imageFileTypes.contains(file.right(4))) {
