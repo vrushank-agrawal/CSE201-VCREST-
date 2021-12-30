@@ -67,6 +67,7 @@ namespace img {
         // Basic editing functions
         void resizeImg(int width, int height);
         void rotateImg(double angle);
+        void rotateImgFit(double angle);
 
         //Blurs
         void bilateralFilter(int distance);

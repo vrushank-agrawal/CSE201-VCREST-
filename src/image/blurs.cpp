@@ -36,13 +36,26 @@ void img::Image::medianBlur(int kernel_size){
     cv::medianBlur(this->getModifiedImg(), this->getModifiedImg(), kernel_size);
 }
 
-void img::Image::rotateImg(double angle){
+void img::Image::rotateImg(double angle) {
     //rotate around the center point as axis
     cv::Point2f center((this->getModifiedImg().cols - 1) / 2.0, (this->getModifiedImg().rows - 1) / 2.0);
     //create a rotation matrix with the angle given
     cv::Mat rotation_matrix = getRotationMatrix2D(center, angle, 1.0);
     //update image to be the rotation image
-    warpAffine(this->getModifiedImg(), this->getModifiedImg(), rotation_matrix, this->getMat().size());
+    warpAffine(this->getModifiedImg(), img_matrix_modified, rotation_matrix, img_matrix_modified.size());
+}
+
+void img::Image::rotateImgFit(double angle) {
+    //rotate around the center point as axis
+    cv::Point2f center((this->getModifiedImg().cols - 1) / 2.0, (this->getModifiedImg().rows - 1) / 2.0);
+    //create a rotation matrix with the angle given
+    cv::Mat rotation_matrix = getRotationMatrix2D(center, angle, 1.0);
+    cv::Rect2f bbox = cv::RotatedRect(cv::Point2f(), img_matrix_modified.size(), angle).boundingRect2f();
+    // adjust transformation matrix
+    rotation_matrix.at<double>(0,2) += bbox.width/2.0 - img_matrix_modified.cols/2.0;
+    rotation_matrix.at<double>(1,2) += bbox.height/2.0 - img_matrix_modified.rows/2.0;
+    //update image to be the rotation image
+    warpAffine(this->getModifiedImg(), img_matrix_modified, rotation_matrix, bbox.size());
 }
 
 void img::Image::resizeImg(int width, int height) {

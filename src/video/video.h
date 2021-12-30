@@ -127,7 +127,7 @@ namespace vid {
         std::vector<ImageAnimator> animators;
         img::Image blank;
         int number_of_animations;
-        int width, height, fps;
+        static int width, height, fps;
     };
 
 }

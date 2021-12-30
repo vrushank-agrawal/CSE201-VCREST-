@@ -3,6 +3,8 @@
 //
 #include "video.h"
 
+int vid::Video::width = 0, vid::Video::height = 0, vid::Video::fps = 0;
+
 namespace vid {
     void Video::test() {
         std::cout << "OK" << std::endl;
@@ -12,7 +14,7 @@ namespace vid {
         this->number_of_animations = 0;
         this->clear();
         this->fps = fps;
-        cv::Mat blank_img_mat(500, 1000, CV_8UC3, cv::Scalar(0, 0, 0));
+        cv::Mat blank_img_mat(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
         this->blank = img::Image(blank_img_mat);
         this->resize(width, height);
     }
@@ -43,7 +45,7 @@ namespace vid {
 
 
     void Video::insertImage(img::Image *image, double start_time, double time_to_display) {
-        image->equalizeImgDim(this->width, this->height);
+//        image->equalizeImgDim(this->width, this->height);
         this->image_pointers.push_back(image);
         ImageAnimator new_animator = ImageAnimator(image, start_time, time_to_display, this->fps);
         this->animators.push_back(new_animator);
@@ -51,7 +53,7 @@ namespace vid {
     }
 
     void Video::insertImage(img::Image *image, double start_time, double time_to_display, int index) {
-        image->equalizeImgDim(this->width, this->height);
+//        image->equalizeImgDim(this->width, this->height);
         if (index > this->number_of_animations) {
             std::cout << "Index is out of reach";
         } else if (index == this->number_of_animations) {
@@ -112,7 +114,6 @@ namespace vid {
         for (int index = 0; index < this->number_of_animations; index++) {
             this->image_pointers[index]->resizeImg(width, height);
         }
-        //this->blank.equalizeImgDim(width, height);
     }
 
     int Video::animationNumber() {
@@ -284,6 +285,7 @@ namespace vid {
         double frame_angle = angle;
         cv::Mat modified_image = this->image->getModifiedImg();
         img::Image new_image = img::Image(modified_image);
+        new_image.equalizeImgDim(width, height);
         new_image.rotateImg(frame_angle);
         return new_image.getModifiedImg();
     }
