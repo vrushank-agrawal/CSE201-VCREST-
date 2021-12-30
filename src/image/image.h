@@ -27,6 +27,7 @@ namespace img {
         std::string filename;
 
     public:
+        // constructors
         Image();
         Image (cv::Mat mat);
         Image (const std::string &    filename);
@@ -41,6 +42,8 @@ namespace img {
         cv::Mat getBoxBlurImg();
         cv::Mat getGaussianBlurImg();
         cv::Mat getMedianBlurImg();
+
+        // sets the matrix associated to the image
         void setModifiedImg(cv::Mat mat);
         void setOriginalImg(cv::Mat mat);
         void setBlurImg(cv::Mat mat);
@@ -51,13 +54,10 @@ namespace img {
 
         // returns error if loaded image can't be read
         int return_img_error(int a);
-
         // returns true if input image is of valid format
         bool validImg(const std::string & 	filename);
-
         // returns a Matrix of the image color values
-        cv::Mat decodeImg(const std::string & 	filename,
-                      int 	            flags = cv::IMREAD_COLOR);
+        cv::Mat decodeImg(const std::string & 	filename, int flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
         void equalizeImgDim( double width, double height );
@@ -89,7 +89,7 @@ namespace img {
         void rotateImg(double angle);
         void rotateImgFit(double angle);
 
-        //Blurs
+        //Blurs and their previews
         void bilateralFilterPreview(int distance);
         void bilateralFilter(int distance);
         void blurPreview(int width, int height);

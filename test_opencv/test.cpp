@@ -29,16 +29,12 @@ int main()
 //    std::string image_path = cv::samples::findFile(address + "/../lena.jpg");
 
     cv::Mat img = imread(image_path, cv::IMREAD_COLOR);
-    if(img.empty())
-    {
+    if(img.empty()) {
         std::cout << "Could not read the image: " << image_path << std::endl;
         return 1;
     }
     imshow("Display window", img);
-    int k = cv::waitKey(0); // Wait for a keystroke in the window
-    if(k == 's')
-    {
-        imwrite("starry_night.png", img);
-    }
+    // Wait for a keystroke in the window
+    int k = cv::waitKey(0);
     return 0;
 }
