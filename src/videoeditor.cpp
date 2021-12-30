@@ -47,7 +47,8 @@ VideoEditor::~VideoEditor() {
 
 void VideoEditor::setupVideoClass() {
     // create an instance of Video class
-    resultVideo = new vid::Video(640, 360, fps);
+    resultVideo = new vid::Video(width, height, fps);
+    ui->videoWindow->setSize(width, height);
 
     ui->controlSlider->setRange(0, numberFrame);
     ui->controlSlider->setTracking(true);
@@ -146,6 +147,9 @@ void VideoEditor::setupVideoPlayer() {
     connect(blurSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBlurLevel);
 
+    connect(ui->rotateButton, &QToolButton::clicked,
+            this, &VideoEditor::rotateImageRight);
+
     // connect positionChanged in this class to slider and preview
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
@@ -174,7 +178,7 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::applyAnimation);
 
     // add label and playButton to preview
-    ui->preview->setChild(ui->label,
+    ui->preview->setChild(ui->videoWindow,
                           ui->playButton);
 }
 
@@ -238,7 +242,6 @@ void VideoEditor::importMedia() {
 
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
-    if (imageItem == nullptr) return;
     if (blurSlider->isVisible()) {
         blurSlider->setVisible(false);
         return;
@@ -246,6 +249,7 @@ void VideoEditor::blurImage() {
     QPoint pos = ui->blurButton->mapToGlobal(QPoint(0, 0));
     blurSlider->move(pos.x()-blurSlider->width(), pos.y());
     blurSlider->setVisible(true);
+    if (imageItem == nullptr) return;
     imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
@@ -255,7 +259,7 @@ void VideoEditor::blurImage() {
 void VideoEditor::rotateImageRight() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->image->rotateImg(90.0);
+    imageItem->image->rotateImgFit(90.0);
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);

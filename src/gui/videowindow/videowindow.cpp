@@ -7,6 +7,10 @@
 VideoWindow::VideoWindow(QWidget *parent) : QGraphicsView(parent) {
     scene = new QGraphicsScene(this);
     setScene(scene);
+    blackScene = scene->addRect(0, 0, width, height, QPen(Qt::black), Qt::black);
+    scene->setSceneRect(0, 0, width, height);
+    fitInView(blackScene, Qt::KeepAspectRatio);
+    centerOn(blackScene);
 }
 
 VideoWindow::~VideoWindow() {
@@ -15,7 +19,7 @@ VideoWindow::~VideoWindow() {
 }
 
 void VideoWindow::setOriginalPixmap(QPixmap pixmap) {
-    original_pixmap = pixmap;
+    original_pixmap = pixmap.scaled(width, height, Qt::KeepAspectRatio);
 }
 
 void VideoWindow::updatePixmap() {
@@ -23,11 +27,10 @@ void VideoWindow::updatePixmap() {
         delete graphicsPixmap;
         graphicsPixmap = new QGraphicsPixmapItem(original_pixmap);
         scene->addItem(graphicsPixmap);
-        QRectF rect = graphicsPixmap->boundingRect();
-        scene->setSceneRect(0, 0, rect.width(), rect.height());
-        fitInView(graphicsPixmap, Qt::KeepAspectRatio);
-        centerOn(graphicsPixmap);
+        graphicsPixmap->setOffset((width - original_pixmap.width()) / 2, (height - original_pixmap.height()) / 2);
     }
+    fitInView(blackScene, Qt::KeepAspectRatio);
+    centerOn(blackScene);
 }
 
 void VideoWindow::resizeEvent(QResizeEvent *event) {

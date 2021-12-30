@@ -108,6 +108,7 @@ private:
 
     int fourcc = -1;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
+    int width = 1280, height = 720;
     double timeInSec = 0;
     Ui::VideoEditor *ui;
 };

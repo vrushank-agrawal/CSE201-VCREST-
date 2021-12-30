@@ -19,11 +19,14 @@ public:
     ~VideoWindow();
     void setOriginalPixmap(QPixmap);
     void updatePixmap();
+    void setSize(int width, int height) {this->width = width; this->height = height;};
 
 private:
     QPixmap original_pixmap;
     QGraphicsPixmapItem *graphicsPixmap = nullptr;
+    QGraphicsItem *blackScene = nullptr;
     QGraphicsScene *scene = nullptr;
+    int width = 1280, height = 720;
 protected:
     virtual void resizeEvent(QResizeEvent *event);
 };

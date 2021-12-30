@@ -381,7 +381,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
               <number>10</number>
              </property>
              <item>
-              <widget class="VideoWindow" name="label">
+              <widget class="VideoWindow" name="videoWindow">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
