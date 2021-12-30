@@ -40,6 +40,7 @@ public:
     void createSizeGripItem(SizeGripItem *sizeGripItem);
     double getTimeOfFrame();
     void resetImage();
+    void unblurImage();
     void setSize(QSizeF size);
     void updateDuration(double newLength);
 

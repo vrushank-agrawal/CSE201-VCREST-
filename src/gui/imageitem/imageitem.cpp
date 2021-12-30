@@ -141,8 +141,12 @@ double ImageItem::getTimeOfFrame() {
 }
 
 void ImageItem::resetImage() {
-    int width = image->getModifiedWidth(), height = image->getModifiedHeight();
     image->setModifiedImg(image->getMat().clone());
+    image->setCurrentUnblurImg(image->getMat().clone());
+}
+
+void ImageItem::unblurImage() {
+    image->setModifiedImg(image->getCurrentUnblurImg().clone());
 }
 
 

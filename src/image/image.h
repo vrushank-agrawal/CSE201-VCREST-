@@ -20,6 +20,7 @@ namespace img {
     class Image {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
+        cv::Mat current_unblur_matrix;
         std::string filename;
 
     public:
@@ -32,8 +33,9 @@ namespace img {
         cv::Mat getMat();
         std::string getFilename();
         cv::Mat getModifiedImg();
+        cv::Mat getCurrentUnblurImg();
         void setModifiedImg(cv::Mat mat);
-
+        void setCurrentUnblurImg(cv::Mat mat);
         // returns error if loaded image can't be read
         int return_img_error(int a);
 
