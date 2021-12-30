@@ -45,26 +45,6 @@ cv::Mat img::Image::getModifiedImg() {
     return this-> img_matrix_modified;
 }
 
-cv::Mat img::Image::getBlurImg() {
-    return this-> img_matrix_blur;
-}
-
-cv::Mat img::Image::getBilateralFilterImg() {
-    return this-> img_matrix_bilateralFilter;
-}
-
-cv::Mat img::Image::getBoxBlurImg() {
-    return this-> img_matrix_boxBlur;
-}
-
-cv::Mat img::Image::getGaussianBlurImg() {
-    return this-> img_matrix_gaussianBlur;
-}
-
-cv::Mat img::Image::getMedianBlurImg() {
-    return this-> img_matrix_medianBlur;
-}
-
 void img::Image::setModifiedImg(cv::Mat matrix) {
     this -> img_matrix_modified = matrix;
 }
@@ -73,24 +53,8 @@ void img::Image::setOriginalImg(cv::Mat matrix) {
     this -> img_matrix = matrix;
 }
 
-void img::Image::setBlurImg(cv::Mat matrix) {
-    this -> img_matrix_blur = matrix;
-}
-
 void img::Image::setBilateralFilterImg(cv::Mat matrix) {
     this -> img_matrix_bilateralFilter = matrix;
-}
-
-void img::Image::setBoxBlurImg(cv::Mat matrix) {
-    this -> img_matrix_boxBlur = matrix;
-}
-
-void img::Image::setGaussianBlurImg(cv::Mat matrix) {
-    this -> img_matrix_gaussianBlur = matrix;
-}
-
-void img::Image::setMedianBlurImg(cv::Mat matrix) {
-    this -> img_matrix_medianBlur = matrix;
 }
 
 cv::Mat img::Image::decodeImg(const std::string &filename, int flags) {
@@ -116,31 +80,6 @@ void img::Image::imgPreview(const std::string &window) {
 
 void img::Image::imgModifiedPreview(const std::string &window) {
     cv::Mat mat = this -> getModifiedImg();
-    imshow(window, mat);
-}
-
-void img::Image::imgBlurPreview(const std::string &window) {
-    cv::Mat mat = this -> getBlurImg();
-    imshow(window, mat);
-}
-
-void img::Image::imgBilateralFilterPreview(const std::string &window) {
-    cv::Mat mat = this -> getBilateralFilterImg();
-    imshow(window, mat);
-}
-
-void img::Image::imgBoxBlurPreview(const std::string &window) {
-    cv::Mat mat = this -> getBoxBlurImg();
-    imshow(window, mat);
-}
-
-void img::Image::imgGaussianBlurPreview(const std::string &window) {
-    cv::Mat mat = this -> getGaussianBlurImg();
-    imshow(window, mat);
-}
-
-void img::Image::imgMedianBlurPreview(const std::string &window) {
-    cv::Mat mat = this -> getMedianBlurImg();
     imshow(window, mat);
 }
 

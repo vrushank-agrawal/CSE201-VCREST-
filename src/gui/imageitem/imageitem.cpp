@@ -21,6 +21,7 @@ ImageItem::ImageItem(img::Image *image,
     size = QSizeF();
     menu = new ImageItemMenu();
     connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
+    connect(menu, &ImageItemMenu::blurChosen, this, &ImageItem::applyBlur);
 }
 
 
@@ -77,6 +78,11 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void ImageItem::applyAnimation(vid::Animation animation) {
     this->animation = animation;
     emit animationApplied(image, animation);
+}
+
+void ImageItem::applyBlur(img::BlurType blurType) {
+    this->blurType = blurType;
+    emit blurTypeApplied(this);
 }
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -147,6 +153,28 @@ void ImageItem::resetImage() {
 
 void ImageItem::unblurImage() {
     image->setModifiedImg(image->getCurrentUnblurImg().clone());
+}
+
+int ImageItem::getMedianBlueLevel() {
+    return (blurLevel << 1) + 1;
+}
+
+void ImageItem::blur() {
+    switch (blurType) {
+        case (img::BlurType::Normal):
+            image->blur(blurLevel, blurLevel);
+            break;
+        case (img::BlurType::Box):
+            image->boxBlur(blurLevel, blurLevel, 3);
+            break;
+        case (img::BlurType::Gaussian):
+            image->gaussianBlur(blurLevel, blurLevel);
+            break;
+        case (img::BlurType::Median):
+            image->medianBlur(getMedianBlueLevel());
+            break;
+    }
+    update();
 }
 
 

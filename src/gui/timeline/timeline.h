@@ -121,6 +121,7 @@ private:
 
 signals:
     void animationApplied(img::Image *image, vid::Animation animation);
+    void blurTypeApplied(ImageItem *imageItem);
     void imageAdded(img::Image *image, double startTime, double duration, vid::Animation animation);
     void imageDeleted(img::Image *image);
     void imageSelected();
