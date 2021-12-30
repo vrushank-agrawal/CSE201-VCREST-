@@ -83,10 +83,9 @@
 
 
 static unsigned int
-maxvalue(int Buffer[2][1152])
-{
-    int     max = 0;
-    int     i;
+maxvalue(int Buffer[2][1152]) {
+    int max = 0;
+    int i;
 
     for (i = 0; i < 1152; i++) {
         if (abs(Buffer[0][i]) > max)
@@ -98,10 +97,9 @@ maxvalue(int Buffer[2][1152])
 }
 
 static void
-levelmessage(unsigned int maxv, int* maxx, int* tmpx)
-{
-    char    buff[] = "|  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  \r";
-    int     tmp = *tmpx, max = *maxx;
+levelmessage(unsigned int maxv, int *maxx, int *tmpx) {
+    char buff[] = "|  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  .  |  \r";
+    int tmp = *tmpx, max = *maxx;
 
     buff[tmp] = '+';
     tmp = (maxv * 61 + 16384) / (32767 + 16384 / 61);
@@ -128,23 +126,22 @@ levelmessage(unsigned int maxv, int* maxx, int* tmpx)
 ************************************************************************/
 
 int
-lame_main(lame_t gf, int argc, char **argv)
-{
+lame_main(lame_t gf, int argc, char **argv) {
     unsigned char mp3buffer[LAME_MAXMP3BUFFER];
-    char    inPath[PATH_MAX + 1];
-    char    outPath[PATH_MAX + 1];
-    int     Buffer[2][1152];
+    char inPath[PATH_MAX + 1];
+    char outPath[PATH_MAX + 1];
+    int Buffer[2][1152];
 
-    int     maxx = 0, tmpx = 0;
-    int     ret;
-    int     wavsamples;
-    int     mp3bytes;
-    FILE   *outf;
+    int maxx = 0, tmpx = 0;
+    int ret;
+    int wavsamples;
+    int mp3bytes;
+    FILE *outf;
 
-    char    ip[16];
+    char ip[16];
     unsigned int port = 5004;
     unsigned int ttl = 2;
-    char    dummy;
+    char dummy;
 
     if (argc <= 2) {
         console_printf("Encode (via LAME) to mp3 with RTP streaming of the output\n"
@@ -159,13 +156,13 @@ lame_main(lame_t gf, int argc, char **argv)
     }
 
     switch (sscanf(argv[1], "%11[.0-9]:%u:%u%c", ip, &port, &ttl, &dummy)) {
-    case 1:
-    case 2:
-    case 3:
-        break;
-    default:
-        error_printf("Illegal destination selector '%s', must be ip[:port[:ttl]]\n", argv[1]);
-        return -1;
+        case 1:
+        case 2:
+        case 3:
+            break;
+        default:
+            error_printf("Illegal destination selector '%s', must be ip[:port[:ttl]]\n", argv[1]);
+            return -1;
     }
     rtp_initialization();
     if (rtp_socket(ip, port, ttl)) {
@@ -192,8 +189,7 @@ lame_main(lame_t gf, int argc, char **argv)
     /* open the output file.  Filename parsed into gf.inPath */
     if (0 == strcmp(outPath, "-")) {
         lame_set_stream_binary_mode(outf = stdout);
-    }
-    else {
+    } else {
         if ((outf = lame_fopen(outPath, "wb+")) == NULL) {
             rtp_deinitialization();
             error_printf("Could not create \"%s\".\n", outPath);

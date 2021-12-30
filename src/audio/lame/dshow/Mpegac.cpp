@@ -74,47 +74,125 @@
 
 // Create a list of all (or mostly all) of the encoder CBR output capabilities which
 // will be parsed into a list of capabilities used by the IAMStreamConfig Interface
-output_caps_t OutputCapabilities[] = 
-{ // {SampleRate, BitRate}
-    { 48000, 320 },{ 48000, 256 },{ 48000, 224 },{ 48000, 192 },            // MPEG 1.0 Spec @ 48KHz
-    { 48000, 160 },{ 48000, 128 },{ 48000, 112 },{ 48000, 96 },
-    { 48000, 80 },{ 48000, 64 },{ 48000, 56 },{ 48000, 48 },
-    { 48000, 40 },{ 48000, 32 },
+output_caps_t OutputCapabilities[] =
+        { // {SampleRate, BitRate}
+                {48000, 320},
+                {48000, 256},
+                {48000, 224},
+                {48000, 192},            // MPEG 1.0 Spec @ 48KHz
+                {48000, 160},
+                {48000, 128},
+                {48000, 112},
+                {48000, 96},
+                {48000, 80},
+                {48000, 64},
+                {48000, 56},
+                {48000, 48},
+                {48000, 40},
+                {48000, 32},
 
-    { 24000, 160 },{ 24000, 144 },{ 24000, 128 },{ 24000, 112 },            // MPEG 2.0 Spec @ 24KHz
-    { 24000, 96 },{ 24000, 80 },{ 24000, 64 },{ 24000, 56 },
-    { 24000, 48 },{ 24000, 40 },{ 24000, 32 },{ 24000, 24 },
-    { 24000, 16 },{ 24000, 8 },
+                {24000, 160},
+                {24000, 144},
+                {24000, 128},
+                {24000, 112},            // MPEG 2.0 Spec @ 24KHz
+                {24000, 96},
+                {24000, 80},
+                {24000, 64},
+                {24000, 56},
+                {24000, 48},
+                {24000, 40},
+                {24000, 32},
+                {24000, 24},
+                {24000, 16},
+                {24000, 8},
 
-    { 12000, 64 },{ 12000, 56 },{ 12000, 48 },{ 12000, 40 },                // MPEG 2.5 Spec @ 12KHz
-    { 12000, 32 },{ 12000, 24 },{ 12000, 16 },{ 12000, 8 },
-    // ---------------------------                                          --------------------------
-    { 44100, 320 },{ 44100, 256 },{ 44100, 224 },{ 44100, 192 },            // MPEG 1.0 Spec @ 44.1KHz
-    { 44100, 160 },{ 44100, 128 },{ 44100, 112 },{ 44100, 96 },
-    { 44100, 80 },{ 44100, 64 },{ 44100, 56 },{ 44100, 48 },
-    { 44100, 40 },{ 44100, 32 },
+                {12000, 64},
+                {12000, 56},
+                {12000, 48},
+                {12000, 40},                // MPEG 2.5 Spec @ 12KHz
+                {12000, 32},
+                {12000, 24},
+                {12000, 16},
+                {12000, 8},
+                // ---------------------------                                          --------------------------
+                {44100, 320},
+                {44100, 256},
+                {44100, 224},
+                {44100, 192},            // MPEG 1.0 Spec @ 44.1KHz
+                {44100, 160},
+                {44100, 128},
+                {44100, 112},
+                {44100, 96},
+                {44100, 80},
+                {44100, 64},
+                {44100, 56},
+                {44100, 48},
+                {44100, 40},
+                {44100, 32},
 
-    { 22050, 160 },{ 22050, 144 },{ 22050, 128 },{ 22050, 112 },            // MPEG 2.0 Spec @ 22.05KHz
-    { 22050, 96 },{ 22050, 80 },{ 22050, 64 },{ 22050, 56 },
-    { 22050, 48 },{ 22050, 40 },{ 22050, 32 },{ 22050, 24 },
-    { 22050, 16 },{ 22050, 8 },
+                {22050, 160},
+                {22050, 144},
+                {22050, 128},
+                {22050, 112},            // MPEG 2.0 Spec @ 22.05KHz
+                {22050, 96},
+                {22050, 80},
+                {22050, 64},
+                {22050, 56},
+                {22050, 48},
+                {22050, 40},
+                {22050, 32},
+                {22050, 24},
+                {22050, 16},
+                {22050, 8},
 
-    { 11025, 64 },{ 11025, 56 },{ 11025, 48 },{ 11025, 40 },                // MPEG 2.5 Spec @ 11.025KHz
-    { 11025, 32 },{ 11025, 24 },{ 11025, 16 },{ 11025, 8 },
-    // ---------------------------                                          --------------------------
-    { 32000, 320 },{ 32000, 256 },{ 32000, 224 },{ 32000, 192 },            // MPEG 1.0 Spec @ 32KHz
-    { 32000, 160 },{ 32000, 128 },{ 32000, 112 },{ 32000, 96 },
-    { 32000, 80 },{ 32000, 64 },{ 32000, 56 },{ 32000, 48 },
-    { 32000, 40 },{ 32000, 32 },
+                {11025, 64},
+                {11025, 56},
+                {11025, 48},
+                {11025, 40},                // MPEG 2.5 Spec @ 11.025KHz
+                {11025, 32},
+                {11025, 24},
+                {11025, 16},
+                {11025, 8},
+                // ---------------------------                                          --------------------------
+                {32000, 320},
+                {32000, 256},
+                {32000, 224},
+                {32000, 192},            // MPEG 1.0 Spec @ 32KHz
+                {32000, 160},
+                {32000, 128},
+                {32000, 112},
+                {32000, 96},
+                {32000, 80},
+                {32000, 64},
+                {32000, 56},
+                {32000, 48},
+                {32000, 40},
+                {32000, 32},
 
-    { 16000, 160 },{ 16000, 144 },{ 16000, 128 },{ 16000, 112 },            // MPEG 2.0 Spec @ 16KHz
-    { 16000, 96 },{ 16000, 80 },{ 16000, 64 },{ 16000, 56 },
-    { 16000, 48 },{ 16000, 40 },{ 16000, 32 },{ 16000, 24 },
-    { 16000, 16 },{ 16000, 8 },
+                {16000, 160},
+                {16000, 144},
+                {16000, 128},
+                {16000, 112},            // MPEG 2.0 Spec @ 16KHz
+                {16000, 96},
+                {16000, 80},
+                {16000, 64},
+                {16000, 56},
+                {16000, 48},
+                {16000, 40},
+                {16000, 32},
+                {16000, 24},
+                {16000, 16},
+                {16000, 8},
 
-    { 8000, 64 },{ 8000, 56 },{ 8000, 48 },{ 8000, 40 },                    // MPEG 2.5 Spec @ 8KHz
-    { 8000, 32 },{ 8000, 24 },{ 8000, 16 },{ 8000, 8 }
-};
+                {8000,  64},
+                {8000,  56},
+                {8000,  48},
+                {8000,  40},                    // MPEG 2.5 Spec @ 8KHz
+                {8000,  32},
+                {8000,  24},
+                {8000,  16},
+                {8000,  8}
+        };
 
 
 /*  Registration setup stuff */
@@ -122,60 +200,60 @@ output_caps_t OutputCapabilities[] =
 
 
 AMOVIESETUP_MEDIATYPE sudMpgInputType[] =
-{
-    { &MEDIATYPE_Audio, &MEDIASUBTYPE_PCM }
-};
+        {
+                {&MEDIATYPE_Audio, &MEDIASUBTYPE_PCM}
+        };
 AMOVIESETUP_MEDIATYPE sudMpgOutputType[] =
-{
-    { &MEDIATYPE_Audio, &MEDIASUBTYPE_MPEG1AudioPayload },
-    { &MEDIATYPE_Audio, &MEDIASUBTYPE_MPEG2_AUDIO },
-    { &MEDIATYPE_Audio, &MEDIASUBTYPE_MP3 },
-    { &MEDIATYPE_Stream, &MEDIASUBTYPE_MPEG1Audio }
-};
+        {
+                {&MEDIATYPE_Audio,  &MEDIASUBTYPE_MPEG1AudioPayload},
+                {&MEDIATYPE_Audio,  &MEDIASUBTYPE_MPEG2_AUDIO},
+                {&MEDIATYPE_Audio,  &MEDIASUBTYPE_MP3},
+                {&MEDIATYPE_Stream, &MEDIASUBTYPE_MPEG1Audio}
+        };
 
 AMOVIESETUP_PIN sudMpgPins[] =
-{
-    { L"PCM Input",
-      FALSE,                               // bRendered
-      FALSE,                               // bOutput
-      FALSE,                               // bZero
-      FALSE,                               // bMany
-      &CLSID_NULL,                         // clsConnectsToFilter
-      NULL,                                // ConnectsToPin
-      NUMELMS(sudMpgInputType),            // Number of media types
-      sudMpgInputType
-    },
-    { L"MPEG Output",
-      FALSE,                               // bRendered
-      TRUE,                                // bOutput
-      FALSE,                               // bZero
-      FALSE,                               // bMany
-      &CLSID_NULL,                         // clsConnectsToFilter
-      NULL,                                // ConnectsToPin
-      NUMELMS(sudMpgOutputType),           // Number of media types
-      sudMpgOutputType
-    }
-};
+        {
+                {L"PCM Input",
+                        FALSE,                               // bRendered
+                        FALSE,                               // bOutput
+                        FALSE,                               // bZero
+                        FALSE,                               // bMany
+                        &CLSID_NULL,                         // clsConnectsToFilter
+                        NULL,                                // ConnectsToPin
+                        NUMELMS(sudMpgInputType),            // Number of media types
+                        sudMpgInputType
+                },
+                {L"MPEG Output",
+                        FALSE,                               // bRendered
+                        TRUE,                                // bOutput
+                        FALSE,                               // bZero
+                        FALSE,                               // bMany
+                        &CLSID_NULL,                         // clsConnectsToFilter
+                        NULL,                                // ConnectsToPin
+                        NUMELMS(sudMpgOutputType),           // Number of media types
+                        sudMpgOutputType
+                }
+        };
 
 AMOVIESETUP_FILTER sudMpgAEnc =
-{
-	&CLSID_LAMEDShowFilter,
-    L"LAME Audio Encoder",
-    DEFAULT_FILTER_MERIT,                  // Standard compressor merit value
-    NUMELMS(sudMpgPins),                   // 2 pins
-    sudMpgPins
-};
+        {
+                &CLSID_LAMEDShowFilter,
+                L"LAME Audio Encoder",
+                DEFAULT_FILTER_MERIT,                  // Standard compressor merit value
+                NUMELMS(sudMpgPins),                   // 2 pins
+                sudMpgPins
+        };
 
 /*****************************************************************************/
 // COM Global table of objects in this dll
 static WCHAR g_wszName[] = L"LAME Audio Encoder";
-CFactoryTemplate g_Templates[] = 
-{
-  { g_wszName, &CLSID_LAMEDShowFilter, CMpegAudEnc::CreateInstance, NULL, &sudMpgAEnc },
-  { L"LAME Audio Encoder Property Page", &CLSID_LAMEDShow_PropertyPage, CMpegAudEncPropertyPage::CreateInstance},
-  { L"LAME Audio Encoder Property Page", &CLSID_LAMEDShow_PropertyPageAdv, CMpegAudEncPropertyPageAdv::CreateInstance},
-  { L"LAME Audio Encoder About", &CLSID_LAMEDShow_About, CMAEAbout::CreateInstance}
-};
+CFactoryTemplate g_Templates[] =
+        {
+                {g_wszName,                           &CLSID_LAMEDShowFilter,           CMpegAudEnc::CreateInstance, NULL, &sudMpgAEnc},
+                {L"LAME Audio Encoder Property Page", &CLSID_LAMEDShow_PropertyPage,    CMpegAudEncPropertyPage::CreateInstance},
+                {L"LAME Audio Encoder Property Page", &CLSID_LAMEDShow_PropertyPageAdv, CMpegAudEncPropertyPageAdv::CreateInstance},
+                {L"LAME Audio Encoder About",         &CLSID_LAMEDShow_About,           CMAEAbout::CreateInstance}
+        };
 // Count of objects listed in g_cTemplates
 int g_cTemplates = sizeof(g_Templates) / sizeof(g_Templates[0]);
 
@@ -187,44 +265,42 @@ int g_cTemplates = sizeof(g_Templates) / sizeof(g_Templates[0]);
 // Used by IFilterMapper2() in the call to DllRegisterServer()
 // to register the filter in the CLSID_AudioCompressorCategory.
 REGFILTER2 rf2FilterReg = {
-    1,                     // Version number.
-    DEFAULT_FILTER_MERIT,  // Merit. This should match the merit specified in the AMOVIESETUP_FILTER definition
-    NUMELMS(sudMpgPins),   // Number of pins.
-    sudMpgPins             // Pointer to pin information.
+        1,                     // Version number.
+        DEFAULT_FILTER_MERIT,  // Merit. This should match the merit specified in the AMOVIESETUP_FILTER definition
+        NUMELMS(sudMpgPins),   // Number of pins.
+        sudMpgPins             // Pointer to pin information.
 };
 
-STDAPI DllRegisterServer(void)
-{
+STDAPI DllRegisterServer(void) {
     HRESULT hr = AMovieDllRegisterServer2(TRUE);
     if (FAILED(hr)) {
         return hr;
     }
 
     IFilterMapper2 *pFM2 = NULL;
-    hr = CoCreateInstance(CLSID_FilterMapper2, NULL, CLSCTX_INPROC_SERVER, IID_IFilterMapper2, (void **)&pFM2);
+    hr = CoCreateInstance(CLSID_FilterMapper2, NULL, CLSCTX_INPROC_SERVER, IID_IFilterMapper2, (void **) &pFM2);
     if (SUCCEEDED(hr)) {
         hr = pFM2->RegisterFilter(
-            CLSID_LAMEDShowFilter,           // Filter CLSID. 
-            g_wszName,                       // Filter name.
-            NULL,                            // Device moniker. 
-            &CLSID_AudioCompressorCategory,  // Audio compressor category.
-            g_wszName,                       // Instance data.
-            &rf2FilterReg                    // Filter information.
-            );
+                CLSID_LAMEDShowFilter,           // Filter CLSID.
+                g_wszName,                       // Filter name.
+                NULL,                            // Device moniker.
+                &CLSID_AudioCompressorCategory,  // Audio compressor category.
+                g_wszName,                       // Instance data.
+                &rf2FilterReg                    // Filter information.
+        );
         pFM2->Release();
     }
     return hr;
 }
 
-STDAPI DllUnregisterServer()
-{
+STDAPI DllUnregisterServer() {
     HRESULT hr = AMovieDllRegisterServer2(FALSE);
     if (FAILED(hr)) {
         return hr;
     }
 
     IFilterMapper2 *pFM2 = NULL;
-    hr = CoCreateInstance(CLSID_FilterMapper2, NULL, CLSCTX_INPROC_SERVER, IID_IFilterMapper2, (void **)&pFM2);
+    hr = CoCreateInstance(CLSID_FilterMapper2, NULL, CLSCTX_INPROC_SERVER, IID_IFilterMapper2, (void **) &pFM2);
     if (SUCCEEDED(hr)) {
         hr = pFM2->UnregisterFilter(&CLSID_AudioCompressorCategory, g_wszName, CLSID_LAMEDShowFilter);
         pFM2->Release();
@@ -233,27 +309,23 @@ STDAPI DllUnregisterServer()
 }
 
 
-
-CUnknown *CMpegAudEnc::CreateInstance(LPUNKNOWN lpunk, HRESULT *phr) 
-{
+CUnknown *CMpegAudEnc::CreateInstance(LPUNKNOWN lpunk, HRESULT *phr) {
     CMpegAudEnc *punk = new CMpegAudEnc(lpunk, phr);
-    if (punk == NULL) 
+    if (punk == NULL)
         *phr = E_OUTOFMEMORY;
     return punk;
 }
 
 CMpegAudEnc::CMpegAudEnc(LPUNKNOWN lpunk, HRESULT *phr)
- :  CTransformFilter(NAME("LAME Audio Encoder"), lpunk, CLSID_LAMEDShowFilter),
-    CPersistStream(lpunk, phr)
-{
+        : CTransformFilter(NAME("LAME Audio Encoder"), lpunk, CLSID_LAMEDShowFilter),
+          CPersistStream(lpunk, phr) {
     // ENCODER OUTPUT PIN
     // Override the output pin with our own which will implement the IAMStreamConfig Interface
-    CTransformOutputPin *pOut = new CMpegAudEncOutPin( this, phr );
+    CTransformOutputPin *pOut = new CMpegAudEncOutPin(this, phr);
     if (pOut == NULL) {
         *phr = E_OUTOFMEMORY;
         return;
-    }
-    else if (FAILED(*phr)) {             // A failed return code should delete the object
+    } else if (FAILED(*phr)) {             // A failed return code should delete the object
         delete pOut;
         return;
     }
@@ -271,8 +343,7 @@ CMpegAudEnc::CMpegAudEnc(LPUNKNOWN lpunk, HRESULT *phr)
     if (pIn == NULL) {
         *phr = E_OUTOFMEMORY;
         return;
-    }
-    else if (FAILED(*phr)) {             // A failed return code should delete the object
+    } else if (FAILED(*phr)) {             // A failed return code should delete the object
         delete pIn;
         return;
     }
@@ -289,24 +360,21 @@ CMpegAudEnc::CMpegAudEnc(LPUNKNOWN lpunk, HRESULT *phr)
     m_currentMediaTypeIndex = 0;
 }
 
-CMpegAudEnc::~CMpegAudEnc(void)
-{
+CMpegAudEnc::~CMpegAudEnc(void) {
 }
 
-LPAMOVIESETUP_FILTER CMpegAudEnc::GetSetupData()
-{
+LPAMOVIESETUP_FILTER CMpegAudEnc::GetSetupData() {
     return &sudMpgAEnc;
 }
 
 
-HRESULT CMpegAudEnc::Receive(IMediaSample * pSample)
-{
+HRESULT CMpegAudEnc::Receive(IMediaSample *pSample) {
     CAutoLock lock(&m_cs);
 
     if (!pSample)
         return S_OK;
 
-    BYTE * pSourceBuffer = NULL;
+    BYTE *pSourceBuffer = NULL;
 
     if (pSample->GetPointer(&pSourceBuffer) != S_OK || !pSourceBuffer)
         return S_OK;
@@ -319,30 +387,24 @@ HRESULT CMpegAudEnc::Receive(IMediaSample * pSample)
     if (sample_size <= 0 || pSourceBuffer == NULL || m_hasFinished || (gotValidTime && rtStart < 0))
         return S_OK;
 
-    if (gotValidTime)
-    {
-        if (m_rtStreamTime < 0)
-        {
+    if (gotValidTime) {
+        if (m_rtStreamTime < 0) {
             m_rtStreamTime = rtStart;
             m_rtEstimated = rtStart;
-        }
-        else
-        {
-            resync_point_t * sync = m_sync + m_sync_in_idx;
+        } else {
+            resync_point_t *sync = m_sync + m_sync_in_idx;
 
-            if (sync->applied)
-            {
+            if (sync->applied) {
                 REFERENCE_TIME rtGap = rtStart - m_rtEstimated;
 
                 // if old sync data is applied and gap is greater than 1 ms
                 // then make a new synchronization point
-                if (rtGap > 10000 || (m_allowOverlap && rtGap < -10000))
-                {
-                    sync->sample    = m_samplesIn;
-                    sync->delta     = rtGap;
-                    sync->applied   = FALSE;
+                if (rtGap > 10000 || (m_allowOverlap && rtGap < -10000)) {
+                    sync->sample = m_samplesIn;
+                    sync->delta = rtGap;
+                    sync->applied = FALSE;
 
-                    m_rtEstimated  += sync->delta;
+                    m_rtEstimated += sync->delta;
 
                     if (m_sync_in_idx < (RESYNC_COUNT - 1))
                         m_sync_in_idx++;
@@ -353,75 +415,66 @@ HRESULT CMpegAudEnc::Receive(IMediaSample * pSample)
         }
     }
 
-    m_rtEstimated   += (LONGLONG)(m_bytesToDuration * sample_size);
-    m_samplesIn     += sample_size / m_bytesPerSample;
+    m_rtEstimated += (LONGLONG) (m_bytesToDuration * sample_size);
+    m_samplesIn += sample_size / m_bytesPerSample;
 
-    while (sample_size > 0)
-    {
-        int bytes_processed = m_Encoder.Encode((short *)pSourceBuffer, sample_size);
+    while (sample_size > 0) {
+        int bytes_processed = m_Encoder.Encode((short *) pSourceBuffer, sample_size);
 
         if (bytes_processed <= 0)
             return S_OK;
 
         FlushEncodedSamples();
 
-        sample_size     -= bytes_processed;
-        pSourceBuffer   += bytes_processed;
+        sample_size -= bytes_processed;
+        pSourceBuffer += bytes_processed;
     }
 
     return S_OK;
 }
 
 
+HRESULT CMpegAudEnc::FlushEncodedSamples() {
+    IMediaSample *pOutSample = NULL;
+    BYTE *pDst = NULL;
 
+    if (m_bStreamOutput) {
+        HRESULT hr = S_OK;
+        const unsigned char *pblock = NULL;
+        int iBufferSize;
+        int iBlockLength = m_Encoder.GetBlockAligned(&pblock, &iBufferSize, m_cbStreamAlignment);
 
-HRESULT CMpegAudEnc::FlushEncodedSamples()
-{
-    IMediaSample * pOutSample = NULL;
-    BYTE * pDst = NULL;
+        if (!iBlockLength)
+            return S_OK;
 
-	if(m_bStreamOutput)
-	{
-		HRESULT hr = S_OK;
-		const unsigned char *   pblock      = NULL;
-		int iBufferSize;
-		int iBlockLength = m_Encoder.GetBlockAligned(&pblock, &iBufferSize, m_cbStreamAlignment);
-		
-		if(!iBlockLength)
-			return S_OK;
+        hr = m_pOutput->GetDeliveryBuffer(&pOutSample, NULL, NULL, 0);
+        if (hr == S_OK && pOutSample) {
+            hr = pOutSample->GetPointer(&pDst);
+            if (hr == S_OK && pDst) {
+                CopyMemory(pDst, pblock, iBlockLength);
+                REFERENCE_TIME rtEndPos = m_rtBytePos + iBufferSize;
+                EXECUTE_ASSERT(S_OK == pOutSample->SetTime(&m_rtBytePos, &rtEndPos));
+                pOutSample->SetActualDataLength(iBufferSize);
+                m_rtBytePos += iBlockLength;
+                m_pOutput->Deliver(pOutSample);
+            }
 
-		hr = m_pOutput->GetDeliveryBuffer(&pOutSample, NULL, NULL, 0);
-		if (hr == S_OK && pOutSample)
-		{
-			hr = pOutSample->GetPointer(&pDst);
-			if (hr == S_OK && pDst)
-			{
-				CopyMemory(pDst, pblock, iBlockLength);
-				REFERENCE_TIME rtEndPos = m_rtBytePos + iBufferSize;
-				EXECUTE_ASSERT(S_OK == pOutSample->SetTime(&m_rtBytePos, &rtEndPos));
-				pOutSample->SetActualDataLength(iBufferSize);
-				m_rtBytePos += iBlockLength;
-				m_pOutput->Deliver(pOutSample);
-			}
-
-			pOutSample->Release();
-		}
-		return S_OK;
-	}
+            pOutSample->Release();
+        }
+        return S_OK;
+    }
 
     if (m_rtStreamTime < 0)
         m_rtStreamTime = 0;
 
-    while (1)
-    {
-        const unsigned char *   pframe      = NULL;
-        int                     frame_size  = m_Encoder.GetFrame(&pframe);
+    while (1) {
+        const unsigned char *pframe = NULL;
+        int frame_size = m_Encoder.GetFrame(&pframe);
 
         if (frame_size <= 0 || !pframe)
             break;
 
-        if (!m_sync[m_sync_out_idx].applied && m_sync[m_sync_out_idx].sample <= m_samplesOut)
-        {
+        if (!m_sync[m_sync_out_idx].applied && m_sync[m_sync_out_idx].sample <= m_samplesOut) {
             m_rtStreamTime += m_sync[m_sync_out_idx].delta;
             m_sync[m_sync_out_idx].applied = TRUE;
 
@@ -434,27 +487,25 @@ HRESULT CMpegAudEnc::FlushEncodedSamples()
         REFERENCE_TIME rtStart = m_rtStreamTime;
         REFERENCE_TIME rtStop = rtStart + m_rtFrameTime;
 
-		HRESULT hr = S_OK;
-		
-		hr = m_pOutput->GetDeliveryBuffer(&pOutSample, NULL, NULL, 0);
-		if (hr == S_OK && pOutSample)
-		{
-			hr = pOutSample->GetPointer(&pDst);
-			if (hr == S_OK && pDst)
-			{
-				CopyMemory(pDst, pframe, frame_size);
-				pOutSample->SetActualDataLength(frame_size);
-			
-				pOutSample->SetSyncPoint(TRUE);
-				pOutSample->SetTime(&rtStart, m_setDuration ? &rtStop : NULL);
-			
+        HRESULT hr = S_OK;
 
-				m_pOutput->Deliver(pOutSample);
-			}
+        hr = m_pOutput->GetDeliveryBuffer(&pOutSample, NULL, NULL, 0);
+        if (hr == S_OK && pOutSample) {
+            hr = pOutSample->GetPointer(&pDst);
+            if (hr == S_OK && pDst) {
+                CopyMemory(pDst, pframe, frame_size);
+                pOutSample->SetActualDataLength(frame_size);
 
-			pOutSample->Release();
-		}
-	
+                pOutSample->SetSyncPoint(TRUE);
+                pOutSample->SetTime(&rtStart, m_setDuration ? &rtStop : NULL);
+
+
+                m_pOutput->Deliver(pOutSample);
+            }
+
+            pOutSample->Release();
+        }
+
 
         m_samplesOut += m_samplesPerFrame;
         m_rtStreamTime = rtStop;
@@ -467,42 +518,37 @@ HRESULT CMpegAudEnc::FlushEncodedSamples()
 ////////////////////////////////////////////////////////////////////////////
 //  StartStreaming - prepare to receive new data
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::StartStreaming()
-{
-    WAVEFORMATEX * pwfxIn  = (WAVEFORMATEX *) m_pInput->CurrentMediaType().Format();
+HRESULT CMpegAudEnc::StartStreaming() {
+    WAVEFORMATEX *pwfxIn = (WAVEFORMATEX *) m_pInput->CurrentMediaType().Format();
 
-    m_bytesPerSample    = pwfxIn->nChannels * sizeof(short);
-	DWORD dwOutSampleRate;
-	if(MEDIATYPE_Stream == m_pOutput->CurrentMediaType().majortype)
-	{
-		MPEG_ENCODER_CONFIG mcfg;
-		if(FAILED(m_Encoder.GetOutputType(&mcfg)))
-			return E_FAIL;
-		
-		dwOutSampleRate = mcfg.dwSampleRate;
-	}
-	else
-	{
-		dwOutSampleRate = ((WAVEFORMATEX *) m_pOutput->CurrentMediaType().Format())->nSamplesPerSec;
-	}
-	m_samplesPerFrame   = (dwOutSampleRate >= 32000) ? 1152 : 576;
+    m_bytesPerSample = pwfxIn->nChannels * sizeof(short);
+    DWORD dwOutSampleRate;
+    if (MEDIATYPE_Stream == m_pOutput->CurrentMediaType().majortype) {
+        MPEG_ENCODER_CONFIG mcfg;
+        if (FAILED(m_Encoder.GetOutputType(&mcfg)))
+            return E_FAIL;
+
+        dwOutSampleRate = mcfg.dwSampleRate;
+    } else {
+        dwOutSampleRate = ((WAVEFORMATEX *) m_pOutput->CurrentMediaType().Format())->nSamplesPerSec;
+    }
+    m_samplesPerFrame = (dwOutSampleRate >= 32000) ? 1152 : 576;
 
     m_rtFrameTime = MulDiv(10000000, m_samplesPerFrame, dwOutSampleRate);
 
     m_samplesIn = m_samplesOut = 0;
     m_rtStreamTime = -1;
-	m_rtBytePos = 0;
+    m_rtBytePos = 0;
 
     // initialize encoder
     m_Encoder.Init();
 
-    m_hasFinished   = FALSE;
+    m_hasFinished = FALSE;
 
-    for (int i = 0; i < RESYNC_COUNT; i++)
-    {
-        m_sync[i].sample   = 0;
-        m_sync[i].delta    = 0;
-        m_sync[i].applied  = TRUE;
+    for (int i = 0; i < RESYNC_COUNT; i++) {
+        m_sync[i].sample = 0;
+        m_sync[i].delta = 0;
+        m_sync[i].applied = TRUE;
     }
 
     m_sync_in_idx = 0;
@@ -511,27 +557,24 @@ HRESULT CMpegAudEnc::StartStreaming()
     get_SetDuration(&m_setDuration);
     get_SampleOverlap(&m_allowOverlap);
 
-	return S_OK;
+    return S_OK;
 }
 
 
-HRESULT CMpegAudEnc::StopStreaming()
-{
-	IStream *pStream = NULL;
-	if(m_bStreamOutput && m_pOutput->IsConnected() != FALSE)
-	{
-		IPin * pDwnstrmInputPin = m_pOutput->GetConnected();
-		if(pDwnstrmInputPin && FAILED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID*)(&pStream))))
-		{
-			pStream = NULL;
-		}
-	}
-	
+HRESULT CMpegAudEnc::StopStreaming() {
+    IStream *pStream = NULL;
+    if (m_bStreamOutput && m_pOutput->IsConnected() != FALSE) {
+        IPin *pDwnstrmInputPin = m_pOutput->GetConnected();
+        if (pDwnstrmInputPin && FAILED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID *) (&pStream)))) {
+            pStream = NULL;
+        }
+    }
 
-	m_Encoder.Close(pStream);
 
-	if(pStream)
-		pStream->Release();
+    m_Encoder.Close(pStream);
+
+    if (pStream)
+        pStream->Release();
 
     return S_OK;
 }
@@ -540,38 +583,33 @@ HRESULT CMpegAudEnc::StopStreaming()
 ////////////////////////////////////////////////////////////////////////////
 //  EndOfStream - stop data processing 
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::EndOfStream()
-{
+HRESULT CMpegAudEnc::EndOfStream() {
     CAutoLock lock(&m_cs);
 
     // Flush data
     m_Encoder.Finish();
     FlushEncodedSamples();
 
-	IStream *pStream = NULL;
-    if(m_bStreamOutput && m_pOutput->IsConnected() != FALSE)
-	{
-		IPin * pDwnstrmInputPin = m_pOutput->GetConnected();
-		if(pDwnstrmInputPin)
-		{
-			if(FAILED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID*)(&pStream))))
-			{
-				pStream = NULL;	
-			}
-		}
-	}
+    IStream *pStream = NULL;
+    if (m_bStreamOutput && m_pOutput->IsConnected() != FALSE) {
+        IPin *pDwnstrmInputPin = m_pOutput->GetConnected();
+        if (pDwnstrmInputPin) {
+            if (FAILED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID *) (&pStream)))) {
+                pStream = NULL;
+            }
+        }
+    }
 
-	if(pStream)
-	{
-		ULARGE_INTEGER size;
-		size.QuadPart = m_rtBytePos;
-		pStream->SetSize(size);	
-	}
+    if (pStream) {
+        ULARGE_INTEGER size;
+        size.QuadPart = m_rtBytePos;
+        pStream->SetSize(size);
+    }
 
-	m_Encoder.Close(pStream);
+    m_Encoder.Close(pStream);
 
-	if(pStream)
-		pStream->Release();
+    if (pStream)
+        pStream->Release();
 
     m_hasFinished = TRUE;
 
@@ -582,12 +620,10 @@ HRESULT CMpegAudEnc::EndOfStream()
 ////////////////////////////////////////////////////////////////////////////
 //  BeginFlush  - stop data processing 
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::BeginFlush()
-{
+HRESULT CMpegAudEnc::BeginFlush() {
     HRESULT hr = CTransformFilter::BeginFlush();
 
-    if (SUCCEEDED(hr))
-    {
+    if (SUCCEEDED(hr)) {
         CAutoLock lock(&m_cs);
 
         DWORD dwDstSize = 0;
@@ -596,51 +632,46 @@ HRESULT CMpegAudEnc::BeginFlush()
         m_Encoder.Finish();
         FlushEncodedSamples();
 
-		IStream *pStream = NULL;
-		if(m_bStreamOutput && m_pOutput->IsConnected() != FALSE)
-		{
-			IPin * pDwnstrmInputPin = m_pOutput->GetConnected();
-			if(pDwnstrmInputPin && SUCCEEDED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID*)(&pStream))))
-			{
-				ULARGE_INTEGER size;
-				size.QuadPart = m_rtBytePos;
-				pStream->SetSize(size);	
-				pStream->Release();
-			}
-		}
-	    m_rtStreamTime = -1;
-		m_rtBytePos = 0;
+        IStream *pStream = NULL;
+        if (m_bStreamOutput && m_pOutput->IsConnected() != FALSE) {
+            IPin *pDwnstrmInputPin = m_pOutput->GetConnected();
+            if (pDwnstrmInputPin && SUCCEEDED(pDwnstrmInputPin->QueryInterface(IID_IStream, (LPVOID *) (&pStream)))) {
+                ULARGE_INTEGER size;
+                size.QuadPart = m_rtBytePos;
+                pStream->SetSize(size);
+                pStream->Release();
+            }
+        }
+        m_rtStreamTime = -1;
+        m_rtBytePos = 0;
     }
 
     return hr;
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////
 //	SetMediaType - called when filters are connecting
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::SetMediaType(PIN_DIRECTION direction, const CMediaType * pmt)
-{
+HRESULT CMpegAudEnc::SetMediaType(PIN_DIRECTION direction, const CMediaType *pmt) {
     HRESULT hr = S_OK;
 
-    if (direction == PINDIR_INPUT)
-    {
-		if (*pmt->FormatType() != FORMAT_WaveFormatEx)
-        return VFW_E_INVALIDMEDIATYPE;
+    if (direction == PINDIR_INPUT) {
+        if (*pmt->FormatType() != FORMAT_WaveFormatEx)
+            return VFW_E_INVALIDMEDIATYPE;
 
-		if (pmt->FormatLength() < sizeof(WAVEFORMATEX))
-			return VFW_E_INVALIDMEDIATYPE;
+        if (pmt->FormatLength() < sizeof(WAVEFORMATEX))
+            return VFW_E_INVALIDMEDIATYPE;
 
-        DbgLog((LOG_TRACE,1,TEXT("CMpegAudEnc::SetMediaType(), direction = PINDIR_INPUT")));
+        DbgLog((LOG_TRACE, 1, TEXT("CMpegAudEnc::SetMediaType(), direction = PINDIR_INPUT")));
 
         // Pass input media type to encoder
-        m_Encoder.SetInputType((LPWAVEFORMATEX)pmt->Format());
+        m_Encoder.SetInputType((LPWAVEFORMATEX) pmt->Format());
 
-        WAVEFORMATEX * pwfx = (WAVEFORMATEX *)pmt->Format();
+        WAVEFORMATEX *pwfx = (WAVEFORMATEX *) pmt->Format();
 
         if (pwfx)
-            m_bytesToDuration = (float)1.e7 / (float)(pwfx->nChannels * sizeof(short) * pwfx->nSamplesPerSec);
+            m_bytesToDuration = (float) 1.e7 / (float) (pwfx->nChannels * sizeof(short) * pwfx->nSamplesPerSec);
         else
             m_bytesToDuration = 0.0;
 
@@ -649,13 +680,10 @@ HRESULT CMpegAudEnc::SetMediaType(PIN_DIRECTION direction, const CMediaType * pm
         LoadOutputCapabilities(pwfx->nSamplesPerSec);
 
         Reconnect();
-    }
-    else if (direction == PINDIR_OUTPUT)
-    {
+    } else if (direction == PINDIR_OUTPUT) {
         // Before we set the output type, we might need to reconnect 
         // the input pin with a new type.
-        if (m_pInput && m_pInput->IsConnected()) 
-        {
+        if (m_pInput && m_pInput->IsConnected()) {
             // Check if the current input type is compatible.
             hr = CheckTransform(&m_pInput->CurrentMediaType(), &m_pOutput->CurrentMediaType());
             if (FAILED(hr)) {
@@ -680,12 +708,11 @@ HRESULT CMpegAudEnc::SetMediaType(PIN_DIRECTION direction, const CMediaType * pm
 ////////////////////////////////////////////////////////////////////////////
 // CheckInputType - check if you can support mtIn
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::CheckInputType(const CMediaType* mtIn)
-{
+HRESULT CMpegAudEnc::CheckInputType(const CMediaType *mtIn) {
     if (*mtIn->Type() == MEDIATYPE_Audio && *mtIn->FormatType() == FORMAT_WaveFormatEx)
         if (mtIn->FormatLength() >= sizeof(WAVEFORMATEX))
             if (mtIn->IsTemporalCompressed() == FALSE)
-                return m_Encoder.SetInputType((LPWAVEFORMATEX)mtIn->Format(), true);
+                return m_Encoder.SetInputType((LPWAVEFORMATEX) mtIn->Format(), true);
 
     return E_INVALIDARG;
 }
@@ -693,61 +720,57 @@ HRESULT CMpegAudEnc::CheckInputType(const CMediaType* mtIn)
 ////////////////////////////////////////////////////////////////////////////
 // CheckTransform - checks if we can support the transform from this input to this output
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::CheckTransform(const CMediaType* mtIn, const CMediaType* mtOut)
-{
-	if(MEDIATYPE_Stream != mtOut->majortype)
-	{
-		if (*mtOut->FormatType() != FORMAT_WaveFormatEx)
-			return VFW_E_INVALIDMEDIATYPE;
+HRESULT CMpegAudEnc::CheckTransform(const CMediaType *mtIn, const CMediaType *mtOut) {
+    if (MEDIATYPE_Stream != mtOut->majortype) {
+        if (*mtOut->FormatType() != FORMAT_WaveFormatEx)
+            return VFW_E_INVALIDMEDIATYPE;
 
-		if (mtOut->FormatLength() < sizeof(WAVEFORMATEX))
-			return VFW_E_INVALIDMEDIATYPE;
+        if (mtOut->FormatLength() < sizeof(WAVEFORMATEX))
+            return VFW_E_INVALIDMEDIATYPE;
 
-		MPEG_ENCODER_CONFIG	mec;
-		if(FAILED(m_Encoder.GetOutputType(&mec)))
-			return S_OK;
+        MPEG_ENCODER_CONFIG mec;
+        if (FAILED(m_Encoder.GetOutputType(&mec)))
+            return S_OK;
 
-		if (((LPWAVEFORMATEX)mtIn->Format())->nSamplesPerSec % mec.dwSampleRate != 0)
-			return S_OK;
+        if (((LPWAVEFORMATEX) mtIn->Format())->nSamplesPerSec % mec.dwSampleRate != 0)
+            return S_OK;
 
-		if (mec.dwSampleRate != ((LPWAVEFORMATEX)mtOut->Format())->nSamplesPerSec)
-			return VFW_E_TYPE_NOT_ACCEPTED;
+        if (mec.dwSampleRate != ((LPWAVEFORMATEX) mtOut->Format())->nSamplesPerSec)
+            return VFW_E_TYPE_NOT_ACCEPTED;
 
-		return S_OK;
-	}
-	else if(mtOut->subtype == MEDIASUBTYPE_MPEG1Audio)
-		return S_OK;
+        return S_OK;
+    } else if (mtOut->subtype == MEDIASUBTYPE_MPEG1Audio)
+        return S_OK;
 
-	return VFW_E_TYPE_NOT_ACCEPTED;
+    return VFW_E_TYPE_NOT_ACCEPTED;
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // DecideBufferSize - sets output buffers number and size
 ////////////////////////////////////////////////////////////////////////////
 HRESULT CMpegAudEnc::DecideBufferSize(
-                        IMemAllocator*		  pAllocator,
-                        ALLOCATOR_PROPERTIES* pProperties)
-{
+        IMemAllocator *pAllocator,
+        ALLOCATOR_PROPERTIES *pProperties) {
     HRESULT hr = S_OK;
 
-	if(m_bStreamOutput)
-		m_cbStreamAlignment = pProperties->cbAlign;
+    if (m_bStreamOutput)
+        m_cbStreamAlignment = pProperties->cbAlign;
 
     ///
-    if (pProperties->cBuffers == 0) pProperties->cBuffers = 1;  // If downstream filter didn't suggest a buffer count then default to 1
+    if (pProperties->cBuffers == 0)
+        pProperties->cBuffers = 1;  // If downstream filter didn't suggest a buffer count then default to 1
     pProperties->cbBuffer = OUT_BUFFER_SIZE;
-	//
-	
-	ASSERT(pProperties->cbBuffer);
-	
+    //
+
+    ASSERT(pProperties->cbBuffer);
+
     ALLOCATOR_PROPERTIES Actual;
-    hr = pAllocator->SetProperties(pProperties,&Actual);
-    if(FAILED(hr))
+    hr = pAllocator->SetProperties(pProperties, &Actual);
+    if (FAILED(hr))
         return hr;
 
     if (Actual.cbBuffer < pProperties->cbBuffer ||
-        Actual.cBuffers < pProperties->cBuffers) 
-    {// can't use this allocator
+        Actual.cBuffers < pProperties->cBuffers) {// can't use this allocator
         return E_INVALIDARG;
     }
     return S_OK;
@@ -756,9 +779,8 @@ HRESULT CMpegAudEnc::DecideBufferSize(
 ////////////////////////////////////////////////////////////////////////////
 // GetMediaType - overrideable for suggesting output pin media types
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::GetMediaType(int iPosition, CMediaType *pMediaType)
-{
-    DbgLog((LOG_TRACE,1,TEXT("CMpegAudEnc::GetMediaType()")));
+HRESULT CMpegAudEnc::GetMediaType(int iPosition, CMediaType *pMediaType) {
+    DbgLog((LOG_TRACE, 1, TEXT("CMpegAudEnc::GetMediaType()")));
 
     return m_pOutput->GetMediaType(iPosition, pMediaType);
 }
@@ -768,20 +790,17 @@ HRESULT CMpegAudEnc::GetMediaType(int iPosition, CMediaType *pMediaType)
 //  encoder parameters to reset the filter output media type structure
 //  to match the current encoder out MPEG audio properties 
 ////////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::Reconnect()
-{
+HRESULT CMpegAudEnc::Reconnect() {
     HRESULT hr = S_FALSE;
 
-    if (m_pOutput && m_pOutput->IsConnected() && m_State == State_Stopped)
-    {
+    if (m_pOutput && m_pOutput->IsConnected() && m_State == State_Stopped) {
         MPEG_ENCODER_CONFIG mec;
         hr = m_Encoder.GetOutputType(&mec);
 
-        if ((hr = m_Encoder.SetOutputType(mec)) == S_OK)
-        {
+        if ((hr = m_Encoder.SetOutputType(mec)) == S_OK) {
             // Create an updated output MediaType using the current encoder settings
             CMediaType cmt;
-			cmt.InitMediaType();
+            cmt.InitMediaType();
             m_pOutput->GetMediaType(m_currentMediaTypeIndex, &cmt);
 
             // If the updated MediaType matches the current output MediaType no reconnect is needed
@@ -790,11 +809,10 @@ HRESULT CMpegAudEnc::Reconnect()
             // Attempt to reconnect the output pin using the updated MediaType
             if (S_OK == (hr = m_pOutput->GetConnected()->QueryAccept(&cmt))) {
                 hr = m_pOutput->SetMediaType(&cmt);
-                if ( FAILED(hr) ) { return(hr); }
+                if (FAILED(hr)) { return (hr); }
 
                 hr = m_pGraph->Reconnect(m_pOutput);
-            }
-            else
+            } else
                 hr = m_pOutput->SetMediaType(&cmt);
         }
     }
@@ -806,8 +824,7 @@ HRESULT CMpegAudEnc::Reconnect()
 //  LoadOutputCapabilities - create a list of the currently supported output 
 //  format capabilities which will be used by the IAMStreamConfig Interface
 ////////////////////////////////////////////////////////////////////////////
-void CMpegAudEnc::LoadOutputCapabilities(DWORD sample_rate)
-{
+void CMpegAudEnc::LoadOutputCapabilities(DWORD sample_rate) {
     m_CapsNum = 0;
 
     // Clear out any existing output capabilities
@@ -815,7 +832,7 @@ void CMpegAudEnc::LoadOutputCapabilities(DWORD sample_rate)
 
     // Create the set of Constant Bit Rate output capabilities that are
     // supported for the current input pin sampling rate.
-    for (int i = 0;  i < NUMELMS(OutputCapabilities); i++) {
+    for (int i = 0; i < NUMELMS(OutputCapabilities); i++) {
         if (0 == sample_rate % OutputCapabilities[i].nSampleRate) {
 
             // Add this output capability to the OutputCaps list
@@ -823,7 +840,7 @@ void CMpegAudEnc::LoadOutputCapabilities(DWORD sample_rate)
             m_CapsNum++;
 
             // Don't overrun the hard-coded capabilities array limit
-            if (m_CapsNum > (int)MAX_IAMSTREAMCONFIG_CAPS) break;
+            if (m_CapsNum > (int) MAX_IAMSTREAMCONFIG_CAPS) break;
         }
     }
 }
@@ -832,38 +849,37 @@ void CMpegAudEnc::LoadOutputCapabilities(DWORD sample_rate)
 //
 // Read persistent configuration from Registry
 //
-void CMpegAudEnc::ReadPresetSettings(MPEG_ENCODER_CONFIG * pmec)
-{
-    DbgLog((LOG_TRACE,1,TEXT("CMpegAudEnc::ReadPresetSettings()")));
+void CMpegAudEnc::ReadPresetSettings(MPEG_ENCODER_CONFIG *pmec) {
+    DbgLog((LOG_TRACE, 1, TEXT("CMpegAudEnc::ReadPresetSettings()")));
 
     Lame::CRegKey rk(HKEY_CURRENT_USER, KEY_LAME_ENCODER);
 
-    pmec->dwBitrate         = rk.getDWORD(VALUE_BITRATE,DEFAULT_BITRATE);
-    pmec->dwVariableMin     = rk.getDWORD(VALUE_VARIABLEMIN,DEFAULT_VARIABLEMIN);
-    pmec->dwVariableMax     = rk.getDWORD(VALUE_VARIABLEMAX,DEFAULT_VARIABLEMAX);
-    pmec->vmVariable        = rk.getDWORD(VALUE_VARIABLE, DEFAULT_VARIABLE) ? vbr_rh : vbr_off;
-    pmec->dwQuality         = rk.getDWORD(VALUE_QUALITY,DEFAULT_ENCODING_QUALITY);
-    pmec->dwVBRq            = rk.getDWORD(VALUE_VBR_QUALITY,DEFAULT_VBR_QUALITY);
-    pmec->lLayer            = rk.getDWORD(VALUE_LAYER, DEFAULT_LAYER);
-    pmec->bCRCProtect       = rk.getDWORD(VALUE_CRC, DEFAULT_CRC);
-    pmec->bForceMono        = rk.getDWORD(VALUE_FORCE_MONO, DEFAULT_FORCE_MONO);
-    pmec->bSetDuration      = rk.getDWORD(VALUE_SET_DURATION, DEFAULT_SET_DURATION);
-    pmec->bSampleOverlap    = rk.getDWORD(VALUE_SAMPLE_OVERLAP, DEFAULT_SAMPLE_OVERLAP);
-    pmec->bCopyright        = rk.getDWORD(VALUE_COPYRIGHT, DEFAULT_COPYRIGHT);
-    pmec->bOriginal         = rk.getDWORD(VALUE_ORIGINAL, DEFAULT_ORIGINAL);
-    pmec->dwSampleRate      = rk.getDWORD(VALUE_SAMPLE_RATE, DEFAULT_SAMPLE_RATE);
-    pmec->dwPES             = rk.getDWORD(VALUE_PES, DEFAULT_PES);
+    pmec->dwBitrate = rk.getDWORD(VALUE_BITRATE, DEFAULT_BITRATE);
+    pmec->dwVariableMin = rk.getDWORD(VALUE_VARIABLEMIN, DEFAULT_VARIABLEMIN);
+    pmec->dwVariableMax = rk.getDWORD(VALUE_VARIABLEMAX, DEFAULT_VARIABLEMAX);
+    pmec->vmVariable = rk.getDWORD(VALUE_VARIABLE, DEFAULT_VARIABLE) ? vbr_rh : vbr_off;
+    pmec->dwQuality = rk.getDWORD(VALUE_QUALITY, DEFAULT_ENCODING_QUALITY);
+    pmec->dwVBRq = rk.getDWORD(VALUE_VBR_QUALITY, DEFAULT_VBR_QUALITY);
+    pmec->lLayer = rk.getDWORD(VALUE_LAYER, DEFAULT_LAYER);
+    pmec->bCRCProtect = rk.getDWORD(VALUE_CRC, DEFAULT_CRC);
+    pmec->bForceMono = rk.getDWORD(VALUE_FORCE_MONO, DEFAULT_FORCE_MONO);
+    pmec->bSetDuration = rk.getDWORD(VALUE_SET_DURATION, DEFAULT_SET_DURATION);
+    pmec->bSampleOverlap = rk.getDWORD(VALUE_SAMPLE_OVERLAP, DEFAULT_SAMPLE_OVERLAP);
+    pmec->bCopyright = rk.getDWORD(VALUE_COPYRIGHT, DEFAULT_COPYRIGHT);
+    pmec->bOriginal = rk.getDWORD(VALUE_ORIGINAL, DEFAULT_ORIGINAL);
+    pmec->dwSampleRate = rk.getDWORD(VALUE_SAMPLE_RATE, DEFAULT_SAMPLE_RATE);
+    pmec->dwPES = rk.getDWORD(VALUE_PES, DEFAULT_PES);
 
-    pmec->ChMode            = (MPEG_mode)rk.getDWORD(VALUE_STEREO_MODE, DEFAULT_STEREO_MODE);
-    pmec->dwForceMS         = rk.getDWORD(VALUE_FORCE_MS, DEFAULT_FORCE_MS);
+    pmec->ChMode = (MPEG_mode) rk.getDWORD(VALUE_STEREO_MODE, DEFAULT_STEREO_MODE);
+    pmec->dwForceMS = rk.getDWORD(VALUE_FORCE_MS, DEFAULT_FORCE_MS);
 
-    pmec->dwEnforceVBRmin   = rk.getDWORD(VALUE_ENFORCE_MIN, DEFAULT_ENFORCE_MIN);
-    pmec->dwVoiceMode       = rk.getDWORD(VALUE_VOICE, DEFAULT_VOICE);
-    pmec->dwKeepAllFreq     = rk.getDWORD(VALUE_KEEP_ALL_FREQ, DEFAULT_KEEP_ALL_FREQ);
-    pmec->dwStrictISO       = rk.getDWORD(VALUE_STRICT_ISO, DEFAULT_STRICT_ISO);
-    pmec->dwNoShortBlock    = rk.getDWORD(VALUE_DISABLE_SHORT_BLOCK, DEFAULT_DISABLE_SHORT_BLOCK);
-    pmec->dwXingTag         = rk.getDWORD(VALUE_XING_TAG, DEFAULT_XING_TAG);
-    pmec->dwModeFixed       = rk.getDWORD(VALUE_MODE_FIXED, DEFAULT_MODE_FIXED);
+    pmec->dwEnforceVBRmin = rk.getDWORD(VALUE_ENFORCE_MIN, DEFAULT_ENFORCE_MIN);
+    pmec->dwVoiceMode = rk.getDWORD(VALUE_VOICE, DEFAULT_VOICE);
+    pmec->dwKeepAllFreq = rk.getDWORD(VALUE_KEEP_ALL_FREQ, DEFAULT_KEEP_ALL_FREQ);
+    pmec->dwStrictISO = rk.getDWORD(VALUE_STRICT_ISO, DEFAULT_STRICT_ISO);
+    pmec->dwNoShortBlock = rk.getDWORD(VALUE_DISABLE_SHORT_BLOCK, DEFAULT_DISABLE_SHORT_BLOCK);
+    pmec->dwXingTag = rk.getDWORD(VALUE_XING_TAG, DEFAULT_XING_TAG);
+    pmec->dwModeFixed = rk.getDWORD(VALUE_MODE_FIXED, DEFAULT_MODE_FIXED);
 
     rk.Close();
 }
@@ -871,8 +887,7 @@ void CMpegAudEnc::ReadPresetSettings(MPEG_ENCODER_CONFIG * pmec)
 ////////////////////////////////////////////////////////////////
 //  Property page handling 
 ////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEnc::GetPages(CAUUID *pcauuid) 
-{
+HRESULT CMpegAudEnc::GetPages(CAUUID *pcauuid) {
     GUID *pguid;
 
     pcauuid->cElems = 3;
@@ -888,17 +903,16 @@ HRESULT CMpegAudEnc::GetPages(CAUUID *pcauuid)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::NonDelegatingQueryInterface(REFIID riid, void ** ppv) 
-{
+STDMETHODIMP CMpegAudEnc::NonDelegatingQueryInterface(REFIID riid, void **ppv) {
 
     if (riid == IID_ISpecifyPropertyPages)
         return GetInterface((ISpecifyPropertyPages *) this, ppv);
-	else if(riid == IID_IPersistStream)
-        return GetInterface((IPersistStream *)this, ppv);
+    else if (riid == IID_IPersistStream)
+        return GetInterface((IPersistStream *) this, ppv);
 //    else if (riid == IID_IVAudioEncSettings)
 //        return GetInterface((IVAudioEncSettings*) this, ppv);
     else if (riid == IID_IAudioEncoderProperties)
-        return GetInterface((IAudioEncoderProperties*) this, ppv);
+        return GetInterface((IAudioEncoderProperties *) this, ppv);
 
     return CTransformFilter::NonDelegatingQueryInterface(riid, ppv);
 }
@@ -910,34 +924,30 @@ STDMETHODIMP CMpegAudEnc::NonDelegatingQueryInterface(REFIID riid, void ** ppv)
 //
 // IAudioEncoderProperties
 //
-STDMETHODIMP CMpegAudEnc::get_PESOutputEnabled(DWORD *dwEnabled)
-{
-    *dwEnabled = (DWORD)m_Encoder.IsPES();
+STDMETHODIMP CMpegAudEnc::get_PESOutputEnabled(DWORD *dwEnabled) {
+    *dwEnabled = (DWORD) m_Encoder.IsPES();
     DbgLog((LOG_TRACE, 1, TEXT("get_PESOutputEnabled -> %d"), *dwEnabled));
 
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_PESOutputEnabled(DWORD dwEnabled)
-{
-    m_Encoder.SetPES((BOOL)!!dwEnabled);
+STDMETHODIMP CMpegAudEnc::set_PESOutputEnabled(DWORD dwEnabled) {
+    m_Encoder.SetPES((BOOL) !!dwEnabled);
     DbgLog((LOG_TRACE, 1, TEXT("set_PESOutputEnabled(%d)"), !!dwEnabled));
 
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_MPEGLayer(DWORD *dwLayer)
-{
+STDMETHODIMP CMpegAudEnc::get_MPEGLayer(DWORD *dwLayer) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwLayer = (DWORD)mec.lLayer;
+    *dwLayer = (DWORD) mec.lLayer;
 
     DbgLog((LOG_TRACE, 1, TEXT("get_MPEGLayer -> %d"), *dwLayer));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_MPEGLayer(DWORD dwLayer)
-{
+STDMETHODIMP CMpegAudEnc::set_MPEGLayer(DWORD dwLayer) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     if (dwLayer == 2)
@@ -950,17 +960,15 @@ STDMETHODIMP CMpegAudEnc::set_MPEGLayer(DWORD dwLayer)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_Bitrate(DWORD *dwBitrate)
-{
+STDMETHODIMP CMpegAudEnc::get_Bitrate(DWORD *dwBitrate) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwBitrate = (DWORD)mec.dwBitrate;
+    *dwBitrate = (DWORD) mec.dwBitrate;
     DbgLog((LOG_TRACE, 1, TEXT("get_Bitrate -> %d"), *dwBitrate));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_Bitrate(DWORD dwBitrate)
-{
+STDMETHODIMP CMpegAudEnc::set_Bitrate(DWORD dwBitrate) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwBitrate = dwBitrate;
@@ -969,17 +977,15 @@ STDMETHODIMP CMpegAudEnc::set_Bitrate(DWORD dwBitrate)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_Variable(DWORD *dwVariable)
-{
+STDMETHODIMP CMpegAudEnc::get_Variable(DWORD *dwVariable) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwVariable = (DWORD)(mec.vmVariable == vbr_off ? 0 : 1);
+    *dwVariable = (DWORD) (mec.vmVariable == vbr_off ? 0 : 1);
     DbgLog((LOG_TRACE, 1, TEXT("get_Variable -> %d"), *dwVariable));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_Variable(DWORD dwVariable)
-{
+STDMETHODIMP CMpegAudEnc::set_Variable(DWORD dwVariable) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
 
@@ -989,17 +995,15 @@ STDMETHODIMP CMpegAudEnc::set_Variable(DWORD dwVariable)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_VariableMin(DWORD *dwMin)
-{
+STDMETHODIMP CMpegAudEnc::get_VariableMin(DWORD *dwMin) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwMin = (DWORD)mec.dwVariableMin;
+    *dwMin = (DWORD) mec.dwVariableMin;
     DbgLog((LOG_TRACE, 1, TEXT("get_Variablemin -> %d"), *dwMin));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_VariableMin(DWORD dwMin)
-{
+STDMETHODIMP CMpegAudEnc::set_VariableMin(DWORD dwMin) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwVariableMin = dwMin;
@@ -1008,17 +1012,15 @@ STDMETHODIMP CMpegAudEnc::set_VariableMin(DWORD dwMin)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_VariableMax(DWORD *dwMax)
-{
+STDMETHODIMP CMpegAudEnc::get_VariableMax(DWORD *dwMax) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwMax = (DWORD)mec.dwVariableMax;
+    *dwMax = (DWORD) mec.dwVariableMax;
     DbgLog((LOG_TRACE, 1, TEXT("get_Variablemax -> %d"), *dwMax));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_VariableMax(DWORD dwMax)
-{
+STDMETHODIMP CMpegAudEnc::set_VariableMax(DWORD dwMax) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwVariableMax = dwMax;
@@ -1027,17 +1029,15 @@ STDMETHODIMP CMpegAudEnc::set_VariableMax(DWORD dwMax)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_Quality(DWORD *dwQuality)             
-{
+STDMETHODIMP CMpegAudEnc::get_Quality(DWORD *dwQuality) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwQuality=(DWORD)mec.dwQuality;
+    *dwQuality = (DWORD) mec.dwQuality;
     DbgLog((LOG_TRACE, 1, TEXT("get_Quality -> %d"), *dwQuality));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_Quality(DWORD dwQuality)             
-{
+STDMETHODIMP CMpegAudEnc::set_Quality(DWORD dwQuality) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwQuality = dwQuality;
@@ -1045,17 +1045,16 @@ STDMETHODIMP CMpegAudEnc::set_Quality(DWORD dwQuality)
     DbgLog((LOG_TRACE, 1, TEXT("set_Quality(%d)"), dwQuality));
     return S_OK;
 }
-STDMETHODIMP CMpegAudEnc::get_VariableQ(DWORD *dwVBRq)             
-{
+
+STDMETHODIMP CMpegAudEnc::get_VariableQ(DWORD *dwVBRq) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    *dwVBRq=(DWORD)mec.dwVBRq;
+    *dwVBRq = (DWORD) mec.dwVBRq;
     DbgLog((LOG_TRACE, 1, TEXT("get_VariableQ -> %d"), *dwVBRq));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_VariableQ(DWORD dwVBRq)             
-{
+STDMETHODIMP CMpegAudEnc::set_VariableQ(DWORD dwVBRq) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwVBRq = dwVBRq;
@@ -1065,12 +1064,11 @@ STDMETHODIMP CMpegAudEnc::set_VariableQ(DWORD dwVBRq)
 }
 
 
-STDMETHODIMP CMpegAudEnc::get_SourceSampleRate(DWORD *dwSampleRate)
-{
+STDMETHODIMP CMpegAudEnc::get_SourceSampleRate(DWORD *dwSampleRate) {
     *dwSampleRate = 0;
 
     WAVEFORMATEX wf;
-    if(FAILED(m_Encoder.GetInputType(&wf)))
+    if (FAILED(m_Encoder.GetInputType(&wf)))
         return E_FAIL;
 
     *dwSampleRate = wf.nSamplesPerSec;
@@ -1078,10 +1076,9 @@ STDMETHODIMP CMpegAudEnc::get_SourceSampleRate(DWORD *dwSampleRate)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_SourceChannels(DWORD *dwChannels)
-{
+STDMETHODIMP CMpegAudEnc::get_SourceChannels(DWORD *dwChannels) {
     WAVEFORMATEX wf;
-    if(FAILED(m_Encoder.GetInputType(&wf)))
+    if (FAILED(m_Encoder.GetInputType(&wf)))
         return E_FAIL;
 
     *dwChannels = wf.nChannels;
@@ -1089,8 +1086,7 @@ STDMETHODIMP CMpegAudEnc::get_SourceChannels(DWORD *dwChannels)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_SampleRate(DWORD *dwSampleRate)
-{
+STDMETHODIMP CMpegAudEnc::get_SampleRate(DWORD *dwSampleRate) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwSampleRate = mec.dwSampleRate;
@@ -1098,8 +1094,7 @@ STDMETHODIMP CMpegAudEnc::get_SampleRate(DWORD *dwSampleRate)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_SampleRate(DWORD dwSampleRate)
-{
+STDMETHODIMP CMpegAudEnc::set_SampleRate(DWORD dwSampleRate) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     DWORD dwOldSampleRate = mec.dwSampleRate;
@@ -1110,8 +1105,7 @@ STDMETHODIMP CMpegAudEnc::set_SampleRate(DWORD dwSampleRate)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_ChannelMode(DWORD *dwChannelMode)
-{
+STDMETHODIMP CMpegAudEnc::get_ChannelMode(DWORD *dwChannelMode) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwChannelMode = mec.ChMode;
@@ -1119,18 +1113,16 @@ STDMETHODIMP CMpegAudEnc::get_ChannelMode(DWORD *dwChannelMode)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_ChannelMode(DWORD dwChannelMode)
-{
+STDMETHODIMP CMpegAudEnc::set_ChannelMode(DWORD dwChannelMode) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
-    mec.ChMode = (MPEG_mode)dwChannelMode;
+    mec.ChMode = (MPEG_mode) dwChannelMode;
     m_Encoder.SetOutputType(mec);
     DbgLog((LOG_TRACE, 1, TEXT("set_ChannelMode(%d)"), dwChannelMode));
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_ForceMS(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_ForceMS(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.dwForceMS;
@@ -1138,8 +1130,7 @@ STDMETHODIMP CMpegAudEnc::get_ForceMS(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_ForceMS(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_ForceMS(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwForceMS = dwFlag;
@@ -1149,8 +1140,7 @@ STDMETHODIMP CMpegAudEnc::set_ForceMS(DWORD dwFlag)
 }
 
 
-STDMETHODIMP CMpegAudEnc::get_CRCFlag(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_CRCFlag(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bCRCProtect;
@@ -1158,8 +1148,7 @@ STDMETHODIMP CMpegAudEnc::get_CRCFlag(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_ForceMono(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_ForceMono(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bForceMono;
@@ -1167,8 +1156,7 @@ STDMETHODIMP CMpegAudEnc::get_ForceMono(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_SetDuration(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_SetDuration(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bSetDuration;
@@ -1176,8 +1164,7 @@ STDMETHODIMP CMpegAudEnc::get_SetDuration(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_SampleOverlap(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_SampleOverlap(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bSampleOverlap;
@@ -1185,8 +1172,7 @@ STDMETHODIMP CMpegAudEnc::get_SampleOverlap(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_CRCFlag(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_CRCFlag(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bCRCProtect = dwFlag;
@@ -1195,8 +1181,7 @@ STDMETHODIMP CMpegAudEnc::set_CRCFlag(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_ForceMono(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_ForceMono(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bForceMono = dwFlag;
@@ -1205,8 +1190,7 @@ STDMETHODIMP CMpegAudEnc::set_ForceMono(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_SetDuration(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_SetDuration(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bSetDuration = dwFlag;
@@ -1215,8 +1199,7 @@ STDMETHODIMP CMpegAudEnc::set_SetDuration(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_SampleOverlap(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_SampleOverlap(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bSampleOverlap = dwFlag;
@@ -1225,8 +1208,7 @@ STDMETHODIMP CMpegAudEnc::set_SampleOverlap(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_EnforceVBRmin(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_EnforceVBRmin(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.dwEnforceVBRmin;
@@ -1234,8 +1216,7 @@ STDMETHODIMP CMpegAudEnc::get_EnforceVBRmin(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_EnforceVBRmin(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_EnforceVBRmin(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwEnforceVBRmin = dwFlag;
@@ -1244,8 +1225,7 @@ STDMETHODIMP CMpegAudEnc::set_EnforceVBRmin(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_VoiceMode(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_VoiceMode(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.dwVoiceMode;
@@ -1253,8 +1233,7 @@ STDMETHODIMP CMpegAudEnc::get_VoiceMode(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_VoiceMode(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_VoiceMode(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwVoiceMode = dwFlag;
@@ -1263,8 +1242,7 @@ STDMETHODIMP CMpegAudEnc::set_VoiceMode(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_KeepAllFreq(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_KeepAllFreq(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.dwKeepAllFreq;
@@ -1272,8 +1250,7 @@ STDMETHODIMP CMpegAudEnc::get_KeepAllFreq(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_KeepAllFreq(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_KeepAllFreq(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwKeepAllFreq = dwFlag;
@@ -1282,8 +1259,7 @@ STDMETHODIMP CMpegAudEnc::set_KeepAllFreq(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_StrictISO(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_StrictISO(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.dwStrictISO;
@@ -1291,8 +1267,7 @@ STDMETHODIMP CMpegAudEnc::get_StrictISO(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_StrictISO(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_StrictISO(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwStrictISO = dwFlag;
@@ -1301,8 +1276,7 @@ STDMETHODIMP CMpegAudEnc::set_StrictISO(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_NoShortBlock(DWORD *dwNoShortBlock)
-{
+STDMETHODIMP CMpegAudEnc::get_NoShortBlock(DWORD *dwNoShortBlock) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwNoShortBlock = mec.dwNoShortBlock;
@@ -1310,8 +1284,7 @@ STDMETHODIMP CMpegAudEnc::get_NoShortBlock(DWORD *dwNoShortBlock)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_NoShortBlock(DWORD dwNoShortBlock)
-{
+STDMETHODIMP CMpegAudEnc::set_NoShortBlock(DWORD dwNoShortBlock) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwNoShortBlock = dwNoShortBlock;
@@ -1320,8 +1293,7 @@ STDMETHODIMP CMpegAudEnc::set_NoShortBlock(DWORD dwNoShortBlock)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_XingTag(DWORD *dwXingTag)
-{
+STDMETHODIMP CMpegAudEnc::get_XingTag(DWORD *dwXingTag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwXingTag = mec.dwXingTag;
@@ -1329,8 +1301,7 @@ STDMETHODIMP CMpegAudEnc::get_XingTag(DWORD *dwXingTag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_XingTag(DWORD dwXingTag)
-{
+STDMETHODIMP CMpegAudEnc::set_XingTag(DWORD dwXingTag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwXingTag = dwXingTag;
@@ -1340,9 +1311,7 @@ STDMETHODIMP CMpegAudEnc::set_XingTag(DWORD dwXingTag)
 }
 
 
-
-STDMETHODIMP CMpegAudEnc::get_OriginalFlag(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_OriginalFlag(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bOriginal;
@@ -1350,8 +1319,7 @@ STDMETHODIMP CMpegAudEnc::get_OriginalFlag(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_OriginalFlag(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_OriginalFlag(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bOriginal = dwFlag;
@@ -1360,8 +1328,7 @@ STDMETHODIMP CMpegAudEnc::set_OriginalFlag(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_CopyrightFlag(DWORD *dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::get_CopyrightFlag(DWORD *dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwFlag = mec.bCopyright;
@@ -1369,8 +1336,7 @@ STDMETHODIMP CMpegAudEnc::get_CopyrightFlag(DWORD *dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_CopyrightFlag(DWORD dwFlag)
-{
+STDMETHODIMP CMpegAudEnc::set_CopyrightFlag(DWORD dwFlag) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.bCopyright = dwFlag;
@@ -1379,8 +1345,7 @@ STDMETHODIMP CMpegAudEnc::set_CopyrightFlag(DWORD dwFlag)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_ModeFixed(DWORD *dwModeFixed)
-{
+STDMETHODIMP CMpegAudEnc::get_ModeFixed(DWORD *dwModeFixed) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     *dwModeFixed = mec.dwModeFixed;
@@ -1388,8 +1353,7 @@ STDMETHODIMP CMpegAudEnc::get_ModeFixed(DWORD *dwModeFixed)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::set_ModeFixed(DWORD dwModeFixed)
-{
+STDMETHODIMP CMpegAudEnc::set_ModeFixed(DWORD dwModeFixed) {
     MPEG_ENCODER_CONFIG mec;
     m_Encoder.GetOutputType(&mec);
     mec.dwModeFixed = dwModeFixed;
@@ -1398,21 +1362,18 @@ STDMETHODIMP CMpegAudEnc::set_ModeFixed(DWORD dwModeFixed)
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::get_ParameterBlockSize(BYTE *pcBlock, DWORD *pdwSize)
-{
+STDMETHODIMP CMpegAudEnc::get_ParameterBlockSize(BYTE *pcBlock, DWORD *pdwSize) {
     DbgLog((LOG_TRACE, 1, TEXT("get_ParameterBlockSize -> %d%d"), *pcBlock, *pdwSize));
 
     if (pcBlock != NULL) {
         if (*pdwSize >= sizeof(MPEG_ENCODER_CONFIG)) {
-            m_Encoder.GetOutputType((MPEG_ENCODER_CONFIG*)pcBlock);
+            m_Encoder.GetOutputType((MPEG_ENCODER_CONFIG *) pcBlock);
             return S_OK;
-        }
-        else {
+        } else {
             *pdwSize = sizeof(MPEG_ENCODER_CONFIG);
             return E_FAIL;
         }
-    }
-    else if (pdwSize != NULL) {
+    } else if (pdwSize != NULL) {
         *pdwSize = sizeof(MPEG_ENCODER_CONFIG);
         return S_OK;
     }
@@ -1420,19 +1381,16 @@ STDMETHODIMP CMpegAudEnc::get_ParameterBlockSize(BYTE *pcBlock, DWORD *pdwSize)
     return E_FAIL;
 }
 
-STDMETHODIMP CMpegAudEnc::set_ParameterBlockSize(BYTE *pcBlock, DWORD dwSize)
-{
+STDMETHODIMP CMpegAudEnc::set_ParameterBlockSize(BYTE *pcBlock, DWORD dwSize) {
     DbgLog((LOG_TRACE, 1, TEXT("get_ParameterBlockSize(%d, %d)"), *pcBlock, dwSize));
-    if (sizeof(MPEG_ENCODER_CONFIG) == dwSize){
-        m_Encoder.SetOutputType(*(MPEG_ENCODER_CONFIG*)pcBlock);
+    if (sizeof(MPEG_ENCODER_CONFIG) == dwSize) {
+        m_Encoder.SetOutputType(*(MPEG_ENCODER_CONFIG *) pcBlock);
         return S_OK;
-    }
-    else return E_FAIL; 
+    } else return E_FAIL;
 }
 
 
-STDMETHODIMP CMpegAudEnc::DefaultAudioEncoderProperties()
-{
+STDMETHODIMP CMpegAudEnc::DefaultAudioEncoderProperties() {
     DbgLog((LOG_TRACE, 1, TEXT("DefaultAudioEncoderProperties()")));
 
     HRESULT hr = InputTypeDefined();
@@ -1473,28 +1431,25 @@ STDMETHODIMP CMpegAudEnc::DefaultAudioEncoderProperties()
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::LoadAudioEncoderPropertiesFromRegistry()
-{
+STDMETHODIMP CMpegAudEnc::LoadAudioEncoderPropertiesFromRegistry() {
     DbgLog((LOG_TRACE, 1, TEXT("LoadAudioEncoderPropertiesFromRegistry()")));
 
     MPEG_ENCODER_CONFIG mec;
     ReadPresetSettings(&mec);
-    if(m_Encoder.SetOutputType(mec) == S_FALSE)
+    if (m_Encoder.SetOutputType(mec) == S_FALSE)
         return S_FALSE;
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::SaveAudioEncoderPropertiesToRegistry()
-{
+STDMETHODIMP CMpegAudEnc::SaveAudioEncoderPropertiesToRegistry() {
     DbgLog((LOG_TRACE, 1, TEXT("SaveAudioEncoderPropertiesToRegistry()")));
     Lame::CRegKey rk;
 
     MPEG_ENCODER_CONFIG mec;
-    if(m_Encoder.GetOutputType(&mec) == S_FALSE)
+    if (m_Encoder.GetOutputType(&mec) == S_FALSE)
         return E_FAIL;
 
-    if(rk.Create(HKEY_CURRENT_USER, KEY_LAME_ENCODER))
-    {
+    if (rk.Create(HKEY_CURRENT_USER, KEY_LAME_ENCODER)) {
         rk.setDWORD(VALUE_BITRATE, mec.dwBitrate);
         rk.setDWORD(VALUE_VARIABLE, mec.vmVariable);
         rk.setDWORD(VALUE_VARIABLEMIN, mec.dwVariableMin);
@@ -1530,11 +1485,9 @@ STDMETHODIMP CMpegAudEnc::SaveAudioEncoderPropertiesToRegistry()
     return S_OK;
 }
 
-STDMETHODIMP CMpegAudEnc::InputTypeDefined()
-{
+STDMETHODIMP CMpegAudEnc::InputTypeDefined() {
     WAVEFORMATEX wf;
-    if(FAILED(m_Encoder.GetInputType(&wf)))
-    {
+    if (FAILED(m_Encoder.GetInputType(&wf))) {
         DbgLog((LOG_TRACE, 1, TEXT("!InputTypeDefined()")));
         return E_FAIL;
     }
@@ -1544,8 +1497,7 @@ STDMETHODIMP CMpegAudEnc::InputTypeDefined()
 }
 
 
-STDMETHODIMP CMpegAudEnc::ApplyChanges()
-{
+STDMETHODIMP CMpegAudEnc::ApplyChanges() {
     return Reconnect();
 }
 
@@ -1554,21 +1506,19 @@ STDMETHODIMP CMpegAudEnc::ApplyChanges()
 //
 
 // what is our class ID?
-STDMETHODIMP CMpegAudEnc::GetClassID(CLSID *pClsid)
-{
+STDMETHODIMP CMpegAudEnc::GetClassID(CLSID *pClsid) {
     CheckPointer(pClsid, E_POINTER);
     *pClsid = CLSID_LAMEDShowFilter;
     return S_OK;
 }
 
-HRESULT CMpegAudEnc::WriteToStream(IStream *pStream)
-{
-    DbgLog((LOG_TRACE,1,TEXT("WriteToStream()")));
+HRESULT CMpegAudEnc::WriteToStream(IStream *pStream) {
+    DbgLog((LOG_TRACE, 1, TEXT("WriteToStream()")));
 
-	MPEG_ENCODER_CONFIG mec;
+    MPEG_ENCODER_CONFIG mec;
 
-	if(m_Encoder.GetOutputType(&mec) == S_FALSE)
-		return E_FAIL;
+    if (m_Encoder.GetOutputType(&mec) == S_FALSE)
+        return E_FAIL;
 
     return pStream->Write(&mec, sizeof(mec), 0);
 }
@@ -1576,18 +1526,17 @@ HRESULT CMpegAudEnc::WriteToStream(IStream *pStream)
 
 // what device should we use?  Used to re-create a .GRF file that we
 // are in
-HRESULT CMpegAudEnc::ReadFromStream(IStream *pStream)
-{
-	MPEG_ENCODER_CONFIG mec;
+HRESULT CMpegAudEnc::ReadFromStream(IStream *pStream) {
+    MPEG_ENCODER_CONFIG mec;
 
     HRESULT hr = pStream->Read(&mec, sizeof(mec), 0);
-    if(FAILED(hr))
+    if (FAILED(hr))
         return hr;
 
-	if(m_Encoder.SetOutputType(mec) == S_FALSE)
-		return S_FALSE;
+    if (m_Encoder.SetOutputType(mec) == S_FALSE)
+        return S_FALSE;
 
-    DbgLog((LOG_TRACE,1,TEXT("ReadFromStream() succeeded")));
+    DbgLog((LOG_TRACE, 1, TEXT("ReadFromStream() succeeded")));
 
     hr = S_OK;
     return hr;
@@ -1595,35 +1544,28 @@ HRESULT CMpegAudEnc::ReadFromStream(IStream *pStream)
 
 
 // How long is our data?
-int CMpegAudEnc::SizeMax()
-{
+int CMpegAudEnc::SizeMax() {
     return sizeof(MPEG_ENCODER_CONFIG);
 }
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////
 // CMpegAudEncOutPin is the one and only output pin of CMpegAudEnc  
 // 
 //////////////////////////////////////////////////////////////////////////
-CMpegAudEncOutPin::CMpegAudEncOutPin( CMpegAudEnc * pFilter, HRESULT * pHr ) :
-        CTransformOutputPin( NAME("LameEncoderOutputPin"), pFilter, pHr, L"Output\0" ),
-        m_pFilter(pFilter)
-{
+CMpegAudEncOutPin::CMpegAudEncOutPin(CMpegAudEnc *pFilter, HRESULT *pHr) :
+        CTransformOutputPin(NAME("LameEncoderOutputPin"), pFilter, pHr, L"Output\0"),
+        m_pFilter(pFilter) {
     m_SetFormat = FALSE;
 }
 
-CMpegAudEncOutPin::~CMpegAudEncOutPin()
-{
-} 
+CMpegAudEncOutPin::~CMpegAudEncOutPin() {
+}
 
-STDMETHODIMP CMpegAudEncOutPin::NonDelegatingQueryInterface(REFIID riid, void **ppv)
-{
-    if(riid == IID_IAMStreamConfig) {
+STDMETHODIMP CMpegAudEncOutPin::NonDelegatingQueryInterface(REFIID riid, void **ppv) {
+    if (riid == IID_IAMStreamConfig) {
         CheckPointer(ppv, E_POINTER);
-        return GetInterface((IAMStreamConfig*)(this), ppv);
+        return GetInterface((IAMStreamConfig * )(this), ppv);
     }
     return CBaseOutputPin::NonDelegatingQueryInterface(riid, ppv);
 }
@@ -1634,8 +1576,7 @@ STDMETHODIMP CMpegAudEncOutPin::NonDelegatingQueryInterface(REFIID riid, void **
 // will update the LAME encoder settings so that it matches the
 // settings specified in the MediaType structure.
 //////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEncOutPin::SetMediaType(const CMediaType *pmt)
-{
+HRESULT CMpegAudEncOutPin::SetMediaType(const CMediaType *pmt) {
     // Retrieve the current LAME encoder configuration
     MPEG_ENCODER_CONFIG mec;
     m_pFilter->m_Encoder.GetOutputType(&mec);
@@ -1649,11 +1590,10 @@ HRESULT CMpegAudEncOutPin::SetMediaType(const CMediaType *pmt)
         mec.dwSampleRate = m_CurrentOutputFormat.nSampleRate;
         mec.dwBitrate = m_CurrentOutputFormat.nBitRate;
         mec.ChMode = m_CurrentOutputFormat.ChMode;
-    }
-    else {
+    } else {
         // Update the encoder configuration directly using the values
         // passed via the CMediaType structure.  
-        MPEGLAYER3WAVEFORMAT *pfmt = (MPEGLAYER3WAVEFORMAT*) pmt->Format();
+        MPEGLAYER3WAVEFORMAT *pfmt = (MPEGLAYER3WAVEFORMAT *) pmt->Format();
         mec.dwSampleRate = pfmt->wfx.nSamplesPerSec;
         mec.dwBitrate = pfmt->wfx.nAvgBytesPerSec * 8 / 1000;
 
@@ -1673,8 +1613,7 @@ HRESULT CMpegAudEncOutPin::SetMediaType(const CMediaType *pmt)
 // supported on the output pin and configure an AM_MEDIA_TYPE output 
 // structure that is based on the selected format.
 //////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
-{
+HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt) {
     if (iPosition < 0) return E_INVALIDARG;
 
     // If iPosition equals zero then we always return the currently configured MediaType 
@@ -1683,25 +1622,21 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
         return S_OK;
     }
 
-    switch (iPosition)
-    {
-        case 1:
-        {
+    switch (iPosition) {
+        case 1: {
             pmt->SetType(&MEDIATYPE_Audio);
             pmt->SetSubtype(&MEDIASUBTYPE_MP3);
             break;
         }
-        case 2:
-        {
+        case 2: {
             pmt->SetType(&MEDIATYPE_Stream);
             pmt->SetSubtype(&MEDIASUBTYPE_MPEG1Audio);
             pmt->SetFormatType(&GUID_NULL);
             break;
         }
-        case 3:
-        {   // The last case that we evaluate is the MPEG2_PES format, but if the 
+        case 3: {   // The last case that we evaluate is the MPEG2_PES format, but if the
             // encoder isn't configured for it then just return VFW_S_NO_MORE_ITEMS
-            if ( !m_pFilter->m_Encoder.IsPES() ) { return VFW_S_NO_MORE_ITEMS; }
+            if (!m_pFilter->m_Encoder.IsPES()) { return VFW_S_NO_MORE_ITEMS; }
 
             pmt->SetType(&MEDIATYPE_MPEG2_PES);
             pmt->SetSubtype(&MEDIASUBTYPE_MPEG2_AUDIO);
@@ -1713,7 +1648,7 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
 
 
     // Output capabilities are dependent on the input so insure it is connected
-    if ( !m_pFilter->m_pInput->IsConnected() ) {
+    if (!m_pFilter->m_pInput->IsConnected()) {
         pmt->SetFormatType(&FORMAT_None);
         return NOERROR;
     }
@@ -1733,10 +1668,9 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
     m_pFilter->m_Encoder.GetInputType(&wf);
 
     // Use the current encoder sample rate unless it isn't a modulus of the input rate
-    if ((wf.nSamplesPerSec % mec.dwSampleRate) == 0) { 
+    if ((wf.nSamplesPerSec % mec.dwSampleRate) == 0) {
         m_CurrentOutputFormat.nSampleRate = mec.dwSampleRate;
-    }
-    else {
+    } else {
         m_CurrentOutputFormat.nSampleRate = wf.nSamplesPerSec;
     }
 
@@ -1744,15 +1678,13 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
     m_CurrentOutputFormat.ChMode = mec.ChMode;
     switch (wf.nChannels)                    // Determine if we need to alter ChMode based upon the channel count and ForceMono flag 
     {
-        case 1:
-        {
+        case 1: {
             m_CurrentOutputFormat.ChMode = MONO;
             break;
         }
-        case 2:
-        {
+        case 2: {
             if (mec.ChMode == MONO && !mec.bForceMono) { m_CurrentOutputFormat.ChMode = STEREO; }
-            else if ( mec.bForceMono ) { m_CurrentOutputFormat.ChMode = MONO; }
+            else if (mec.bForceMono) { m_CurrentOutputFormat.ChMode = MONO; }
             break;
         }
     }
@@ -1785,7 +1717,7 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
 
     pmt->SetTemporalCompression(FALSE);
     pmt->SetSampleSize(OUT_BUFFER_SIZE);
-    pmt->SetFormat((LPBYTE)p_mp3wvfmt, sizeof(MPEGLAYER3WAVEFORMAT));
+    pmt->SetFormat((LPBYTE) p_mp3wvfmt, sizeof(MPEGLAYER3WAVEFORMAT));
     pmt->SetFormatType(&FORMAT_WaveFormatEx);
 
     return NOERROR;
@@ -1795,8 +1727,7 @@ HRESULT CMpegAudEncOutPin::GetMediaType(int iPosition, CMediaType *pmt)
 //////////////////////////////////////////////////////////////////////////
 // This method is called to see if a given output format is supported
 //////////////////////////////////////////////////////////////////////////
-HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut)
-{
+HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut) {
     // Fail if the input pin is not connected.
     if (!m_pFilter->m_pInput->IsConnected()) {
         return VFW_E_NOT_CONNECTED;
@@ -1809,23 +1740,23 @@ HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut)
     // If SetFormat was previously called, check whether pmtOut exactly 
     // matches the format that was specified in SetFormat.
     // Return S_OK if they match, or VFW_E_INVALIDMEDIATYPE otherwise.)
-    if ( m_SetFormat ) {
+    if (m_SetFormat) {
         if (*pmtOut != m_mt) { return VFW_E_INVALIDMEDIATYPE; }
         else { return S_OK; }
     }
 
     // Now do the normal check for this media type.
     HRESULT hr;
-    hr = m_pFilter->CheckTransform (&m_pFilter->m_pInput->CurrentMediaType(),  // The input type.
-                                    pmtOut);                                   // The proposed output type.
+    hr = m_pFilter->CheckTransform(&m_pFilter->m_pInput->CurrentMediaType(),  // The input type.
+                                   pmtOut);                                   // The proposed output type.
 
     if (hr == S_OK) {
         return S_OK;           // This format is compatible with the current input type.
     }
- 
+
     // This format is not compatible with the current input type. 
     // Maybe we can reconnect the input pin with a new input type.
-    
+
     // Enumerate the upstream filter's preferred output types, and 
     // see if one of them will work.
     CMediaType *pmtEnum;
@@ -1836,7 +1767,7 @@ HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut)
         return E_FAIL;
     }
 
-    while (hr = pEnum->Next(1, (AM_MEDIA_TYPE **)&pmtEnum, NULL), hr == S_OK)
+    while (hr = pEnum->Next(1, (AM_MEDIA_TYPE * *) & pmtEnum, NULL), hr == S_OK)
     {
         // Check this input type against the proposed output type.
         hr = m_pFilter->CheckTransform(pmtEnum, pmtOut);
@@ -1863,8 +1794,7 @@ HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut)
         // This output type is OK, but if we are asked to use it, we will
         // need to reconnect our input pin. (See SetFormat, below.)
         return S_OK;
-    }
-    else {
+    } else {
         return VFW_E_INVALIDMEDIATYPE;
     }
 }
@@ -1875,8 +1805,7 @@ HRESULT CMpegAudEncOutPin::CheckMediaType(const CMediaType *pmtOut)
 //  IAMStreamConfig
 //////////////////////////////////////////////////////////////////////////
 
-HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::SetFormat(AM_MEDIA_TYPE *pmt)
-{
+HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::SetFormat(AM_MEDIA_TYPE *pmt) {
     CheckPointer(pmt, E_POINTER);
     HRESULT hr;
 
@@ -1897,11 +1826,11 @@ HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::SetFormat(AM_MEDIA_TYPE *pmt)
 
     // If the pin is already using this format, there's nothing to do.
     if (IsConnected() && CurrentMediaType() == *pmt) {
-        if ( m_SetFormat ) return S_OK;
+        if (m_SetFormat) return S_OK;
     }
 
     // See if this media type is acceptable.
-    if ((hr = CheckMediaType((CMediaType *)pmt)) != S_OK) {
+    if ((hr = CheckMediaType((CMediaType *) pmt)) != S_OK) {
         return hr;
     }
 
@@ -1927,14 +1856,12 @@ HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::SetFormat(AM_MEDIA_TYPE *pmt)
     return NOERROR;
 }
 
-HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetFormat(AM_MEDIA_TYPE **ppmt)
-{
+HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetFormat(AM_MEDIA_TYPE **ppmt) {
     *ppmt = CreateMediaType(&m_mt);
     return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetNumberOfCapabilities(int *piCount, int *piSize)
-{
+HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetNumberOfCapabilities(int *piCount, int *piSize) {
     // The set of possible output formats depends on the input format,
     // so if the input pin is not connected, return a failure code.
     if (!m_pFilter->m_pInput->IsConnected()) {
@@ -1953,8 +1880,7 @@ HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetNumberOfCapabilities(int *piCoun
     return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetStreamCaps(int iIndex, AM_MEDIA_TYPE **pmt, BYTE *pSCC)
-{
+HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetStreamCaps(int iIndex, AM_MEDIA_TYPE **pmt, BYTE *pSCC) {
     // The set of possible output formats depends on the input format,
     // so if the input pin is not connected, return a failure code.
     if (!m_pFilter->m_pInput->IsConnected()) {
@@ -1997,7 +1923,8 @@ HRESULT STDMETHODCALLTYPE CMpegAudEncOutPin::GetStreamCaps(int iIndex, AM_MEDIA_
 
     p_mp3wvfmt->wID = MPEGLAYER3_ID_MPEG;
     p_mp3wvfmt->fdwFlags = MPEGLAYER3_FLAG_PADDING_ISO;
-    p_mp3wvfmt->nBlockSize = GET_FRAMELENGTH(m_pFilter->OutputCaps[iIndex].nBitRate, m_pFilter->OutputCaps[iIndex].nSampleRate);
+    p_mp3wvfmt->nBlockSize = GET_FRAMELENGTH(m_pFilter->OutputCaps[iIndex].nBitRate,
+                                             m_pFilter->OutputCaps[iIndex].nSampleRate);
     p_mp3wvfmt->nFramesPerBlock = 1;
     p_mp3wvfmt->nCodecDelay = 0;
 

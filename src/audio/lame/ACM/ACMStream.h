@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 /*!
 	\author Steve Lhomme
 	\version \$Id: ACMStream.h,v 1.5 2006/12/25 21:37:34 robert Exp $
@@ -45,39 +45,44 @@ typedef enum vbr_mode_e vbr_mode;
 typedef struct lame_global_struct lame_global_flags;
 
 
-class ACMStream
-{
+class ACMStream {
 public:
-	ACMStream( );
-	virtual ~ACMStream( );
+    ACMStream();
 
-	static ACMStream * Create();
-	static const bool Erase(const ACMStream * a_ACMStream);
+    virtual ~ACMStream();
 
-	bool init(const int nSamplesPerSec, const int nOutputSamplesPerSec, const int nChannels, const int nAvgBytesPerSec, const vbr_mode mode);
-	bool open(const AEncodeProperties & the_Properties);
-	bool close(LPBYTE pOutputBuffer, DWORD *pOutputSize);
+    static ACMStream *Create();
 
-	DWORD GetOutputSizeForInput(const DWORD the_SrcLength) const;
-	bool  ConvertBuffer(LPACMDRVSTREAMHEADER a_StreamHeader);
+    static const bool Erase(const ACMStream *a_ACMStream);
 
-	static unsigned int GetOutputSampleRate(int samples_per_sec, int bitrate, int channels);
+    bool init(const int nSamplesPerSec, const int nOutputSamplesPerSec, const int nChannels, const int nAvgBytesPerSec,
+              const vbr_mode mode);
+
+    bool open(const AEncodeProperties &the_Properties);
+
+    bool close(LPBYTE pOutputBuffer, DWORD *pOutputSize);
+
+    DWORD GetOutputSizeForInput(const DWORD the_SrcLength) const;
+
+    bool ConvertBuffer(LPACMDRVSTREAMHEADER a_StreamHeader);
+
+    static unsigned int GetOutputSampleRate(int samples_per_sec, int bitrate, int channels);
 
 protected:
-	lame_global_flags * gfp;
+    lame_global_flags *gfp;
 
-	ADbg * my_debug;
-	int my_SamplesPerSec;
-	int my_Channels;
-	int my_AvgBytesPerSec;
-	int my_OutBytesPerSec;
-	vbr_mode my_VBRMode;
-	DWORD  my_SamplesPerBlock;
+    ADbg *my_debug;
+    int my_SamplesPerSec;
+    int my_Channels;
+    int my_AvgBytesPerSec;
+    int my_OutBytesPerSec;
+    vbr_mode my_VBRMode;
+    DWORD my_SamplesPerBlock;
 
-unsigned int m_WorkingBufferUseSize;
-	char m_WorkingBuffer[2304*2]; // should be at least twice my_SamplesPerBlock
+    unsigned int m_WorkingBufferUseSize;
+    char m_WorkingBuffer[2304 * 2]; // should be at least twice my_SamplesPerBlock
 
-inline int GetBytesPerBlock(DWORD bytes_per_sec, DWORD samples_per_sec, int BlockAlign) const;
+    inline int GetBytesPerBlock(DWORD bytes_per_sec, DWORD samples_per_sec, int BlockAlign) const;
 
 };
 

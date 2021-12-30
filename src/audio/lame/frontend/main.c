@@ -38,7 +38,9 @@
 #  define strchr index
 #  define strrchr rindex
 # endif
-char   *strchr(), *strrchr();
+
+char *strchr(), *strrchr();
+
 # ifndef HAVE_MEMCPY
 #  define memcpy(d, s, n) bcopy ((s), (d), (n))
 #  define memmove(d, s, n) bcopy ((s), (d), (n))
@@ -88,6 +90,7 @@ char   *strchr(), *strrchr();
 
 
 static int c_main(int argc, char *argv[]);
+
 extern int lame_main(lame_t gf, int argc, char *argv[]);
 
 
@@ -419,35 +422,29 @@ char* lame_getenv(char const* var)
 
 #else
 
-FILE* lame_fopen(char const* file, char const* mode)
-{
+FILE *lame_fopen(char const *file, char const *mode) {
     return fopen(file, mode);
 }
 
-char* lame_getenv(char const* var)
-{
-    char* str = getenv(var);
+char *lame_getenv(char const *var) {
+    char *str = getenv(var);
     if (str) {
         return strdup(str);
     }
     return 0;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     return c_main(argc, argv);
 }
 
 #endif
 
 
-
-
 static int
-c_main(int argc, char *argv[])
-{
-    lame_t  gf;
-    int     ret;
+c_main(int argc, char *argv[]) {
+    lame_t gf;
+    int ret;
 
 #if macintosh
     argc = ccommand(&argv);
@@ -460,13 +457,12 @@ c_main(int argc, char *argv[])
     set_process_affinity();
 #endif
 
-    frontend_open_console();    
+    frontend_open_console();
     gf = lame_init(); /* initialize libmp3lame */
     if (NULL == gf) {
         error_printf("fatal error during initialization\n");
         ret = 1;
-    }
-    else {
+    } else {
         ret = lame_main(gf, argc, argv);
         lame_close(gf);
     }

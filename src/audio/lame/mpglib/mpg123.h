@@ -24,7 +24,9 @@
 #include        <stdio.h>
 
 #ifdef STDC_HEADERS
+
 # include <string.h>
+
 #else
 # ifndef HAVE_STRCHR
 #  define strchr index
@@ -43,7 +45,9 @@ char   *strchr(), *strrchr();
 #if defined(__riscos__) && defined(FPA10)
 #include "ymath.h"
 #else
+
 #include <math.h>
+
 #endif
 
 #ifndef M_PI
@@ -92,35 +96,35 @@ char   *strchr(), *strrchr();
 #define AUSHIFT (3)
 
 struct frame {
-    int     stereo;
-    int     single;          /* single channel (monophonic) */
-    int     lsf;             /* 0 = MPEG-1, 1 = MPEG-2/2.5 */
-    int     mpeg25;          /* 1 = MPEG-2.5, 0 = MPEG-1/2 */
-    int     header_change;
-    int     lay;             /* Layer */
-    int     error_protection; /* 1 = CRC-16 code following header */
-    int     bitrate_index;
-    int     sampling_frequency; /* sample rate of decompressed audio in Hz */
-    int     padding;
-    int     extension;
-    int     mode;
-    int     mode_ext;
-    int     copyright;
-    int     original;
-    int     emphasis;
-    int     framesize;       /* computed framesize */
+    int stereo;
+    int single;          /* single channel (monophonic) */
+    int lsf;             /* 0 = MPEG-1, 1 = MPEG-2/2.5 */
+    int mpeg25;          /* 1 = MPEG-2.5, 0 = MPEG-1/2 */
+    int header_change;
+    int lay;             /* Layer */
+    int error_protection; /* 1 = CRC-16 code following header */
+    int bitrate_index;
+    int sampling_frequency; /* sample rate of decompressed audio in Hz */
+    int padding;
+    int extension;
+    int mode;
+    int mode_ext;
+    int copyright;
+    int original;
+    int emphasis;
+    int framesize;       /* computed framesize */
 
     /* AF: ADDED FOR LAYER1/LAYER2 */
-    int     II_sblimit;
+    int II_sblimit;
     struct al_table2 const *alloc;
-    int     down_sample_sblimit;
-    int     down_sample;
+    int down_sample_sblimit;
+    int down_sample;
 
 
 };
 
 struct gr_info_s {
-    int     scfsi;
+    int scfsi;
     unsigned part2_3_length;
     unsigned big_values;
     unsigned scalefac_compress;
@@ -136,8 +140,8 @@ struct gr_info_s {
     unsigned preflag;
     unsigned scalefac_scale;
     unsigned count1table_select;
-    real   *full_gain[3];
-    real   *pow2gain;
+    real *full_gain[3];
+    real *pow2gain;
 };
 
 struct III_sideinfo {

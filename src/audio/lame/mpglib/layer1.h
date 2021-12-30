@@ -22,8 +22,10 @@
 #ifndef LAYER1_H_INCLUDED
 #define LAYER1_H_INCLUDED
 
-void    hip_init_tables_layer1(void);
-int     decode_layer1_sideinfo(PMPSTR mp);
-int     decode_layer1_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point);
+void hip_init_tables_layer1(void);
+
+int decode_layer1_sideinfo(PMPSTR mp);
+
+int decode_layer1_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point);
 
 #endif

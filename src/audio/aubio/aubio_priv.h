@@ -178,6 +178,9 @@
 #define HAVE_NOOPT 1
 #endif
 
+#include "stdlib.h"
+#include "math.h"
+
 #include "types.h"
 
 #define AUBIO_UNSTABLE 1

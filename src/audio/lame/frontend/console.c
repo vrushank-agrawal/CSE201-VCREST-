@@ -10,7 +10,9 @@
 #  define strchr index
 #  define strrchr rindex
 # endif
-char   *strchr(), *strrchr();
+
+char *strchr(), *strrchr();
+
 # ifndef HAVE_MEMCPY
 #  define memcpy(d, s, n) bcopy ((s), (d), (n))
 #  define memmove(d, s, n) bcopy ((s), (d), (n))
@@ -40,31 +42,27 @@ char   *strchr(), *strrchr();
 #define CLASS_ID           0x434F4E53
 #define REPORT_BUFF_SIZE   1024
 
-#if defined(_WIN32)  &&  !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__)
 # include <windows.h>
 #endif
 
 
-
 static int
-my_console_printing(FILE * fp, const char *format, va_list ap)
-{
+my_console_printing(FILE *fp, const char *format, va_list ap) {
     if (fp != NULL)
         return vfprintf(fp, format, ap);
     return 0;
 }
 
 static int
-my_error_printing(FILE * fp, const char *format, va_list ap)
-{
+my_error_printing(FILE *fp, const char *format, va_list ap) {
     if (fp != NULL)
         return vfprintf(fp, format, ap);
     return 0;
 }
 
 static int
-my_report_printing(FILE * fp, const char *format, va_list ap)
-{
+my_report_printing(FILE *fp, const char *format, va_list ap) {
     if (fp != NULL)
         return vfprintf(fp, format, ap);
     return 0;
@@ -126,8 +124,7 @@ apply_termcap_settings(Console_IO_t * const mfp)
 #endif /* TERMCAP_AVAILABLE */
 
 static int
-init_console(Console_IO_t * const mfp)
-{
+init_console(Console_IO_t *const mfp) {
     /* setup basics of brhist I/O channels */
     mfp->disp_width = 80;
     mfp->disp_height = 25;
@@ -139,7 +136,7 @@ init_console(Console_IO_t * const mfp)
     setvbuf(mfp->Console_fp, mfp->Console_buff, _IOFBF, sizeof(mfp->Console_buff));
 /*  setvbuf ( mfp -> Error_fp  , NULL                   , _IONBF, 0                                ); */
 
-#if defined(_WIN32)  &&  !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__)
     mfp->Console_Handle = GetStdHandle(STD_ERROR_HANDLE);
 #endif
 
@@ -151,7 +148,7 @@ init_console(Console_IO_t * const mfp)
 
     mfp->ClassID = CLASS_ID;
 
-#if defined(_WIN32)  &&  !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__)
     mfp->Console_file_type = GetFileType(Console_IO.Console_Handle);
 #else
     mfp->Console_file_type = 0;
@@ -160,8 +157,7 @@ init_console(Console_IO_t * const mfp)
 }
 
 static void
-deinit_console(Console_IO_t * const mfp)
-{
+deinit_console(Console_IO_t *const mfp) {
     if (mfp->Report_fp != NULL) {
         fclose(mfp->Report_fp);
         mfp->Report_fp = NULL;
@@ -178,47 +174,40 @@ deinit_console(Console_IO_t * const mfp)
 Console_IO_t Console_IO;
 
 int
-frontend_open_console(void)
-{
+frontend_open_console(void) {
     return init_console(&Console_IO);
 }
 
 void
-frontend_close_console(void)
-{
+frontend_close_console(void) {
     deinit_console(&Console_IO);
 }
 
 void
-frontend_debugf(const char *format, va_list ap)
-{
+frontend_debugf(const char *format, va_list ap) {
     (void) my_report_printing(Console_IO.Report_fp, format, ap);
 }
 
 void
-frontend_msgf(const char *format, va_list ap)
-{
+frontend_msgf(const char *format, va_list ap) {
     (void) my_console_printing(Console_IO.Console_fp, format, ap);
 }
 
 void
-frontend_errorf(const char *format, va_list ap)
-{
+frontend_errorf(const char *format, va_list ap) {
     (void) my_error_printing(Console_IO.Error_fp, format, ap);
 }
 
 void
-frontend_print_null(const char *format, va_list ap)
-{
+frontend_print_null(const char *format, va_list ap) {
     (void) format;
     (void) ap;
 }
 
 int
-console_printf(const char *format, ...)
-{
+console_printf(const char *format, ...) {
     va_list args;
-    int     ret;
+    int ret;
 
     va_start(args, format);
     ret = my_console_printing(Console_IO.Console_fp, format, args);
@@ -228,10 +217,9 @@ console_printf(const char *format, ...)
 }
 
 int
-error_printf(const char *format, ...)
-{
+error_printf(const char *format, ...) {
     va_list args;
-    int     ret;
+    int ret;
 
     va_start(args, format);
     ret = my_console_printing(Console_IO.Error_fp, format, args);
@@ -241,10 +229,9 @@ error_printf(const char *format, ...)
 }
 
 int
-report_printf(const char *format, ...)
-{
+report_printf(const char *format, ...) {
     va_list args;
-    int     ret;
+    int ret;
 
     va_start(args, format);
     ret = my_console_printing(Console_IO.Report_fp, format, args);
@@ -254,27 +241,23 @@ report_printf(const char *format, ...)
 }
 
 void
-console_flush()
-{
+console_flush() {
     fflush(Console_IO.Console_fp);
 }
 
 void
-error_flush()
-{
+error_flush() {
     fflush(Console_IO.Error_fp);
 }
 
 void
-report_flush()
-{
+report_flush() {
     fflush(Console_IO.Report_fp);
 }
 
 void
-console_up(int n_lines)
-{
-#if defined(_WIN32)  &&  !defined(__CYGWIN__)
+console_up(int n_lines) {
+#if defined(_WIN32) && !defined(__CYGWIN__)
     if (Console_IO.Console_file_type != FILE_TYPE_PIPE) {
         COORD   Pos;
         CONSOLE_SCREEN_BUFFER_INFO CSBI;
@@ -294,14 +277,12 @@ console_up(int n_lines)
 
 
 void
-set_debug_file(const char *fn)
-{
+set_debug_file(const char *fn) {
     if (Console_IO.Report_fp == NULL) {
         Console_IO.Report_fp = lame_fopen(fn, "a");
         if (Console_IO.Report_fp != NULL) {
             error_printf("writing debug info into: %s\n", fn);
-        }
-        else {
+        } else {
             error_printf("Error: can't open for debug info: %s\n", fn);
         }
     }

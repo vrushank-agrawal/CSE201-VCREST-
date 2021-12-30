@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 /*!
 	\author Steve Lhomme
 	\version \$Id: AEncodeProperties.cpp,v 1.9 2006/12/25 21:37:34 robert Exp $
@@ -50,28 +50,31 @@
 #define TTS_BALLOON            0x40
 #endif // TTS_BALLOON
 
-const unsigned int AEncodeProperties::the_Bitrates[18] = {320, 256, 224, 192, 160, 144, 128, 112, 96, 80, 64, 56, 48, 40, 32, 24, 16, 8 };
-const unsigned int AEncodeProperties::the_MPEG1_Bitrates[14] = {320, 256, 224, 192, 160, 128, 112, 96, 80, 64, 56, 48, 40, 32 };
-const unsigned int AEncodeProperties::the_MPEG2_Bitrates[14] = {160, 144, 128, 112, 96, 80, 64, 56, 48, 40, 32, 24, 16, 8};
-const unsigned int AEncodeProperties::the_ChannelModes[3] = { STEREO, JOINT_STEREO, DUAL_CHANNEL };
+const unsigned int AEncodeProperties::the_Bitrates[18] = {320, 256, 224, 192, 160, 144, 128, 112, 96, 80, 64, 56, 48,
+                                                          40, 32, 24, 16, 8};
+const unsigned int AEncodeProperties::the_MPEG1_Bitrates[14] = {320, 256, 224, 192, 160, 128, 112, 96, 80, 64, 56, 48,
+                                                                40, 32};
+const unsigned int AEncodeProperties::the_MPEG2_Bitrates[14] = {160, 144, 128, 112, 96, 80, 64, 56, 48, 40, 32, 24, 16,
+                                                                8};
+const unsigned int AEncodeProperties::the_ChannelModes[3] = {STEREO, JOINT_STEREO, DUAL_CHANNEL};
 //const char         AEncodeProperties::the_Presets[][13] = {"None", "CD", "Studio", "Hi-Fi", "Phone", "Voice", "Radio", "Tape", "FM", "AM", "SW"};
 //const LAME_QUALTIY_PRESET AEncodeProperties::the_Presets[] = {LQP_NOPRESET, LQP_R3MIX_QUALITY, LQP_NORMAL_QUALITY, LQP_LOW_QUALITY, LQP_HIGH_QUALITY, LQP_VERYHIGH_QUALITY, LQP_VOICE_QUALITY, LQP_PHONE, LQP_SW, LQP_AM, LQP_FM, LQP_VOICE, LQP_RADIO, LQP_TAPE, LQP_HIFI, LQP_CD, LQP_STUDIO};
 //const unsigned int AEncodeProperties::the_SamplingFreqs[9] = { 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000 };
 
-ToolTipItem AEncodeProperties::Tooltips[13]={
-	{ IDC_CHECK_ENC_ABR, "Allow encoding with an average bitrate\r\ninstead of a constant one.\r\n\r\nIt can improve the quality for the same bitrate." },
-	{ IDC_CHECK_COPYRIGHT, "Mark the encoded data as copyrighted." },
-	{ IDC_CHECK_CHECKSUM, "Put a checksum in the encoded data.\r\n\r\nThis can make the file less sensitive to data loss." },
-	{ IDC_CHECK_ORIGINAL, "Mark the encoded data as an original file." },
-	{ IDC_CHECK_PRIVATE, "Mark the encoded data as private." },
-	{ IDC_COMBO_ENC_STEREO, "Select the type of stereo mode used for encoding:\r\n\r\n- Stereo : the usual one\r\n- Joint-Stereo : mix both channel to achieve better compression\r\n- Dual Channel : treat both channel as separate" },
-	{ IDC_STATIC_DECODING, "Decoding not supported for the moment by the codec." },
-	{ IDC_CHECK_ENC_SMART, "Disable bitrate when there is too much compression.\r\n(default 1:15 ratio)" },
-	{ IDC_STATIC_CONFIG_VERSION, "Version of this codec.\r\n\r\nvX.X.X is the version of the codec interface.\r\nX.XX is the version of the encoding engine." },
-	{ IDC_SLIDER_AVERAGE_MIN, "Select the minimum Average Bitrate allowed." },
-	{ IDC_SLIDER_AVERAGE_MAX, "Select the maximum Average Bitrate allowed." },
-	{ IDC_SLIDER_AVERAGE_STEP, "Select the step of Average Bitrate between the min and max.\r\n\r\nA step of 5 between 152 and 165 means you have :\r\n165, 160 and 155" },
-	{ IDC_SLIDER_AVERAGE_SAMPLE, "Check the resulting values of the (min,max,step) combination.\r\n\r\nUse the keyboard to navigate (right -> left)." },
+ToolTipItem AEncodeProperties::Tooltips[13] = {
+        {IDC_CHECK_ENC_ABR,         "Allow encoding with an average bitrate\r\ninstead of a constant one.\r\n\r\nIt can improve the quality for the same bitrate."},
+        {IDC_CHECK_COPYRIGHT,       "Mark the encoded data as copyrighted."},
+        {IDC_CHECK_CHECKSUM,        "Put a checksum in the encoded data.\r\n\r\nThis can make the file less sensitive to data loss."},
+        {IDC_CHECK_ORIGINAL,        "Mark the encoded data as an original file."},
+        {IDC_CHECK_PRIVATE,         "Mark the encoded data as private."},
+        {IDC_COMBO_ENC_STEREO,      "Select the type of stereo mode used for encoding:\r\n\r\n- Stereo : the usual one\r\n- Joint-Stereo : mix both channel to achieve better compression\r\n- Dual Channel : treat both channel as separate"},
+        {IDC_STATIC_DECODING,       "Decoding not supported for the moment by the codec."},
+        {IDC_CHECK_ENC_SMART,       "Disable bitrate when there is too much compression.\r\n(default 1:15 ratio)"},
+        {IDC_STATIC_CONFIG_VERSION, "Version of this codec.\r\n\r\nvX.X.X is the version of the codec interface.\r\nX.XX is the version of the encoding engine."},
+        {IDC_SLIDER_AVERAGE_MIN,    "Select the minimum Average Bitrate allowed."},
+        {IDC_SLIDER_AVERAGE_MAX,    "Select the maximum Average Bitrate allowed."},
+        {IDC_SLIDER_AVERAGE_STEP,   "Select the step of Average Bitrate between the min and max.\r\n\r\nA step of 5 between 152 and 165 means you have :\r\n165, 160 and 155"},
+        {IDC_SLIDER_AVERAGE_SAMPLE, "Check the resulting values of the (min,max,step) combination.\r\n\r\nUse the keyboard to navigate (right -> left)."},
 };
 //int AEncodeProperties::tst = 0;
 
@@ -159,81 +162,74 @@ static int CALLBACK BrowseFolderCallbackroc(
 }
 */
 #pragma argsused
+
 static BOOL CALLBACK ConfigProc(
-  HWND hwndDlg,  // handle to dialog box
-  UINT uMsg,     // message
-  WPARAM wParam, // first message parameter
-  LPARAM lParam  // second message parameter
-  )
-{
-	BOOL bResult;
-	AEncodeProperties * the_prop;
-	the_prop = (AEncodeProperties *) GetProp(hwndDlg, "AEncodeProperties-Config");
+        HWND hwndDlg,  // handle to dialog box
+        UINT uMsg,     // message
+        WPARAM wParam, // first message parameter
+        LPARAM lParam  // second message parameter
+) {
+    BOOL bResult;
+    AEncodeProperties *the_prop;
+    the_prop = (AEncodeProperties *) GetProp(hwndDlg, "AEncodeProperties-Config");
 
-	switch (uMsg) {
-		case WM_COMMAND:
-			if (the_prop != NULL)
-			{
-				bResult = the_prop->HandleDialogCommand( hwndDlg, wParam, lParam);
-			}
-			break;
-		case WM_INITDIALOG:
-			assert(the_prop == NULL);
+    switch (uMsg) {
+        case WM_COMMAND:
+            if (the_prop != NULL) {
+                bResult = the_prop->HandleDialogCommand(hwndDlg, wParam, lParam);
+            }
+            break;
+        case WM_INITDIALOG:
+            assert(the_prop == NULL);
 
-			the_prop = (AEncodeProperties *) lParam;
-			the_prop->my_debug.OutPut("there hwnd = 0x%08X",hwndDlg);
+            the_prop = (AEncodeProperties *) lParam;
+            the_prop->my_debug.OutPut("there hwnd = 0x%08X", hwndDlg);
 
-			assert(the_prop != NULL);
+            assert(the_prop != NULL);
 
-			SetProp(hwndDlg, "AEncodeProperties-Config", the_prop);
+            SetProp(hwndDlg, "AEncodeProperties-Config", the_prop);
 
-			the_prop->InitConfigDlg(hwndDlg);
+            the_prop->InitConfigDlg(hwndDlg);
 
-			bResult = TRUE;
-			break;
+            bResult = TRUE;
+            break;
 
-		case WM_HSCROLL:
-			// check if it's the ABR sliders
-			if ((HWND)lParam == GetDlgItem(hwndDlg,IDC_SLIDER_AVERAGE_MIN))
-			{
-				the_prop->UpdateDlgFromSlides(hwndDlg);
-			}
-			else if ((HWND)lParam == GetDlgItem(hwndDlg,IDC_SLIDER_AVERAGE_MAX))
-			{
-				the_prop->UpdateDlgFromSlides(hwndDlg);
-			}
-			else if ((HWND)lParam == GetDlgItem(hwndDlg,IDC_SLIDER_AVERAGE_STEP))
-			{
-				the_prop->UpdateDlgFromSlides(hwndDlg);
-			}
-			else if ((HWND)lParam == GetDlgItem(hwndDlg,IDC_SLIDER_AVERAGE_SAMPLE))
-			{
-				the_prop->UpdateDlgFromSlides(hwndDlg);
-			}
-			break;
+        case WM_HSCROLL:
+            // check if it's the ABR sliders
+            if ((HWND) lParam == GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MIN)) {
+                the_prop->UpdateDlgFromSlides(hwndDlg);
+            } else if ((HWND) lParam == GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MAX)) {
+                the_prop->UpdateDlgFromSlides(hwndDlg);
+            } else if ((HWND) lParam == GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_STEP)) {
+                the_prop->UpdateDlgFromSlides(hwndDlg);
+            } else if ((HWND) lParam == GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE)) {
+                the_prop->UpdateDlgFromSlides(hwndDlg);
+            }
+            break;
 
-		case WM_NOTIFY:
-			if (TTN_GETDISPINFO == ((LPNMHDR)lParam)->code) {
-				NMTTDISPINFO *lphdr = (NMTTDISPINFO *)lParam;
-				UINT id = (lphdr->uFlags & TTF_IDISHWND) ? GetWindowLong((HWND)lphdr->hdr.idFrom, GWL_ID) : lphdr->hdr.idFrom;
+        case WM_NOTIFY:
+            if (TTN_GETDISPINFO == ((LPNMHDR) lParam)->code) {
+                NMTTDISPINFO *lphdr = (NMTTDISPINFO *) lParam;
+                UINT id = (lphdr->uFlags & TTF_IDISHWND) ? GetWindowLong((HWND) lphdr->hdr.idFrom, GWL_ID)
+                                                         : lphdr->hdr.idFrom;
 
-				*lphdr->lpszText = 0;
+                *lphdr->lpszText = 0;
 
-				SendMessage(lphdr->hdr.hwndFrom, TTM_SETMAXTIPWIDTH, 0, 5000);
+                SendMessage(lphdr->hdr.hwndFrom, TTM_SETMAXTIPWIDTH, 0, 5000);
 
-				for(int i=0; i<sizeof AEncodeProperties::Tooltips/sizeof AEncodeProperties::Tooltips[0]; ++i) {
-					if (id == AEncodeProperties::Tooltips[i].id)
-						lphdr->lpszText = const_cast<char *>(AEncodeProperties::Tooltips[i].tip);
-				}
+                for (int i = 0; i < sizeof AEncodeProperties::Tooltips / sizeof AEncodeProperties::Tooltips[0]; ++i) {
+                    if (id == AEncodeProperties::Tooltips[i].id)
+                        lphdr->lpszText = const_cast<char *>(AEncodeProperties::Tooltips[i].tip);
+                }
 
-				return TRUE;
-			}
-			break;
+                return TRUE;
+            }
+            break;
 
-		default:
-			bResult = FALSE; // will be treated by DefWindowProc
-	}
-	return bResult;
+        default:
+            bResult = FALSE; // will be treated by DefWindowProc
+    }
+    return bResult;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -244,91 +240,78 @@ static BOOL CALLBACK ConfigProc(
 */
 
 
-const char * AEncodeProperties::GetChannelModeString(int a_channelID) const
-{
-	assert(a_channelID < sizeof(the_ChannelModes));
+const char *AEncodeProperties::GetChannelModeString(int a_channelID) const {
+    assert(a_channelID < sizeof(the_ChannelModes));
 
-	switch (a_channelID) {
-		case 0:
-			return "Stereo";
-		case 1:
-			return "Joint-stereo";
-		case 2:
-			return "Dual Channel";
-		default:
-			assert(a_channelID);
-			return NULL;
-	}
+    switch (a_channelID) {
+        case 0:
+            return "Stereo";
+        case 1:
+            return "Joint-stereo";
+        case 2:
+            return "Dual Channel";
+        default:
+            assert(a_channelID);
+            return NULL;
+    }
 }
 
-const int AEncodeProperties::GetBitrateString(char * string, int string_size, int a_bitrateID) const
-{
-	assert(a_bitrateID < sizeof(the_Bitrates));
-	assert(string != NULL);
+const int AEncodeProperties::GetBitrateString(char *string, int string_size, int a_bitrateID) const {
+    assert(a_bitrateID < sizeof(the_Bitrates));
+    assert(string != NULL);
 
-	if (string_size >= 4)
-		return wsprintf(string,"%d",the_Bitrates[a_bitrateID]);
-	else
-		return -1;
+    if (string_size >= 4)
+        return wsprintf(string, "%d", the_Bitrates[a_bitrateID]);
+    else
+        return -1;
 }
 
-const unsigned int AEncodeProperties::GetChannelModeValue() const
-{
-	assert(nChannelIndex < sizeof(the_ChannelModes));
+const unsigned int AEncodeProperties::GetChannelModeValue() const {
+    assert(nChannelIndex < sizeof(the_ChannelModes));
 
-	return the_ChannelModes[nChannelIndex];
+    return the_ChannelModes[nChannelIndex];
 }
 
-const unsigned int AEncodeProperties::GetBitrateValue() const
-{
-	assert(nMinBitrateIndex < sizeof(the_Bitrates));
+const unsigned int AEncodeProperties::GetBitrateValue() const {
+    assert(nMinBitrateIndex < sizeof(the_Bitrates));
 
-	return the_Bitrates[nMinBitrateIndex];
+    return the_Bitrates[nMinBitrateIndex];
 }
 
-inline const int AEncodeProperties::GetBitrateValueMPEG2(DWORD & bitrate) const
-{
-	int i;
+inline const int AEncodeProperties::GetBitrateValueMPEG2(DWORD &bitrate) const {
+    int i;
 
-	for (i=0;i<sizeof(the_MPEG2_Bitrates)/sizeof(unsigned int);i++)
-	{
-		if (the_MPEG2_Bitrates[i] == the_Bitrates[nMinBitrateIndex])
-		{
-			bitrate = the_MPEG2_Bitrates[i];
-			return 0;
-		}
-		else if (the_MPEG2_Bitrates[i] < the_Bitrates[nMinBitrateIndex])
-		{
-			bitrate = the_MPEG2_Bitrates[i];
-			return -1;
-		}
-	}
-	
-	bitrate = 160;
-	return -1;
+    for (i = 0; i < sizeof(the_MPEG2_Bitrates) / sizeof(unsigned int); i++) {
+        if (the_MPEG2_Bitrates[i] == the_Bitrates[nMinBitrateIndex]) {
+            bitrate = the_MPEG2_Bitrates[i];
+            return 0;
+        } else if (the_MPEG2_Bitrates[i] < the_Bitrates[nMinBitrateIndex]) {
+            bitrate = the_MPEG2_Bitrates[i];
+            return -1;
+        }
+    }
+
+    bitrate = 160;
+    return -1;
 }
 
-inline const int AEncodeProperties::GetBitrateValueMPEG1(DWORD & bitrate) const
-{
-	int i;
+inline const int AEncodeProperties::GetBitrateValueMPEG1(DWORD &bitrate) const {
+    int i;
 
-	for (i=sizeof(the_MPEG1_Bitrates)/sizeof(unsigned int)-1;i>=0;i--)
-	{
-		if (the_MPEG1_Bitrates[i] == the_Bitrates[nMinBitrateIndex])
-		{
-			bitrate = the_MPEG1_Bitrates[i];
-			return 0;
-		}
-		else if (the_MPEG1_Bitrates[i] > the_Bitrates[nMinBitrateIndex])
-		{
-			bitrate = the_MPEG1_Bitrates[i];
-			return 1;
-		}
-	}
-	
-	bitrate = 32;
-	return 1;
+    for (i = sizeof(the_MPEG1_Bitrates) / sizeof(unsigned int) - 1; i >= 0; i--) {
+        if (the_MPEG1_Bitrates[i] == the_Bitrates[nMinBitrateIndex]) {
+            bitrate = the_MPEG1_Bitrates[i];
+            return 0;
+        } else if (the_MPEG1_Bitrates[i] > the_Bitrates[nMinBitrateIndex]) {
+            bitrate = the_MPEG1_Bitrates[i];
+            return 1;
+        }
+    }
+
+    bitrate = 32;
+    return 1;
 }
+
 /*
 const int AEncodeProperties::GetBitrateValue(DWORD & bitrate, const DWORD MPEG_Version) const
 {
@@ -390,15 +373,14 @@ const LAME_QUALTIY_PRESET AEncodeProperties::GetPresetModeValue() const
 	return the_Presets[nPresetIndex];
 }
 */
-bool AEncodeProperties::Config(const HINSTANCE Hinstance, const HWND HwndParent)
-{
-	//WM_INITDIALOG ?
+bool AEncodeProperties::Config(const HINSTANCE Hinstance, const HWND HwndParent) {
+    //WM_INITDIALOG ?
 
-	// remember the instance to retreive strings
+    // remember the instance to retreive strings
 //	hDllInstance = Hinstance;
 
-	my_debug.OutPut("here");
-	int ret = ::DialogBoxParam(Hinstance, MAKEINTRESOURCE(IDD_CONFIG), HwndParent, ::ConfigProc, (LPARAM) this);
+    my_debug.OutPut("here");
+    int ret = ::DialogBoxParam(Hinstance, MAKEINTRESOURCE(IDD_CONFIG), HwndParent, ::ConfigProc, (LPARAM) this);
 /*	if (ret == -1)
 	{
 		LPVOID lpMsgBuf;
@@ -421,28 +403,27 @@ bool AEncodeProperties::Config(const HINSTANCE Hinstance, const HWND HwndParent)
 		LocalFree( lpMsgBuf );	
 		return false;
 	}
-*/	
-	return true;
+*/
+    return true;
 }
 
-bool AEncodeProperties::InitConfigDlg(HWND HwndDlg)
-{
-	// get all the required strings
+bool AEncodeProperties::InitConfigDlg(HWND HwndDlg) {
+    // get all the required strings
 //	TCHAR Version[5];
 //	LoadString(hDllInstance, IDS_STRING_VERSION, Version, 5);
 
-	int i;
+    int i;
 
-	// Add required channel modes
-	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_ENC_STEREO), CB_RESETCONTENT , NULL, NULL);
-	for (i=0;i<GetChannelLentgh();i++)
-		SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_ENC_STEREO), CB_ADDSTRING, NULL, (LPARAM) GetChannelModeString(i));
+    // Add required channel modes
+    SendMessage(GetDlgItem(HwndDlg, IDC_COMBO_ENC_STEREO), CB_RESETCONTENT, NULL, NULL);
+    for (i = 0; i < GetChannelLentgh(); i++)
+        SendMessage(GetDlgItem(HwndDlg, IDC_COMBO_ENC_STEREO), CB_ADDSTRING, NULL, (LPARAM) GetChannelModeString(i));
 
-	char tmp[20];
-	wsprintf(tmp, "v%s",ACM::GetVersionString());
-	SetWindowText( GetDlgItem( HwndDlg, IDC_STATIC_CONFIG_VERSION), tmp);
+    char tmp[20];
+    wsprintf(tmp, "v%s", ACM::GetVersionString());
+    SetWindowText(GetDlgItem(HwndDlg, IDC_STATIC_CONFIG_VERSION), tmp);
 
-	// Add all possible re-sampling freq
+    // Add all possible re-sampling freq
 /*	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SAMPLEFREQ), CB_RESETCONTENT , NULL, NULL);
 	char tmp[10];
 	for (i=0;i<sizeof(the_SamplingFreqs)/sizeof(unsigned int);i++)
@@ -450,9 +431,9 @@ bool AEncodeProperties::InitConfigDlg(HWND HwndDlg)
 		wsprintf(tmp, "%d", the_SamplingFreqs[i]);
 		SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SAMPLEFREQ), CB_ADDSTRING, NULL, (LPARAM) tmp );
 	}
-*/	
+*/
 
-	// Add required bitrates
+    // Add required bitrates
 /*	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_BITRATE), CB_RESETCONTENT , NULL, NULL);
 	for (i=0;i<GetBitrateLentgh();i++)
 	{
@@ -477,108 +458,105 @@ bool AEncodeProperties::InitConfigDlg(HWND HwndDlg)
 		SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_PRESET), CB_ADDSTRING, NULL, (LPARAM) GetPresetModeString(i));
 */
 
-	// Add ABR Sliders
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETRANGE, TRUE, MAKELONG(8,320));
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETRANGE, TRUE, MAKELONG(8,320));
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_SETRANGE, TRUE, MAKELONG(1,16));
+    // Add ABR Sliders
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETRANGE, TRUE, MAKELONG(8, 320));
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETRANGE, TRUE, MAKELONG(8, 320));
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_SETRANGE, TRUE, MAKELONG(1, 16));
 
-	// Tool-Tip initialiasiation
-	TOOLINFO ti;
-	HWND ToolTipWnd;
-	char DisplayStr[30] = "test tooltip";
+    // Tool-Tip initialiasiation
+    TOOLINFO ti;
+    HWND ToolTipWnd;
+    char DisplayStr[30] = "test tooltip";
 
-	ToolTipWnd = CreateWindowEx(WS_EX_TOPMOST,
-        TOOLTIPS_CLASS,
-        NULL,
-        WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP|TTS_BALLOON ,		
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        HwndDlg,
-        NULL,
-        NULL,
-        NULL
-        );
+    ToolTipWnd = CreateWindowEx(WS_EX_TOPMOST,
+                                TOOLTIPS_CLASS,
+                                NULL,
+                                WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                CW_USEDEFAULT,
+                                HwndDlg,
+                                NULL,
+                                NULL,
+                                NULL
+    );
 
-	SetWindowPos(ToolTipWnd,
-        HWND_TOPMOST,
-        0,
-        0,
-        0,
-        0,
-        SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+    SetWindowPos(ToolTipWnd,
+                 HWND_TOPMOST,
+                 0,
+                 0,
+                 0,
+                 0,
+                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
     /* INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE */
-	ti.cbSize		= sizeof(TOOLINFO);
-	ti.uFlags		= TTF_SUBCLASS | TTF_IDISHWND;
-	ti.hwnd			= HwndDlg;
-	ti.lpszText		= LPSTR_TEXTCALLBACK;
-    
+    ti.cbSize = sizeof(TOOLINFO);
+    ti.uFlags = TTF_SUBCLASS | TTF_IDISHWND;
+    ti.hwnd = HwndDlg;
+    ti.lpszText = LPSTR_TEXTCALLBACK;
+
     /* SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW */
-	for(i=0; i<sizeof Tooltips/sizeof Tooltips[0]; ++i) {
-		ti.uId			= (WPARAM)GetDlgItem(HwndDlg, Tooltips[i].id);
+    for (i = 0; i < sizeof Tooltips / sizeof Tooltips[0]; ++i) {
+        ti.uId = (WPARAM) GetDlgItem(HwndDlg, Tooltips[i].id);
 
-		if (ti.uId)
-			SendMessage(ToolTipWnd, TTM_ADDTOOL, 0, (LPARAM)&ti);
-	}
+        if (ti.uId)
+            SendMessage(ToolTipWnd, TTM_ADDTOOL, 0, (LPARAM) &ti);
+    }
 
-my_debug.OutPut("call UpdateConfigs");
+    my_debug.OutPut("call UpdateConfigs");
 
-	UpdateConfigs(HwndDlg);
+    UpdateConfigs(HwndDlg);
 
-my_debug.OutPut("call UpdateDlgFromValue");
+    my_debug.OutPut("call UpdateDlgFromValue");
 
-	UpdateDlgFromValue(HwndDlg);
-
-
-	my_debug.OutPut("finished InitConfigDlg");
+    UpdateDlgFromValue(HwndDlg);
 
 
-	return true;
+    my_debug.OutPut("finished InitConfigDlg");
+
+
+    return true;
 }
 
-bool AEncodeProperties::UpdateDlgFromValue(HWND HwndDlg)
-{
-	// get all the required strings
+bool AEncodeProperties::UpdateDlgFromValue(HWND HwndDlg) {
+    // get all the required strings
 //	TCHAR Version[5];
 //	LoadString(hDllInstance, IDS_STRING_VERSION, Version, 5);
 
-	int i;
+    int i;
 
-	// Check boxes if required
-	::CheckDlgButton( HwndDlg, IDC_CHECK_CHECKSUM,     GetCRCMode()        ?BST_CHECKED:BST_UNCHECKED );
-	::CheckDlgButton( HwndDlg, IDC_CHECK_ORIGINAL,     GetOriginalMode()   ?BST_CHECKED:BST_UNCHECKED );
-	::CheckDlgButton( HwndDlg, IDC_CHECK_PRIVATE,      GetPrivateMode()    ?BST_CHECKED:BST_UNCHECKED );
-	::CheckDlgButton( HwndDlg, IDC_CHECK_COPYRIGHT,    GetCopyrightMode()  ?BST_CHECKED:BST_UNCHECKED );
-	::CheckDlgButton( HwndDlg, IDC_CHECK_ENC_SMART,    GetSmartOutputMode()?BST_CHECKED:BST_UNCHECKED );
-	::CheckDlgButton( HwndDlg, IDC_CHECK_ENC_ABR,      GetAbrOutputMode()  ?BST_CHECKED:BST_UNCHECKED );
+    // Check boxes if required
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_CHECKSUM, GetCRCMode() ? BST_CHECKED : BST_UNCHECKED);
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_ORIGINAL, GetOriginalMode() ? BST_CHECKED : BST_UNCHECKED);
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_PRIVATE, GetPrivateMode() ? BST_CHECKED : BST_UNCHECKED);
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_COPYRIGHT, GetCopyrightMode() ? BST_CHECKED : BST_UNCHECKED);
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_ENC_SMART, GetSmartOutputMode() ? BST_CHECKED : BST_UNCHECKED);
+    ::CheckDlgButton(HwndDlg, IDC_CHECK_ENC_ABR, GetAbrOutputMode() ? BST_CHECKED : BST_UNCHECKED);
 //	::CheckDlgButton( HwndDlg, IDC_CHECK_RESERVOIR,    !GetNoBiResMode() ?BST_CHECKED:BST_UNCHECKED );
 //	::CheckDlgButton( HwndDlg, IDC_CHECK_XINGVBR,      GetXingFrameMode()?BST_CHECKED:BST_UNCHECKED );
 //	::CheckDlgButton( HwndDlg, IDC_CHECK_RESAMPLE,     GetResampleMode() ?BST_CHECKED:BST_UNCHECKED );
 //	::CheckDlgButton( HwndDlg, IDC_CHECK_CHANNELFORCE, bForceChannel     ?BST_CHECKED:BST_UNCHECKED );
-	
-	// Add required channel modes
-	for (i=0;i<GetChannelLentgh();i++)
-	{
-		if (i == nChannelIndex)
-		{
-			SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_ENC_STEREO), CB_SETCURSEL, i, NULL);
-			break;
-		}
-	}
 
-	// Add VBR Quality
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETPOS, TRUE, AverageBitrate_Min);
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETPOS, TRUE, AverageBitrate_Max);
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_SETPOS, TRUE, AverageBitrate_Step);
-	SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETPOS, TRUE, AverageBitrate_Max);
+    // Add required channel modes
+    for (i = 0; i < GetChannelLentgh(); i++) {
+        if (i == nChannelIndex) {
+            SendMessage(GetDlgItem(HwndDlg, IDC_COMBO_ENC_STEREO), CB_SETCURSEL, i, NULL);
+            break;
+        }
+    }
 
-	UpdateDlgFromSlides(HwndDlg);
+    // Add VBR Quality
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETPOS, TRUE, AverageBitrate_Min);
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETPOS, TRUE, AverageBitrate_Max);
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_SETPOS, TRUE, AverageBitrate_Step);
+    SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETPOS, TRUE, AverageBitrate_Max);
 
-	EnableAbrOptions(HwndDlg, GetAbrOutputMode());
+    UpdateDlgFromSlides(HwndDlg);
+
+    EnableAbrOptions(HwndDlg, GetAbrOutputMode());
 //	UpdateAbrSteps(AverageBitrate_Min, AverageBitrate_Max, AverageBitrate_Step);
-	// Add all possible re-sampling freq
+    // Add all possible re-sampling freq
 /*	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SAMPLEFREQ), CB_SETCURSEL, nSamplingFreqIndex, NULL);
 	
 
@@ -640,40 +618,40 @@ bool AEncodeProperties::UpdateDlgFromValue(HWND HwndDlg)
 //	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SETTINGS), CB_RESETCONTENT , NULL, NULL);
 	::SetWindowText(::GetDlgItem( HwndDlg, IDC_EDIT_OUTPUTDIR), OutputDir.c_str());
 */
-	/**
-		\todo Select the right saved config
-	*/
+    /**
+        \todo Select the right saved config
+    */
 
-	return true;
+    return true;
 }
 
-bool AEncodeProperties::UpdateValueFromDlg(HWND HwndDlg)
-{
-	nChannelIndex      = SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_ENC_STEREO),   CB_GETCURSEL, NULL, NULL);
+bool AEncodeProperties::UpdateValueFromDlg(HWND HwndDlg) {
+    nChannelIndex = SendMessage(GetDlgItem(HwndDlg, IDC_COMBO_ENC_STEREO), CB_GETCURSEL, NULL, NULL);
 //	nMinBitrateIndex   = SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_BITRATE),    CB_GETCURSEL, NULL, NULL);
 //	nMaxBitrateIndex   = SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_MAXBITRATE), CB_GETCURSEL, NULL, NULL);
 //	nPresetIndex       = SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_PRESET),     CB_GETCURSEL, NULL, NULL);
 //	VbrQuality         = SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_QUALITY), TBM_GETPOS , NULL, NULL);
 //	nSamplingFreqIndex = SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SAMPLEFREQ), CB_GETCURSEL, NULL, NULL);
 
-	bCRC          = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_CHECKSUM)     == BST_CHECKED);
-	bCopyright    = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_COPYRIGHT)    == BST_CHECKED);
-	bOriginal     = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_ORIGINAL)     == BST_CHECKED);
-	bPrivate      = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_PRIVATE)      == BST_CHECKED);
-	bSmartOutput  = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_ENC_SMART)    == BST_CHECKED);
-	bAbrOutput    = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_ENC_ABR)      == BST_CHECKED);
+    bCRC = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_CHECKSUM) == BST_CHECKED);
+    bCopyright = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_COPYRIGHT) == BST_CHECKED);
+    bOriginal = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_ORIGINAL) == BST_CHECKED);
+    bPrivate = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_PRIVATE) == BST_CHECKED);
+    bSmartOutput = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_ENC_SMART) == BST_CHECKED);
+    bAbrOutput = (::IsDlgButtonChecked(HwndDlg, IDC_CHECK_ENC_ABR) == BST_CHECKED);
 //	bNoBitRes     =!(::IsDlgButtonChecked( HwndDlg, IDC_CHECK_RESERVOIR)    == BST_CHECKED);
 //	bXingFrame    = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_XINGVBR)      == BST_CHECKED);
 //	bResample     = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_RESAMPLE)     == BST_CHECKED);
 //	bForceChannel = (::IsDlgButtonChecked( HwndDlg, IDC_CHECK_CHANNELFORCE) == BST_CHECKED);
 
-	AverageBitrate_Min  = SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_GETPOS , NULL, NULL);
-	AverageBitrate_Max  = SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_GETPOS , NULL, NULL);
-	AverageBitrate_Step = SendMessage(GetDlgItem( HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_GETPOS , NULL, NULL);
+    AverageBitrate_Min = SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_GETPOS, NULL, NULL);
+    AverageBitrate_Max = SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_GETPOS, NULL, NULL);
+    AverageBitrate_Step = SendMessage(GetDlgItem(HwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_GETPOS, NULL, NULL);
 
-	EnableAbrOptions(HwndDlg, bAbrOutput);
+    EnableAbrOptions(HwndDlg, bAbrOutput);
 
-my_debug.OutPut("nChannelIndex %d, bCRC %d, bCopyright %d, bOriginal %d, bPrivate %d",nChannelIndex, bCRC, bCopyright, bOriginal, bPrivate);
+    my_debug.OutPut("nChannelIndex %d, bCRC %d, bCopyright %d, bOriginal %d, bPrivate %d", nChannelIndex, bCRC,
+                    bCopyright, bOriginal, bPrivate);
 
 /*	char tmpPath[MAX_PATH];
 	::GetWindowText( ::GetDlgItem( HwndDlg, IDC_EDIT_OUTPUTDIR), tmpPath, MAX_PATH);
@@ -693,8 +671,9 @@ my_debug.OutPut("nChannelIndex %d, bCRC %d, bCopyright %d, bOriginal %d, bPrivat
 	if (AverageBitrate > 320)
 		AverageBitrate = 320;
 */
-	return true;
+    return true;
 }
+
 /*
 VBRMETHOD AEncodeProperties::GetVBRValue(DWORD & MaxBitrate, int & Quality, DWORD & AbrBitrate, BOOL & VBRHeader, const DWORD MPEG_Version) const
 {
@@ -736,53 +715,50 @@ VBRMETHOD AEncodeProperties::GetVBRValue(DWORD & MaxBitrate, int & Quality, DWOR
 	}
 }
 */
-void AEncodeProperties::ParamsRestore()
-{
-	// use these default parameters in case one is not found
-	bCopyright    = true;
-	bCRC          = true;
-	bOriginal     = true;
-	bPrivate      = true;
-	bNoBitRes     = false; // enable bit reservoir
-	bXingFrame    = true;
-	bResample     = false;
-	bForceChannel = false;
-	bSmartOutput  = true;
-	bAbrOutput    = true;
-	
-	AverageBitrate_Min = 80; // a bit lame
-	AverageBitrate_Max = 160; // a bit lame
-	AverageBitrate_Step = 8; // a bit lame
-	SmartRatioMax = 15.0;
+void AEncodeProperties::ParamsRestore() {
+    // use these default parameters in case one is not found
+    bCopyright = true;
+    bCRC = true;
+    bOriginal = true;
+    bPrivate = true;
+    bNoBitRes = false; // enable bit reservoir
+    bXingFrame = true;
+    bResample = false;
+    bForceChannel = false;
+    bSmartOutput = true;
+    bAbrOutput = true;
 
-	nChannelIndex = 2; // joint-stereo
-	mBRmode       = BR_CBR;
-	nMinBitrateIndex = 6; // 128 kbps (works for both MPEGI and II)
-	nMaxBitrateIndex = 4; // 160 kbps (works for both MPEGI and II)
-	nPresetIndex = 0; // None
-	VbrQuality = 1; // Quite High
+    AverageBitrate_Min = 80; // a bit lame
+    AverageBitrate_Max = 160; // a bit lame
+    AverageBitrate_Step = 8; // a bit lame
+    SmartRatioMax = 15.0;
+
+    nChannelIndex = 2; // joint-stereo
+    mBRmode = BR_CBR;
+    nMinBitrateIndex = 6; // 128 kbps (works for both MPEGI and II)
+    nMaxBitrateIndex = 4; // 160 kbps (works for both MPEGI and II)
+    nPresetIndex = 0; // None
+    VbrQuality = 1; // Quite High
 //	AverageBitrate = 128; // a bit lame
-	nSamplingFreqIndex = 1; // 44100
+    nSamplingFreqIndex = 1; // 44100
 
 //	OutputDir = "c:\\";
 
 //	DllLocation = "plugins\\lame_enc.dll";
 
-	// get the values from the saved file if possible
-	if (my_stored_data.LoadFile(my_store_location))
-	{
-		TiXmlNode* node;
+    // get the values from the saved file if possible
+    if (my_stored_data.LoadFile(my_store_location)) {
+        TiXmlNode *node;
 
-		node = my_stored_data.FirstChild("lame_acm");
+        node = my_stored_data.FirstChild("lame_acm");
 
-		TiXmlElement* CurrentNode = node->FirstChildElement("encodings");
+        TiXmlElement *CurrentNode = node->FirstChildElement("encodings");
 
-		std::string CurrentConfig = "";
+        std::string CurrentConfig = "";
 
-		if (CurrentNode->Attribute("default") != NULL)
-		{
-			CurrentConfig = *CurrentNode->Attribute("default");
-		}
+        if (CurrentNode->Attribute("default") != NULL) {
+            CurrentConfig = *CurrentNode->Attribute("default");
+        }
 
 /*		// output parameters
 		TiXmlElement* iterateElmt = node->FirstChildElement("DLL");
@@ -795,18 +771,15 @@ void AEncodeProperties::ParamsRestore()
 			}
 		}
 */
-		GetValuesFromKey(CurrentConfig, *CurrentNode);
-	}
-	else
-	{
-		/**
-			\todo save the data in the file !
-		*/
-	}
+        GetValuesFromKey(CurrentConfig, *CurrentNode);
+    } else {
+        /**
+            \todo save the data in the file !
+        */
+    }
 }
 
-void AEncodeProperties::ParamsSave()
-{
+void AEncodeProperties::ParamsSave() {
 /*
 
 
@@ -826,6 +799,7 @@ void AEncodeProperties::ParamsSave()
 	}
 */
 }
+
 /*
 void AEncodeProperties::DisplayVbrOptions(const HWND hDialog, const BRMode the_mode)
 {
@@ -879,176 +853,156 @@ void AEncodeProperties::DisplayVbrOptions(const HWND hDialog, const BRMode the_m
 }
 */
 AEncodeProperties::AEncodeProperties(HMODULE hModule)
- :my_debug(ADbg(DEBUG_LEVEL_CREATION)),
- my_hModule(hModule)
-{
-	std::string path = "";
+        : my_debug(ADbg(DEBUG_LEVEL_CREATION)),
+          my_hModule(hModule) {
+    std::string path = "";
 //	HMODULE htmp = LoadLibrary("out_lame.dll");
-	if (hModule != NULL)
-	{
-		char output[MAX_PATH];
-		::GetModuleFileName(hModule, output, MAX_PATH);
+    if (hModule != NULL) {
+        char output[MAX_PATH];
+        ::GetModuleFileName(hModule, output, MAX_PATH);
 //		::FreeLibrary(htmp);
 
-		path = output;
-	}
-	my_store_location = path.substr(0,path.find_last_of('\\')+1);
-	my_store_location += "lame_acm.xml";
+        path = output;
+    }
+    my_store_location = path.substr(0, path.find_last_of('\\') + 1);
+    my_store_location += "lame_acm.xml";
 
-	my_debug.OutPut("store path = %s",my_store_location.c_str());
+    my_debug.OutPut("store path = %s", my_store_location.c_str());
 //#ifdef OLD
 //	::OutputDebugString(my_store_location.c_str());
 
-	// make sure the XML file is present
-	HANDLE hFile = ::CreateFile(my_store_location.c_str(), 0, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_ARCHIVE, NULL );
-	::CloseHandle(hFile);
+    // make sure the XML file is present
+    HANDLE hFile = ::CreateFile(my_store_location.c_str(), 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS,
+                                FILE_ATTRIBUTE_ARCHIVE, NULL);
+    ::CloseHandle(hFile);
 //#endif // OLD
-	my_debug.OutPut("AEncodeProperties creation completed (0x%08X)",this);
+    my_debug.OutPut("AEncodeProperties creation completed (0x%08X)", this);
 }
 
 // Save the values to the right XML saved config
-void AEncodeProperties::SaveValuesToStringKey(const std::string & config_name)
-{
-	// get the current data in the file to keep them
-	if (my_stored_data.LoadFile(my_store_location))
-	{
-		// check if the Node corresponding to the config_name already exist.
-		TiXmlNode* node = my_stored_data.FirstChild("lame_acm");
+void AEncodeProperties::SaveValuesToStringKey(const std::string &config_name) {
+    // get the current data in the file to keep them
+    if (my_stored_data.LoadFile(my_store_location)) {
+        // check if the Node corresponding to the config_name already exist.
+        TiXmlNode *node = my_stored_data.FirstChild("lame_acm");
 
-		if (node != NULL)
-		{
-			TiXmlElement* ConfigNode = node->FirstChildElement("encodings");
+        if (node != NULL) {
+            TiXmlElement *ConfigNode = node->FirstChildElement("encodings");
 
-			if (ConfigNode != NULL)
-			{
-				// look all the <config> tags
-				TiXmlElement* tmpNode = ConfigNode->FirstChildElement("config");
-				while (tmpNode != NULL)
-				{
-					const std::string * tmpname = tmpNode->Attribute("name");
-					if (tmpname->compare(config_name) == 0)
-					{
-						break;
-					}
-					tmpNode = tmpNode->NextSiblingElement("config");
-				}
+            if (ConfigNode != NULL) {
+                // look all the <config> tags
+                TiXmlElement *tmpNode = ConfigNode->FirstChildElement("config");
+                while (tmpNode != NULL) {
+                    const std::string *tmpname = tmpNode->Attribute("name");
+                    if (tmpname->compare(config_name) == 0) {
+                        break;
+                    }
+                    tmpNode = tmpNode->NextSiblingElement("config");
+                }
 
-				if (tmpNode == NULL)
-				{
-					// Create the node
-					tmpNode = new TiXmlElement("config");
-					tmpNode->SetAttribute("name",config_name);
+                if (tmpNode == NULL) {
+                    // Create the node
+                    tmpNode = new TiXmlElement("config");
+                    tmpNode->SetAttribute("name", config_name);
 
-					// save data in the node
-					SaveValuesToElement(tmpNode);
+                    // save data in the node
+                    SaveValuesToElement(tmpNode);
 
-					ConfigNode->InsertEndChild(*tmpNode);
-				}
-				else
-				{
-					// save data in the node
-					SaveValuesToElement(tmpNode);
-				}
+                    ConfigNode->InsertEndChild(*tmpNode);
+                } else {
+                    // save data in the node
+                    SaveValuesToElement(tmpNode);
+                }
 
 
-				// and save the file
-				my_stored_data.SaveFile(my_store_location);
-			}
-		}
-	}
+                // and save the file
+                my_stored_data.SaveFile(my_store_location);
+            }
+        }
+    }
 }
 
-void AEncodeProperties::GetValuesFromKey(const std::string & config_name, const TiXmlNode & parentNode)
-{
-	TiXmlElement* tmpElt;
-	TiXmlElement* iterateElmt;
+void AEncodeProperties::GetValuesFromKey(const std::string &config_name, const TiXmlNode &parentNode) {
+    TiXmlElement *tmpElt;
+    TiXmlElement *iterateElmt;
 
-	// find the config that correspond to CurrentConfig
-	iterateElmt = parentNode.FirstChildElement("config");
-	while (iterateElmt != NULL)
-	{
-		const std::string * tmpname = iterateElmt->Attribute("name");
-		if ((tmpname != NULL) && (tmpname->compare(config_name) == 0))
-		{
-			break;
-		}
-		iterateElmt = iterateElmt->NextSiblingElement("config");
-	}
+    // find the config that correspond to CurrentConfig
+    iterateElmt = parentNode.FirstChildElement("config");
+    while (iterateElmt != NULL) {
+        const std::string *tmpname = iterateElmt->Attribute("name");
+        if ((tmpname != NULL) && (tmpname->compare(config_name) == 0)) {
+            break;
+        }
+        iterateElmt = iterateElmt->NextSiblingElement("config");
+    }
 
-	if (iterateElmt != NULL)
-	{
-		// get all the parameters saved in this Element
-		const std::string * tmpname;
+    if (iterateElmt != NULL) {
+        // get all the parameters saved in this Element
+        const std::string *tmpname;
 
-		// Smart output parameter
-		tmpElt = iterateElmt->FirstChildElement("Smart");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bSmartOutput = (tmpname->compare("true") == 0);
-			
-			tmpname = tmpElt->Attribute("ratio");
-			if (tmpname != NULL)
-				SmartRatioMax = atof(tmpname->c_str());
-		}
+        // Smart output parameter
+        tmpElt = iterateElmt->FirstChildElement("Smart");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bSmartOutput = (tmpname->compare("true") == 0);
 
-		// Smart output parameter
-		tmpElt = iterateElmt->FirstChildElement("ABR");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bAbrOutput = (tmpname->compare("true") == 0);
-			
-			tmpname = tmpElt->Attribute("min");
-			if (tmpname != NULL)
-				AverageBitrate_Min = atoi(tmpname->c_str());
+            tmpname = tmpElt->Attribute("ratio");
+            if (tmpname != NULL)
+                SmartRatioMax = atof(tmpname->c_str());
+        }
 
-			tmpname = tmpElt->Attribute("max");
-			if (tmpname != NULL)
-				AverageBitrate_Max = atoi(tmpname->c_str());
+        // Smart output parameter
+        tmpElt = iterateElmt->FirstChildElement("ABR");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bAbrOutput = (tmpname->compare("true") == 0);
 
-			tmpname = tmpElt->Attribute("step");
-			if (tmpname != NULL)
-				AverageBitrate_Step = atoi(tmpname->c_str());
-		}
+            tmpname = tmpElt->Attribute("min");
+            if (tmpname != NULL)
+                AverageBitrate_Min = atoi(tmpname->c_str());
 
-		// Copyright parameter
-		tmpElt = iterateElmt->FirstChildElement("Copyright");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bCopyright = (tmpname->compare("true") == 0);
-		}
+            tmpname = tmpElt->Attribute("max");
+            if (tmpname != NULL)
+                AverageBitrate_Max = atoi(tmpname->c_str());
 
-		// Copyright parameter
-		tmpElt = iterateElmt->FirstChildElement("CRC");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bCRC = (tmpname->compare("true") == 0);
-		}
+            tmpname = tmpElt->Attribute("step");
+            if (tmpname != NULL)
+                AverageBitrate_Step = atoi(tmpname->c_str());
+        }
 
-		// Copyright parameter
-		tmpElt = iterateElmt->FirstChildElement("Original");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bOriginal = (tmpname->compare("true") == 0);
-		}
+        // Copyright parameter
+        tmpElt = iterateElmt->FirstChildElement("Copyright");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bCopyright = (tmpname->compare("true") == 0);
+        }
 
-		// Copyright parameter
-		tmpElt = iterateElmt->FirstChildElement("Private");
-		if (tmpElt != NULL)
-		{
-			tmpname = tmpElt->Attribute("use");
-			if (tmpname != NULL)
-				bPrivate = (tmpname->compare("true") == 0);
-		}
+        // Copyright parameter
+        tmpElt = iterateElmt->FirstChildElement("CRC");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bCRC = (tmpname->compare("true") == 0);
+        }
+
+        // Copyright parameter
+        tmpElt = iterateElmt->FirstChildElement("Original");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bOriginal = (tmpname->compare("true") == 0);
+        }
+
+        // Copyright parameter
+        tmpElt = iterateElmt->FirstChildElement("Private");
+        if (tmpElt != NULL) {
+            tmpname = tmpElt->Attribute("use");
+            if (tmpname != NULL)
+                bPrivate = (tmpname->compare("true") == 0);
+        }
 /*
 		// Copyright parameter
 		tmpElt = iterateElmt->FirstChildElement("Bit_reservoir");
@@ -1152,31 +1106,27 @@ void AEncodeProperties::GetValuesFromKey(const std::string & config_name, const 
 		}
 */
 //#ifdef OLD
-		// Channel mode parameter
-		tmpElt = iterateElmt->FirstChildElement("Channel");
-		if (tmpElt != NULL)
-		{
-			const std::string * tmpStr = tmpElt->Attribute("mode");
-			if (tmpStr != NULL)
-			{
-				for (int i=0;i<GetChannelLentgh();i++)
-				{
-					if (tmpStr->compare(GetChannelModeString(i)) == 0)
-					{
-						nChannelIndex = i;
-						break;
-					}
-				}
-			}
+        // Channel mode parameter
+        tmpElt = iterateElmt->FirstChildElement("Channel");
+        if (tmpElt != NULL) {
+            const std::string *tmpStr = tmpElt->Attribute("mode");
+            if (tmpStr != NULL) {
+                for (int i = 0; i < GetChannelLentgh(); i++) {
+                    if (tmpStr->compare(GetChannelModeString(i)) == 0) {
+                        nChannelIndex = i;
+                        break;
+                    }
+                }
+            }
 /*
 			tmpname = tmpElt->Attribute("force");
 			if (tmpname != NULL)
 				bForceChannel = (tmpname->compare("true") == 0);
 */
-		}
+        }
 //#endif // OLD
 
-		// Preset parameter
+        // Preset parameter
 /*
 		tmpElt = iterateElmt->FirstChildElement("Preset");
 		if (tmpElt != NULL)
@@ -1193,7 +1143,7 @@ void AEncodeProperties::GetValuesFromKey(const std::string & config_name, const 
 
 		}
 */
-	}
+    }
 }
 
 /**
@@ -1207,8 +1157,7 @@ void AEncodeProperties::SaveParams(const HWND hParentWnd)
 * /
 }*/
 
-bool AEncodeProperties::operator !=(const AEncodeProperties & the_instance) const
-{
+bool AEncodeProperties::operator!=(const AEncodeProperties &the_instance) const {
 /*
 	::OutputDebugString(bCopyright != the_instance.bCopyright?"1":"-");
 	::OutputDebugString(bCRC != the_instance.bCRC            ?"2":"-");
@@ -1237,66 +1186,62 @@ bool AEncodeProperties::operator !=(const AEncodeProperties & the_instance) cons
 	tmp += tmpI;
 	::OutputDebugString(tmp.c_str());
 */
-	return ((bCopyright != the_instance.bCopyright)
-		 || (bCRC != the_instance.bCRC)
-		 || (bOriginal != the_instance.bOriginal)
-		 || (bPrivate != the_instance.bPrivate)
-		 || (bSmartOutput != the_instance.bSmartOutput)
-		 || (SmartRatioMax != the_instance.SmartRatioMax)
-		 || (bAbrOutput != the_instance.bAbrOutput)
-		 || (AverageBitrate_Min != the_instance.AverageBitrate_Min)
-		 || (AverageBitrate_Max != the_instance.AverageBitrate_Max)
-		 || (AverageBitrate_Step != the_instance.AverageBitrate_Step)
-		 || (bNoBitRes != the_instance.bNoBitRes)
-		 || (mBRmode != the_instance.mBRmode)
-		 || (bXingFrame != the_instance.bXingFrame)
-		 || (bForceChannel != the_instance.bForceChannel)
-		 || (bResample != the_instance.bResample)
-		 || (nChannelIndex != the_instance.nChannelIndex)
-		 || (nMinBitrateIndex != the_instance.nMinBitrateIndex)
-		 || (nMaxBitrateIndex != the_instance.nMaxBitrateIndex)
-		 || (nPresetIndex != the_instance.nPresetIndex)
-		 || (VbrQuality != the_instance.VbrQuality)
-//		 || (AverageBitrate != the_instance.AverageBitrate)
-		 || (nSamplingFreqIndex != the_instance.nSamplingFreqIndex)
+    return ((bCopyright != the_instance.bCopyright)
+            || (bCRC != the_instance.bCRC)
+            || (bOriginal != the_instance.bOriginal)
+            || (bPrivate != the_instance.bPrivate)
+            || (bSmartOutput != the_instance.bSmartOutput)
+            || (SmartRatioMax != the_instance.SmartRatioMax)
+            || (bAbrOutput != the_instance.bAbrOutput)
+            || (AverageBitrate_Min != the_instance.AverageBitrate_Min)
+            || (AverageBitrate_Max != the_instance.AverageBitrate_Max)
+            || (AverageBitrate_Step != the_instance.AverageBitrate_Step)
+            || (bNoBitRes != the_instance.bNoBitRes)
+            || (mBRmode != the_instance.mBRmode)
+            || (bXingFrame != the_instance.bXingFrame)
+            || (bForceChannel != the_instance.bForceChannel)
+            || (bResample != the_instance.bResample)
+            || (nChannelIndex != the_instance.nChannelIndex)
+            || (nMinBitrateIndex != the_instance.nMinBitrateIndex)
+            || (nMaxBitrateIndex != the_instance.nMaxBitrateIndex)
+            || (nPresetIndex != the_instance.nPresetIndex)
+            || (VbrQuality != the_instance.VbrQuality)
+            //		 || (AverageBitrate != the_instance.AverageBitrate)
+            || (nSamplingFreqIndex != the_instance.nSamplingFreqIndex)
 //		 || (OutputDir.compare(the_instance.OutputDir) != 0)
-		);
+    );
 }
 
-void AEncodeProperties::SelectSavedParams(const std::string the_string)
-{
-	// get the values from the saved file if possible
-	if (my_stored_data.LoadFile(my_store_location))
-	{
-		TiXmlNode* node;
+void AEncodeProperties::SelectSavedParams(const std::string the_string) {
+    // get the values from the saved file if possible
+    if (my_stored_data.LoadFile(my_store_location)) {
+        TiXmlNode *node;
 
-		node = my_stored_data.FirstChild("lame_acm");
+        node = my_stored_data.FirstChild("lame_acm");
 
-		TiXmlElement* CurrentNode = node->FirstChildElement("encodings");
+        TiXmlElement *CurrentNode = node->FirstChildElement("encodings");
 
-		if (CurrentNode != NULL)
-		{
-			CurrentNode->SetAttribute("default",the_string);
-			GetValuesFromKey(the_string, *CurrentNode);
-			my_stored_data.SaveFile(my_store_location);
-		}
-	}
+        if (CurrentNode != NULL) {
+            CurrentNode->SetAttribute("default", the_string);
+            GetValuesFromKey(the_string, *CurrentNode);
+            my_stored_data.SaveFile(my_store_location);
+        }
+    }
 }
 
-inline void AEncodeProperties::SetAttributeBool(TiXmlElement * the_elt,const std::string & the_string, const bool the_value) const
-{
-	if (the_value == false)
-		the_elt->SetAttribute(the_string, "false");
-	else
-		the_elt->SetAttribute(the_string, "true");
+inline void
+AEncodeProperties::SetAttributeBool(TiXmlElement *the_elt, const std::string &the_string, const bool the_value) const {
+    if (the_value == false)
+        the_elt->SetAttribute(the_string, "false");
+    else
+        the_elt->SetAttribute(the_string, "true");
 }
 
-void AEncodeProperties::SaveValuesToElement(TiXmlElement * the_element) const
-{
-	// get all the parameters saved in this Element
-	TiXmlElement * tmpElt;
+void AEncodeProperties::SaveValuesToElement(TiXmlElement *the_element) const {
+    // get all the parameters saved in this Element
+    TiXmlElement *tmpElt;
 
-	// Bit Reservoir parameter
+    // Bit Reservoir parameter
 /*
 	tmpElt = the_element->FirstChildElement("Bit_reservoir");
 	if (tmpElt == NULL)
@@ -1310,106 +1255,85 @@ void AEncodeProperties::SaveValuesToElement(TiXmlElement * the_element) const
 		SetAttributeBool(tmpElt, "use", !bNoBitRes);
 	}
 */
-	// Copyright parameter
-	tmpElt = the_element->FirstChildElement("Copyright");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("Copyright");
-		SetAttributeBool( tmpElt, "use", bCopyright);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bCopyright);
-	}
+    // Copyright parameter
+    tmpElt = the_element->FirstChildElement("Copyright");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("Copyright");
+        SetAttributeBool(tmpElt, "use", bCopyright);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bCopyright);
+    }
 
-	// Smart Output parameter
-	tmpElt = the_element->FirstChildElement("Smart");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("Smart");
-		SetAttributeBool( tmpElt, "use", bSmartOutput);
-		tmpElt->SetAttribute("ratio", SmartRatioMax);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bSmartOutput);
-		tmpElt->SetAttribute("ratio", SmartRatioMax);
-	}
+    // Smart Output parameter
+    tmpElt = the_element->FirstChildElement("Smart");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("Smart");
+        SetAttributeBool(tmpElt, "use", bSmartOutput);
+        tmpElt->SetAttribute("ratio", SmartRatioMax);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bSmartOutput);
+        tmpElt->SetAttribute("ratio", SmartRatioMax);
+    }
 
-	// Smart Output parameter
-	tmpElt = the_element->FirstChildElement("ABR");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("ABR");
-		SetAttributeBool( tmpElt, "use", bAbrOutput);
-		tmpElt->SetAttribute("min", AverageBitrate_Min);
-		tmpElt->SetAttribute("max", AverageBitrate_Max);
-		tmpElt->SetAttribute("step", AverageBitrate_Step);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bAbrOutput);
-		tmpElt->SetAttribute("min", AverageBitrate_Min);
-		tmpElt->SetAttribute("max", AverageBitrate_Max);
-		tmpElt->SetAttribute("step", AverageBitrate_Step);
-	}
+    // Smart Output parameter
+    tmpElt = the_element->FirstChildElement("ABR");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("ABR");
+        SetAttributeBool(tmpElt, "use", bAbrOutput);
+        tmpElt->SetAttribute("min", AverageBitrate_Min);
+        tmpElt->SetAttribute("max", AverageBitrate_Max);
+        tmpElt->SetAttribute("step", AverageBitrate_Step);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bAbrOutput);
+        tmpElt->SetAttribute("min", AverageBitrate_Min);
+        tmpElt->SetAttribute("max", AverageBitrate_Max);
+        tmpElt->SetAttribute("step", AverageBitrate_Step);
+    }
 
-	// CRC parameter
-	tmpElt = the_element->FirstChildElement("CRC");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("CRC");
-		SetAttributeBool( tmpElt, "use", bCRC);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bCRC);
-	}
+    // CRC parameter
+    tmpElt = the_element->FirstChildElement("CRC");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("CRC");
+        SetAttributeBool(tmpElt, "use", bCRC);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bCRC);
+    }
 
-	// Original parameter
-	tmpElt = the_element->FirstChildElement("Original");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("Original");
-		SetAttributeBool( tmpElt, "use", bOriginal);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bOriginal);
-	}
+    // Original parameter
+    tmpElt = the_element->FirstChildElement("Original");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("Original");
+        SetAttributeBool(tmpElt, "use", bOriginal);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bOriginal);
+    }
 
-	// Private parameter
-	tmpElt = the_element->FirstChildElement("Private");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("Private");
-		SetAttributeBool( tmpElt, "use", bPrivate);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		SetAttributeBool( tmpElt, "use", bPrivate);
-	}
+    // Private parameter
+    tmpElt = the_element->FirstChildElement("Private");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("Private");
+        SetAttributeBool(tmpElt, "use", bPrivate);
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        SetAttributeBool(tmpElt, "use", bPrivate);
+    }
 
-	// Channel Mode parameter
-	tmpElt = the_element->FirstChildElement("Channel");
-	if (tmpElt == NULL)
-	{
-		tmpElt = new TiXmlElement("Channel");
-		tmpElt->SetAttribute("mode", GetChannelModeString(nChannelIndex));
+    // Channel Mode parameter
+    tmpElt = the_element->FirstChildElement("Channel");
+    if (tmpElt == NULL) {
+        tmpElt = new TiXmlElement("Channel");
+        tmpElt->SetAttribute("mode", GetChannelModeString(nChannelIndex));
 //		SetAttributeBool( tmpElt, "force", bForceChannel);
-		the_element->InsertEndChild(*tmpElt);
-	}
-	else
-	{
-		tmpElt->SetAttribute("mode", GetChannelModeString(nChannelIndex));
+        the_element->InsertEndChild(*tmpElt);
+    } else {
+        tmpElt->SetAttribute("mode", GetChannelModeString(nChannelIndex));
 //		SetAttributeBool( tmpElt, "force", bForceChannel);
-	}
+    }
 /*
 	// Preset parameter
 	tmpElt = the_element->FirstChildElement("Preset");
@@ -1498,24 +1422,21 @@ void AEncodeProperties::SaveValuesToElement(TiXmlElement * the_element) const
 */
 }
 
-bool AEncodeProperties::HandleDialogCommand(const HWND parentWnd, const WPARAM wParam, const LPARAM lParam)
-{
-	UINT command;
-	command = GET_WM_COMMAND_ID(wParam, lParam);
+bool AEncodeProperties::HandleDialogCommand(const HWND parentWnd, const WPARAM wParam, const LPARAM lParam) {
+    UINT command;
+    command = GET_WM_COMMAND_ID(wParam, lParam);
 
-	switch (command)
-	{
-	case IDOK :
-	{
-		bool bShouldEnd = true;
+    switch (command) {
+        case IDOK : {
+            bool bShouldEnd = true;
 
-		// save parameters
-		char string[MAX_PATH];
+            // save parameters
+            char string[MAX_PATH];
 //		::GetWindowText(::GetDlgItem( parentWnd, IDC_COMBO_SETTINGS), string, MAX_PATH);
 
-		wsprintf(string,"Current"); // only the Current config is supported at the moment
-		
-		my_debug.OutPut("my_hModule = 0x%08X",my_hModule);
+            wsprintf(string, "Current"); // only the Current config is supported at the moment
+
+            my_debug.OutPut("my_hModule = 0x%08X", my_hModule);
 /*
 		AEncodeProperties tmpDlgProps(my_hModule);
 		AEncodeProperties tmpSavedProps(my_hModule);
@@ -1567,15 +1488,16 @@ bool AEncodeProperties::HandleDialogCommand(const HWND parentWnd, const WPARAM w
 		}
 */
 //#endif // OLD
-my_debug.OutPut("before : nChannelIndex %d, bCRC %d, bCopyright %d, bOriginal %d, bPrivate %d",nChannelIndex, bCRC, bCopyright, bOriginal, bPrivate);
+            my_debug.OutPut("before : nChannelIndex %d, bCRC %d, bCopyright %d, bOriginal %d, bPrivate %d",
+                            nChannelIndex, bCRC, bCopyright, bOriginal, bPrivate);
 
-my_debug.OutPut("call UpdateValueFromDlg");
+            my_debug.OutPut("call UpdateValueFromDlg");
 
-		UpdateValueFromDlg(parentWnd);
+            UpdateValueFromDlg(parentWnd);
 
-my_debug.OutPut("call SaveValuesToStringKey");
+            my_debug.OutPut("call SaveValuesToStringKey");
 
-		SaveValuesToStringKey("Current"); // only Current config is supported now
+            SaveValuesToStringKey("Current"); // only Current config is supported now
 
 //		SaveParams(parentWnd);
 
@@ -1584,21 +1506,20 @@ my_debug.OutPut("call SaveValuesToStringKey");
 //		SelectSavedParams(string);
 //		UpdateDlgFromValue(parentWnd);
 
-my_debug.OutPut("finished saving");
+            my_debug.OutPut("finished saving");
 
-		if (bShouldEnd)
-		{
-			RemoveProp(parentWnd, "AEncodeProperties-Config");
-		
-			EndDialog(parentWnd, true);
-		}
-	}
-	break;
+            if (bShouldEnd) {
+                RemoveProp(parentWnd, "AEncodeProperties-Config");
 
-	case IDCANCEL:
-		RemoveProp(parentWnd, "AEncodeProperties-Config");
-        EndDialog(parentWnd, false);
-		break;
+                EndDialog(parentWnd, true);
+            }
+        }
+            break;
+
+        case IDCANCEL:
+            RemoveProp(parentWnd, "AEncodeProperties-Config");
+            EndDialog(parentWnd, false);
+            break;
 
 /*	case IDC_FIND_DLL:
 	{
@@ -1698,9 +1619,9 @@ my_debug.OutPut("finished saving");
 	}
 	break;
 */
-		case IDC_CHECK_ENC_ABR:
-			EnableAbrOptions(parentWnd, ::IsDlgButtonChecked( parentWnd, IDC_CHECK_ENC_ABR) == BST_CHECKED);
-			break;
+        case IDC_CHECK_ENC_ABR:
+            EnableAbrOptions(parentWnd, ::IsDlgButtonChecked(parentWnd, IDC_CHECK_ENC_ABR) == BST_CHECKED);
+            break;
 /*	case IDC_RADIO_BITRATE_CBR:
 		AEncodeProperties::DisplayVbrOptions(parentWnd, AEncodeProperties::BR_CBR);
 		break;
@@ -1783,245 +1704,218 @@ my_debug.OutPut("finished saving");
 	}
 	break;
 */
-	}
-	
+    }
+
     return FALSE;
 }
 
-bool AEncodeProperties::RenameCurrentTo(const std::string & new_config_name)
-{
-	bool bResult = false;
+bool AEncodeProperties::RenameCurrentTo(const std::string &new_config_name) {
+    bool bResult = false;
 
-	// display all the names of the saved configs
-	// get the values from the saved file if possible
-	if (my_stored_data.LoadFile(my_store_location))
-	{
-		TiXmlNode* node;
+    // display all the names of the saved configs
+    // get the values from the saved file if possible
+    if (my_stored_data.LoadFile(my_store_location)) {
+        TiXmlNode *node;
 
-		node = my_stored_data.FirstChild("lame_acm");
+        node = my_stored_data.FirstChild("lame_acm");
 
-		TiXmlElement* CurrentNode = node->FirstChildElement("encodings");
+        TiXmlElement *CurrentNode = node->FirstChildElement("encodings");
 
-		if (CurrentNode->Attribute("default") != NULL)
-		{
-			std::string CurrentConfigName = *CurrentNode->Attribute("default");
+        if (CurrentNode->Attribute("default") != NULL) {
+            std::string CurrentConfigName = *CurrentNode->Attribute("default");
 
-			// no rename possible for Current
-			if (CurrentConfigName == "")
-			{
-				bResult = true;
-			}
-			else if (CurrentConfigName != "Current")
-			{
-				// find the config that correspond to CurrentConfig
-				TiXmlElement* iterateElmt = CurrentNode->FirstChildElement("config");
+            // no rename possible for Current
+            if (CurrentConfigName == "") {
+                bResult = true;
+            } else if (CurrentConfigName != "Current") {
+                // find the config that correspond to CurrentConfig
+                TiXmlElement *iterateElmt = CurrentNode->FirstChildElement("config");
 //				int Idx = 0;
-				while (iterateElmt != NULL)
-				{
-					const std::string * tmpname = iterateElmt->Attribute("name");
-					/**
-						\todo support language names
-					*/
-					if (tmpname != NULL)
-					{
-						if (tmpname->compare(CurrentConfigName) == 0)
-						{
-							iterateElmt->SetAttribute("name",new_config_name);	
-							bResult = true;
-							break;
-						}
-					}
+                while (iterateElmt != NULL) {
+                    const std::string *tmpname = iterateElmt->Attribute("name");
+                    /**
+                        \todo support language names
+                    */
+                    if (tmpname != NULL) {
+                        if (tmpname->compare(CurrentConfigName) == 0) {
+                            iterateElmt->SetAttribute("name", new_config_name);
+                            bResult = true;
+                            break;
+                        }
+                    }
 //					Idx++;
-					iterateElmt = iterateElmt->NextSiblingElement("config");
-				}
-			}
+                    iterateElmt = iterateElmt->NextSiblingElement("config");
+                }
+            }
 
-			if (bResult)
-			{
-				CurrentNode->SetAttribute("default",new_config_name);
+            if (bResult) {
+                CurrentNode->SetAttribute("default", new_config_name);
 
-				my_stored_data.SaveFile(my_store_location);
-			}
-		}
-	}
+                my_stored_data.SaveFile(my_store_location);
+            }
+        }
+    }
 
-	return bResult;
+    return bResult;
 }
 
-bool AEncodeProperties::DeleteConfig(const std::string & config_name)
-{
-	bool bResult = false;
+bool AEncodeProperties::DeleteConfig(const std::string &config_name) {
+    bool bResult = false;
 
-	if (config_name != "Current")
-	{
-		// display all the names of the saved configs
-		// get the values from the saved file if possible
-		if (my_stored_data.LoadFile(my_store_location))
-		{
-			TiXmlNode* node;
+    if (config_name != "Current") {
+        // display all the names of the saved configs
+        // get the values from the saved file if possible
+        if (my_stored_data.LoadFile(my_store_location)) {
+            TiXmlNode *node;
 
-			node = my_stored_data.FirstChild("lame_acm");
+            node = my_stored_data.FirstChild("lame_acm");
 
-			TiXmlElement* CurrentNode = node->FirstChildElement("encodings");
+            TiXmlElement *CurrentNode = node->FirstChildElement("encodings");
 
-			TiXmlElement* iterateElmt = CurrentNode->FirstChildElement("config");
+            TiXmlElement *iterateElmt = CurrentNode->FirstChildElement("config");
 //			int Idx = 0;
-			while (iterateElmt != NULL)
-			{
-				const std::string * tmpname = iterateElmt->Attribute("name");
-				/**
-					\todo support language names
-				*/
-				if (tmpname != NULL)
-				{
-					if (tmpname->compare(config_name) == 0)
-					{
-						CurrentNode->RemoveChild(iterateElmt);
-						bResult = true;
-						break;
-					}
-				}
+            while (iterateElmt != NULL) {
+                const std::string *tmpname = iterateElmt->Attribute("name");
+                /**
+                    \todo support language names
+                */
+                if (tmpname != NULL) {
+                    if (tmpname->compare(config_name) == 0) {
+                        CurrentNode->RemoveChild(iterateElmt);
+                        bResult = true;
+                        break;
+                    }
+                }
 //				Idx++;
-				iterateElmt = iterateElmt->NextSiblingElement("config");
-			}
-		}
+                iterateElmt = iterateElmt->NextSiblingElement("config");
+            }
+        }
 
-		if (bResult)
-		{
-			my_stored_data.SaveFile(my_store_location);
+        if (bResult) {
+            my_stored_data.SaveFile(my_store_location);
 
-			// select a new default config : "Current"
-			SelectSavedParams("Current");
+            // select a new default config : "Current"
+            SelectSavedParams("Current");
 
-		}
-	}
+        }
+    }
 
-	return bResult;
+    return bResult;
 }
 
-void AEncodeProperties::UpdateConfigs(const HWND HwndDlg)
-{
-	// Add User configs
+void AEncodeProperties::UpdateConfigs(const HWND HwndDlg) {
+    // Add User configs
 //	SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SETTINGS), CB_RESETCONTENT , NULL, NULL);
 
-	// display all the names of the saved configs
-	// get the values from the saved file if possible
-	if (my_stored_data.LoadFile(my_store_location))
-	{
-		TiXmlNode* node;
+    // display all the names of the saved configs
+    // get the values from the saved file if possible
+    if (my_stored_data.LoadFile(my_store_location)) {
+        TiXmlNode *node;
 
-		node = my_stored_data.FirstChild("lame_acm");
+        node = my_stored_data.FirstChild("lame_acm");
 
-		TiXmlElement* CurrentNode = node->FirstChildElement("encodings");
+        TiXmlElement *CurrentNode = node->FirstChildElement("encodings");
 
-		std::string CurrentConfig = "";
+        std::string CurrentConfig = "";
 
-		if (CurrentNode->Attribute("default") != NULL)
-		{
-			CurrentConfig = *CurrentNode->Attribute("default");
-		}
+        if (CurrentNode->Attribute("default") != NULL) {
+            CurrentConfig = *CurrentNode->Attribute("default");
+        }
 
-		TiXmlElement* iterateElmt;
+        TiXmlElement *iterateElmt;
 
-my_debug.OutPut("are we here ?");
+        my_debug.OutPut("are we here ?");
 
-		// find the config that correspond to CurrentConfig
-		iterateElmt = CurrentNode->FirstChildElement("config");
-		int Idx = 0;
-		while (iterateElmt != NULL)
-		{
-			const std::string * tmpname = iterateElmt->Attribute("name");
-			/**
-				\todo support language names
-			*/
-			if (tmpname != NULL)
-			{
+        // find the config that correspond to CurrentConfig
+        iterateElmt = CurrentNode->FirstChildElement("config");
+        int Idx = 0;
+        while (iterateElmt != NULL) {
+            const std::string *tmpname = iterateElmt->Attribute("name");
+            /**
+                \todo support language names
+            */
+            if (tmpname != NULL) {
 //				SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SETTINGS), CB_ADDSTRING, NULL, (LPARAM) tmpname->c_str());
-				if (tmpname->compare(CurrentConfig) == 0)
-				{
+                if (tmpname->compare(CurrentConfig) == 0) {
 //					SendMessage(GetDlgItem( HwndDlg, IDC_COMBO_SETTINGS), CB_SETCURSEL, Idx, NULL);
-					SelectSavedParams(*tmpname);
-					UpdateDlgFromValue(HwndDlg);
-				}
-			}
-my_debug.OutPut("Idx = %d",Idx);
+                    SelectSavedParams(*tmpname);
+                    UpdateDlgFromValue(HwndDlg);
+                }
+            }
+            my_debug.OutPut("Idx = %d", Idx);
 
-			Idx++;
-			// only Current config supported now
+            Idx++;
+            // only Current config supported now
 //			iterateElmt = iterateElmt->NextSiblingElement("config");
-			iterateElmt = NULL;
-my_debug.OutPut("iterateElmt = 0x%08X",iterateElmt);
+            iterateElmt = NULL;
+            my_debug.OutPut("iterateElmt = 0x%08X", iterateElmt);
 
-		}
-	}
+        }
+    }
 }
+
 /*
 void AEncodeProperties::UpdateAbrSteps(unsigned int min, unsigned int max, unsigned int step) const
 {
 }
 */
-void AEncodeProperties::UpdateDlgFromSlides(HWND hwndDlg) const
-{
-	UINT value_min, value_max, value_step, value;
-	char tmp[4];
+void AEncodeProperties::UpdateDlgFromSlides(HWND hwndDlg) const {
+    UINT value_min, value_max, value_step, value;
+    char tmp[4];
 
-	value_min = SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_GETPOS, NULL, NULL);
-	value_max = SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_GETPOS, NULL, NULL);
+    value_min = SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_GETPOS, NULL, NULL);
+    value_max = SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_GETPOS, NULL, NULL);
 
-	if (value_min>value_max)
-	{
-		SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETPOS, TRUE, value_max);
-		UpdateDlgFromSlides(hwndDlg);
-		return;
-	}
+    if (value_min > value_max) {
+        SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MIN), TBM_SETPOS, TRUE, value_max);
+        UpdateDlgFromSlides(hwndDlg);
+        return;
+    }
 
-	if (value_max<value_min)
-	{
-		SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETPOS, TRUE, value_min);
-		UpdateDlgFromSlides(hwndDlg);
-		return;
-	}
+    if (value_max < value_min) {
+        SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_MAX), TBM_SETPOS, TRUE, value_min);
+        UpdateDlgFromSlides(hwndDlg);
+        return;
+    }
 
-	wsprintf(tmp,"%3d",value_min);
-	::SetWindowText(GetDlgItem( hwndDlg, IDC_STATIC_AVERAGE_MIN_VALUE), tmp);
-	
-	SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETRANGEMIN, TRUE, value_min);
+    wsprintf(tmp, "%3d", value_min);
+    ::SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_AVERAGE_MIN_VALUE), tmp);
 
-	wsprintf(tmp,"%3d",value_max);
-	::SetWindowText(GetDlgItem( hwndDlg, IDC_STATIC_AVERAGE_MAX_VALUE), tmp);
-	
-	SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETRANGEMAX, TRUE, value_max);
-	
-	value_step = SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_GETPOS, NULL, NULL);
-	wsprintf(tmp,"%3d",value_step);
-	::SetWindowText(GetDlgItem( hwndDlg, IDC_STATIC_AVERAGE_STEP_VALUE), tmp);
+    SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETRANGEMIN, TRUE, value_min);
 
-	SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_CLEARTICS, TRUE, 0);
-	for(UINT i=value_max; i>=value_min;i-=value_step)
-	{
-		SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETTIC, 0, i);
-	}
-	SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETLINESIZE, 0, value_step);
-	SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETPAGESIZE, 0, value_step);
-	
-	value = SendMessage(GetDlgItem( hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_GETPOS, NULL, NULL);
-	wsprintf(tmp,"%3d",value);
-	::SetWindowText(GetDlgItem( hwndDlg, IDC_STATIC_AVERAGE_SAMPLE_VALUE), tmp);
+    wsprintf(tmp, "%3d", value_max);
+    ::SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_AVERAGE_MAX_VALUE), tmp);
+
+    SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETRANGEMAX, TRUE, value_max);
+
+    value_step = SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_STEP), TBM_GETPOS, NULL, NULL);
+    wsprintf(tmp, "%3d", value_step);
+    ::SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_AVERAGE_STEP_VALUE), tmp);
+
+    SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_CLEARTICS, TRUE, 0);
+    for (UINT i = value_max; i >= value_min; i -= value_step) {
+        SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETTIC, 0, i);
+    }
+    SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETLINESIZE, 0, value_step);
+    SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_SETPAGESIZE, 0, value_step);
+
+    value = SendMessage(GetDlgItem(hwndDlg, IDC_SLIDER_AVERAGE_SAMPLE), TBM_GETPOS, NULL, NULL);
+    wsprintf(tmp, "%3d", value);
+    ::SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_AVERAGE_SAMPLE_VALUE), tmp);
 }
 
-void AEncodeProperties::EnableAbrOptions(HWND hDialog, bool enable)
-{
-	::EnableWindow(::GetDlgItem( hDialog, IDC_SLIDER_AVERAGE_MIN), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_SLIDER_AVERAGE_MAX), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_SLIDER_AVERAGE_STEP), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_SLIDER_AVERAGE_SAMPLE), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_MIN), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_MAX), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_STEP), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_SAMPLE), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_MIN_VALUE), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_MAX_VALUE), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_STEP_VALUE), enable);
-	::EnableWindow(::GetDlgItem( hDialog, IDC_STATIC_AVERAGE_SAMPLE_VALUE), enable);
+void AEncodeProperties::EnableAbrOptions(HWND hDialog, bool enable) {
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_SLIDER_AVERAGE_MIN), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_SLIDER_AVERAGE_MAX), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_SLIDER_AVERAGE_STEP), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_SLIDER_AVERAGE_SAMPLE), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_MIN), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_MAX), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_STEP), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_SAMPLE), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_MIN_VALUE), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_MAX_VALUE), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_STEP_VALUE), enable);
+    ::EnableWindow(::GetDlgItem(hDialog, IDC_STATIC_AVERAGE_SAMPLE_VALUE), enable);
 }
 

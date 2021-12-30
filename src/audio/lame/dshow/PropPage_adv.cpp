@@ -36,20 +36,19 @@
 
 // Strings which apear in comboboxes
 const char *chChMode[4] = {
-    "Mono",
-    "Standard stereo",
-    "Joint stereo",
-    "Dual channel"};
+        "Mono",
+        "Standard stereo",
+        "Joint stereo",
+        "Dual channel"};
 
 ////////////////////////////////////////////////////////////////
 // CreateInstance
 ////////////////////////////////////////////////////////////////
-CUnknown *CMpegAudEncPropertyPageAdv::CreateInstance( LPUNKNOWN punk, HRESULT *phr )
-{
+CUnknown *CMpegAudEncPropertyPageAdv::CreateInstance(LPUNKNOWN punk, HRESULT *phr) {
     CMpegAudEncPropertyPageAdv *pNewObject
-        = new CMpegAudEncPropertyPageAdv( punk, phr );
+            = new CMpegAudEncPropertyPageAdv(punk, phr);
 
-    if( pNewObject == NULL )
+    if (pNewObject == NULL)
         *phr = E_OUTOFMEMORY;
 
     return pNewObject;
@@ -59,9 +58,8 @@ CUnknown *CMpegAudEncPropertyPageAdv::CreateInstance( LPUNKNOWN punk, HRESULT *p
 // Constructor
 ////////////////////////////////////////////////////////////////
 CMpegAudEncPropertyPageAdv::CMpegAudEncPropertyPageAdv(LPUNKNOWN punk, HRESULT *phr) :
-    CBasePropertyPage(NAME("Encoder Advanced Property Page"), punk, IDD_ADVPROPS, IDS_AUDIO_ADVANCED_TITLE),
-    m_pAEProps(NULL)
-{
+        CBasePropertyPage(NAME("Encoder Advanced Property Page"), punk, IDD_ADVPROPS, IDS_AUDIO_ADVANCED_TITLE),
+        m_pAEProps(NULL) {
     ASSERT(phr);
 
     InitCommonControls();
@@ -71,13 +69,12 @@ CMpegAudEncPropertyPageAdv::CMpegAudEncPropertyPageAdv(LPUNKNOWN punk, HRESULT *
 // OnConnect
 //
 // Give us the filter to communicate with
-HRESULT CMpegAudEncPropertyPageAdv::OnConnect(IUnknown *pUnknown)
-{
+HRESULT CMpegAudEncPropertyPageAdv::OnConnect(IUnknown *pUnknown) {
     ASSERT(m_pAEProps == NULL);
 
     // Ask the filter for it's control interface
 
-    HRESULT hr = pUnknown->QueryInterface(IID_IAudioEncoderProperties,(void **)&m_pAEProps);
+    HRESULT hr = pUnknown->QueryInterface(IID_IAudioEncoderProperties, (void **) &m_pAEProps);
     if (FAILED(hr) || !m_pAEProps)
         return E_NOINTERFACE;
 
@@ -106,8 +103,7 @@ HRESULT CMpegAudEncPropertyPageAdv::OnConnect(IUnknown *pUnknown)
 //
 // Release the interface
 
-HRESULT CMpegAudEncPropertyPageAdv::OnDisconnect()
-{
+HRESULT CMpegAudEncPropertyPageAdv::OnDisconnect() {
     // Release the interface
     if (m_pAEProps == NULL)
         return E_UNEXPECTED;
@@ -136,8 +132,7 @@ HRESULT CMpegAudEncPropertyPageAdv::OnDisconnect()
 //
 // Called on dialog creation
 
-HRESULT CMpegAudEncPropertyPageAdv::OnActivate(void)
-{
+HRESULT CMpegAudEncPropertyPageAdv::OnActivate(void) {
     InitPropertiesDialog(m_hwnd);
 
     return NOERROR;
@@ -148,98 +143,93 @@ HRESULT CMpegAudEncPropertyPageAdv::OnActivate(void)
 //
 // Called on dialog destruction
 
-HRESULT CMpegAudEncPropertyPageAdv::OnDeactivate(void)
-{
+HRESULT CMpegAudEncPropertyPageAdv::OnDeactivate(void) {
     return NOERROR;
 }
 
 ////////////////////////////////////////////////////////////////
 // OnReceiveMessage - message handler function
 ////////////////////////////////////////////////////////////////
-BOOL CMpegAudEncPropertyPageAdv::OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
-{
-    switch (uMsg)
-    {
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDC_RADIO_STEREO:
-        case IDC_RADIO_JSTEREO:
-        case IDC_RADIO_DUAL:
-        case IDC_RADIO_MONO:
-            {
+BOOL CMpegAudEncPropertyPageAdv::OnReceiveMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_COMMAND:
+            switch (LOWORD(wParam)) {
+                case IDC_RADIO_STEREO:
+                case IDC_RADIO_JSTEREO:
+                case IDC_RADIO_DUAL:
+                case IDC_RADIO_MONO: {
 
-                DWORD dwChannelMode = LOWORD(wParam) - IDC_RADIO_STEREO;
-                CheckRadioButton(hwnd, IDC_RADIO_STEREO, IDC_RADIO_MONO, LOWORD(wParam));
+                    DWORD dwChannelMode = LOWORD(wParam) - IDC_RADIO_STEREO;
+                    CheckRadioButton(hwnd, IDC_RADIO_STEREO, IDC_RADIO_MONO, LOWORD(wParam));
 
-                if (dwChannelMode == MPG_MD_JOINT_STEREO)
-                    EnableWindow(GetDlgItem(hwnd,IDC_CHECK_FORCE_MS),TRUE);
-                else
-                    EnableWindow(GetDlgItem(hwnd,IDC_CHECK_FORCE_MS),FALSE);
+                    if (dwChannelMode == MPG_MD_JOINT_STEREO)
+                        EnableWindow(GetDlgItem(hwnd, IDC_CHECK_FORCE_MS), TRUE);
+                    else
+                        EnableWindow(GetDlgItem(hwnd, IDC_CHECK_FORCE_MS), FALSE);
 
-                m_pAEProps->set_ChannelMode(dwChannelMode);
-                SetDirty();
+                    m_pAEProps->set_ChannelMode(dwChannelMode);
+                    SetDirty();
+                }
+                    break;
+
+                case IDC_CHECK_ENFORCE_MIN:
+                    m_pAEProps->set_EnforceVBRmin(IsDlgButtonChecked(hwnd, IDC_CHECK_ENFORCE_MIN));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_VOICE:
+                    m_pAEProps->set_VoiceMode(IsDlgButtonChecked(hwnd, IDC_CHECK_VOICE));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_KEEP_ALL_FREQ:
+                    m_pAEProps->set_KeepAllFreq(IsDlgButtonChecked(hwnd, IDC_CHECK_KEEP_ALL_FREQ));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_STRICT_ISO:
+                    m_pAEProps->set_StrictISO(IsDlgButtonChecked(hwnd, IDC_CHECK_STRICT_ISO));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_DISABLE_SHORT_BLOCK:
+                    m_pAEProps->set_NoShortBlock(IsDlgButtonChecked(hwnd, IDC_CHECK_DISABLE_SHORT_BLOCK));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_XING_TAG:
+                    m_pAEProps->set_XingTag(IsDlgButtonChecked(hwnd, IDC_CHECK_XING_TAG));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_FORCE_MS:
+                    m_pAEProps->set_ForceMS(IsDlgButtonChecked(hwnd, IDC_CHECK_FORCE_MS));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_MODE_FIXED:
+                    m_pAEProps->set_ModeFixed(IsDlgButtonChecked(hwnd, IDC_CHECK_MODE_FIXED));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_OVERLAP:
+                    m_pAEProps->set_SampleOverlap(IsDlgButtonChecked(hwnd, IDC_CHECK_OVERLAP));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_STOP:
+                    m_pAEProps->set_SetDuration(IsDlgButtonChecked(hwnd, IDC_CHECK_STOP));
+                    SetDirty();
+                    break;
             }
-            break;
 
-        case IDC_CHECK_ENFORCE_MIN:
-            m_pAEProps->set_EnforceVBRmin(IsDlgButtonChecked(hwnd, IDC_CHECK_ENFORCE_MIN));
-            SetDirty();
-            break;
+            return TRUE;
 
-        case IDC_CHECK_VOICE:
-            m_pAEProps->set_VoiceMode(IsDlgButtonChecked(hwnd, IDC_CHECK_VOICE));
-            SetDirty();
-            break;
+        case WM_DESTROY:
+            return TRUE;
 
-        case IDC_CHECK_KEEP_ALL_FREQ:
-            m_pAEProps->set_KeepAllFreq(IsDlgButtonChecked(hwnd, IDC_CHECK_KEEP_ALL_FREQ));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_STRICT_ISO:
-            m_pAEProps->set_StrictISO(IsDlgButtonChecked(hwnd, IDC_CHECK_STRICT_ISO));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_DISABLE_SHORT_BLOCK:
-            m_pAEProps->set_NoShortBlock(IsDlgButtonChecked(hwnd, IDC_CHECK_DISABLE_SHORT_BLOCK));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_XING_TAG:
-            m_pAEProps->set_XingTag(IsDlgButtonChecked(hwnd, IDC_CHECK_XING_TAG));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_FORCE_MS:
-            m_pAEProps->set_ForceMS(IsDlgButtonChecked(hwnd, IDC_CHECK_FORCE_MS));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_MODE_FIXED:
-            m_pAEProps->set_ModeFixed(IsDlgButtonChecked(hwnd, IDC_CHECK_MODE_FIXED));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_OVERLAP:
-            m_pAEProps->set_SampleOverlap(IsDlgButtonChecked(hwnd, IDC_CHECK_OVERLAP));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_STOP:
-            m_pAEProps->set_SetDuration(IsDlgButtonChecked(hwnd, IDC_CHECK_STOP));
-            SetDirty();
-            break;
-        }
-
-        return TRUE;
-
-    case WM_DESTROY:
-        return TRUE;
-
-    default:
-        return FALSE;
+        default:
+            return FALSE;
     }
 
     return TRUE;
@@ -248,8 +238,7 @@ BOOL CMpegAudEncPropertyPageAdv::OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wPa
 //
 // OnApplyChanges
 //
-HRESULT CMpegAudEncPropertyPageAdv::OnApplyChanges()
-{
+HRESULT CMpegAudEncPropertyPageAdv::OnApplyChanges() {
     m_pAEProps->get_EnforceVBRmin(&m_dwEnforceVBRmin);
     m_pAEProps->get_VoiceMode(&m_dwVoiceMode);
     m_pAEProps->get_KeepAllFreq(&m_dwKeepAllFreq);
@@ -271,8 +260,7 @@ HRESULT CMpegAudEncPropertyPageAdv::OnApplyChanges()
 //
 // Initialize dialogbox controls with proper values
 //
-void CMpegAudEncPropertyPageAdv::InitPropertiesDialog(HWND hwndParent)
-{
+void CMpegAudEncPropertyPageAdv::InitPropertiesDialog(HWND hwndParent) {
     EnableControls(hwndParent, TRUE);
 
     //
@@ -335,8 +323,7 @@ void CMpegAudEncPropertyPageAdv::InitPropertiesDialog(HWND hwndParent)
 ////////////////////////////////////////////////////////////////
 // EnableControls
 ////////////////////////////////////////////////////////////////
-void CMpegAudEncPropertyPageAdv::EnableControls(HWND hwndParent, bool bEnable)
-{
+void CMpegAudEncPropertyPageAdv::EnableControls(HWND hwndParent, bool bEnable) {
     EnableWindow(GetDlgItem(hwndParent, IDC_CHECK_ENFORCE_MIN), bEnable);
     EnableWindow(GetDlgItem(hwndParent, IDC_RADIO_STEREO), bEnable);
     EnableWindow(GetDlgItem(hwndParent, IDC_RADIO_JSTEREO), bEnable);
@@ -358,8 +345,7 @@ void CMpegAudEncPropertyPageAdv::EnableControls(HWND hwndParent, bool bEnable)
 //
 // notifies the property page site of changes
 
-void CMpegAudEncPropertyPageAdv::SetDirty()
-{
+void CMpegAudEncPropertyPageAdv::SetDirty() {
     m_bDirty = TRUE;
     if (m_pPageSite)
         m_pPageSite->OnStatusChange(PROPPAGESTATUS_DIRTY);

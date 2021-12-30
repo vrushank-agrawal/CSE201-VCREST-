@@ -32,9 +32,7 @@
 #include <msacm.h>
 
 
-
-typedef  unsigned long ULONG_PTR, *PULONG_PTR;
-
+typedef unsigned long ULONG_PTR, *PULONG_PTR;
 
 
 typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
@@ -60,9 +58,9 @@ typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
 #undef PACMFORMATDETAILS
 #undef LPACMFORMATDETAILS
 
-#define ACMFORMATDETAILS	ACMFORMATDETAILSW
-#define PACMFORMATDETAILS	PACMFORMATDETAILSW
-#define LPACMFORMATDETAILS	LPACMFORMATDETAILSW
+#define ACMFORMATDETAILS    ACMFORMATDETAILSW
+#define PACMFORMATDETAILS    PACMFORMATDETAILSW
+#define LPACMFORMATDETAILS    LPACMFORMATDETAILSW
 
 
 #define MAKE_ACM_VERSION(mjr, mnr, bld) (((long)(mjr)<<24)| \
@@ -94,78 +92,81 @@ typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
 #define ACMDM_STREAM_PREPARE            (ACMDM_BASE + 81)
 #define ACMDM_STREAM_UNPREPARE          (ACMDM_BASE + 82)
 
-typedef struct tACMDRVFORMATSUGGEST
-{
-    DWORD               cbStruct;           // sizeof(ACMDRVFORMATSUGGEST)
-    DWORD               fdwSuggest;         // Suggest flags
-    LPWAVEFORMATEX      pwfxSrc;            // Source Format
-    DWORD               cbwfxSrc;           // Source Size
-    LPWAVEFORMATEX      pwfxDst;            // Dest format
-    DWORD               cbwfxDst;           // Dest Size
+typedef struct tACMDRVFORMATSUGGEST {
+    DWORD cbStruct;           // sizeof(ACMDRVFORMATSUGGEST)
+    DWORD fdwSuggest;         // Suggest flags
+    LPWAVEFORMATEX pwfxSrc;            // Source Format
+    DWORD cbwfxSrc;           // Source Size
+    LPWAVEFORMATEX pwfxDst;            // Dest format
+    DWORD cbwfxDst;           // Dest Size
 
-} ACMDRVFORMATSUGGEST, *PACMDRVFORMATSUGGEST, FAR *LPACMDRVFORMATSUGGEST;
-
-
-
-
-typedef struct tACMDRVOPENDESC
-{
-    DWORD           cbStruct;       // sizeof(ACMDRVOPENDESC)
-    FOURCC          fccType;        // 'audc'
-    FOURCC          fccComp;        // sub-type (not used--must be 0)
-    DWORD           dwVersion;      // current version of ACM opening you
-    DWORD           dwFlags;        //
-    DWORD           dwError;        // result from DRV_OPEN request
-    LPCWSTR         pszSectionName; // see DRVCONFIGINFO.lpszDCISectionName
-    LPCWSTR         pszAliasName;   // see DRVCONFIGINFO.lpszDCIAliasName
-    DWORD           dnDevNode;	    // devnode id for pnp drivers.
-
-} ACMDRVOPENDESC, *PACMDRVOPENDESC, FAR *LPACMDRVOPENDESC;
+} ACMDRVFORMATSUGGEST, *PACMDRVFORMATSUGGEST, FAR
+*
+LPACMDRVFORMATSUGGEST;
 
 
-typedef struct tACMDRVSTREAMINSTANCE
-{
-    DWORD               cbStruct;
-    LPWAVEFORMATEX      pwfxSrc;
-    LPWAVEFORMATEX      pwfxDst;
-    LPWAVEFILTER        pwfltr;
-    DWORD_PTR           dwCallback;
-    DWORD_PTR           dwInstance;
-    DWORD               fdwOpen;
-    DWORD               fdwDriver;
-    DWORD_PTR           dwDriver;
-    HACMSTREAM          has;
+typedef struct tACMDRVOPENDESC {
+    DWORD cbStruct;       // sizeof(ACMDRVOPENDESC)
+    FOURCC fccType;        // 'audc'
+    FOURCC fccComp;        // sub-type (not used--must be 0)
+    DWORD dwVersion;      // current version of ACM opening you
+    DWORD dwFlags;        //
+    DWORD dwError;        // result from DRV_OPEN request
+    LPCWSTR pszSectionName; // see DRVCONFIGINFO.lpszDCISectionName
+    LPCWSTR pszAliasName;   // see DRVCONFIGINFO.lpszDCIAliasName
+    DWORD dnDevNode;        // devnode id for pnp drivers.
 
-} ACMDRVSTREAMINSTANCE, *PACMDRVSTREAMINSTANCE, FAR *LPACMDRVSTREAMINSTANCE;
+} ACMDRVOPENDESC, *PACMDRVOPENDESC, FAR
+*
+LPACMDRVOPENDESC;
 
-typedef struct tACMDRVSTREAMSIZE
-{
-    DWORD               cbStruct;
-    DWORD               fdwSize;
-    DWORD               cbSrcLength;
-    DWORD               cbDstLength;
 
-} ACMDRVSTREAMSIZE, *PACMDRVSTREAMSIZE, FAR *LPACMDRVSTREAMSIZE;
+typedef struct tACMDRVSTREAMINSTANCE {
+    DWORD cbStruct;
+    LPWAVEFORMATEX pwfxSrc;
+    LPWAVEFORMATEX pwfxDst;
+    LPWAVEFILTER pwfltr;
+    DWORD_PTR dwCallback;
+    DWORD_PTR dwInstance;
+    DWORD fdwOpen;
+    DWORD fdwDriver;
+    DWORD_PTR dwDriver;
+    HACMSTREAM has;
 
-typedef struct tACMDRVSTREAMHEADER FAR *LPACMDRVSTREAMHEADER;
-typedef struct tACMDRVSTREAMHEADER
-{
-    DWORD                   cbStruct;
-    DWORD                   fdwStatus;
-    DWORD_PTR               dwUser;
-    LPBYTE                  pbSrc;
-    DWORD                   cbSrcLength;
-    DWORD                   cbSrcLengthUsed;
-    DWORD_PTR               dwSrcUser;
-    LPBYTE                  pbDst;
-    DWORD                   cbDstLength;
-    DWORD                   cbDstLengthUsed;
-    DWORD_PTR               dwDstUser;
+} ACMDRVSTREAMINSTANCE, *PACMDRVSTREAMINSTANCE, FAR
+*
+LPACMDRVSTREAMINSTANCE;
 
-    DWORD                   fdwConvert;     // flags passed from convert func
-    LPACMDRVSTREAMHEADER    padshNext;      // for async driver queueing
-    DWORD                   fdwDriver;      // driver instance flags
-    DWORD_PTR               dwDriver;       // driver instance data
+typedef struct tACMDRVSTREAMSIZE {
+    DWORD cbStruct;
+    DWORD fdwSize;
+    DWORD cbSrcLength;
+    DWORD cbDstLength;
+
+} ACMDRVSTREAMSIZE, *PACMDRVSTREAMSIZE, FAR
+*
+LPACMDRVSTREAMSIZE;
+
+typedef struct tACMDRVSTREAMHEADER FAR
+*
+LPACMDRVSTREAMHEADER;
+typedef struct tACMDRVSTREAMHEADER {
+    DWORD cbStruct;
+    DWORD fdwStatus;
+    DWORD_PTR dwUser;
+    LPBYTE pbSrc;
+    DWORD cbSrcLength;
+    DWORD cbSrcLengthUsed;
+    DWORD_PTR dwSrcUser;
+    LPBYTE pbDst;
+    DWORD cbDstLength;
+    DWORD cbDstLengthUsed;
+    DWORD_PTR dwDstUser;
+
+    DWORD fdwConvert;     // flags passed from convert func
+    LPACMDRVSTREAMHEADER padshNext;      // for async driver queueing
+    DWORD fdwDriver;      // driver instance flags
+    DWORD_PTR dwDriver;       // driver instance data
 
     //
     //  all remaining fields are used by the ACM for bookkeeping purposes.
@@ -173,12 +174,12 @@ typedef struct tACMDRVSTREAMHEADER
     //  helpful for debugging)--note that the meaning of these fields
     //  may change, so do NOT rely on them in shipping code.
     //
-    DWORD                   fdwPrepared;
-    DWORD_PTR               dwPrepared;
-    LPBYTE                  pbPreparedSrc;
-    DWORD                   cbPreparedSrcLength;
-    LPBYTE                  pbPreparedDst;
-    DWORD                   cbPreparedDstLength;
+    DWORD fdwPrepared;
+    DWORD_PTR dwPrepared;
+    LPBYTE pbPreparedSrc;
+    DWORD cbPreparedSrcLength;
+    LPBYTE pbPreparedDst;
+    DWORD cbPreparedDstLength;
 
 } ACMDRVSTREAMHEADER, *PACMDRVSTREAMHEADER;
 

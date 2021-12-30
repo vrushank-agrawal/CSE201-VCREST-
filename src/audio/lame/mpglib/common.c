@@ -39,8 +39,10 @@
 #include   <types.h>
 #include   <stat.h>
 #else
+
 #include  <sys/types.h>
 #include  <sys/stat.h>
+
 #endif
 
 #include <assert.h>
@@ -54,25 +56,25 @@
 /* In C++ the array first must be prototyped, why ? */
 
 
-    /* *INDENT-OFF* */
-const int tabsel_123 [2] [3] [16] = {
-   { {0,32,64,96,128,160,192,224,256,288,320,352,384,416,448,},
-     {0,32,48,56, 64, 80, 96,112,128,160,192,224,256,320,384,},
-     {0,32,40,48, 56, 64, 80, 96,112,128,160,192,224,256,320,} },
+/* *INDENT-OFF* */
+const int tabsel_123[2][3][16] = {
+        {{0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448,},
+                {0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384,},
+                {0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320,}},
 
-   { {0,32,48,56,64,80,96,112,128,144,160,176,192,224,256,},
-     {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,},
-     {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,} }
+        {{0, 32, 48, 56, 64,  80,  96,  112, 128, 144, 160, 176, 192, 224, 256,},
+                {0, 8,  16, 24, 32, 40, 48, 56,  64,  80,  96,  112, 128, 144, 160,},
+                {0, 8,  16, 24, 32, 40, 48, 56, 64,  80,  96,  112, 128, 144, 160,}}
 };
 
-const long freqs[9] = { 44100, 48000, 32000,
-                        22050, 24000, 16000,
-                        11025, 12000,  8000 };
+const long freqs[9] = {44100, 48000, 32000,
+                       22050, 24000, 16000,
+                       11025, 12000, 8000};
 
-    /* *INDENT-ON* */
+/* *INDENT-ON* */
 
 
-real    muls[27][64];
+real muls[27][64];
 
 #if 0
 static void
@@ -108,8 +110,7 @@ get_II_stuff(struct frame *fr)
 #define MAX_INPUT_FRAMESIZE 4096
 
 int
-head_check(unsigned long head, int check_layer)
-{
+head_check(unsigned long head, int check_layer) {
     /*
        look for a valid header.  
        if check_layer > 0, then require that
@@ -117,7 +118,7 @@ head_check(unsigned long head, int check_layer)
      */
 
     /* bits 13-14 = layer 3 */
-    int     nLayer = 4 - ((head >> 17) & 3);
+    int nLayer = 4 - ((head >> 17) & 3);
 
     if ((head & 0xffe00000) != 0xffe00000) {
         /* syncword */
@@ -183,15 +184,13 @@ print_header_compact(PMPSTR mp, struct frame *fr)
  * into the frame structure
  */
 int
-decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead)
-{
+decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead) {
 
 
     if (newhead & (1 << 20)) {
         fr->lsf = (newhead & (1 << 19)) ? 0x0 : 0x1;
         fr->mpeg25 = 0;
-    }
-    else {
+    } else {
         fr->lsf = 1;
         fr->mpeg25 = 1;
     }
@@ -204,8 +203,7 @@ decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead)
     }
     if (fr->mpeg25) {
         fr->sampling_frequency = 6 + ((newhead >> 10) & 0x3);
-    }
-    else
+    } else
         fr->sampling_frequency = ((newhead >> 10) & 0x3) + (fr->lsf * 3);
 
     fr->error_protection = ((newhead >> 16) & 0x1) ^ 0x1;
@@ -225,53 +223,53 @@ decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead)
     fr->stereo = (fr->mode == MPG_MD_MONO) ? 1 : 2;
 
     switch (fr->lay) {
-    case 1:
-        fr->framesize = (long) tabsel_123[fr->lsf][0][fr->bitrate_index] * 12000;
-        fr->framesize /= freqs[fr->sampling_frequency];
-        fr->framesize = ((fr->framesize + fr->padding) << 2) - 4;
-        fr->down_sample = 0;
-        fr->down_sample_sblimit = SBLIMIT >> (fr->down_sample);
-        break;
+        case 1:
+            fr->framesize = (long) tabsel_123[fr->lsf][0][fr->bitrate_index] * 12000;
+            fr->framesize /= freqs[fr->sampling_frequency];
+            fr->framesize = ((fr->framesize + fr->padding) << 2) - 4;
+            fr->down_sample = 0;
+            fr->down_sample_sblimit = SBLIMIT >> (fr->down_sample);
+            break;
 
-    case 2:
-        fr->framesize = (long) tabsel_123[fr->lsf][1][fr->bitrate_index] * 144000;
-        fr->framesize /= freqs[fr->sampling_frequency];
-        fr->framesize += fr->padding - 4;
-        fr->down_sample = 0;
-        fr->down_sample_sblimit = SBLIMIT >> (fr->down_sample);
-        break;
+        case 2:
+            fr->framesize = (long) tabsel_123[fr->lsf][1][fr->bitrate_index] * 144000;
+            fr->framesize /= freqs[fr->sampling_frequency];
+            fr->framesize += fr->padding - 4;
+            fr->down_sample = 0;
+            fr->down_sample_sblimit = SBLIMIT >> (fr->down_sample);
+            break;
 
-    case 3:
+        case 3:
 #if 0
-        fr->do_layer = do_layer3;
-        if (fr->lsf)
-            ssize = (fr->stereo == 1) ? 9 : 17;
-        else
-            ssize = (fr->stereo == 1) ? 17 : 32;
+            fr->do_layer = do_layer3;
+            if (fr->lsf)
+                ssize = (fr->stereo == 1) ? 9 : 17;
+            else
+                ssize = (fr->stereo == 1) ? 17 : 32;
 #endif
 
 #if 0
-        if (fr->error_protection)
-            ssize += 2;
+            if (fr->error_protection)
+                ssize += 2;
 #endif
-        if (fr->framesize > MAX_INPUT_FRAMESIZE) {
-            lame_report_fnc(mp->report_err, "Frame size too big.\n");
-            fr->framesize = MAX_INPUT_FRAMESIZE;
+            if (fr->framesize > MAX_INPUT_FRAMESIZE) {
+                lame_report_fnc(mp->report_err, "Frame size too big.\n");
+                fr->framesize = MAX_INPUT_FRAMESIZE;
+                return (0);
+            }
+
+
+            if (fr->bitrate_index == 0)
+                fr->framesize = 0;
+            else {
+                fr->framesize = (long) tabsel_123[fr->lsf][2][fr->bitrate_index] * 144000;
+                fr->framesize /= freqs[fr->sampling_frequency] << (fr->lsf);
+                fr->framesize = fr->framesize + fr->padding - 4;
+            }
+            break;
+        default:
+            lame_report_fnc(mp->report_err, "Sorry, layer %d not supported\n", fr->lay);
             return (0);
-        }
-
-
-        if (fr->bitrate_index == 0)
-            fr->framesize = 0;
-        else {
-            fr->framesize = (long) tabsel_123[fr->lsf][2][fr->bitrate_index] * 144000;
-            fr->framesize /= freqs[fr->sampling_frequency] << (fr->lsf);
-            fr->framesize = fr->framesize + fr->padding - 4;
-        }
-        break;
-    default:
-        lame_report_fnc(mp->report_err, "Sorry, layer %d not supported\n", fr->lay);
-        return (0);
     }
     /*    print_header(mp, fr); */
 
@@ -280,8 +278,7 @@ decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead)
 
 
 unsigned int
-getbits(PMPSTR mp, int number_of_bits)
-{
+getbits(PMPSTR mp, int number_of_bits) {
     unsigned long rval;
 
     if (number_of_bits <= 0 || !mp->wordpointer)
@@ -307,8 +304,7 @@ getbits(PMPSTR mp, int number_of_bits)
 }
 
 unsigned int
-getbits_fast(PMPSTR mp, int number_of_bits)
-{
+getbits_fast(PMPSTR mp, int number_of_bits) {
     unsigned long rval;
 
     {
@@ -328,22 +324,19 @@ getbits_fast(PMPSTR mp, int number_of_bits)
 }
 
 unsigned char
-get_leq_8_bits(PMPSTR mp, unsigned int number_of_bits)
-{
+get_leq_8_bits(PMPSTR mp, unsigned int number_of_bits) {
     assert(number_of_bits <= 8);
     return (unsigned char) getbits_fast(mp, number_of_bits);
 }
 
 unsigned short
-get_leq_16_bits(PMPSTR mp, unsigned int number_of_bits)
-{
+get_leq_16_bits(PMPSTR mp, unsigned int number_of_bits) {
     assert(number_of_bits <= 16);
     return (unsigned short) getbits_fast(mp, number_of_bits);
 }
 
 int
-set_pointer(PMPSTR mp, long backstep)
-{
+set_pointer(PMPSTR mp, long backstep) {
     unsigned char *bsbufold;
 
     if (mp->fsizeold < 0 && backstep > 0) {

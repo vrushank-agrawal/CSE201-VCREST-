@@ -33,20 +33,20 @@
 #endif
 
 struct rtpbits {
-    int     sequence:16;     /* sequence number: random */
-    int     pt:7;            /* payload type: 14 for MPEG audio */
-    int     m:1;             /* marker: 0 */
-    int     cc:4;            /* number of CSRC identifiers: 0 */
-    int     x:1;             /* number of extension headers: 0 */
-    int     p:1;             /* is there padding appended: 0 */
-    int     v:2;             /* version: 2 */
+    int sequence: 16;     /* sequence number: random */
+    int pt: 7;            /* payload type: 14 for MPEG audio */
+    int m: 1;             /* marker: 0 */
+    int cc: 4;            /* number of CSRC identifiers: 0 */
+    int x: 1;             /* number of extension headers: 0 */
+    int p: 1;             /* is there padding appended: 0 */
+    int v: 2;             /* version: 2 */
 };
 
 struct rtpheader {           /* in network byte order */
     struct rtpbits b;
-    int     timestamp;       /* start: random */
-    int     ssrc;            /* random */
-    int     iAudioHeader;    /* =0?! */
+    int timestamp;       /* start: random */
+    int ssrc;            /* random */
+    int iAudioHeader;    /* =0?! */
 };
 
 
@@ -70,12 +70,14 @@ struct rtpheader {           /* in network byte order */
 
 #include <sys/types.h>
 #include <sys/socket.h>
+
 #ifdef __int8_t_defined
 #undef uint8_t
 #undef uint16_t
 #undef uint32_t
 #undef uint64_t
 #endif
+
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -89,20 +91,19 @@ struct rtpheader {           /* in network byte order */
 typedef int SOCKET;
 
 struct rtpheader RTPheader;
-SOCKET  rtpsocket;
+SOCKET rtpsocket;
 
 
 /* create a sender socket. */
 int
-rtp_socket(char const *address, unsigned int port, unsigned int TTL)
-{
-    int     iRet, iLoop = 1;
+rtp_socket(char const *address, unsigned int port, unsigned int TTL) {
+    int iRet, iLoop = 1;
     struct sockaddr_in sin;
     unsigned char cTtl = TTL;
-    char    cLoop = 0;
+    char cLoop = 0;
     unsigned int tempaddr;
 
-    int     iSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    int iSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (iSocket < 0) {
         error_printf("socket() failed.\n");
         return 1;
@@ -148,13 +149,11 @@ rtp_socket(char const *address, unsigned int port, unsigned int TTL)
 
 
 static void
-rtp_initialization_extra(void)
-{
+rtp_initialization_extra(void) {
 }
 
 static void
-rtp_close_extra(void)
-{
+rtp_close_extra(void) {
 }
 
 #else
@@ -313,14 +312,13 @@ rtp_close_extra(void)
 
 
 static int
-rtp_send(unsigned char const *data, int len)
-{
-    SOCKET  s = rtpsocket;
+rtp_send(unsigned char const *data, int len) {
+    SOCKET s = rtpsocket;
     struct rtpheader *foo = &RTPheader;
-    char   *buffer = malloc(len + sizeof(struct rtpheader));
-    int    *cast = (int *) foo;
-    int    *outcast = (int *) buffer;
-    int     count, size;
+    char *buffer = malloc(len + sizeof(struct rtpheader));
+    int *cast = (int *) foo;
+    int *outcast = (int *) buffer;
+    int count, size;
 
     outcast[0] = htonl(cast[0]);
     outcast[1] = htonl(cast[1]);
@@ -335,16 +333,14 @@ rtp_send(unsigned char const *data, int len)
 }
 
 void
-rtp_output(unsigned char const *mp3buffer, int mp3size)
-{
+rtp_output(unsigned char const *mp3buffer, int mp3size) {
     rtp_send(mp3buffer, mp3size);
     RTPheader.timestamp += 5;
     RTPheader.b.sequence++;
 }
 
 void
-rtp_initialization(void)
-{
+rtp_initialization(void) {
     struct rtpheader *foo = &RTPheader;
     foo->b.v = 2;
     foo->b.p = 0;
@@ -360,7 +356,6 @@ rtp_initialization(void)
 }
 
 void
-rtp_deinitialization(void)
-{
+rtp_deinitialization(void) {
     rtp_close_extra();
 }

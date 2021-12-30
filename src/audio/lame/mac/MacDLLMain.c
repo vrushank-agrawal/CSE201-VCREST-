@@ -1,1 +1,1 @@
-/*	MacDLLMain.c	*/intmain(){	return	0;}
+/*	MacDLLMain.c	*/intmain() {    return 0;}

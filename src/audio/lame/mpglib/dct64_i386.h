@@ -24,7 +24,7 @@
 
 #include "common.h"
 
-void    dct64(real * a, real * b, real * c);
+void dct64(real *a, real *b, real *c);
 
 
 #endif

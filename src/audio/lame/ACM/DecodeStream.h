@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 /*!
 	\author Steve Lhomme
 	\version \$Id: DecodeStream.h,v 1.2 2006/12/25 21:37:34 robert Exp $
@@ -42,40 +42,44 @@
 struct lame_global_flags;
 
 
-class DecodeStream
-{
+class DecodeStream {
 public:
-	DecodeStream( );
-	virtual ~DecodeStream( );
+    DecodeStream();
 
-	static DecodeStream * Create();
-	static const bool Erase(const DecodeStream * a_ACMStream);
+    virtual ~DecodeStream();
 
-	bool init(const int nSamplesPerSec, const int nChannels, const int nAvgBytesPerSec, const int nSourceBitrate);
-	bool open();
-	bool close(LPBYTE pOutputBuffer, DWORD *pOutputSize);
+    static DecodeStream *Create();
 
-	DWORD GetOutputSizeForInput(const DWORD the_SrcLength) const;
-	bool  ConvertBuffer(LPACMDRVSTREAMHEADER a_StreamHeader);
+    static const bool Erase(const DecodeStream *a_ACMStream);
 
-	static unsigned int GetOutputSampleRate(int samples_per_sec, int bitrate, int channels);
+    bool init(const int nSamplesPerSec, const int nChannels, const int nAvgBytesPerSec, const int nSourceBitrate);
+
+    bool open();
+
+    bool close(LPBYTE pOutputBuffer, DWORD *pOutputSize);
+
+    DWORD GetOutputSizeForInput(const DWORD the_SrcLength) const;
+
+    bool ConvertBuffer(LPACMDRVSTREAMHEADER a_StreamHeader);
+
+    static unsigned int GetOutputSampleRate(int samples_per_sec, int bitrate, int channels);
 
 protected:
-	lame_global_flags * gfp;
+    lame_global_flags *gfp;
 
-	ADbg * my_debug;
-	int my_SamplesPerSec;
-	int my_Channels;
-	int my_AvgBytesPerSec;
-	DWORD  my_SamplesPerBlock;
-	int my_SourceBitrate;
+    ADbg *my_debug;
+    int my_SamplesPerSec;
+    int my_Channels;
+    int my_AvgBytesPerSec;
+    DWORD my_SamplesPerBlock;
+    int my_SourceBitrate;
 
-	MPSTR my_DecodeData;
+    MPSTR my_DecodeData;
 
-	unsigned int m_WorkingBufferUseSize;
-	char m_WorkingBuffer[2304*2]; // should be at least twice my_SamplesPerBlock
+    unsigned int m_WorkingBufferUseSize;
+    char m_WorkingBuffer[2304 * 2]; // should be at least twice my_SamplesPerBlock
 
-	inline int GetBytesPerBlock(DWORD bytes_per_sec, DWORD samples_per_sec, int BlockAlign) const;
+    inline int GetBytesPerBlock(DWORD bytes_per_sec, DWORD samples_per_sec, int BlockAlign) const;
 
 };
 

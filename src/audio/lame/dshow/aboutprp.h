@@ -20,22 +20,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-class CMAEAbout: public CBasePropertyPage
-{
+class CMAEAbout : public CBasePropertyPage {
 public:
 
     CMAEAbout(LPUNKNOWN lpUnk, HRESULT *phr);
-    static CUnknown * WINAPI CreateInstance(LPUNKNOWN lpunk, HRESULT *phr);
+
+    static CUnknown *WINAPI
+    CreateInstance(LPUNKNOWN
+    lpunk,
+    HRESULT *phr
+    );
 
     HRESULT OnActivate();
+
     HRESULT OnConnect(IUnknown *pUnknown);
+
     HRESULT OnDisconnect();
+
     HRESULT OnDeactivate();
+
     HRESULT OnApplyChanges();
-    BOOL OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    BOOL OnReceiveMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
-    void    SetDirty(void);
+    void SetDirty(void);
 
-    BOOL    m_fWindowInactive;
+    BOOL m_fWindowInactive;
 };

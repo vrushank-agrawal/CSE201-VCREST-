@@ -20,41 +20,48 @@
  * Boston, MA 02111-1307, USA.
  */
 
-class CMpegAudEncPropertyPage : public CBasePropertyPage 
-{
+class CMpegAudEncPropertyPage : public CBasePropertyPage {
 
 public:
-    static CUnknown *CreateInstance( LPUNKNOWN punk, HRESULT *phr );
-    CMpegAudEncPropertyPage( LPUNKNOWN punk, HRESULT *phr );
+    static CUnknown *CreateInstance(LPUNKNOWN punk, HRESULT *phr);
+
+    CMpegAudEncPropertyPage(LPUNKNOWN punk, HRESULT *phr);
 
     HRESULT OnConnect(IUnknown *pUnknown);
+
     HRESULT OnDisconnect();
+
     HRESULT OnActivate();
+
     HRESULT OnDeactivate();
+
     HRESULT OnApplyChanges();
-    BOOL OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    BOOL OnReceiveMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
-    void    InitPropertiesDialog(HWND hwndParent);
-    void    EnableControls(HWND hwndParent, bool bEnable);
-    void    SetDirty(void);
+    void InitPropertiesDialog(HWND hwndParent);
 
-    DWORD   m_dwBitrate;                //constant bit rate
-    DWORD   m_dwVariable;               //flag - whether the variable bit rate set 
-    DWORD   m_dwMin;                    //specify a minimum allowed bitrate
-    DWORD   m_dwMax;                    //specify a maximum allowed bitrate
-    DWORD   m_dwQuality;                //encoding quality
-    DWORD   m_dwVBRq;                   //VBR quality setting (0=highest quality, 9=lowest) 
-    DWORD   m_dwSampleRate;
-    DWORD   m_dwChannelMode;
-    DWORD   m_dwCRC;
-    DWORD   m_dwForceMono;
-    DWORD   m_dwCopyright;
-    DWORD   m_dwOriginal;
+    void EnableControls(HWND hwndParent, bool bEnable);
 
-    HWND    m_hwndQuality;               //Slider window handle
+    void SetDirty(void);
 
-    int     m_srIdx;
+    DWORD m_dwBitrate;                //constant bit rate
+    DWORD m_dwVariable;               //flag - whether the variable bit rate set
+    DWORD m_dwMin;                    //specify a minimum allowed bitrate
+    DWORD m_dwMax;                    //specify a maximum allowed bitrate
+    DWORD m_dwQuality;                //encoding quality
+    DWORD m_dwVBRq;                   //VBR quality setting (0=highest quality, 9=lowest)
+    DWORD m_dwSampleRate;
+    DWORD m_dwChannelMode;
+    DWORD m_dwCRC;
+    DWORD m_dwForceMono;
+    DWORD m_dwCopyright;
+    DWORD m_dwOriginal;
+
+    HWND m_hwndQuality;               //Slider window handle
+
+    int m_srIdx;
 
     IAudioEncoderProperties *m_pAEProps;
 };

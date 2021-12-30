@@ -22,11 +22,14 @@
 #ifndef LAYER3_H_INCLUDED
 #define LAYER3_H_INCLUDED
 
-void    hip_init_tables_layer3(void);
-int     decode_layer3_sideinfo(PMPSTR mp);
-int     decode_layer3_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point,
-                  int (*synth_1to1_mono_ptr) (PMPSTR, real *, unsigned char *, int *),
-                  int (*synth_1to1_ptr) (PMPSTR, real *, int, unsigned char *, int *));
-int     layer3_audiodata_precedesframes(PMPSTR mp);
+void hip_init_tables_layer3(void);
+
+int decode_layer3_sideinfo(PMPSTR mp);
+
+int decode_layer3_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point,
+                        int (*synth_1to1_mono_ptr)(PMPSTR, real *, unsigned char *, int *),
+                        int (*synth_1to1_ptr)(PMPSTR, real *, int, unsigned char *, int *));
+
+int layer3_audiodata_precedesframes(PMPSTR mp);
 
 #endif

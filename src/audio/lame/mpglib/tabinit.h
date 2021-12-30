@@ -27,6 +27,6 @@
 extern real decwin[512 + 32];
 extern real *pnts[5];
 
-void    make_decode_tables(long scale);
+void make_decode_tables(long scale);
 
 #endif

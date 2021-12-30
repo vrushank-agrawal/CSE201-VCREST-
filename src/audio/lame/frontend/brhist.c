@@ -60,20 +60,19 @@
 extern Console_IO_t Console_IO;
 
 static struct brhist_struct {
-    int     vbr_bitrate_min_index;
-    int     vbr_bitrate_max_index;
-    int     kbps[BRHIST_WIDTH];
-    int     hist_printed_lines;
-    char    bar_asterisk[512 + 1]; /* buffer filled up with a lot of '*' to print a bar     */
-    char    bar_percent[512 + 1]; /* buffer filled up with a lot of '%' to print a bar     */
-    char    bar_coded[512 + 1]; /* buffer filled up with a lot of ' ' to print a bar     */
-    char    bar_space[512 + 1]; /* buffer filled up with a lot of ' ' to print a bar     */
+    int vbr_bitrate_min_index;
+    int vbr_bitrate_max_index;
+    int kbps[BRHIST_WIDTH];
+    int hist_printed_lines;
+    char bar_asterisk[512 + 1]; /* buffer filled up with a lot of '*' to print a bar     */
+    char bar_percent[512 + 1]; /* buffer filled up with a lot of '%' to print a bar     */
+    char bar_coded[512 + 1]; /* buffer filled up with a lot of ' ' to print a bar     */
+    char bar_space[512 + 1]; /* buffer filled up with a lot of ' ' to print a bar     */
 } brhist;
 
 static int
-calculate_index(const int *const array, const int len, const int value)
-{
-    int     i;
+calculate_index(const int *const array, const int len, const int value) {
+    int i;
 
     for (i = 0; i < len; i++)
         if (array[i] == value)
@@ -82,8 +81,7 @@ calculate_index(const int *const array, const int len, const int value)
 }
 
 int
-brhist_init(const lame_global_flags * gf, const int bitrate_kbps_min, const int bitrate_kbps_max)
-{
+brhist_init(const lame_global_flags *gf, const int bitrate_kbps_min, const int bitrate_kbps_max) {
     brhist.hist_printed_lines = 0;
 
     /* initialize histogramming data structure */
@@ -107,9 +105,8 @@ brhist_init(const lame_global_flags * gf, const int bitrate_kbps_min, const int 
 }
 
 static int
-digits(unsigned number)
-{
-    int     ret = 1;
+digits(unsigned number) {
+    int ret = 1;
 
     if (number >= 100000000) {
         ret += 8;
@@ -132,19 +129,17 @@ digits(unsigned number)
 
 
 static void
-brhist_disp_line(int i, int br_hist_TOT, int br_hist_LR, int full, int frames)
-{
-    char    brppt[14];       /* [%] and max. 10 characters for kbps */
-    int     barlen_TOT;
-    int     barlen_LR;
-    int     res = digits(frames) + 3 + 4 + 1;
+brhist_disp_line(int i, int br_hist_TOT, int br_hist_LR, int full, int frames) {
+    char brppt[14];       /* [%] and max. 10 characters for kbps */
+    int barlen_TOT;
+    int barlen_LR;
+    int res = digits(frames) + 3 + 4 + 1;
 
     if (full != 0) {
         /* some problems when br_hist_TOT \approx br_hist_LR: You can't see that there are still MS frames */
         barlen_TOT = (br_hist_TOT * (Console_IO.disp_width - res) + full - 1) / full; /* round up */
         barlen_LR = (br_hist_LR * (Console_IO.disp_width - res) + full - 1) / full; /* round up */
-    }
-    else {
+    } else {
         barlen_TOT = barlen_LR = 0;
     }
 
@@ -166,37 +161,34 @@ brhist_disp_line(int i, int br_hist_TOT, int br_hist_LR, int full, int frames)
 }
 
 
-
 static void
-progress_line(const lame_global_flags * gf, int full, int frames)
-{
-    char    rst[20] = "\0";
-    int     barlen_TOT = 0, barlen_COD = 0, barlen_RST = 0;
-    int     res = 1;
-    float   time_in_sec = 0;
+progress_line(const lame_global_flags *gf, int full, int frames) {
+    char rst[20] = "\0";
+    int barlen_TOT = 0, barlen_COD = 0, barlen_RST = 0;
+    int res = 1;
+    float time_in_sec = 0;
     unsigned int hour, min, sec;
-    int     fsize = lame_get_framesize(gf);
-    int     srate = lame_get_out_samplerate(gf);
+    int fsize = lame_get_framesize(gf);
+    int srate = lame_get_out_samplerate(gf);
 
     if (full < frames) {
         full = frames;
     }
     if (srate > 0) {
-        time_in_sec = (float)(full - frames);
+        time_in_sec = (float) (full - frames);
         time_in_sec *= fsize;
         time_in_sec /= srate;
     }
-    hour = (unsigned int)(time_in_sec / 3600);
+    hour = (unsigned int) (time_in_sec / 3600);
     time_in_sec -= hour * 3600;
-    min = (unsigned int)(time_in_sec / 60);
+    min = (unsigned int) (time_in_sec / 60);
     time_in_sec -= min * 60;
-    sec = (unsigned int)time_in_sec;
+    sec = (unsigned int) time_in_sec;
     if (full != 0) {
         if (hour > 0) {
             sprintf(rst, "%*d:%02u:%02u", digits(hour), hour, min, sec);
             res += digits(hour) + 1 + 5;
-        }
-        else {
+        } else {
             sprintf(rst, "%02u:%02u", min, sec);
             res += 5;
         }
@@ -207,16 +199,14 @@ progress_line(const lame_global_flags * gf, int full, int frames)
         if (barlen_RST == 0) {
             sprintf(rst, "%.*s", res - 1, brhist.bar_coded);
         }
-    }
-    else {
+    } else {
         barlen_TOT = barlen_COD = barlen_RST = 0;
     }
     if (Console_IO.str_clreoln[0]) { /* ClearEndOfLine available */
         console_printf("\n%.*s%s%.*s%s",
                        barlen_COD, brhist.bar_coded,
                        rst, barlen_RST, brhist.bar_space, Console_IO.str_clreoln);
-    }
-    else {
+    } else {
         console_printf("\n%.*s%s%.*s%*s",
                        barlen_COD, brhist.bar_coded,
                        rst, barlen_RST, brhist.bar_space, Console_IO.disp_width - res - barlen_TOT,
@@ -227,8 +217,7 @@ progress_line(const lame_global_flags * gf, int full, int frames)
 
 
 static int
-stats_value(double x)
-{
+stats_value(double x) {
     if (x > 0.0) {
         console_printf(" %5.1f", x);
         return 6;
@@ -237,8 +226,7 @@ stats_value(double x)
 }
 
 static int
-stats_head(double x, const char *txt)
-{
+stats_head(double x, const char *txt) {
     if (x > 0.0) {
         console_printf(txt);
         return 6;
@@ -248,9 +236,8 @@ stats_head(double x, const char *txt)
 
 
 static void
-stats_line(double *stat)
-{
-    int     n = 1;
+stats_line(double *stat) {
+    int n = 1;
     console_printf("\n   kbps     ");
     n += 12;
     n += stats_head(stat[1], "  mono");
@@ -266,8 +253,7 @@ stats_line(double *stat)
     n += console_printf(" %%");
     if (Console_IO.str_clreoln[0]) { /* ClearEndOfLine available */
         console_printf("%s", Console_IO.str_clreoln);
-    }
-    else {
+    } else {
         console_printf("%*s", Console_IO.disp_width - n, "");
     }
     brhist.hist_printed_lines++;
@@ -287,8 +273,7 @@ stats_line(double *stat)
     n += stats_value(stat[8]);
     if (Console_IO.str_clreoln[0]) { /* ClearEndOfLine available */
         console_printf("%s", Console_IO.str_clreoln);
-    }
-    else {
+    } else {
         console_printf("%*s", Console_IO.disp_width - n, "");
     }
     brhist.hist_printed_lines++;
@@ -300,19 +285,18 @@ stats_line(double *stat)
 #define MS  2
 
 void
-brhist_disp(const lame_global_flags * gf)
-{
-    int     i, lines_used = 0;
-    int     br_hist[BRHIST_WIDTH]; /* how often a frame size was used */
-    int     br_sm_hist[BRHIST_WIDTH][4]; /* how often a special frame size/stereo mode commbination was used */
-    int     st_mode[4];
-    int     bl_type[6];
-    int     frames;          /* total number of encoded frames */
-    int     most_often;      /* usage count of the most often used frame size, but not smaller than Console_IO.disp_width-BRHIST_RES (makes this sense?) and 1 */
-    double  sum = 0.;
+brhist_disp(const lame_global_flags *gf) {
+    int i, lines_used = 0;
+    int br_hist[BRHIST_WIDTH]; /* how often a frame size was used */
+    int br_sm_hist[BRHIST_WIDTH][4]; /* how often a special frame size/stereo mode commbination was used */
+    int st_mode[4];
+    int bl_type[6];
+    int frames;          /* total number of encoded frames */
+    int most_often;      /* usage count of the most often used frame size, but not smaller than Console_IO.disp_width-BRHIST_RES (makes this sense?) and 1 */
+    double sum = 0.;
 
-    double  stat[9] = { 0 };
-    int     st_frames = 0;
+    double stat[9] = {0};
+    int st_frames = 0;
 
 
     brhist.hist_printed_lines = 0; /* printed number of lines for the brhist functionality, used to skip back the right number of lines */
@@ -333,7 +317,7 @@ brhist_disp(const lame_global_flags * gf)
     }
 
     for (i = 0; i < BRHIST_WIDTH; i++) {
-        int     show = br_hist[i];
+        int show = br_hist[i];
         show = show && (lines_used > 1);
         if (show || (i >= brhist.vbr_bitrate_min_index && i <= brhist.vbr_bitrate_max_index))
             brhist_disp_line(i, br_hist[i], br_sm_hist[i][LR], most_often, frames);
@@ -361,8 +345,7 @@ brhist_disp(const lame_global_flags * gf)
 }
 
 void
-brhist_jump_back(void)
-{
+brhist_jump_back(void) {
     console_up(brhist.hist_printed_lines);
     brhist.hist_printed_lines = 0;
 }

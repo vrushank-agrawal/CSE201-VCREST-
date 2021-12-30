@@ -55,11 +55,10 @@
 
 
 double
-GetCPUTime(void)
-{
+GetCPUTime(void) {
     clock_t t;
 
-#if defined(_MSC_VER)  ||  defined(__BORLANDC__)
+#if defined(_MSC_VER) || defined(__BORLANDC__)
     t = clock();
 #else
     t = clock();
@@ -77,7 +76,7 @@ GetCPUTime(void)
  * known bugs:  bad precision with time()
  */
 
-#if defined(__unix__)  ||  defined(SVR4)  ||  defined(BSD)
+#if defined(__unix__) || defined(SVR4) || defined(BSD)
 
 # include <sys/time.h>
 # include <unistd.h>
@@ -92,7 +91,7 @@ GetRealTime(void)
     return t.tv_sec + 1.e-6 * t.tv_usec;
 }
 
-#elif defined(WIN16)  ||  defined(WIN32)
+#elif defined(WIN16) || defined(WIN32)
 
 # include <stdio.h>
 # include <sys/types.h>
@@ -110,9 +109,9 @@ GetRealTime(void)
 #else
 
 double
-GetRealTime(void)
-{                       /* conforming:  SVr4, SVID, POSIX, X/OPEN, BSD 4.3 */ /* BUT NOT GUARANTEED BY ANSI */
-    time_t  t;
+GetRealTime(
+        void) {                       /* conforming:  SVr4, SVID, POSIX, X/OPEN, BSD 4.3 */ /* BUT NOT GUARANTEED BY ANSI */
+    time_t t;
 
     t = time(NULL);
     return (double) t;
@@ -125,12 +124,13 @@ GetRealTime(void)
 # include <io.h>
 # include <fcntl.h>
 #else
+
 # include <unistd.h>
+
 #endif
 
 int
-lame_set_stream_binary_mode(FILE * const fp)
-{
+lame_set_stream_binary_mode(FILE *const fp) {
 #if   defined __EMX__
     _fsetmode(fp, "b");
 #elif defined __BORLANDC__

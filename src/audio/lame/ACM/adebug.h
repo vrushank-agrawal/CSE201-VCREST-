@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 /*!
 	\author Steve Lhomme
 	\version \$Id: adebug.h,v 1.2 2002/01/22 19:45:02 robux4 Exp $

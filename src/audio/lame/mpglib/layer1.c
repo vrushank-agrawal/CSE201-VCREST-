@@ -40,26 +40,23 @@
 static int gd_are_hip_tables_layer1_initialized = 0;
 
 void
-hip_init_tables_layer1(void)
-{
+hip_init_tables_layer1(void) {
     if (gd_are_hip_tables_layer1_initialized) {
         return;
     }
     gd_are_hip_tables_layer1_initialized = 1;
 }
 
-typedef struct sideinfo_layer_I_struct
-{
-    unsigned char allocation[SBLIMIT][2]; 
+typedef struct sideinfo_layer_I_struct {
+    unsigned char allocation[SBLIMIT][2];
     unsigned char scalefactor[SBLIMIT][2];
 } sideinfo_layer_I;
 
 static void
-I_step_one(PMPSTR mp, sideinfo_layer_I* si)
-{
+I_step_one(PMPSTR mp, sideinfo_layer_I *si) {
     struct frame *fr = &(mp->fr);
-    int     jsbound = (fr->mode == MPG_MD_JOINT_STEREO) ? (fr->mode_ext << 2) + 4 : 32;
-    int     i;
+    int jsbound = (fr->mode == MPG_MD_JOINT_STEREO) ? (fr->mode_ext << 2) + 4 : 32;
+    int i;
     memset(si, 0, sizeof(*si));
     assert(fr->stereo == 1 || fr->stereo == 2);
 
@@ -83,10 +80,9 @@ I_step_one(PMPSTR mp, sideinfo_layer_I* si)
             si->scalefactor[i][0] = b0;
             si->scalefactor[i][1] = b1;
         }
-    }
-    else {
+    } else {
         for (i = 0; i < SBLIMIT; i++) {
-            unsigned char b0 =  get_leq_8_bits(mp, 4);          /* values 0-15 */
+            unsigned char b0 = get_leq_8_bits(mp, 4);          /* values 0-15 */
             si->allocation[i][0] = b0;
         }
         for (i = 0; i < SBLIMIT; i++) {
@@ -98,80 +94,74 @@ I_step_one(PMPSTR mp, sideinfo_layer_I* si)
 }
 
 static void
-I_step_two(PMPSTR mp, sideinfo_layer_I *si, real fraction[2][SBLIMIT])
-{
-    double  r0, r1;
+I_step_two(PMPSTR mp, sideinfo_layer_I *si, real fraction[2][SBLIMIT]) {
+    double r0, r1;
     struct frame *fr = &(mp->fr);
-    int     ds_limit = fr->down_sample_sblimit;
-    int     i;
+    int ds_limit = fr->down_sample_sblimit;
+    int i;
 
     assert(fr->stereo == 1 || fr->stereo == 2);
     if (fr->stereo == 2) {
-        int     jsbound = (fr->mode == MPG_MD_JOINT_STEREO) ? (fr->mode_ext << 2) + 4 : 32;
+        int jsbound = (fr->mode == MPG_MD_JOINT_STEREO) ? (fr->mode_ext << 2) + 4 : 32;
         for (i = 0; i < jsbound; i++) {
             unsigned char i0 = si->scalefactor[i][0];
             unsigned char i1 = si->scalefactor[i][1];
             unsigned char n0 = si->allocation[i][0];
             unsigned char n1 = si->allocation[i][1];
-            assert( i0 < 64 );
-            assert( i1 < 64 );
-            assert( n0 < 16 );
-            assert( n1 < 16 );
+            assert(i0 < 64);
+            assert(i1 < 64);
+            assert(n0 < 16);
+            assert(n1 < 16);
             if (n0 > 0) {
                 unsigned short v = get_leq_16_bits(mp, n0 + 1); /* 0-65535 */
                 r0 = (((-1) << n0) + v + 1) * muls[n0 + 1][i0];
-            }
-            else {
+            } else {
                 r0 = 0;
             }
             if (n1 > 0) {
                 unsigned short v = get_leq_16_bits(mp, n1 + 1); /* 0-65535 */
                 r1 = (((-1) << n1) + v + 1) * muls[n1 + 1][i1];
-            }
-            else {
+            } else {
                 r1 = 0;
             }
-            fraction[0][i] = (real)r0;
-            fraction[1][i] = (real)r1;
+            fraction[0][i] = (real) r0;
+            fraction[1][i] = (real) r1;
         }
         for (i = jsbound; i < SBLIMIT; i++) {
             unsigned char i0 = si->scalefactor[i][0];
             unsigned char i1 = si->scalefactor[i][1];
             unsigned char n = si->allocation[i][0];
-            assert( i0 < 64 );
-            assert( i1 < 64 );
-            assert( n < 16 );
+            assert(i0 < 64);
+            assert(i1 < 64);
+            assert(n < 16);
             if (n > 0) {
                 unsigned short v = get_leq_16_bits(mp, n + 1); /* 0-65535 */
                 unsigned int w = (((-1) << n) + v + 1);
                 r0 = w * muls[n + 1][i0];
                 r1 = w * muls[n + 1][i1];
-            }
-            else {
+            } else {
                 r0 = r1 = 0;
             }
-            fraction[0][i] = (real)r0;
-            fraction[1][i] = (real)r1;
+            fraction[0][i] = (real) r0;
+            fraction[1][i] = (real) r1;
         }
         for (i = ds_limit; i < SBLIMIT; i++) {
             fraction[0][i] = 0.0;
             fraction[1][i] = 0.0;
         }
-    }
-    else {
+    } else {
         for (i = 0; i < SBLIMIT; i++) {
             unsigned char n = si->allocation[i][0];
             unsigned char j = si->scalefactor[i][0];
-            assert( j < 64 );
-            assert( n < 16 );
+            assert(j < 64);
+            assert(n < 16);
             if (n > 0) {
                 unsigned short v = get_leq_16_bits(mp, n + 1);
                 r0 = (((-1) << n) + v + 1) * muls[n + 1][j];
-            }
-            else {
+            } else {
                 r0 = 0;
             }
-            fraction[0][i] = (real)r0;
+            fraction[0][i] = (real) r0;
         }
         for (i = ds_limit; i < SBLIMIT; i++) {
             fraction[0][i] = 0.0;
@@ -180,21 +170,19 @@ I_step_two(PMPSTR mp, sideinfo_layer_I *si, real fraction[2][SBLIMIT])
 }
 
 int
-decode_layer1_sideinfo(PMPSTR mp)
-{
+decode_layer1_sideinfo(PMPSTR mp) {
     (void) mp;
     /* FIXME: extract side information and check values */
     return 0;
 }
 
 int
-decode_layer1_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point)
-{
-    real    fraction[2][SBLIMIT]; /* FIXME: change real -> double ? */
+decode_layer1_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point) {
+    real fraction[2][SBLIMIT]; /* FIXME: change real -> double ? */
     sideinfo_layer_I si;
     struct frame *fr = &(mp->fr);
-    int     single = fr->single;
-    int     i, clip = 0;
+    int single = fr->single;
+    int i, clip = 0;
 
     I_step_one(mp, &si);
 
@@ -207,10 +195,9 @@ decode_layer1_frame(PMPSTR mp, unsigned char *pcm_sample, int *pcm_point)
             I_step_two(mp, &si, fraction);
             clip += synth_1to1_mono(mp, (real *) fraction[single], pcm_sample, pcm_point);
         }
-    }
-    else {
+    } else {
         for (i = 0; i < SCALE_BLOCK; i++) {
-            int     p1 = *pcm_point;
+            int p1 = *pcm_point;
             I_step_two(mp, &si, fraction);
             clip += synth_1to1(mp, (real *) fraction[0], 0, pcm_sample, &p1);
             clip += synth_1to1(mp, (real *) fraction[1], 1, pcm_sample, pcm_point);

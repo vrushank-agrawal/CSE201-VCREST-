@@ -48,7 +48,9 @@
 #  include <windows.h>
 #  define msleep(t) Sleep(t)
 #else
+
 #  include <unistd.h>
+
 #  define msleep(t) usleep((t) * 1000)
 #endif
 
@@ -81,7 +83,7 @@ static int mp3done = 0;      /* last frame has been read */
 static GtkWidget *frameprogress; /* progress bar */
 static GtkWidget *framecounter; /* progress counter */
 
-static int subblock_draw[3] = { 1, 1, 1 };
+static int subblock_draw[3] = {1, 1, 1};
 
 /* main window */
 GtkWidget *window;
@@ -95,24 +97,24 @@ GtkWidget *headerbox;        /* mpg123 header info shown here */
 
 
 struct gtkinfostruct {
-    int     filetype;        /* input file type 0=WAV, 1=MP3 */
-    int     msflag;          /* toggle between L&R vs M&S PCM data display */
-    int     chflag;          /* toggle between L & R channels */
-    int     kbflag;          /* toggle between wave # and barks */
-    int     flag123;         /* show mpg123 frame info, OR ISO encoder frame info */
-    double  avebits;         /* running average bits per frame */
-    int     approxbits;      /* (approx) bits per frame */
-    int     maxbits;         /* max bits per frame used so far */
-    int     totemph;         /* total of frames with de-emphasis */
-    int     totms;           /* total frames with ms_stereo */
-    int     totis;           /* total frames with i_stereo */
-    int     totshort;        /* total granules with short blocks */
-    int     totmix;          /* total granules with mixed blocks */
-    int     totpreflag;      /* total granules with preflag */
-    int     pupdate;         /* plot while processing, or only when needed */
-    int     sfblines;        /* plot scalefactor bands in MDCT plot */
-    int     difference;      /* plot original - decoded instead of orig vs. decoded */
-    int     totalframes;
+    int filetype;        /* input file type 0=WAV, 1=MP3 */
+    int msflag;          /* toggle between L&R vs M&S PCM data display */
+    int chflag;          /* toggle between L & R channels */
+    int kbflag;          /* toggle between wave # and barks */
+    int flag123;         /* show mpg123 frame info, OR ISO encoder frame info */
+    double avebits;         /* running average bits per frame */
+    int approxbits;      /* (approx) bits per frame */
+    int maxbits;         /* max bits per frame used so far */
+    int totemph;         /* total of frames with de-emphasis */
+    int totms;           /* total frames with ms_stereo */
+    int totis;           /* total frames with i_stereo */
+    int totshort;        /* total granules with short blocks */
+    int totmix;          /* total granules with mixed blocks */
+    int totpreflag;      /* total granules with preflag */
+    int pupdate;         /* plot while processing, or only when needed */
+    int sfblines;        /* plot scalefactor bands in MDCT plot */
+    int difference;      /* plot original - decoded instead of orig vs. decoded */
+    int totalframes;
 } gtkinfo;
 
 
@@ -124,20 +126,19 @@ hip_t hip;
  * read one frame and encode it
  **********************************************************************/
 int
-gtkmakeframe(void)
-{
-    int     iread = 0;
+gtkmakeframe(void) {
+    int iread = 0;
     static int init = 0;
     static int mpglag;
     static short int Buffer[2][1152];
     short int mpg123pcm[2][1152];
-    int     ch, j;
-    int     mp3count = 0;
-    int     mp3out = 0;
-    int     channels_out;
+    int ch, j;
+    int mp3count = 0;
+    int mp3out = 0;
+    int channels_out;
     unsigned char mp3buffer[LAME_MAXMP3BUFFER];
     static int frameNum = 0;
-    int     framesize = lame_get_framesize(gfp);
+    int framesize = lame_get_framesize(gfp);
 
     channels_out = (lame_get_mode(gfp) == MONO) ? 1 : 2;
 
@@ -169,8 +170,7 @@ gtkmakeframe(void)
         pinfo->frameNum123 = frameNum - 1;
         ++frameNum;
 
-    }
-    else {
+    } else {
 
         /* feed data to encoder until encoder produces some output */
         while (lame_get_frameNum(gfp) == pinfo->frameNum) {
@@ -224,17 +224,15 @@ gtkmakeframe(void)
                     pinfo->pcmdata2[ch][j] = pinfo->pcmdata2[ch][j + pinfo->framesize];
                 for (j = 0; j < pinfo->framesize; j++) {
                     pinfo->pcmdata2[ch][j + pinfo->framesize - DECDELAY] =
-                        (mp3out == -1) ? 0 : mpg123pcm[ch][j];
+                            (mp3out == -1) ? 0 : mpg123pcm[ch][j];
                 }
             }
-        }
-        else {
+        } else {
             if (mpglag == MAXMPGLAG) {
                 error_printf("READ_AHEAD set too low - not enough frame buffering.\n"
                              "MP3x display of input and output PCM data out of sync.\n");
                 error_flush();
-            }
-            else
+            } else
                 mpglag++;
             pinfo->frameNum123 = -1; /* no frame output */
         }
@@ -244,28 +242,27 @@ gtkmakeframe(void)
 
 
 void
-plot_frame(void)
-{
-    int     i, j, n, ch, gr;
+plot_frame(void) {
+    int i, j, n, ch, gr;
     gdouble *xcord, *ycord;
     gdouble xmx, xmn, ymx, ymn;
     double *data, *data2, *data3;
-    char    title2[80];
-    char    label[80], label2[80];
-    char   *title;
+    char title2[80];
+    char label[80], label2[80];
+    char *title;
     plotting_data *pplot1;
     plotting_data *pplot2 = NULL;
 
-    double  en, samp;
+    double en, samp;
     /*int     sampindex, version = 0;*/
-    int     barthick;
+    int barthick;
     static int firstcall = 1;
     static GdkColor *barcolor, *color, *grcolor[2];
     static GdkColor yellow, gray, cyan, magenta, orange, pink, red, green, blue, black, oncolor,
-        offcolor;
-    int     blocktype[2][2];
-    int     headbits;
-    int     mode_gr = 2;
+            offcolor;
+    int blocktype[2][2];
+    int headbits;
+    int mode_gr = 2;
 
     /* find the frame where mpg123 produced output coming from input frame
      * pinfo.  i.e.:   out_frame + out_frame_lag = input_frame  */
@@ -309,9 +306,9 @@ plot_frame(void)
 
     }
 
-  /*******************************************************************
-   * frame header info
-   *******************************************************************/
+    /*******************************************************************
+     * frame header info
+     *******************************************************************/
     if (pplot1->sampfreq)
         samp = pplot1->sampfreq;
     else
@@ -360,9 +357,9 @@ plot_frame(void)
 
 
 
-  /*******************************************************************
-   * block type
-   *******************************************************************/
+    /*******************************************************************
+     * block type
+     *******************************************************************/
     for (gr = 0; gr < mode_gr; gr++)
         if (gtkinfo.flag123)
             blocktype[gr][ch] = pplot1->mpg123blocktype[gr][ch];
@@ -370,9 +367,9 @@ plot_frame(void)
             blocktype[gr][ch] = pplot->blocktype[gr][ch];
 
 
-  /*******************************************************************
-   * draw the PCM data *
-   *******************************************************************/
+    /*******************************************************************
+     * draw the PCM data *
+     *******************************************************************/
     n = 1600;           /* PCM frame + FFT window:   224 + 1152 + 224  */
     xcord = g_malloc(n * sizeof(gdouble));
     ycord = g_malloc(n * sizeof(gdouble));
@@ -437,7 +434,7 @@ plot_frame(void)
         xcord[i] = i;
         if (gtkinfo.msflag)
             ycord[i] = ch ? .5 * (pplot->pcmdata[0][i] - pplot->pcmdata[1][i]) :
-                .5 * (pplot->pcmdata[0][i] + pplot->pcmdata[1][i]);
+                       .5 * (pplot->pcmdata[0][i] + pplot->pcmdata[1][i]);
         else
             ycord[i] = pplot->pcmdata[ch][i];
     }
@@ -448,9 +445,9 @@ plot_frame(void)
     }
 
 
-  /*******************************************************************/
+    /*******************************************************************/
     /* draw the PCM re-synthesis data */
-  /*******************************************************************/
+    /*******************************************************************/
     n = 1152;
     /*
        sprintf(title2,"Re-synthesis  mask_ratio=%3.2f  %3.2f  ener_ratio=%3.2f  %3.2f",
@@ -491,7 +488,7 @@ plot_frame(void)
         if (gtkinfo.msflag)
             ycord[i] = ch ? .5 * (pplot1->pcmdata2[0][j] -
                                   pplot1->pcmdata2[1][j]) :
-                .5 * (pplot1->pcmdata2[0][j] + pplot1->pcmdata2[1][j]);
+                       .5 * (pplot1->pcmdata2[0][j] + pplot1->pcmdata2[1][j]);
         else
             ycord[i] = pplot1->pcmdata2[ch][j];
     }
@@ -502,7 +499,7 @@ plot_frame(void)
         xcord[i + 224] = i + 224;
         if (gtkinfo.msflag)
             ycord[i + 224] = ch ? .5 * (pplot2->pcmdata2[0][i] - pplot2->pcmdata2[1][i]) :
-                .5 * (pplot2->pcmdata2[0][i] + pplot2->pcmdata2[1][i]);
+                             .5 * (pplot2->pcmdata2[0][i] + pplot2->pcmdata2[1][i]);
         else
             ycord[i + 224] = pplot2->pcmdata2[ch][i];
     }
@@ -512,7 +509,7 @@ plot_frame(void)
         for (i = 0; i < n; i++) {
             if (gtkinfo.msflag)
                 ycord[i] -= ch ? .5 * (pplot->pcmdata[0][i] - pplot->pcmdata[1][i]) :
-                    .5 * (pplot->pcmdata[0][i] + pplot->pcmdata[1][i]);
+                            .5 * (pplot->pcmdata[0][i] + pplot->pcmdata[1][i]);
             else
                 ycord[i] -= pplot->pcmdata[ch][i];
         }
@@ -526,39 +523,36 @@ plot_frame(void)
 
 
 
-  /*******************************************************************/
+    /*******************************************************************/
     /* draw the MDCT energy spectrum */
-  /*******************************************************************/
+    /*******************************************************************/
     for (gr = 0; gr < mode_gr; gr++) {
-        int     bits, bits2;
-        char   *blockname = "";
+        int bits, bits2;
+        char *blockname = "";
         switch (blocktype[gr][ch]) {
-        case 0:
-            blockname = "normal";
-            break;
-        case 1:
-            blockname = "start";
-            break;
-        case 2:
-            blockname = "short";
-            break;
-        case 3:
-            blockname = "end";
-            break;
+            case 0:
+                blockname = "normal";
+                break;
+            case 1:
+                blockname = "start";
+                break;
+            case 2:
+                blockname = "short";
+                break;
+            case 3:
+                blockname = "end";
+                break;
         }
         strcpy(label, blockname);
         if (pplot1->mixed[gr][ch])
             strcat(label, "(mixed)");
 
 
-
-
         n = 576;
         if (gtkinfo.flag123) {
             data = pplot1->mpg123xr[gr][0];
             data2 = pplot1->mpg123xr[gr][1];
-        }
-        else {
+        } else {
             data = pplot->xr[gr][0];
             data2 = pplot->xr[gr][1];
         }
@@ -573,8 +567,7 @@ plot_frame(void)
         if (gtkinfo.flag123) {
             bits = pplot1->mainbits[gr][ch];
             bits2 = pplot1->sfbits[gr][ch];
-        }
-        else {
+        } else {
             bits = pplot->LAMEmainbits[gr][ch];
             bits2 = pplot->LAMEsfbits[gr][ch];
         }
@@ -583,14 +576,13 @@ plot_frame(void)
 
         /* draw some hash marks showing scalefactor bands */
         if (gtkinfo.sfblines) {
-            int     fac, nsfb, *scalefac;
+            int fac, nsfb, *scalefac;
             if (blocktype[gr][ch] == SHORT_TYPE) {
                 nsfb = SBMAX_s;
                 i = nsfb - 7;
                 fac = 3;
                 scalefac = gfc->scalefac_band.s;
-            }
-            else {
+            } else {
                 nsfb = SBMAX_l;
                 i = nsfb - 10;
                 fac = 1;
@@ -606,16 +598,14 @@ plot_frame(void)
         }
 
 
-
         ymn = 9e20;
         ymx = -9e20;
         for (i = 0; i < n; i++) {
-            double  coeff;
+            double coeff;
             xcord[i] = i;
             if (gtkinfo.msflag) {
                 coeff = ch ? .5 * (data[i] - data2[i]) : .5 * (data[i] + data2[i]);
-            }
-            else {
+            } else {
                 coeff = ch ? data2[i] : data[i];
             }
             if (blocktype[gr][ch] == SHORT_TYPE && !subblock_draw[i % 3])
@@ -660,10 +650,10 @@ plot_frame(void)
 
 
 
-  /*******************************************************************
-   * draw the psy model energy spectrum (k space)
-   * l3psy.c computes pe, en, thm for THIS granule.
-   *******************************************************************/
+    /*******************************************************************
+     * draw the psy model energy spectrum (k space)
+     * l3psy.c computes pe, en, thm for THIS granule.
+     *******************************************************************/
     if (gtkinfo.kbflag) {
         for (gr = 0; gr < mode_gr; gr++) {
             n = HBLKSIZE; /* only show half the spectrum */
@@ -694,11 +684,10 @@ plot_frame(void)
                               xmn, ymn, xmx, ymx, 1, title2, 0, barcolor);
 
         }
-    }
-    else {
-    /*******************************************************************
-     * draw the psy model energy spectrum (scalefactor bands)
-     *******************************************************************/
+    } else {
+        /*******************************************************************
+         * draw the psy model energy spectrum (scalefactor bands)
+         *******************************************************************/
         for (gr = 0; gr < mode_gr; gr++) {
 
             if (blocktype[gr][ch] == 2) {
@@ -706,8 +695,7 @@ plot_frame(void)
                 data = &pplot->en_s[gr][ch][0];
                 data2 = &pplot->thr_s[gr][ch][0];
                 data3 = &pplot->xfsf_s[gr][ch][0];
-            }
-            else {
+            } else {
                 n = SBMAX_l;
                 data = &pplot->en[gr][ch][0];
                 data2 = &pplot->thr[gr][ch][0];
@@ -775,19 +763,18 @@ plot_frame(void)
         }
     }
 
-  /*******************************************************************
-   * draw scalefactors
-   *******************************************************************/
+    /*******************************************************************
+     * draw scalefactors
+     *******************************************************************/
     for (gr = 0; gr < mode_gr; gr++) {
-        int     ggain;
+        int ggain;
         if (blocktype[gr][ch] == 2) {
             n = 3 * SBMAX_s;
             if (gtkinfo.flag123)
                 data = pplot1->sfb_s[gr][ch];
             else
                 data = pplot->LAMEsfb_s[gr][ch];
-        }
-        else {
+        } else {
             n = SBMAX_l;
             if (gtkinfo.flag123)
                 data = pplot1->sfb[gr][ch];
@@ -815,8 +802,7 @@ plot_frame(void)
                     pplot1->preflag[gr][ch],
                     pplot1->sub_gain[gr][ch][0],
                     pplot1->sub_gain[gr][ch][1], pplot1->sub_gain[gr][ch][2]);
-        }
-        else {
+        } else {
             sprintf(label2, "SFB scale=%i preflag=%i", pplot1->scalefac_scale[gr][ch],
                     pplot1->preflag[gr][ch]);
         }
@@ -846,13 +832,11 @@ plot_frame(void)
 }
 
 
-
 static void
-update_progress(void)
-{
-    char    label[80];
+update_progress(void) {
+    char label[80];
 
-    int     tf = lame_get_totalframes(gfp);
+    int tf = lame_get_totalframes(gfp);
     if (gtkinfo.totalframes > 0)
         tf = gtkinfo.totalframes;
 
@@ -862,10 +846,8 @@ update_progress(void)
 }
 
 
-
 static void
-analyze(void)
-{
+analyze(void) {
     if (idle_keepgoing) {
         idle_count = 0;
         idle_count_max = 0;
@@ -877,25 +859,20 @@ analyze(void)
 }
 
 static void
-plotclick(GtkWidget * widget, gpointer data)
-{
+plotclick(GtkWidget *widget, gpointer data) {
     analyze();
 }
 
 
-
-
 static int
-frameadv1(GtkWidget * widget, gpointer data)
-{
-    int     i;
+frameadv1(GtkWidget *widget, gpointer data) {
+    int i;
     if (idle_keepgoing) {
         if (idle_back) {
             /* frame displayed is the old frame.  to advance, just swap in new frame */
             idle_back--;
             pplot = &Pinfo[READ_AHEAD + idle_back];
-        }
-        else {
+        } else {
             /* advance the frame by reading in a new frame */
             pplot = &Pinfo[READ_AHEAD];
             if (mp3done) {
@@ -903,8 +880,7 @@ frameadv1(GtkWidget * widget, gpointer data)
                 /* if (idle_finish) gtk_main_quit(); */
                 idle_count_max = 0;
                 idle_end = 0;
-            }
-            else {
+            } else {
                 /* read in the next frame */
                 for (i = NUMPINFO - 1; i > 0; i--)
                     memcpy(&Pinfo[i], &Pinfo[i - 1], sizeof(plotting_data));
@@ -925,7 +901,7 @@ frameadv1(GtkWidget * widget, gpointer data)
 
                 pinfo->totbits = 0;
                 {
-                    int     gr, ch;
+                    int gr, ch;
                     for (gr = 0; gr < 2; gr++)
                         for (ch = 0; ch < 2; ch++) {
                             gtkinfo.totshort += (pinfo->mpg123blocktype[gr][ch] == 2);
@@ -955,8 +931,7 @@ frameadv1(GtkWidget * widget, gpointer data)
         update_progress();
         if ((idle_count >= idle_count_max) && (!idle_end))
             analyze();
-    }
-    else {
+    } else {
         /*no processing to do, sleep in order to not monopolize CPU */
         msleep(10);
     }
@@ -965,9 +940,8 @@ frameadv1(GtkWidget * widget, gpointer data)
 
 
 static void
-frameadv(GtkWidget * widget, gpointer data)
-{
-    int     adv;
+frameadv(GtkWidget *widget, gpointer data) {
+    int adv;
 
     if (!strcmp((char *) data, "-1")) {
         /* ignore if we've already gone back as far as possible */
@@ -994,8 +968,7 @@ frameadv(GtkWidget * widget, gpointer data)
     if (idle_keepgoing) {
         /* already running - que up additional frame advance requests */
         idle_count_max += adv;
-    }
-    else {
+    } else {
         /* turn on idleing */
         idle_count_max = adv;
         idle_count = 0;
@@ -1004,12 +977,9 @@ frameadv(GtkWidget * widget, gpointer data)
 }
 
 
-
-
 /* another callback */
 static void
-delete_event(GtkWidget * widget, GdkEvent * event, gpointer data)
-{
+delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) {
     /* set MP3 done flag in case the File/Quit menu item has been selected */
     mp3done = 1;
 
@@ -1017,92 +987,82 @@ delete_event(GtkWidget * widget, GdkEvent * event, gpointer data)
 }
 
 
-
-
-
-
-
 static void
-channel_option(GtkWidget * widget, gpointer data)
-{
-    long    option;
+channel_option(GtkWidget *widget, gpointer data) {
+    long option;
     option = (long) data;
     switch (option) {
-    case 1:
-        gtkinfo.msflag = 0;
-        gtkinfo.chflag = 0;
-        break;
-    case 2:
-        gtkinfo.msflag = 0;
-        gtkinfo.chflag = 1;
-        break;
-    case 3:
-        gtkinfo.msflag = 1;
-        gtkinfo.chflag = 0;
-        break;
-    case 4:
-        gtkinfo.msflag = 1;
-        gtkinfo.chflag = 1;
-    }
-    analyze();
-}
-static void
-spec_option(GtkWidget * widget, gpointer data)
-{
-    long    option;
-    option = (long) data;
-    switch (option) {
-    case 1:
-        gtkinfo.kbflag = 0;
-        break;
-    case 2:
-        gtkinfo.kbflag = 1;
-        break;
-    case 3:
-        gtkinfo.flag123 = 0;
-        break;
-    case 4:
-        gtkinfo.flag123 = 1;
-        break;
-    case 5:
-        gtkinfo.pupdate = 1;
-        break;
-    case 6:
-        gtkinfo.pupdate = 0;
-        break;
-    case 7:
-        gtkinfo.sfblines = !gtkinfo.sfblines;
-        break;
-    case 8:
-        gtkinfo.difference = !gtkinfo.difference;
-        break;
+        case 1:
+            gtkinfo.msflag = 0;
+            gtkinfo.chflag = 0;
+            break;
+        case 2:
+            gtkinfo.msflag = 0;
+            gtkinfo.chflag = 1;
+            break;
+        case 3:
+            gtkinfo.msflag = 1;
+            gtkinfo.chflag = 0;
+            break;
+        case 4:
+            gtkinfo.msflag = 1;
+            gtkinfo.chflag = 1;
     }
     analyze();
 }
 
-static  gint
-key_press_event(GtkWidget * widget, GdkEventKey * event)
-{
+static void
+spec_option(GtkWidget *widget, gpointer data) {
+    long option;
+    option = (long) data;
+    switch (option) {
+        case 1:
+            gtkinfo.kbflag = 0;
+            break;
+        case 2:
+            gtkinfo.kbflag = 1;
+            break;
+        case 3:
+            gtkinfo.flag123 = 0;
+            break;
+        case 4:
+            gtkinfo.flag123 = 1;
+            break;
+        case 5:
+            gtkinfo.pupdate = 1;
+            break;
+        case 6:
+            gtkinfo.pupdate = 0;
+            break;
+        case 7:
+            gtkinfo.sfblines = !gtkinfo.sfblines;
+            break;
+        case 8:
+            gtkinfo.difference = !gtkinfo.difference;
+            break;
+    }
+    analyze();
+}
+
+static gint
+key_press_event(GtkWidget *widget, GdkEventKey *event) {
     /* is a switch() statement in lame forbidden? */
     if (event->keyval == '1') {
         subblock_draw[0] = 1;
         subblock_draw[1] = 0;
         subblock_draw[2] = 0;
         analyze();
-    }
-    else if (event->keyval == '2') {
+    } else if (event->keyval == '2') {
         subblock_draw[0] = 0;
         subblock_draw[1] = 1;
         subblock_draw[2] = 0;
         analyze();
-    }
-    else if (event->keyval == '3') {
+    } else if (event->keyval == '3') {
         subblock_draw[0] = 0;
         subblock_draw[1] = 0;
         subblock_draw[2] = 1;
         analyze();
-    }
-    else if (event->keyval == '0') {
+    } else if (event->keyval == '0') {
         subblock_draw[0] = 1;
         subblock_draw[1] = 1;
         subblock_draw[2] = 1;
@@ -1119,8 +1079,7 @@ key_press_event(GtkWidget * widget, GdkEventKey * event)
   \return a pointer to a string which describes the version of mp3x.
 */
 const char *
-get_mp3x_version(void)
-{
+get_mp3x_version(void) {
 #if   MP3X_ALPHA_VERSION > 0
     static /*@observer@ */ const char *const str =
         XSTR(MP3X_MAJOR_VERSION) "." XSTR(MP3X_MINOR_VERSION)
@@ -1131,7 +1090,7 @@ get_mp3x_version(void)
         " (beta " XSTR(MP3X_BETA_VERSION) ", " __DATE__ ")";
 #else
     static /*@observer@ */ const char *const str =
-        XSTR(MP3X_MAJOR_VERSION) "." XSTR(MP3X_MINOR_VERSION);
+            XSTR(MP3X_MAJOR_VERSION) "." XSTR(MP3X_MINOR_VERSION);
 #endif
 
     return str;
@@ -1139,12 +1098,11 @@ get_mp3x_version(void)
 
 
 static void
-text_window(GtkWidget * widget, gpointer data)
-{
-    long    option;
+text_window(GtkWidget *widget, gpointer data) {
+    long option;
     GtkWidget *hbox, *vbox, *button, *box;
     GtkWidget *textwindow, *vscrollbar;
-    char    text[256];
+    char text[256];
 
     option = (long) data;
 
@@ -1166,123 +1124,122 @@ text_window(GtkWidget * widget, gpointer data)
 
 
     switch (option) {
-    case 0:
-        gtk_window_set_title(GTK_WINDOW(textwindow), "Documentation");
-        gtk_widget_set_usize(box, 450, 500);
-        gtk_text_set_word_wrap(GTK_TEXT(box), TRUE);
-        /* text should be moved outside this function, may be in a separate file */
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "Frame header information: "
-                        "First the bitrate, sampling frequency and mono, stereo or jstereo "
-                        "indicators are displayed .  If the bitstream is jstereo, then mid/side "
-                        "stereo or intensity stereo may be on (indicated in red).  If "
-                        "de-emphasis is used, this is also indicated in red.  The mdb value is "
-                        "main_data_begin.  The encoded data starts this many bytes *before* the "
-                        "frame header.  A large value of mdb means the bitstream has saved some "
-                        "bits into the reservoir, which it may allocate for some future frame. "
-                        "The two numbers after mdb are the size (in bits) used to encode the "
-                        "MDCT coefficients for this frame, followed byt the size of the bit "
-                        "resevoir before encoding this frame.  The maximum frame size and a "
-                        "running average are given in the Stats pull down menu.  A large "
-                        "maximum frame size indicates the bitstream has made use of the bit "
-                        "reservoir. \n\n", -1);
+        case 0:
+            gtk_window_set_title(GTK_WINDOW(textwindow), "Documentation");
+            gtk_widget_set_usize(box, 450, 500);
+            gtk_text_set_word_wrap(GTK_TEXT(box), TRUE);
+            /* text should be moved outside this function, may be in a separate file */
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "Frame header information: "
+                            "First the bitrate, sampling frequency and mono, stereo or jstereo "
+                            "indicators are displayed .  If the bitstream is jstereo, then mid/side "
+                            "stereo or intensity stereo may be on (indicated in red).  If "
+                            "de-emphasis is used, this is also indicated in red.  The mdb value is "
+                            "main_data_begin.  The encoded data starts this many bytes *before* the "
+                            "frame header.  A large value of mdb means the bitstream has saved some "
+                            "bits into the reservoir, which it may allocate for some future frame. "
+                            "The two numbers after mdb are the size (in bits) used to encode the "
+                            "MDCT coefficients for this frame, followed byt the size of the bit "
+                            "resevoir before encoding this frame.  The maximum frame size and a "
+                            "running average are given in the Stats pull down menu.  A large "
+                            "maximum frame size indicates the bitstream has made use of the bit "
+                            "reservoir. \n\n", -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "PCM data (top graph): "
-                        "The PCM data is plotted in black.  The layer3 frame is divided into 2 "
-                        "granules of 576 samples (marked with yellow vertical lines).  In the "
-                        "case of normal, start and stop blocks, the MDCT coefficients for each "
-                        "granule are computed using a 1152 sample window centered over the "
-                        "granule.  In the case of short blocks, the granule is further divided "
-                        "into 3 blocks of 192 samples (also marked with yellow vertical lines)."
-                        "The MDCT coefficients for these blocks are computed using 384 sample "
-                        "windows centered over the 192 sample window.  (This info not available "
-                        "when analyzing .mp3 files.)  For the psycho-acoustic model, a windowed "
-                        "FFT is computed for each granule.  The range of these windows "
-                        "is denoted by the blue and green bars.\n\n", -1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "PCM data (top graph): "
+                            "The PCM data is plotted in black.  The layer3 frame is divided into 2 "
+                            "granules of 576 samples (marked with yellow vertical lines).  In the "
+                            "case of normal, start and stop blocks, the MDCT coefficients for each "
+                            "granule are computed using a 1152 sample window centered over the "
+                            "granule.  In the case of short blocks, the granule is further divided "
+                            "into 3 blocks of 192 samples (also marked with yellow vertical lines)."
+                            "The MDCT coefficients for these blocks are computed using 384 sample "
+                            "windows centered over the 192 sample window.  (This info not available "
+                            "when analyzing .mp3 files.)  For the psycho-acoustic model, a windowed "
+                            "FFT is computed for each granule.  The range of these windows "
+                            "is denoted by the blue and green bars.\n\n", -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "PCM re-synthesis data (second graph): "
-                        "Same as the PCM window described above.  The data displayed is the "
-                        "result of encoding and then decoding the original sample. \n\n", -1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "PCM re-synthesis data (second graph): "
+                            "Same as the PCM window described above.  The data displayed is the "
+                            "result of encoding and then decoding the original sample. \n\n", -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "MDCT windows: "
-                        "Shows the energy in the MDCT spectrum for granule 0 (left window) "
-                        "and granule 1 (right window).  The text also shows the blocktype "
-                        "used, the number of bits used to encode the coefficients and the "
-                        "number of extra bits allocated from the reservoir.  The MDCT pull down "
-                        "window will toggle between the original unquantized MDCT coefficients "
-                        "and the compressed (quantized) coefficients.\n\n", -1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "MDCT windows: "
+                            "Shows the energy in the MDCT spectrum for granule 0 (left window) "
+                            "and granule 1 (right window).  The text also shows the blocktype "
+                            "used, the number of bits used to encode the coefficients and the "
+                            "number of extra bits allocated from the reservoir.  The MDCT pull down "
+                            "window will toggle between the original unquantized MDCT coefficients "
+                            "and the compressed (quantized) coefficients.\n\n", -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "FFT window: "
-                        "The gray bars show the energy in the FFT spectrum used by the "
-                        "psycho-acoustic model.  Granule 0 is in the left window, granule 1 in "
-                        "the right window.  The green and blue bars show how much distortion is "
-                        "allowable, as computed by the psycho-acoustic model. The red bars show "
-                        "the actual distortion after encoding.  There is one FFT for each "
-                        "granule, computed with a 1024 Hann window centered over the "
-                        "appropriate granule.  (the range of this 1024 sample window is shown "
-                        "by the blue and green bars in the PCM data window).  The Spectrum pull "
-                        "down window will toggle between showing the energy in equally spaced "
-                        "frequency domain and the scale factor bands used by layer3.  Finally, "
-                        "the perceptual entropy, total energy and number of scalefactor bands "
-                        "with audible distortion is shown.  (This info not available when "
-                        "analyzing .mp3 files.)", -1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "FFT window: "
+                            "The gray bars show the energy in the FFT spectrum used by the "
+                            "psycho-acoustic model.  Granule 0 is in the left window, granule 1 in "
+                            "the right window.  The green and blue bars show how much distortion is "
+                            "allowable, as computed by the psycho-acoustic model. The red bars show "
+                            "the actual distortion after encoding.  There is one FFT for each "
+                            "granule, computed with a 1024 Hann window centered over the "
+                            "appropriate granule.  (the range of this 1024 sample window is shown "
+                            "by the blue and green bars in the PCM data window).  The Spectrum pull "
+                            "down window will toggle between showing the energy in equally spaced "
+                            "frequency domain and the scale factor bands used by layer3.  Finally, "
+                            "the perceptual entropy, total energy and number of scalefactor bands "
+                            "with audible distortion is shown.  (This info not available when "
+                            "analyzing .mp3 files.)", -1);
 
-        break;
-    case 1:
-        /* Set the about box information */
-        gtk_window_set_title(GTK_WINDOW(textwindow), "About");
-        gtk_widget_set_usize(box, 350, 260);
+            break;
+        case 1:
+            /* Set the about box information */
+            gtk_window_set_title(GTK_WINDOW(textwindow), "About");
+            gtk_widget_set_usize(box, 350, 260);
 
-        sprintf(text, "LAME version %s \n%s\n\n", get_lame_version(), get_lame_url());
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "LAME version %s \n%s\n\n", get_lame_version(), get_lame_url());
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
 
-        sprintf(text, "psycho-acoustic model:  GPSYCHO version %s\n", get_psy_version());
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "psycho-acoustic model:  GPSYCHO version %s\n", get_psy_version());
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
 
-        sprintf(text, "frame analyzer: MP3x version %s\n\n", get_mp3x_version());
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "frame analyzer: MP3x version %s\n\n", get_mp3x_version());
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "decoder:  mpg123/mpglib  .59q  \nMichael Hipp (www.mpg123.de)\n\n", -1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "decoder:  mpg123/mpglib  .59q  \nMichael Hipp (www.mpg123.de)\n\n", -1);
 
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
-                        "Encoder, decoder & psy-models based on ISO\ndemonstration source. ", -1);
-        break;
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL,
+                            "Encoder, decoder & psy-models based on ISO\ndemonstration source. ", -1);
+            break;
 
-    case 2:
-        gtk_window_set_title(GTK_WINDOW(textwindow), "Statistics");
-        gtk_widget_set_usize(box, 350, 260);
-        sprintf(text, "frames processed so far: %i \n", Pinfo[0].frameNum + 1);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "granules processed so far: %i \n\n", 4 * (Pinfo[0].frameNum + 1));
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "mean bits/frame (approximate): %i\n", gtkinfo.approxbits);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "mean bits/frame (from LAME): %i\n", 4 * Pinfo[0].mean_bits);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "bitsize of largest frame: %i \n", gtkinfo.maxbits);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "average bits/frame: %3.1f \n\n", gtkinfo.avebits);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "ms_stereo frames: %i \n", gtkinfo.totms);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "i_stereo frames: %i \n", gtkinfo.totis);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "de-emphasis frames: %i \n", gtkinfo.totemph);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "short block granules: %i \n", gtkinfo.totshort);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "mixed block granules: %i \n", gtkinfo.totmix);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        sprintf(text, "preflag granules: %i \n", gtkinfo.totpreflag);
-        gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
-        break;
+        case 2:
+            gtk_window_set_title(GTK_WINDOW(textwindow), "Statistics");
+            gtk_widget_set_usize(box, 350, 260);
+            sprintf(text, "frames processed so far: %i \n", Pinfo[0].frameNum + 1);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "granules processed so far: %i \n\n", 4 * (Pinfo[0].frameNum + 1));
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "mean bits/frame (approximate): %i\n", gtkinfo.approxbits);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "mean bits/frame (from LAME): %i\n", 4 * Pinfo[0].mean_bits);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "bitsize of largest frame: %i \n", gtkinfo.maxbits);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "average bits/frame: %3.1f \n\n", gtkinfo.avebits);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "ms_stereo frames: %i \n", gtkinfo.totms);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "i_stereo frames: %i \n", gtkinfo.totis);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "de-emphasis frames: %i \n", gtkinfo.totemph);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "short block granules: %i \n", gtkinfo.totshort);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "mixed block granules: %i \n", gtkinfo.totmix);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            sprintf(text, "preflag granules: %i \n", gtkinfo.totpreflag);
+            gtk_text_insert(GTK_TEXT(box), NULL, NULL, NULL, text, -1);
+            break;
     }
-
 
 
     gtk_widget_show(vscrollbar);
@@ -1334,44 +1291,44 @@ text_window(GtkWidget * widget, gpointer data)
 #define func(name)   (GtkItemFactoryCallback) (name)
 
 static const GtkItemFactoryEntry menu_items[] = {
-    {"/_File", NULL, NULL, 0, "<Branch>"},
+        {"/_File", NULL, NULL, 0, "<Branch>"},
 #if 0
-    {"/File/_New", C(N), func(print_hello), 0, NULL},
-    {"/File/_Open", C(O), func(print_hello), 0, NULL},
-    {"/File/_Save", C(S), func(print_hello), 0, NULL},
-    {"/File/Save _As", NULL, NULL, 0, NULL},
-    {"/File/sep1", NULL, NULL, 0, "<Separator>"},
-    {"/File/Quit", C(Q), func(gtk_main_quit), 0, NULL},
+        {"/File/_New", C(N), func(print_hello), 0, NULL},
+        {"/File/_Open", C(O), func(print_hello), 0, NULL},
+        {"/File/_Save", C(S), func(print_hello), 0, NULL},
+        {"/File/Save _As", NULL, NULL, 0, NULL},
+        {"/File/sep1", NULL, NULL, 0, "<Separator>"},
+        {"/File/Quit", C(Q), func(gtk_main_quit), 0, NULL},
 #endif
-    {"/File/_Quit", C(Q), func(delete_event), 0, NULL},
+        {"/File/_Quit", C(Q), func(delete_event), 0, NULL},
 
-    {"/_Plotting", NULL, NULL, 0, "<Branch>"},
-    {"/Plotting/_While advancing", NULL, func(spec_option), 5, NULL},
-    {"/Plotting/_After advancing", NULL, func(spec_option), 6, NULL},
-    {"/Plotting/Toggle SFB lines", NULL, func(spec_option), 7, NULL},
-    {"/Plotting/Toggle orig-diff", NULL, func(spec_option), 8, NULL},
+        {"/_Plotting", NULL, NULL, 0, "<Branch>"},
+        {"/Plotting/_While advancing", NULL, func(spec_option), 5, NULL},
+        {"/Plotting/_After advancing", NULL, func(spec_option), 6, NULL},
+        {"/Plotting/Toggle SFB lines", NULL, func(spec_option), 7, NULL},
+        {"/Plotting/Toggle orig-diff", NULL, func(spec_option), 8, NULL},
 
-    {"/_Channel", NULL, NULL, 0, "<Branch>"},
-    {"/Channel/show _Left", NULL, func(channel_option), 1, NULL},
-    {"/Channel/show _Right", NULL, func(channel_option), 2, NULL},
-    {"/Channel/show _Mid", NULL, func(channel_option), 3, NULL},
-    {"/Channel/show _Side", NULL, func(channel_option), 4, NULL},
+        {"/_Channel", NULL, NULL, 0, "<Branch>"},
+        {"/Channel/show _Left", NULL, func(channel_option), 1, NULL},
+        {"/Channel/show _Right", NULL, func(channel_option), 2, NULL},
+        {"/Channel/show _Mid", NULL, func(channel_option), 3, NULL},
+        {"/Channel/show _Side", NULL, func(channel_option), 4, NULL},
 
-    {"/_Spectrum", NULL, NULL, 0, "<Branch>"},
-    {"/Spectrum/_Scalefactor bands", NULL, func(spec_option), 1, NULL},
-    {"/Spectrum/_Wave number", NULL, func(spec_option), 2, NULL},
+        {"/_Spectrum", NULL, NULL, 0, "<Branch>"},
+        {"/Spectrum/_Scalefactor bands", NULL, func(spec_option), 1, NULL},
+        {"/Spectrum/_Wave number", NULL, func(spec_option), 2, NULL},
 
-    {"/_MDCT", NULL, NULL, 0, "<Branch>"},
-    {"/MDCT/_Original", NULL, func(spec_option), 3, NULL},
-    {"/MDCT/_Compressed", NULL, func(spec_option), 4, NULL},
-    {"/MDCT/_Toggle SFB lines", NULL, func(spec_option), 7, NULL},
+        {"/_MDCT", NULL, NULL, 0, "<Branch>"},
+        {"/MDCT/_Original", NULL, func(spec_option), 3, NULL},
+        {"/MDCT/_Compressed", NULL, func(spec_option), 4, NULL},
+        {"/MDCT/_Toggle SFB lines", NULL, func(spec_option), 7, NULL},
 
-    {"/_Stats", NULL, NULL, 0, "<Branch>"},
-    {"/Stats/_Show", NULL, func(text_window), 2, NULL},
+        {"/_Stats", NULL, NULL, 0, "<Branch>"},
+        {"/Stats/_Show", NULL, func(text_window), 2, NULL},
 
-    {"/_Help", NULL, NULL, 0, "<LastBranch>"},
-    {"/_Help/_Documentation", NULL, func(text_window), 0, NULL},
-    {"/_Help/_About", NULL, func(text_window), 1, NULL},
+        {"/_Help", NULL, NULL, 0, "<LastBranch>"},
+        {"/_Help/_Documentation", NULL, func(text_window), 0, NULL},
+        {"/_Help/_About", NULL, func(text_window), 1, NULL},
 };
 
 #undef C
@@ -1379,8 +1336,7 @@ static const GtkItemFactoryEntry menu_items[] = {
 
 
 static void
-get_main_menu(GtkWidget * windows, GtkWidget ** menubar)
-{
+get_main_menu(GtkWidget *windows, GtkWidget **menubar) {
     unsigned int nmenu_items = sizeof(menu_items) / sizeof(menu_items[0]);
     GtkItemFactory *item_factory;
     GtkAccelGroup *accel_group;
@@ -1412,23 +1368,8 @@ get_main_menu(GtkWidget * windows, GtkWidget ** menubar)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int
-gtkcontrol(lame_global_flags * gfp2, char *inPath)
-{
+gtkcontrol(lame_global_flags *gfp2, char *inPath) {
     /* GtkWidget is the storage type for widgets */
     GtkWidget *button;
     GtkAdjustment *adj;
@@ -1439,8 +1380,8 @@ gtkcontrol(lame_global_flags * gfp2, char *inPath)
     GtkWidget *table;        /* table for all the plotting areas */
     GtkWidget *menubar;
 
-    gint    tableops, graphx, graphy;
-    char    frameinfo[80];
+    gint tableops, graphx, graphy;
+    char frameinfo[80];
 
     graphx = 600;       /* minimum allowed size of pixmap */
     graphy = 95;
@@ -1610,8 +1551,6 @@ gtkcontrol(lame_global_flags * gfp2, char *inPath)
     sfbbox[1] = gpk_plot_new(graphy, graphy);
     gtk_table_attach(GTK_TABLE(table), sfbbox[1], 1, 2, 4, 5, tableops, tableops, 2, 2);
     gtk_widget_show(sfbbox[1]);
-
-
 
 
     gtk_idle_add((GtkFunction) frameadv1, NULL);

@@ -20,36 +20,43 @@
  * Boston, MA 02111-1307, USA.
  */
 
-class CMpegAudEncPropertyPageAdv : public CBasePropertyPage 
-{
+class CMpegAudEncPropertyPageAdv : public CBasePropertyPage {
 
 public:
-    static CUnknown *CreateInstance( LPUNKNOWN punk, HRESULT *phr );
-    CMpegAudEncPropertyPageAdv( LPUNKNOWN punk, HRESULT *phr );
+    static CUnknown *CreateInstance(LPUNKNOWN punk, HRESULT *phr);
+
+    CMpegAudEncPropertyPageAdv(LPUNKNOWN punk, HRESULT *phr);
 
     HRESULT OnConnect(IUnknown *pUnknown);
+
     HRESULT OnDisconnect();
+
     HRESULT OnActivate();
+
     HRESULT OnDeactivate();
+
     HRESULT OnApplyChanges();
-    BOOL OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    BOOL OnReceiveMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
-    void    InitPropertiesDialog(HWND hwndParent);
-    void    EnableControls(HWND hwndParent, bool bEnable);
-    void    SetDirty(void);
+    void InitPropertiesDialog(HWND hwndParent);
 
-    DWORD   m_dwEnforceVBRmin;
-    DWORD   m_dwVoiceMode;
-    DWORD   m_dwKeepAllFreq;
-    DWORD   m_dwStrictISO;
-    DWORD   m_dwNoShortBlock;
-    DWORD   m_dwXingTag;
-    DWORD   m_dwChannelMode;
-    DWORD   m_dwForceMS;
-    DWORD   m_dwModeFixed;
-    DWORD   m_dwOverlap;
-    DWORD   m_dwSetStop;
+    void EnableControls(HWND hwndParent, bool bEnable);
+
+    void SetDirty(void);
+
+    DWORD m_dwEnforceVBRmin;
+    DWORD m_dwVoiceMode;
+    DWORD m_dwKeepAllFreq;
+    DWORD m_dwStrictISO;
+    DWORD m_dwNoShortBlock;
+    DWORD m_dwXingTag;
+    DWORD m_dwChannelMode;
+    DWORD m_dwForceMS;
+    DWORD m_dwModeFixed;
+    DWORD m_dwOverlap;
+    DWORD m_dwSetStop;
 
     IAudioEncoderProperties *m_pAEProps;
 };

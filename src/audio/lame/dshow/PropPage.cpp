@@ -30,39 +30,39 @@
 #include "Reg.h"
 
 // strings to appear in comboboxes
-const char * szBitRateString[2][14] = {
-    {
-        "32 kbps","40 kbps","48 kbps","56 kbps",
-        "64 kbps","80 kbps","96 kbps","112 kbps",
-        "128 kbps","160 kbps","192 kbps","224 kbps",
-        "256 kbps","320 kbps"
-    },
-    {
-        "8 kbps","16 kbps","24 kbps","32 kbps",
-        "40 kbps","48 kbps","56 kbps","64 kbps",
-        "80 kbps","96 kbps","112 kbps","128 kbps",
-        "144 kbps","160 kbps"
-    }
+const char *szBitRateString[2][14] = {
+        {
+                "32 kbps", "40 kbps", "48 kbps", "56 kbps",
+                "64 kbps", "80 kbps", "96 kbps", "112 kbps",
+                "128 kbps", "160 kbps", "192 kbps", "224 kbps",
+                "256 kbps", "320 kbps"
+        },
+        {
+                "8 kbps",  "16 kbps", "24 kbps", "32 kbps",
+                "40 kbps", "48 kbps", "56 kbps", "64 kbps",
+                "80 kbps",  "96 kbps",  "112 kbps", "128 kbps",
+                "144 kbps", "160 kbps"
+        }
 };
 
 LPCSTR szQualityDesc[10] = {
-    "High", "High", "High", "High", "High",
-    "Medium", "Medium",
-    "Low", "Low",
-    "Fast mode"
+        "High", "High", "High", "High", "High",
+        "Medium", "Medium",
+        "Low", "Low",
+        "Fast mode"
 };
 
 LPCSTR szVBRqDesc[10] = {
-    "0 - ~1:4",
-    "1 - ~1:5",
-    "2 - ~1:6",
-    "3 - ~1:7",
-    "4 - ~1:9",
-    "5 - ~1:9",
-    "6 - ~1:10",
-    "7 - ~1:11",
-    "8 - ~1:12",
-    "9 - ~1:14"
+        "0 - ~1:4",
+        "1 - ~1:5",
+        "2 - ~1:6",
+        "3 - ~1:7",
+        "4 - ~1:9",
+        "5 - ~1:9",
+        "6 - ~1:10",
+        "7 - ~1:11",
+        "8 - ~1:12",
+        "9 - ~1:14"
 };
 
 struct SSampleRate {
@@ -71,31 +71,30 @@ struct SSampleRate {
 };
 
 SSampleRate srRates[9] = {
-    // MPEG-1
-    {48000, "48 kHz"},
-    {44100, "44.1 kHz"},
-    {32000, "32 kHz"},
+        // MPEG-1
+        {48000, "48 kHz"},
+        {44100, "44.1 kHz"},
+        {32000, "32 kHz"},
 
-    // MPEG-2
-    {24000, "24 kHz"},
-    {22050, "22.05 kHz"},
-    {16000, "16 kHz"},
+        // MPEG-2
+        {24000, "24 kHz"},
+        {22050, "22.05 kHz"},
+        {16000, "16 kHz"},
 
-    // MPEG-2.5
-    {12000, "12 kHz"},
-    {11025, "11.025 kHz"},
-    { 8000, "8 kHz"}
+        // MPEG-2.5
+        {12000, "12 kHz"},
+        {11025, "11.025 kHz"},
+        {8000,  "8 kHz"}
 };
 
 ////////////////////////////////////////////////////////////////
 // CreateInstance
 ////////////////////////////////////////////////////////////////
-CUnknown *CMpegAudEncPropertyPage::CreateInstance( LPUNKNOWN punk, HRESULT *phr )
-{
+CUnknown *CMpegAudEncPropertyPage::CreateInstance(LPUNKNOWN punk, HRESULT *phr) {
     CMpegAudEncPropertyPage *pNewObject
-        = new CMpegAudEncPropertyPage( punk, phr );
+            = new CMpegAudEncPropertyPage(punk, phr);
 
-    if( pNewObject == NULL )
+    if (pNewObject == NULL)
         *phr = E_OUTOFMEMORY;
 
     return pNewObject;
@@ -105,10 +104,8 @@ CUnknown *CMpegAudEncPropertyPage::CreateInstance( LPUNKNOWN punk, HRESULT *phr 
 // Constructor
 ////////////////////////////////////////////////////////////////
 CMpegAudEncPropertyPage::CMpegAudEncPropertyPage(LPUNKNOWN punk, HRESULT *phr)
- : CBasePropertyPage(NAME("Encoder Property Page"), 
-                      punk, IDD_AUDIOENCPROPS, IDS_AUDIO_PROPS_TITLE)                      
-    , m_pAEProps(NULL)
-{
+        : CBasePropertyPage(NAME("Encoder Property Page"),
+                            punk, IDD_AUDIOENCPROPS, IDS_AUDIO_PROPS_TITLE), m_pAEProps(NULL) {
     ASSERT(phr);
 
     m_srIdx = 0;
@@ -120,13 +117,12 @@ CMpegAudEncPropertyPage::CMpegAudEncPropertyPage(LPUNKNOWN punk, HRESULT *phr)
 // OnConnect
 //
 // Give us the filter to communicate with
-HRESULT CMpegAudEncPropertyPage::OnConnect(IUnknown *pUnknown)
-{
+HRESULT CMpegAudEncPropertyPage::OnConnect(IUnknown *pUnknown) {
     ASSERT(m_pAEProps == NULL);
 
     // Ask the filter for it's control interface
 
-    HRESULT hr = pUnknown->QueryInterface(IID_IAudioEncoderProperties,(void **)&m_pAEProps);
+    HRESULT hr = pUnknown->QueryInterface(IID_IAudioEncoderProperties, (void **) &m_pAEProps);
     if (FAILED(hr))
         return E_NOINTERFACE;
 
@@ -153,8 +149,7 @@ HRESULT CMpegAudEncPropertyPage::OnConnect(IUnknown *pUnknown)
 //
 // Release the interface
 
-HRESULT CMpegAudEncPropertyPage::OnDisconnect()
-{
+HRESULT CMpegAudEncPropertyPage::OnDisconnect() {
     // Release the interface
     if (m_pAEProps == NULL)
         return E_UNEXPECTED;
@@ -183,8 +178,7 @@ HRESULT CMpegAudEncPropertyPage::OnDisconnect()
 //
 // Called on dialog creation
 
-HRESULT CMpegAudEncPropertyPage::OnActivate(void)
-{
+HRESULT CMpegAudEncPropertyPage::OnActivate(void) {
     InitPropertiesDialog(m_hwnd);
 
     return NOERROR;
@@ -195,175 +189,155 @@ HRESULT CMpegAudEncPropertyPage::OnActivate(void)
 //
 // Called on dialog destruction
 
-HRESULT CMpegAudEncPropertyPage::OnDeactivate(void)
-{
+HRESULT CMpegAudEncPropertyPage::OnDeactivate(void) {
     return NOERROR;
 }
 
 ////////////////////////////////////////////////////////////////
 // OnReceiveMessage - message handler function
 ////////////////////////////////////////////////////////////////
-BOOL CMpegAudEncPropertyPage::OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
-{
-    switch (uMsg)
-    {
-    case WM_HSCROLL:
-        if ((HWND)lParam == m_hwndQuality)
-        {
-            int pos = SendMessage(m_hwndQuality, TBM_GETPOS, 0, 0);
-            if (pos >= 0 && pos < 10)
-            {
-                SetDlgItemText(hwnd,IDC_TEXT_QUALITY,szQualityDesc[pos]);
-                m_pAEProps->set_Quality(pos);
-                SetDirty();
-            }
-        }
-        break;
-
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDC_COMBO_CBR:
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int nBitrate = SendDlgItemMessage(hwnd, IDC_COMBO_CBR, CB_GETCURSEL, 0, 0L);
-                DWORD dwSampleRate;
-                m_pAEProps->get_SampleRate(&dwSampleRate);
-                DWORD dwBitrate;
-
-                if (dwSampleRate >= 32000)
-                {
-                    // Consider MPEG-1
-                    dwBitrate = dwBitRateValue[0][nBitrate];
+BOOL CMpegAudEncPropertyPage::OnReceiveMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_HSCROLL:
+            if ((HWND) lParam == m_hwndQuality) {
+                int pos = SendMessage(m_hwndQuality, TBM_GETPOS, 0, 0);
+                if (pos >= 0 && pos < 10) {
+                    SetDlgItemText(hwnd, IDC_TEXT_QUALITY, szQualityDesc[pos]);
+                    m_pAEProps->set_Quality(pos);
+                    SetDirty();
                 }
-                else
-                {
-                    // Consider MPEG-2/2.5
-                    dwBitrate = dwBitRateValue[1][nBitrate];
-                }
-
-                m_pAEProps->set_Bitrate(dwBitrate);
-
-                SetDirty();
             }
             break;
 
-        case IDC_COMBO_VBRMIN:
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int nVariableMin = SendDlgItemMessage(hwnd, IDC_COMBO_VBRMIN, CB_GETCURSEL, 0, 0L);
-                DWORD dwSampleRate;
-                m_pAEProps->get_SampleRate(&dwSampleRate);
-                DWORD dwMin;
+        case WM_COMMAND:
+            switch (LOWORD(wParam)) {
+                case IDC_COMBO_CBR:
+                    if (HIWORD(wParam) == CBN_SELCHANGE) {
+                        int nBitrate = SendDlgItemMessage(hwnd, IDC_COMBO_CBR, CB_GETCURSEL, 0, 0L);
+                        DWORD dwSampleRate;
+                        m_pAEProps->get_SampleRate(&dwSampleRate);
+                        DWORD dwBitrate;
 
-                if (dwSampleRate >= 32000)
-                {
-                    // Consider MPEG-1
-                    dwMin = dwBitRateValue[0][nVariableMin];
-                }
-                else
-                {
-                    // Consider MPEG-2/2.5
-                    dwMin = dwBitRateValue[1][nVariableMin];
-                }
+                        if (dwSampleRate >= 32000) {
+                            // Consider MPEG-1
+                            dwBitrate = dwBitRateValue[0][nBitrate];
+                        } else {
+                            // Consider MPEG-2/2.5
+                            dwBitrate = dwBitRateValue[1][nBitrate];
+                        }
 
-                m_pAEProps->set_VariableMin(dwMin);
+                        m_pAEProps->set_Bitrate(dwBitrate);
 
-                SetDirty();
+                        SetDirty();
+                    }
+                    break;
+
+                case IDC_COMBO_VBRMIN:
+                    if (HIWORD(wParam) == CBN_SELCHANGE) {
+                        int nVariableMin = SendDlgItemMessage(hwnd, IDC_COMBO_VBRMIN, CB_GETCURSEL, 0, 0L);
+                        DWORD dwSampleRate;
+                        m_pAEProps->get_SampleRate(&dwSampleRate);
+                        DWORD dwMin;
+
+                        if (dwSampleRate >= 32000) {
+                            // Consider MPEG-1
+                            dwMin = dwBitRateValue[0][nVariableMin];
+                        } else {
+                            // Consider MPEG-2/2.5
+                            dwMin = dwBitRateValue[1][nVariableMin];
+                        }
+
+                        m_pAEProps->set_VariableMin(dwMin);
+
+                        SetDirty();
+                    }
+                    break;
+
+                case IDC_COMBO_VBRMAX:
+                    if (HIWORD(wParam) == CBN_SELCHANGE) {
+                        int nVariableMax = SendDlgItemMessage(hwnd, IDC_COMBO_VBRMAX, CB_GETCURSEL, 0, 0L);
+                        DWORD dwSampleRate;
+                        m_pAEProps->get_SampleRate(&dwSampleRate);
+                        DWORD dwMax;
+
+                        if (dwSampleRate >= 32000) {
+                            // Consider MPEG-1
+                            dwMax = dwBitRateValue[0][nVariableMax];
+                        } else {
+                            // Consider MPEG-2/2.5
+                            dwMax = dwBitRateValue[1][nVariableMax];
+                        }
+
+                        m_pAEProps->set_VariableMax(dwMax);
+
+                        SetDirty();
+                    }
+                    break;
+
+                case IDC_COMBO_SAMPLE_RATE:
+                    if (HIWORD(wParam) == CBN_SELCHANGE) {
+                        int nSampleRate = SendDlgItemMessage(hwnd, IDC_COMBO_SAMPLE_RATE, CB_GETCURSEL, 0, 0L);
+
+                        if (nSampleRate < 0)
+                            nSampleRate = 0;
+                        else if (nSampleRate > 2)
+                            nSampleRate = 2;
+
+                        DWORD dwSampleRate = srRates[nSampleRate * 3 + m_srIdx].dwSampleRate;
+
+                        m_pAEProps->set_SampleRate(dwSampleRate);
+                        InitPropertiesDialog(hwnd);
+                        SetDirty();
+                    }
+                    break;
+
+                case IDC_COMBO_VBRq:
+                    if (HIWORD(wParam) == CBN_SELCHANGE) {
+                        int nVBRq = SendDlgItemMessage(hwnd, IDC_COMBO_VBRq, CB_GETCURSEL, 0, 0L);
+                        if (nVBRq >= 0 && nVBRq <= 9)
+                            m_pAEProps->set_VariableQ(nVBRq);
+                        SetDirty();
+                    }
+                    break;
+
+                case IDC_RADIO_CBR:
+                case IDC_RADIO_VBR:
+                    m_pAEProps->set_Variable(LOWORD(wParam) - IDC_RADIO_CBR);
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_PES:
+                    m_pAEProps->set_PESOutputEnabled(IsDlgButtonChecked(hwnd, IDC_CHECK_PES));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_COPYRIGHT:
+                    m_pAEProps->set_CopyrightFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_COPYRIGHT));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_ORIGINAL:
+                    m_pAEProps->set_OriginalFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_ORIGINAL));
+                    SetDirty();
+                    break;
+
+                case IDC_CHECK_CRC:
+                    m_pAEProps->set_CRCFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_CRC));
+                    SetDirty();
+                    break;
+
+                case IDC_FORCE_MONO:
+                    m_pAEProps->set_ForceMono(IsDlgButtonChecked(hwnd, IDC_FORCE_MONO));
+                    SetDirty();
+                    break;
             }
-            break;
+            return TRUE;
 
-        case IDC_COMBO_VBRMAX:
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int nVariableMax = SendDlgItemMessage(hwnd, IDC_COMBO_VBRMAX, CB_GETCURSEL, 0, 0L);
-                DWORD dwSampleRate;
-                m_pAEProps->get_SampleRate(&dwSampleRate);
-                DWORD dwMax;
+        case WM_DESTROY:
+            return TRUE;
 
-                if (dwSampleRate >= 32000)
-                {
-                    // Consider MPEG-1
-                    dwMax = dwBitRateValue[0][nVariableMax];
-                }
-                else
-                {
-                    // Consider MPEG-2/2.5
-                    dwMax = dwBitRateValue[1][nVariableMax];
-                }
-
-                m_pAEProps->set_VariableMax(dwMax);
-
-                SetDirty();
-            }
-            break;
-
-        case IDC_COMBO_SAMPLE_RATE:
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int nSampleRate = SendDlgItemMessage(hwnd, IDC_COMBO_SAMPLE_RATE, CB_GETCURSEL, 0, 0L);
-
-                if (nSampleRate < 0)
-                    nSampleRate = 0;
-                else if (nSampleRate > 2)
-                    nSampleRate = 2;
-
-                DWORD dwSampleRate = srRates[nSampleRate * 3 + m_srIdx].dwSampleRate;
-
-                m_pAEProps->set_SampleRate(dwSampleRate);
-                InitPropertiesDialog(hwnd);
-                SetDirty();
-            }
-            break;
-
-        case IDC_COMBO_VBRq:
-            if (HIWORD(wParam) == CBN_SELCHANGE)
-            {
-                int nVBRq = SendDlgItemMessage(hwnd, IDC_COMBO_VBRq, CB_GETCURSEL, 0, 0L);
-                if (nVBRq >=0 && nVBRq <=9) 
-                    m_pAEProps->set_VariableQ(nVBRq);
-                SetDirty();
-            }
-            break;
-
-        case IDC_RADIO_CBR:
-        case IDC_RADIO_VBR:
-            m_pAEProps->set_Variable(LOWORD(wParam)-IDC_RADIO_CBR);
-            SetDirty();
-            break;
-
-        case IDC_CHECK_PES:
-            m_pAEProps->set_PESOutputEnabled(IsDlgButtonChecked(hwnd, IDC_CHECK_PES));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_COPYRIGHT:
-            m_pAEProps->set_CopyrightFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_COPYRIGHT));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_ORIGINAL:
-            m_pAEProps->set_OriginalFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_ORIGINAL));
-            SetDirty();
-            break;
-
-        case IDC_CHECK_CRC:
-            m_pAEProps->set_CRCFlag(IsDlgButtonChecked(hwnd, IDC_CHECK_CRC));
-            SetDirty();
-            break;
-
-        case IDC_FORCE_MONO:
-            m_pAEProps->set_ForceMono(IsDlgButtonChecked(hwnd, IDC_FORCE_MONO));
-            SetDirty();
-            break;
-        }
-        return TRUE;
-
-    case WM_DESTROY:
-        return TRUE;
-
-    default:
-        return FALSE;
+        default:
+            return FALSE;
     }
 
     return TRUE;
@@ -372,8 +346,7 @@ BOOL CMpegAudEncPropertyPage::OnReceiveMessage(HWND hwnd,UINT uMsg,WPARAM wParam
 //
 // OnApplyChanges
 //
-HRESULT CMpegAudEncPropertyPage::OnApplyChanges()
-{
+HRESULT CMpegAudEncPropertyPage::OnApplyChanges() {
     m_pAEProps->get_Bitrate(&m_dwBitrate);
     m_pAEProps->get_Variable(&m_dwVariable);
     m_pAEProps->get_VariableMin(&m_dwMin);
@@ -395,17 +368,16 @@ HRESULT CMpegAudEncPropertyPage::OnApplyChanges()
 //
 // Initialize dialogbox controls with proper values
 //
-void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
-{
+void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent) {
     EnableControls(hwndParent, TRUE);
 
-    m_hwndQuality = GetDlgItem(hwndParent,IDC_SLIDER_QUALITY);
+    m_hwndQuality = GetDlgItem(hwndParent, IDC_SLIDER_QUALITY);
     DWORD dwQuality;
     m_pAEProps->get_Quality(&dwQuality);
-    SendDlgItemMessage(hwndParent, IDC_SLIDER_QUALITY, TBM_SETRANGE, 1, MAKELONG (2,9));
+    SendDlgItemMessage(hwndParent, IDC_SLIDER_QUALITY, TBM_SETRANGE, 1, MAKELONG (2, 9));
     SendDlgItemMessage(hwndParent, IDC_SLIDER_QUALITY, TBM_SETPOS, 1, dwQuality);
-    if (dwQuality>=0 && dwQuality<10)
-        SetDlgItemText(hwndParent,IDC_TEXT_QUALITY,szQualityDesc[dwQuality]);
+    if (dwQuality >= 0 && dwQuality < 10)
+        SetDlgItemText(hwndParent, IDC_TEXT_QUALITY, szQualityDesc[dwQuality]);
 
     //
     // initialize sample rate selection
@@ -415,37 +387,36 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
 
     SendDlgItemMessage(hwndParent, IDC_COMBO_SAMPLE_RATE, CB_RESETCONTENT, 0, 0L);
 
-    switch (dwSourceSampleRate)
-    {
-    case 48000:
-    case 24000:
-    case 12000:
-        m_srIdx = 0;
-        break;
+    switch (dwSourceSampleRate) {
+        case 48000:
+        case 24000:
+        case 12000:
+            m_srIdx = 0;
+            break;
 
-    case 32000:
-    case 16000:
-    case  8000:
-        m_srIdx = 2;
-        break;
+        case 32000:
+        case 16000:
+        case 8000:
+            m_srIdx = 2;
+            break;
 
-    case 44100:
-    case 22050:
-    case 11025:
-    default:
-        m_srIdx = 1;
+        case 44100:
+        case 22050:
+        case 11025:
+        default:
+            m_srIdx = 1;
     }
 
     for (int i = 0; i < 3; i++)
-        SendDlgItemMessage(hwndParent, IDC_COMBO_SAMPLE_RATE, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)srRates[i * 3 + m_srIdx].lpSampleRate);
+        SendDlgItemMessage(hwndParent, IDC_COMBO_SAMPLE_RATE, CB_ADDSTRING, 0,
+                           (LPARAM) (LPCTSTR) srRates[i * 3 + m_srIdx].lpSampleRate);
 
     DWORD dwSampleRate;
     m_pAEProps->get_SampleRate(&dwSampleRate);
     m_pAEProps->set_SampleRate(dwSampleRate);
 
     int nSR = 0;
-    while (dwSampleRate != srRates[nSR * 3 + m_srIdx].dwSampleRate && nSR < 3)
-    {
+    while (dwSampleRate != srRates[nSR * 3 + m_srIdx].dwSampleRate && nSR < 3) {
         nSR++;
     }
 
@@ -463,12 +434,12 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
     int k;
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRq, CB_RESETCONTENT, 0, 0);
     for (k = 0; k < 10; k++)
-        SendDlgItemMessage(hwndParent, IDC_COMBO_VBRq, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szVBRqDesc[k]);
+        SendDlgItemMessage(hwndParent, IDC_COMBO_VBRq, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szVBRqDesc[k]);
     DWORD dwVBRq;
     m_pAEProps->get_VariableQ(&dwVBRq);
-    if (dwVBRq<0)
+    if (dwVBRq < 0)
         dwVBRq = 0;
-    if (dwVBRq>9)
+    if (dwVBRq > 9)
         dwVBRq = 9;
     m_pAEProps->set_VariableQ(dwVBRq);
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRq, CB_SETCURSEL, dwVBRq, 0);
@@ -479,20 +450,17 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
     int nSt;
 
     SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_RESETCONTENT, 0, 0);
-    if (dwSampleRate >= 32000)
-    {
+    if (dwSampleRate >= 32000) {
         // If target sampling rate is less than 32000, consider
         // MPEG 1 audio
         nSt = 0;
         for (int i = 0; i < 14; i++)
-            SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[0][i]);
-    }
-    else
-    {
+            SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[0][i]);
+    } else {
         // Consider MPEG 2 / 2.5 audio
         nSt = 1;
-        for (int i = 0; i < 14 ; i++)
-            SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[1][i]);
+        for (int i = 0; i < 14; i++)
+            SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[1][i]);
     }
 
     DWORD dwBitrate;
@@ -507,8 +475,7 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
     SendDlgItemMessage(hwndParent, IDC_COMBO_CBR, CB_SETCURSEL, nBitrateSel, 0);
 
     // check if the specified bitrate is found exactly and correct if not
-    if (dwBitRateValue[nSt][nBitrateSel] != dwBitrate)
-    {
+    if (dwBitRateValue[nSt][nBitrateSel] != dwBitrate) {
         dwBitrate = dwBitRateValue[nSt][nBitrateSel];
         // we can change it, because it is independent of any other parameters
         // (but depends on some of them!)
@@ -531,46 +498,41 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_RESETCONTENT, 0, 0);
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_RESETCONTENT, 0, 0);
 
-    if (dwSampleRate >= 32000)
-    {
-            nST = 0;
-            for (j=0; j<14 ;j++) {
-                SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[0][j]);
-                SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[0][j]);
-            }
-    }
-    else
-    {
-            nST = 1;
-            for (j = 0; j < 14; j++)
-            {
-                SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[1][j]);
-                SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_ADDSTRING, 0, (LPARAM)(LPCTSTR)szBitRateString[1][j]);
-            }
+    if (dwSampleRate >= 32000) {
+        nST = 0;
+        for (j = 0; j < 14; j++) {
+            SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[0][j]);
+            SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[0][j]);
+        }
+    } else {
+        nST = 1;
+        for (j = 0; j < 14; j++) {
+            SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[1][j]);
+            SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) szBitRateString[1][j]);
+        }
     }
 
-    DWORD dwMin,dwMax;
+    DWORD dwMin, dwMax;
     m_pAEProps->get_VariableMin(&dwMin);
     m_pAEProps->get_VariableMax(&dwMax);
 
     int nVariableMinSel = 0;
     int nVariableMaxSel = 0;
-    
+
     // BitRateValue[][i] is in ascending order
     // We use this fact. We also know there are 14 bitrate values available.
     // We are going to use the closest possible, so we can limit loop with 13
-    while (nVariableMinSel<13 && dwBitRateValue[nST][nVariableMinSel] < dwMin)
+    while (nVariableMinSel < 13 && dwBitRateValue[nST][nVariableMinSel] < dwMin)
         nVariableMinSel++;
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMIN, CB_SETCURSEL, nVariableMinSel, 0);
 
-    while (nVariableMaxSel<13 && dwBitRateValue[nST][nVariableMaxSel] < dwMax)
+    while (nVariableMaxSel < 13 && dwBitRateValue[nST][nVariableMaxSel] < dwMax)
         nVariableMaxSel++;
     SendDlgItemMessage(hwndParent, IDC_COMBO_VBRMAX, CB_SETCURSEL, nVariableMaxSel, 0);
 
-    
+
     // check if the specified bitrate is found exactly and correct if not
-    if (dwBitRateValue[nST][nVariableMinSel] != dwMin)
-    {
+    if (dwBitRateValue[nST][nVariableMinSel] != dwMin) {
         dwMin = dwBitRateValue[nST][nVariableMinSel];
         // we can change it, because it is independent of any other parameters
         // (but depends on some of them!)
@@ -578,8 +540,7 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
     }
 
     // check if the specified bitrate is found exactly and correct if not
-    if (dwBitRateValue[nST][nVariableMaxSel] != dwMax)
-    {
+    if (dwBitRateValue[nST][nVariableMaxSel] != dwMax) {
         dwMax = dwBitRateValue[nST][nVariableMaxSel];
         // we can change it, because it is independent of any other parameters
         // (but depends on some of them!)
@@ -616,8 +577,7 @@ void CMpegAudEncPropertyPage::InitPropertiesDialog(HWND hwndParent)
 ////////////////////////////////////////////////////////////////
 // EnableControls
 ////////////////////////////////////////////////////////////////
-void CMpegAudEncPropertyPage::EnableControls(HWND hwndParent, bool bEnable)
-{
+void CMpegAudEncPropertyPage::EnableControls(HWND hwndParent, bool bEnable) {
     EnableWindow(GetDlgItem(hwndParent, IDC_CHECK_PES), false);//bEnable);
     EnableWindow(GetDlgItem(hwndParent, IDC_RADIO_CBR), bEnable);
     EnableWindow(GetDlgItem(hwndParent, IDC_COMBO_CBR), bEnable);
@@ -637,8 +597,7 @@ void CMpegAudEncPropertyPage::EnableControls(HWND hwndParent, bool bEnable)
 //
 // notifies the property page site of changes
 
-void CMpegAudEncPropertyPage::SetDirty()
-{
+void CMpegAudEncPropertyPage::SetDirty() {
     m_bDirty = TRUE;
     if (m_pPageSite)
         m_pPageSite->OnStatusChange(PROPPAGESTATUS_DIRTY);

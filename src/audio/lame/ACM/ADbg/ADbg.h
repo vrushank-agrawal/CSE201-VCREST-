@@ -42,47 +42,48 @@ static const int MAX_PREFIX_LENGTH = 128;
 #if !defined(NDEBUG)
 // define the working debugging class
 
-class ADbg  
-{
+class ADbg {
 public:
-	ADbg(int level = 0);
-	virtual ~ADbg();
+    ADbg(int level = 0);
 
-	/// \todo make an inline function to test the level first and the process
-	int OutPut(int level, const char * format,...) const;
+    virtual ~ADbg();
 
-	int OutPut(const char * format,...) const;
+    /// \todo make an inline function to test the level first and the process
+    int OutPut(int level, const char *format, ...) const;
 
-	inline int setLevel(const int level) {
-		return my_level = level;
-	}
+    int OutPut(const char *format, ...) const;
 
-	inline bool setIncludeTime(const bool included = true) {
-		return my_time_included = included;
-	}
+    inline int setLevel(const int level) {
+        return my_level = level;
+    }
 
-	bool setDebugFile(const char * NewFilename);
-	bool unsetDebugFile();
+    inline bool setIncludeTime(const bool included = true) {
+        return my_time_included = included;
+    }
 
-	inline bool setUseFile(const bool usefile = true) {
-		return my_use_file = usefile;
-	}
+    bool setDebugFile(const char *NewFilename);
 
-	inline const char * setPrefix(const char * string) {
-		return strncpy(prefix, string, MAX_PREFIX_LENGTH);
-	}
+    bool unsetDebugFile();
+
+    inline bool setUseFile(const bool usefile = true) {
+        return my_use_file = usefile;
+    }
+
+    inline const char *setPrefix(const char *string) {
+        return strncpy(prefix, string, MAX_PREFIX_LENGTH);
+    }
 
 private:
-	int my_level;
-	bool my_time_included;
-	bool my_use_file;
-	bool my_debug_output;
+    int my_level;
+    bool my_time_included;
+    bool my_use_file;
+    bool my_debug_output;
 
-	int _OutPut(const char * format,va_list params) const;
+    int _OutPut(const char *format, va_list params) const;
 
-	char prefix[MAX_PREFIX_LENGTH];
+    char prefix[MAX_PREFIX_LENGTH];
 
-	HANDLE hFile;
+    HANDLE hFile;
 };
 
 #else // !defined(NDEBUG)
@@ -92,40 +93,40 @@ private:
 class ADbg  
 {
 public:
-	ADbg(int level = 0){}
-	virtual ~ADbg() {}
+    ADbg(int level = 0){}
+    virtual ~ADbg() {}
 
-	inline int OutPut(int level, const char * format,...) const {
-		return 0;
-	}
+    inline int OutPut(int level, const char * format,...) const {
+        return 0;
+    }
 
-	inline int OutPut(const char * format,...) const {
-		return 0;
-	}
+    inline int OutPut(const char * format,...) const {
+        return 0;
+    }
 
-	inline int setLevel(const int level) {
-		return level;
-	}
+    inline int setLevel(const int level) {
+        return level;
+    }
 
-	inline bool setIncludeTime(const bool included = true) {
-		return true;
-	}
+    inline bool setIncludeTime(const bool included = true) {
+        return true;
+    }
 
-	inline bool setDebugFile(const char * NewFilename) {
-		return true;
-	}
+    inline bool setDebugFile(const char * NewFilename) {
+        return true;
+    }
 
-	inline bool unsetDebugFile() {
-		return true;
-	}
+    inline bool unsetDebugFile() {
+        return true;
+    }
 
-	inline bool setUseFile(const bool usefile = true) {
-		return true;
-	}
+    inline bool setUseFile(const bool usefile = true) {
+        return true;
+    }
 
-	inline const char * setPrefix(const char * string) {
-		return string;
-	}
+    inline const char * setPrefix(const char * string) {
+        return string;
+    }
 };
 
 #endif // !defined(NDEBUG)

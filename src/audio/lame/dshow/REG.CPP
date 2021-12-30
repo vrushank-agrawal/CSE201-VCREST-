@@ -24,266 +24,228 @@
 
 #include "reg.h"
 
-namespace Lame
-{
+namespace Lame {
 
-CRegKey::CRegKey(void)
-{
-    m_hRootKey = NULL;
-    m_name[0] = 0;
-    m_hKey = NULL;
-}
-
-
-CRegKey::CRegKey(HKEY rt, PTSTR pName)
-{
-    m_hRootKey = rt;
-    m_hKey = NULL;
-    if(pName)
-    {
-        lstrcpy(m_name, pName);
-        Open(m_hRootKey, m_name);
-    }
-    else
+    CRegKey::CRegKey(void) {
+        m_hRootKey = NULL;
         m_name[0] = 0;
-}
+        m_hKey = NULL;
+    }
 
 
-CRegKey::~CRegKey(void)
-{
-    Close();
-}
+    CRegKey::CRegKey(HKEY rt, PTSTR pName) {
+        m_hRootKey = rt;
+        m_hKey = NULL;
+        if (pName) {
+            lstrcpy(m_name, pName);
+            Open(m_hRootKey, m_name);
+        } else
+            m_name[0] = 0;
+    }
 
 
-
-BOOL    CRegKey::Open(HKEY rootKey, PTSTR pName)
-{
-    if(m_hKey)
+    CRegKey::~CRegKey(void) {
         Close();
+    }
 
-    m_hRootKey = rootKey;
-    if(pName) 
-    {
-        lstrcpy(m_name, pName);
-        if(RegOpenKeyEx(m_hRootKey, m_name, 0, KEY_ALL_ACCESS, &m_hKey) != ERROR_SUCCESS) 
-        {
+
+    BOOL CRegKey::Open(HKEY rootKey, PTSTR pName) {
+        if (m_hKey)
+            Close();
+
+        m_hRootKey = rootKey;
+        if (pName) {
+            lstrcpy(m_name, pName);
+            if (RegOpenKeyEx(m_hRootKey, m_name, 0, KEY_ALL_ACCESS, &m_hKey) != ERROR_SUCCESS) {
+                m_hKey = NULL;
+                return FALSE;
+            }
+        } else {
+            m_name[0] = 0;
+            m_hKey = m_hRootKey;
+        }
+
+        return TRUE;
+    }
+
+
+    BOOL CRegKey::Create(HKEY rootKey, PTSTR pName) {
+        if (m_hKey)
+            Close();
+
+        m_hRootKey = rootKey;
+        if (pName) {
+            lstrcpy(m_name, pName);
+            if (RegCreateKeyEx(m_hRootKey, pName, NULL,
+                               TEXT(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL,
+                               &m_hKey, NULL) != ERROR_SUCCESS) {
+
+                m_hKey = NULL;
+                return FALSE;
+            }
+        } else {
+            m_name[0] = 0;
+        }
+        m_hRootKey = m_hKey;
+
+        return TRUE;
+    }
+
+
+    BOOL CRegKey::Open(PTSTR an) {
+        TCHAR achName[MAX_PATH];
+
+        if (m_hKey)
+            Close();
+
+        lstrcpy(achName, m_name);
+        if (an)
+            lstrcat(achName, an);
+
+        if (RegOpenKeyEx(m_hRootKey, achName, 0, KEY_ALL_ACCESS, &m_hKey) != ERROR_SUCCESS) {
             m_hKey = NULL;
             return FALSE;
         }
-    }
-    else 
-    {
-        m_name[0] = 0;
-        m_hKey = m_hRootKey;
+
+        return TRUE;
     }
 
-    return TRUE;
-}
 
+    BOOL CRegKey::Create(PTSTR an) {
+        TCHAR achName[MAX_PATH];
 
-BOOL    CRegKey::Create(HKEY rootKey, PTSTR pName)
-{
-    if(m_hKey)
-        Close();
+        if (m_hKey)
+            Close();
 
-    m_hRootKey = rootKey;
-    if(pName) 
-    {
-        lstrcpy(m_name, pName);
-        if(RegCreateKeyEx(m_hRootKey, pName, NULL,
-                TEXT(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL,
-                &m_hKey, NULL) != ERROR_SUCCESS) 
-        {
+        lstrcpy(achName, m_name);
+        if (an)
+            lstrcat(achName, an);
+
+        if (RegCreateKeyEx(m_hRootKey, achName, NULL,
+                           TEXT(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL,
+                           &m_hKey, NULL) != ERROR_SUCCESS) {
 
             m_hKey = NULL;
             return FALSE;
         }
-    }
-    else 
-    {
-        m_name[0] = 0;
-    }
-    m_hRootKey = m_hKey;
 
-    return TRUE;
-}
-
-
-BOOL    CRegKey::Open(PTSTR an)
-{
-    TCHAR achName[MAX_PATH];
-
-    if(m_hKey)
-        Close();
-
-    lstrcpy(achName, m_name);
-    if(an)
-        lstrcat(achName, an);
-
-    if(RegOpenKeyEx(m_hRootKey, achName, 0, KEY_ALL_ACCESS, &m_hKey) != ERROR_SUCCESS) 
-    {
-        m_hKey = NULL;
-        return FALSE;
+        return TRUE;
     }
 
-    return TRUE;
-}
 
+    BOOL CRegKey::Close(void) {
+        if (m_hKey && m_hKey != m_hRootKey)
+            RegCloseKey(m_hKey);
 
-BOOL    CRegKey::Create(PTSTR an)
-{
-    TCHAR achName[MAX_PATH];
-
-    if(m_hKey)
-        Close();
-
-    lstrcpy(achName, m_name);
-    if(an)
-        lstrcat(achName, an);
-
-    if(RegCreateKeyEx(m_hRootKey, achName, NULL,
-            TEXT(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL,
-            &m_hKey, NULL) != ERROR_SUCCESS) 
-    {
-
-        m_hKey = NULL;
-        return FALSE;
+        m_hKey = 0;
+        return TRUE;
     }
 
-    return TRUE;
-}
+    BOOL CRegKey::getFlag(PTSTR valuename, BOOL bDefault) {
+        if (!m_hKey)
+            return bDefault;
 
+        DWORD cbData;
+        DWORD dwData;
+        DWORD dwType;
 
-BOOL    CRegKey::Close(void)
-{
-    if(m_hKey && m_hKey != m_hRootKey)
-        RegCloseKey(m_hKey);
-
-    m_hKey = 0;
-    return TRUE;
-}
-
-BOOL    CRegKey::getFlag(PTSTR valuename, BOOL bDefault)
-{
-    if(!m_hKey)
-        return bDefault;
-
-    DWORD cbData;
-    DWORD   dwData;
-    DWORD   dwType;
-
-    cbData = sizeof(dwData);
-    if(RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (PBYTE)&dwData, &cbData) == ERROR_SUCCESS) 
-    {
-        if(dwType == REG_DWORD)
-            return (dwData) ? TRUE : FALSE;
-    }
-    return bDefault;
-}
-
-
-void    CRegKey::setFlag(PTSTR valuename, BOOL bValue, BOOL bDefault)
-{
-    if(getFlag(valuename, bDefault) == bValue )
-        return;
-
-    RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE)&bValue, sizeof(bValue));
-}
-
-
-void    CRegKey::setFlag(PTSTR valuename, BOOL bValue)
-{
-    RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE)&bValue, sizeof(bValue));
-}
-
-
-DWORD   CRegKey::getDWORD(PTSTR valuename, DWORD bDefault)
-{
-    DWORD dwData;
-    DWORD cbData;
-    DWORD   dwType;
-
-    if(!m_hKey)
-        return bDefault;
-
-    cbData = sizeof(dwData);
-    if(RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (PBYTE)&dwData, &cbData) == ERROR_SUCCESS) {
-        if(dwType == REG_DWORD) 
-        {
-            return (UINT)dwData;
+        cbData = sizeof(dwData);
+        if (RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (PBYTE) &dwData, &cbData) == ERROR_SUCCESS) {
+            if (dwType == REG_DWORD)
+                return (dwData) ? TRUE : FALSE;
         }
+        return bDefault;
     }
 
-    return bDefault;
-}
+
+    void CRegKey::setFlag(PTSTR valuename, BOOL bValue, BOOL bDefault) {
+        if (getFlag(valuename, bDefault) == bValue)
+            return;
+
+        RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE) &bValue, sizeof(bValue));
+    }
 
 
-void    CRegKey::setDWORD(PTSTR valuename, DWORD dwValue, DWORD dwDefault)
-{
-    DWORD dwData = dwValue;
-
-    if(getDWORD(valuename, dwDefault) == dwValue)
-        return;
-
-    RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE)&dwData, sizeof(dwData));
-}
+    void CRegKey::setFlag(PTSTR valuename, BOOL bValue) {
+        RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE) &bValue, sizeof(bValue));
+    }
 
 
-void    CRegKey::setDWORD(PTSTR valuename, DWORD dwValue)
-{
-    DWORD dwData = dwValue;
-    RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE)&dwData, sizeof(dwData));
-}
+    DWORD CRegKey::getDWORD(PTSTR valuename, DWORD bDefault) {
+        DWORD dwData;
+        DWORD cbData;
+        DWORD dwType;
 
+        if (!m_hKey)
+            return bDefault;
 
-DWORD CRegKey::getString(PTSTR valuename, PTSTR pDefault, PTSTR pResult, int cbSize)
-{
-    DWORD dwType;
-
-    cbSize *= sizeof(TCHAR);    // for unicode strings
-
-    if(m_hKey) 
-    {
-        if(RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (LPBYTE)pResult, (LPDWORD)&cbSize) == ERROR_SUCCESS) 
-        {
-            if(dwType == REG_SZ) 
-            {
-                return(cbSize - 1);
+        cbData = sizeof(dwData);
+        if (RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (PBYTE) &dwData, &cbData) == ERROR_SUCCESS) {
+            if (dwType == REG_DWORD) {
+                return (UINT) dwData;
             }
         }
+
+        return bDefault;
     }
-    lstrcpy(pResult, pDefault);
-    return lstrlen(pDefault);
-}
 
 
-void    CRegKey::setString(PTSTR valuename, PTSTR pData)
-{
-    RegSetValueEx(m_hKey, valuename, 0, REG_SZ, (LPBYTE)pData, (lstrlen(pData) + 1)*sizeof(TCHAR));
-}
+    void CRegKey::setDWORD(PTSTR valuename, DWORD dwValue, DWORD dwDefault) {
+        DWORD dwData = dwValue;
+
+        if (getDWORD(valuename, dwDefault) == dwValue)
+            return;
+
+        RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE) &dwData, sizeof(dwData));
+    }
 
 
-DWORD CRegKey::getBinary(PTSTR valuename, PVOID pDefault, PVOID pResult, int cbSize)
-{
-    DWORD dwType;
+    void CRegKey::setDWORD(PTSTR valuename, DWORD dwValue) {
+        DWORD dwData = dwValue;
+        RegSetValueEx(m_hKey, valuename, 0, REG_DWORD, (PBYTE) &dwData, sizeof(dwData));
+    }
 
-    if(RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (LPBYTE)pResult, (LPDWORD)&cbSize) == ERROR_SUCCESS) 
-    {
-        if(dwType == REG_BINARY) 
-        {
-            return cbSize;
+
+    DWORD CRegKey::getString(PTSTR valuename, PTSTR pDefault, PTSTR pResult, int cbSize) {
+        DWORD dwType;
+
+        cbSize *= sizeof(TCHAR);    // for unicode strings
+
+        if (m_hKey) {
+            if (RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (LPBYTE) pResult, (LPDWORD) &cbSize) ==
+                ERROR_SUCCESS) {
+                if (dwType == REG_SZ) {
+                    return (cbSize - 1);
+                }
+            }
         }
+        lstrcpy(pResult, pDefault);
+        return lstrlen(pDefault);
     }
 
-    memmove(pResult, pDefault, cbSize);
-    return cbSize;
-}
+
+    void CRegKey::setString(PTSTR valuename, PTSTR pData) {
+        RegSetValueEx(m_hKey, valuename, 0, REG_SZ, (LPBYTE) pData, (lstrlen(pData) + 1) * sizeof(TCHAR));
+    }
 
 
-DWORD CRegKey::setBinary(PTSTR valuename, PVOID pData, int cbSize)
-{
-    RegSetValueEx(m_hKey, valuename, 0, REG_BINARY, (LPBYTE)pData, cbSize);
-    return cbSize;
-}
+    DWORD CRegKey::getBinary(PTSTR valuename, PVOID pDefault, PVOID pResult, int cbSize) {
+        DWORD dwType;
+
+        if (RegQueryValueEx(m_hKey, valuename, NULL, &dwType, (LPBYTE) pResult, (LPDWORD) &cbSize) == ERROR_SUCCESS) {
+            if (dwType == REG_BINARY) {
+                return cbSize;
+            }
+        }
+
+        memmove(pResult, pDefault, cbSize);
+        return cbSize;
+    }
+
+
+    DWORD CRegKey::setBinary(PTSTR valuename, PVOID pData, int cbSize) {
+        RegSetValueEx(m_hKey, valuename, 0, REG_BINARY, (LPBYTE) pData, cbSize);
+        return cbSize;
+    }
 
 } // namespace Lame

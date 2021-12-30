@@ -45,137 +45,128 @@ OF SUCH DAMAGE.
 //////////////////////////////////////////////////////////////////////
 
 ADbg::ADbg(int level)
-:my_level(level)
-,my_time_included(false)
-,my_use_file(false)
-,my_debug_output(true)
-,hFile(NULL)
-{
-	prefix[0] = '\0';
-	OutPut(-1,"ADbg Creation at debug level = %d (0x%08X)",my_level,this);
+        : my_level(level), my_time_included(false), my_use_file(false), my_debug_output(true), hFile(NULL) {
+    prefix[0] = '\0';
+    OutPut(-1, "ADbg Creation at debug level = %d (0x%08X)", my_level, this);
 }
 
-ADbg::~ADbg()
-{
-	unsetDebugFile();
-	OutPut(-1,"ADbg Deletion (0x%08X)",this);
+ADbg::~ADbg() {
+    unsetDebugFile();
+    OutPut(-1, "ADbg Deletion (0x%08X)", this);
 }
 
-inline int ADbg::_OutPut(const char * format,va_list params) const
-{
-	int result;
+inline int ADbg::_OutPut(const char *format, va_list params) const {
+    int result;
 
-	char tst[1000];
-	char myformat[256];
+    char tst[1000];
+    char myformat[256];
 
-	if (my_time_included) {
-		SYSTEMTIME time;
-		GetSystemTime(&time);
-		if (prefix[0] == '\0')
-			wsprintf(myformat,"%04d/%02d/%02d %02d:%02d:%02d.%03d UTC : %s\r\n",
-							time.wYear,
-							time.wMonth,
-							time.wDay,
-							time.wHour,
-							time.wMinute,
-							time.wSecond,
-							time.wMilliseconds,
-							format);
-		else
-			wsprintf(myformat,"%04d/%02d/%02d %02d:%02d:%02d.%03d UTC : %s - %s\r\n",
-							time.wYear,
-							time.wMonth,
-							time.wDay,
-							time.wHour,
-							time.wMinute,
-							time.wSecond,
-							time.wMilliseconds,
-							prefix,
-							format);
-	} else {
-		if (prefix[0] == '\0')
-			wsprintf( myformat, "%s\r\n", format);
-		else
-			wsprintf( myformat, "%s - %s\r\n", prefix, format);
-	}
+    if (my_time_included) {
+        SYSTEMTIME time;
+        GetSystemTime(&time);
+        if (prefix[0] == '\0')
+            wsprintf(myformat, "%04d/%02d/%02d %02d:%02d:%02d.%03d UTC : %s\r\n",
+                     time.wYear,
+                     time.wMonth,
+                     time.wDay,
+                     time.wHour,
+                     time.wMinute,
+                     time.wSecond,
+                     time.wMilliseconds,
+                     format);
+        else
+            wsprintf(myformat, "%04d/%02d/%02d %02d:%02d:%02d.%03d UTC : %s - %s\r\n",
+                     time.wYear,
+                     time.wMonth,
+                     time.wDay,
+                     time.wHour,
+                     time.wMinute,
+                     time.wSecond,
+                     time.wMilliseconds,
+                     prefix,
+                     format);
+    } else {
+        if (prefix[0] == '\0')
+            wsprintf(myformat, "%s\r\n", format);
+        else
+            wsprintf(myformat, "%s - %s\r\n", prefix, format);
+    }
 
-	result = vsprintf(tst,myformat,params);
-	
-	if (my_debug_output)
-		OutputDebugString(tst);
+    result = vsprintf(tst, myformat, params);
 
-	if (my_use_file && (hFile != NULL)) {
-		SetFilePointer( hFile, 0, 0, FILE_END );
-		DWORD written;
-		WriteFile( hFile, tst, lstrlen(tst), &written, NULL );
-	}
+    if (my_debug_output)
+        OutputDebugString(tst);
 
-	return result;
+    if (my_use_file && (hFile != NULL)) {
+        SetFilePointer(hFile, 0, 0, FILE_END);
+        DWORD written;
+        WriteFile(hFile, tst, lstrlen(tst), &written, NULL);
+    }
+
+    return result;
 }
 
-int ADbg::OutPut(int forLevel, const char * format,...) const
-{
-	int result=0;
-	
-	if (forLevel >= my_level) {
-		va_list tstlist;
-		int result;
+int ADbg::OutPut(int forLevel, const char *format, ...) const {
+    int result = 0;
 
-		va_start(tstlist, format);
+    if (forLevel >= my_level) {
+        va_list tstlist;
+        int result;
 
-		result = _OutPut(format,tstlist);
+        va_start(tstlist, format);
 
-	}
+        result = _OutPut(format, tstlist);
 
-	return result;
+    }
+
+    return result;
 }
 
-int ADbg::OutPut(const char * format,...) const
-{
-	va_list tstlist;
+int ADbg::OutPut(const char *format, ...) const {
+    va_list tstlist;
 
-	va_start(tstlist, format);
+    va_start(tstlist, format);
 
-	return _OutPut(format,tstlist);
+    return _OutPut(format, tstlist);
 }
 
-bool ADbg::setDebugFile(const char * NewFilename) {
-	bool result;
-	result = unsetDebugFile();
+bool ADbg::setDebugFile(const char *NewFilename) {
+    bool result;
+    result = unsetDebugFile();
 
-	if (result) {
-		result = false;
+    if (result) {
+        result = false;
 
-		hFile = CreateFile(NewFilename, GENERIC_WRITE, FILE_SHARE_WRITE|FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
-		
-		if (hFile != INVALID_HANDLE_VALUE) {
-			SetFilePointer( hFile, 0, 0, FILE_END );
+        hFile = CreateFile(NewFilename, GENERIC_WRITE, FILE_SHARE_WRITE | FILE_SHARE_READ, NULL, OPEN_ALWAYS,
+                           FILE_ATTRIBUTE_NORMAL, NULL);
 
-			result = true;
+        if (hFile != INVALID_HANDLE_VALUE) {
+            SetFilePointer(hFile, 0, 0, FILE_END);
 
-			OutPut(-1,"Debug file Opening succeeded");
+            result = true;
 
-		}
-		else
-			OutPut(-1,"Debug file %s Opening failed",NewFilename);
-	}
+            OutPut(-1, "Debug file Opening succeeded");
 
-	return result;
+        } else
+            OutPut(-1, "Debug file %s Opening failed", NewFilename);
+    }
+
+    return result;
 }
 
 bool ADbg::unsetDebugFile() {
-	bool result = (hFile == NULL);
-	
-	if (hFile != NULL) {
-		result = (CloseHandle(hFile) != 0);
-		
-		if (result) {
-			OutPut(-1,"Debug file Closing succeeded");
-			hFile = NULL;
-		}
-	}
+    bool result = (hFile == NULL);
 
-	return result;
+    if (hFile != NULL) {
+        result = (CloseHandle(hFile) != 0);
+
+        if (result) {
+            OutPut(-1, "Debug file Closing succeeded");
+            hFile = NULL;
+        }
+    }
+
+    return result;
 }
 
 #endif // !defined(NDEBUG)

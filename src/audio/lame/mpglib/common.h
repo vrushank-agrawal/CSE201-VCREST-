@@ -32,12 +32,18 @@ extern const long freqs[9];
 extern real muls[27][64];
 
 
-int     head_check(unsigned long head, int check_layer);
-int     decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead);
+int head_check(unsigned long head, int check_layer);
+
+int decode_header(PMPSTR mp, struct frame *fr, unsigned long newhead);
+
 unsigned int getbits(PMPSTR mp, int number_of_bits);
+
 unsigned int getbits_fast(PMPSTR mp, int number_of_bits);
+
 unsigned char get_leq_8_bits(PMPSTR mp, unsigned int number_of_bits);
+
 unsigned short get_leq_16_bits(PMPSTR mp, unsigned int number_of_bits);
-int     set_pointer(PMPSTR mp, long backstep);
+
+int set_pointer(PMPSTR mp, long backstep);
 
 #endif
