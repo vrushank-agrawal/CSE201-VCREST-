@@ -144,6 +144,7 @@ void Timeline::wheelEvent(QWheelEvent *event) {
 
 void Timeline::addAudio(QString audioSource, double sourceLength, double start, double end) {
     auto *item = new AudioItem(audioSource, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
+    end = (item->getMaxLength() < 500) ? start + item->getMaxLength()*0.01 : end;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
     item->calculateSize();
@@ -172,7 +173,7 @@ void Timeline::appendAudio(QString audioSource, double sourceLength, double leng
 void Timeline::addAudioAtIndicator(QString audioSource, double sourceLength, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
-    // image already exists
+    // audio already exists
     if (getAudioItem(time) != nullptr) {
         appendAudio(audioSource, sourceLength, max_length);
         return;
