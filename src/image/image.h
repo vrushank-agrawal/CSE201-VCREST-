@@ -14,6 +14,7 @@
 #include <cstdlib>
 
 
+
 namespace img {
 
     class Image {
@@ -24,6 +25,7 @@ namespace img {
         cv::Mat img_matrix_boxBlur;
         cv::Mat img_matrix_gaussianBlur;
         cv::Mat img_matrix_medianBlur;
+        cv::Mat current_unblur_matrix;
         std::string filename;
 
     public:
@@ -44,7 +46,9 @@ namespace img {
         cv::Mat getMedianBlurImg();
 
         // sets the matrix associated to the image
+        cv::Mat getCurrentUnblurImg();
         void setModifiedImg(cv::Mat mat);
+        void setCurrentUnblurImg(cv::Mat mat);
         void setOriginalImg(cv::Mat mat);
         void setBlurImg(cv::Mat mat);
         void setBilateralFilterImg(cv::Mat mat);

@@ -8,6 +8,7 @@ img::Image::Image() {}
 
 img::Image::Image(cv::Mat mat) {
     img_matrix = mat;
+    current_unblur_matrix = img_matrix.clone();
     img_matrix_modified = img_matrix.clone();
     filename = "no file path provided";
 }
@@ -281,4 +282,12 @@ void img::Image::vcon(Image *black) {
     cv::vconcat(out, black -> getModifiedImg(), out);
 
     this ->setModifiedImg( out );
+}
+
+cv::Mat img::Image::getCurrentUnblurImg() {
+    return this->current_unblur_matrix;
+}
+
+void img::Image::setCurrentUnblurImg(cv::Mat mat) {
+    this->current_unblur_matrix = mat;
 }

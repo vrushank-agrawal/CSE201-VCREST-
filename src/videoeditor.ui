@@ -298,8 +298,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                 <string/>
                </property>
                <property name="icon">
-                <iconset theme=":/img-reset.png">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme=":/img-reset.png"/>
                </property>
                <property name="iconSize">
                 <size>
@@ -526,7 +525,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

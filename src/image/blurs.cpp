@@ -101,7 +101,7 @@ void img::Image::rotateImg(double angle) {
 
 void img::Image::rotateImgFit(double angle) {
     //rotate around the center point as axis
-    cv::Point2f center((this->getModifiedImg().cols - 1) / 2.0, (this->getModifiedImg().rows - 1) / 2.0);
+    cv::Point2f center((img_matrix_modified.cols - 1) / 2.0, (img_matrix_modified.rows - 1) / 2.0);
     //create a rotation matrix with the angle given
     cv::Mat rotation_matrix = getRotationMatrix2D(center, angle, 1.0);
     cv::Rect2f bbox = cv::RotatedRect(cv::Point2f(), img_matrix_modified.size(), angle).boundingRect2f();
@@ -110,6 +110,7 @@ void img::Image::rotateImgFit(double angle) {
     rotation_matrix.at<double>(1,2) += bbox.height/2.0 - img_matrix_modified.rows/2.0;
     //update image to be the rotation image
     warpAffine(this->getModifiedImg(), img_matrix_modified, rotation_matrix, bbox.size());
+    warpAffine(this->getCurrentUnblurImg(), current_unblur_matrix, rotation_matrix, bbox.size());
 }
 
 void img::Image::resizeImg(int width, int height) {

@@ -89,8 +89,8 @@ private:
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
 
-    QSet<QString> audioFileTypes, imageFileTypes;
-    QString audioFileTypesFilter = "", imageFileTypesFilter = "";
+    QSet<QString> audioFileTypes, imageFileTypes, mediaFileTypes;
+    QString audioFileTypesFilter = "", imageFileTypesFilter = "", mediaFileTypesFilter = "";
 
     /*###################
     *      IMAGE
