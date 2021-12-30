@@ -16,4 +16,3 @@ target_link_directories(audio PUBLIC
 find_package(Qt6 COMPONENTS Core REQUIRED)
 
 target_link_libraries(audio PUBLIC libaubio.a libmp3lame.a Qt6::Core)
-

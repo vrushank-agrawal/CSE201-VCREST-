@@ -1,7 +1,6 @@
 #include "lameHelper.hpp"
 
 settings_t::settings_t() {
-    //Setting the default values
     title = "";
     artist = "";
     album = "";
@@ -22,37 +21,31 @@ settings_t::settings_t() {
 
 
 lameHelper::lameHelper() {
-    //Initialize to NULL, aids deletion/closing later
-    for (int i = 0; i < MAX_THREAD_COUNT; i++) {
-        hThread[i] = nullptr;
-        hSParam[i] = nullptr;
+
+    for (auto &i: hSParam) {
+        i = nullptr;
     }
 
 }
 
 lameHelper::~lameHelper() {
-    //Destroy all declared objects
-    for (int i = 0; i < MAX_THREAD_COUNT; i++) {
-        if (hThread[i] != nullptr)
-            CloseHandle(hThread[i]);
 
-        if (hSParam[i] != nullptr)
-            delete hSParam[i];
+    for (auto &i: hSParam) {
+        delete i;
     }
+
 }
 
 int lameHelper::encode(const std::string &wav_in, const std::string &mp3_out) {
-    settings_t t;//Pass the default value of settings
-    return encode_x(wav_in, mp3_out, t, nullptr);
+    settings_t t;
+    return encode_x(wav_in, mp3_out, t);
 }
 
-int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, const settings_t &settings,
-                         WNDPROC callback_proc) {
-    lame_global_flags *gfp = nullptr;
+int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, const settings_t &settings) {
+    lame_global_flags *gfp;
     gfp = lame_init();
     lame_set_in_samplerate(gfp, settings.in_samplerate);
 
-    //Init the id3 tag structure
     id3tag_init(gfp);
     id3tag_v2_only(gfp);
     id3tag_set_year(gfp, settings.year.c_str());
@@ -65,7 +58,6 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
 
     set_id3_albumart(gfp, settings.albumart);
 
-    //Setting Channels
     switch (settings.channels) {
         case EC_MONO:
             lame_set_mode(gfp, MONO);
@@ -77,7 +69,6 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
             break;
     }
 
-    //VbrTag
     lame_set_bWriteVbrTag(gfp, 1);
     switch (settings.enc_mode) {
         case EM_ABR: {
@@ -109,42 +100,29 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
     lame_set_out_samplerate(gfp, settings.resample_frequency);
 
     lame_set_findReplayGain(gfp, 1);
-    lame_set_write_id3tag_automatic(gfp, 0); //Dont write id3tag, will write it myself
+    lame_set_write_id3tag_automatic(gfp, 0);
 
     int lResult = 0;
     if (lame_init_params(gfp) == -1) {
-        //lame initialization failed
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -2, 0);
-        }
         sprintf(errMsg, "FATAL ERROR: parameters failed to initialize properly in lame. Aborting!\n");
         errorHandler(errMsg);
         return -2;
     } else {
-        int read = 0,
-                write = 0;
-        long PCM_total_size = 0;
+        int read, write;
         long cumulative_read = 0;
 
         FILE *pcm = fopen(wav_in.c_str(), "rb");
         FILE *mp3 = fopen(mp3_out.c_str(), "wb");
 
         if (pcm == nullptr) {
-            if (callback_proc != nullptr) {
-                callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
-            }
             sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", wav_in.c_str());
             errorHandler(errMsg);
             return -1;
         }
         fseek(pcm, 0, SEEK_END);
-        PCM_total_size = ftell(pcm);
         fseek(pcm, 0, SEEK_SET);
 
         if (mp3 == nullptr) {
-            if (callback_proc != nullptr) {
-                callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
-            }
             sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", mp3_out.c_str());
             errorHandler(errMsg);
             return -1;
@@ -154,10 +132,6 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
 
         short int pcm_buffer[PCM_SIZE * 2];
         unsigned char mp3_buffer[MP3_SIZE];
-
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_STARTED, 0, 0);
-        }
 
         int imp3 = lame_get_id3v2_tag(gfp, buffer, LAME_MAXMP3BUFFER);
         fwrite(buffer, sizeof(char), imp3, mp3);//write the id3v2 tag
@@ -175,10 +149,6 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
             fwrite(mp3_buffer, write, sizeof(char), mp3);
 
             //Percentage done
-            if (callback_proc != nullptr) {
-                int percentage = ((float) cumulative_read / PCM_total_size) * 100;
-                callback_proc((HWND) GetModuleHandle(NULL), LH_COMPUTED, percentage, 0);
-            }
         } while (read != 0);
 
         imp3 = lame_get_id3v1_tag(gfp, buffer, LAME_MAXMP3BUFFER);
@@ -195,9 +165,6 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
         fclose(mp3);
         fclose(pcm);
 
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_DONE, 0, 0);
-        }
     }
 
     lame_close(gfp);
@@ -205,9 +172,9 @@ int lameHelper::encode_x(const std::string &wav_in, const std::string &mp3_out, 
 }
 
 int lameHelper::set_id3_albumart(lame_t gfp, char const *file_name) {
-    int iResult = -1;
-    FILE *fpi = nullptr;
-    char *albumart = nullptr;
+    int iResult;
+    FILE *fpi;
+    char *albumart;
 
     if (file_name == nullptr) {
         return 0;
@@ -293,11 +260,7 @@ void lameHelper::WriteWaveHeader(FILE *const fp, int pcmbytes, int freq, int cha
     write_32_bits_low_high(fp, pcmbytes); /* length in bytes of raw PCM data */
 }
 
-int lameHelper::decode(const std::string &mp3_in, const std::string &wav_out) {
-    return decode(mp3_in, wav_out, nullptr);
-}
-
-int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WNDPROC callback_proc) {
+int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out) {
     int read, i, samples;
     long wavsize = 0; // use to count the number of mp3 byte read, this is used to write the length of the wave file
     long cumulative_read = 0;
@@ -307,23 +270,17 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
 
     FILE *mp3 = fopen(mp3_in.c_str(), "rb");
     if (mp3 == nullptr) {
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
-        }
         sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for read. Aborting!\n", mp3_in.c_str());
         errorHandler(errMsg);
         return -1;
     }
     fseek(mp3, 0, SEEK_END);
-    long MP3_total_size = ftell(mp3);
+    ftell(mp3);
     fseek(mp3, 0, SEEK_SET);
 
 
     FILE *pcm = fopen(pcm_out.c_str(), "wb");
     if (pcm == nullptr) {
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -1, 0);
-        }
         sprintf(errMsg, "FATAL ERROR: file '%s' can't be open for write. Aborting!\n", pcm_out.c_str());
         errorHandler(errMsg);
         return -1;
@@ -333,9 +290,6 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
     lame_t lame = lame_init();
     lame_set_decode_only(lame, 1);
     if (lame_init_params(lame) == -1) {
-        if (callback_proc != nullptr) {
-            callback_proc((HWND) GetModuleHandle(nullptr), LH_ERROR, -2, 0);
-        }
         sprintf(errMsg, "FATAL ERROR: parameters failed to initialize properly in lame. Aborting!\n", pcm_out.c_str());
         errorHandler(errMsg);
         return -2;
@@ -347,12 +301,7 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
     memset(&mp3data, 0, sizeof(mp3data));
 
     int nChannels = -1;
-    int nSampleRate = -1;
     int mp3_len;
-
-    if (callback_proc != nullptr) {
-        callback_proc((HWND) GetModuleHandle(nullptr), LH_STARTED, 0, 0);
-    }
 
     while ((read = fread(mp3_buffer, sizeof(char), MP3_SIZE, mp3)) > 0) {
         mp3_len = read;
@@ -370,7 +319,6 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
                                     16); //unknown size, so write maximum 32 bit signed value
                 }
                 nChannels = mp3data.stereo;
-                nSampleRate = mp3data.samplerate;
             }
 
             if (samples > 0 && mp3data.header_parsed != 1) {
@@ -389,10 +337,6 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
             }
             mp3_len = 0;
 
-            if (callback_proc != nullptr) {
-                int percentage = ((float) cumulative_read / MP3_total_size) * 100;
-                callback_proc((HWND) GetModuleHandle(nullptr), LH_COMPUTED, percentage, 0);
-            }
         } while (samples > 0);
     }
 
@@ -417,9 +361,6 @@ int lameHelper::decode(const std::string &mp3_in, const std::string &pcm_out, WN
     fclose(mp3);
     fclose(pcm);
 
-    if (callback_proc != nullptr) {
-        callback_proc((HWND) GetModuleHandle(nullptr), LH_DONE, 0, 0);
-    }
     return 0;
 }
 

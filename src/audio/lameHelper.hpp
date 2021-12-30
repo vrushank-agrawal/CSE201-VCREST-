@@ -1,11 +1,6 @@
+#include <cstring>
 #include <string>
-#include <windows.h>
 #include "lame.h"
-
-#define LH_STARTED WM_USER+1
-#define LH_COMPUTED WM_USER+2
-#define LH_DONE WM_USER+3
-#define LH_ERROR WM_USER+4
 
 #define MAX_THREAD_COUNT 5
 
@@ -57,7 +52,6 @@ struct StaticParam_t {
     std::string wav;
     std::string mp3;
     settings_t settings;
-    WNDPROC callback_proc;
     lameHelper *lhObj;
 };
 
@@ -66,10 +60,9 @@ private:
     static const int PCM_SIZE = 4096;
     static const int MP3_SIZE = 4096;
 
-    HANDLE hThread[MAX_THREAD_COUNT];
-    StaticParam_t *hSParam[MAX_THREAD_COUNT];
+    StaticParam_t *hSParam[MAX_THREAD_COUNT]{};
 
-    int encode_x(const std::string &, const std::string &, const settings_t &, WNDPROC);
+    int encode_x(const std::string &, const std::string &, const settings_t &);
 
     void WriteWaveHeader(FILE *, int, int, int, int);
 
@@ -81,7 +74,7 @@ private:
 
     void errorHandler(const char *);
 
-    char errMsg[1000];
+    char errMsg[1000]{};
 public:
     lameHelper();
 
@@ -92,7 +85,5 @@ public:
 
     //Decode a mp3 to wav
     int decode(const std::string &mp3_in, const std::string &wav_out);
-
-    int decode(const std::string &mp3_in, const std::string &wav_out, WNDPROC callback_proc);
 
 };
