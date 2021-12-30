@@ -26,9 +26,10 @@ std::string get_curr_dir() {
 
 int main(){
     std::string add = get_curr_dir();
+    // change path for macOS
     add += "\\..\\htest.jpg";
 
-    std::string image_path = cv::samples::findFile(add);
+    std::string image_path = cv::samples::findFile(add, cv::IMREAD_COLOR);
     Image img1 = Image(image_path);
 
     std::string file = img1.getFilename();
@@ -62,53 +63,53 @@ int main(){
 
 //    img1.blurPreview(30 ,30 );
 //    img1.imgBlurPreview("testing_blur_0");
-//    img1.bilateralFilterPreview(31 );
-//    img1.imgBilateralFilterPreview("testing_blur_0");
+    img1.bilateralFilterPreview(31 );
+    img1.imgBilateralFilterPreview("testing_blur_0");
 //    img1.boxBlurPreview(30 ,29 );
 //    img1.imgBoxBlurPreview("testing_blur_0");
 //    img1.gaussianBlurPreview(30 ,27 );
 //    img1.imgGaussianBlurPreview("testing_blur_0");
-    img1.medianBlurPreview(31 );
-    img1.imgMedianBlurPreview("testing_blur_0");
+//    img1.medianBlurPreview(31 );
+//    img1.imgMedianBlurPreview("testing_blur_0");
 //    img1.imgModifiedPreview("testing_blur_0");
 
     int i = cv::waitKey(0);
 //    img1.blurPreview(1 ,1 );
 //    img1.imgBlurPreview("testing_blur_1");
-//    img1.bilateralFilterPreview(1 );
-//    img1.imgBilateralFilterPreview("testing_blur_1");
+    img1.bilateralFilterPreview(1 );
+    img1.imgBilateralFilterPreview("testing_blur_1");
 //    img1.boxBlurPreview(1 ,1 );
 //    img1.imgBoxBlurPreview("testing_blur_1");
 //    img1.gaussianBlurPreview(1 ,1 );
 //    img1.imgGaussianBlurPreview("testing_blur_1");
-    img1.medianBlurPreview(1 );
-    img1.imgMedianBlurPreview("testing_blur_1");
+//    img1.medianBlurPreview(1 );
+//    img1.imgMedianBlurPreview("testing_blur_1");
 //    img1.imgModifiedPreview("testing_blur_1");
 
     int a = cv::waitKey(0);
 //    img1.blurPreview(50 ,50 );
 //    img1.imgBlurPreview("testing_blur_2");
-//    img1.bilateralFilterPreview(51 );
-//    img1.imgBilateralFilterPreview("testing_blur_2");
+    img1.bilateralFilterPreview(51 );
+    img1.imgBilateralFilterPreview("testing_blur_2");
 //    img1.boxBlurPreview(50 ,49 );
 //    img1.imgBoxBlurPreview("testing_blur_2");
 //    img1.gaussianBlurPreview(50 ,47 );
 //    img1.imgGaussianBlurPreview("testing_blur_2");
-    img1.medianBlurPreview(51 );
-    img1.imgMedianBlurPreview("testing_blur_2");
+//    img1.medianBlurPreview(51 );
+//    img1.imgMedianBlurPreview("testing_blur_2");
 //    img1.imgModifiedPreview("testing_blur_2");
 
     int b = cv::waitKey(0);
 //    img1.blurPreview(1 ,1 );
 //    img1.imgBlurPreview("testing_blur_3");
-//    img1.bilateralFilterPreview(1 );
-//    img1.imgBilateralFilterPreview("testing_blur_3");
+    img1.bilateralFilterPreview(1 );
+    img1.imgBilateralFilterPreview("testing_blur_3");
 //    img1.boxBlurPreview(1 ,1 );
 //    img1.imgBoxBlurPreview("testing_blur_3");
 //    img1.gaussianBlurPreview(1 ,1 );
 //    img1.imgGaussianBlurPreview("testing_blur_3");
-    img1.medianBlurPreview(1 );
-    img1.imgMedianBlurPreview("testing_blur_3");
+//    img1.medianBlurPreview(1 );
+//    img1.imgMedianBlurPreview("testing_blur_3");
 //    img1.imgModifiedPreview("testing_blur_3");
 
 //  -----------------------------BLURS-------------------------------

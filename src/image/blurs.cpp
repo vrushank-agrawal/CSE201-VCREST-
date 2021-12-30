@@ -27,14 +27,18 @@ void img::Image::blur(int width, int height){
 void img::Image::bilateralFilterPreview(int distance) {
     if (distance != 0) {
         cv::Mat temp = (this->getModifiedImg()).clone();
-        cv::bilateralFilter(temp, temp, distance, distance * 2, distance / 2);
-        this->setBilateralFilterImg(temp);
+        cv::Mat tempOut;
+        cv::bilateralFilter(temp, tempOut, distance , distance * 2, distance / 2);
+        this->setBilateralFilterImg(tempOut);
     }
 }
 
 void img::Image::bilateralFilter(int distance) {
-    if (distance != 0)
-        cv::bilateralFilter(this->getModifiedImg(), this->getModifiedImg(), distance, distance * 2, distance / 2);
+    if (distance != 0) {
+        cv::Mat temp;
+        cv::bilateralFilter(this->getModifiedImg(), temp, distance, distance * 2, distance / 2);
+        this ->setModifiedImg( temp );
+    }
 }
 
 void img::Image::boxBlurPreview(int width, int height, int ddepth = -1) {
