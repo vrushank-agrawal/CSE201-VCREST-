@@ -17,21 +17,38 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
+    setupAudio();
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
+    QString prefix = "audioPath=";
     QString prefix2 = "imagePath=";
 
     for (const auto& arg : arguments) {
+        if (arg.startsWith(prefix)) {
+            importAudio(arg.right(arg.size() - prefix2.size()));
+        }
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }
     }
 }
 
+VideoEditor::~VideoEditor() {
+    delete ui;
+    delete resultVideo;
+    delete thumbnailManager;
+    delete audioManager;
+}
+
+/*###################
+*      SETUP
+####################*/
+
 void VideoEditor::setupVideoClass() {
     // create an instance of Video class
-    resultVideo = new vid::Video(640, 360, fps);
+    resultVideo = new vid::Video(width, height, fps);
+    ui->videoWindow->setSize(width, height);
 
     ui->controlSlider->setRange(0, numberFrame);
     ui->controlSlider->setTracking(true);
@@ -39,12 +56,11 @@ void VideoEditor::setupVideoClass() {
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
-
 void VideoEditor::setupMenus() {
     imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
-    imageFileTypesFilter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    audioFileTypes << ".wmv";
-    audioFileTypesFilter = "Waveform Audio (*.wmv)";
+    imageFileTypesFilter = "Images (*.jpg *.png *.gif *.svg)";
+    audioFileTypes << ".wmv" << ".mp3";
+    audioFileTypesFilter = "Audio (*.wmv *.mp3)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
     ui->actionExport->setShortcut(QKeySequence::Save);
@@ -65,16 +81,36 @@ void VideoEditor::setupMenus() {
     }
 }
 
-
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
+    audioPlayer = new AudioPlayer(audioManager, ui->timeline);
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
+    connect(ui->resetButton, &QToolButton::clicked,
+            this, &VideoEditor::resetImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
-}
+    connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
+            this, &VideoEditor::appendAudioToThumbnail);
+    connect(ui->preview, SIGNAL(playStateUpdated(bool)),
+            audioPlayer, SLOT(updatePlayState(bool)));
+    connect(ui->timeline, SIGNAL(playStateChanged(bool)),
+            audioPlayer, SLOT(handleIndicatorSignal(bool)));
+    connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
+            audioPlayer, SLOT(seek(double)));
 
+//    QMediaPlayer *player1 = new QMediaPlayer;
+//    QMediaPlayer *player2 = new QMediaPlayer;
+//    QAudioOutput *output1 = new QAudioOutput;
+//    QAudioOutput *output2 = new QAudioOutput;
+//    player1->setAudioOutput(output1);
+//    player2->setAudioOutput(output2);
+//    player1->setSource(QUrl("D:/Downloads/mp3_ex.mp3"));
+//    player2->setSource(QUrl("../media/audio/test.mp3"));
+//    player1->play();
+//    player2->play();
+}
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
@@ -102,6 +138,18 @@ void VideoEditor::setupVideoPlayer() {
     connect(ui->preview, &VideoPlayer::timeUpdated,
             this, &VideoEditor::updateCurrentTime);
 
+    // connect blurLevelChanged in this class to slider
+    blurSlider = new QSlider(Qt::Vertical);
+    blurSlider->setWindowFlag(Qt::Popup);
+    blurSlider->setVisible(false);
+    blurSlider->setFixedSize(22, 200);
+    blurSlider->setRange(1, 100);
+    connect(blurSlider, &QSlider::valueChanged,
+            this, &VideoEditor::updateBlurLevel);
+
+    connect(ui->rotateButton, &QToolButton::clicked,
+            this, &VideoEditor::rotateImageRight);
+
     // connect positionChanged in this class to slider and preview
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
@@ -118,6 +166,8 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::addImageToResultVideo);
     connect(ui->timeline, &Timeline::imageDeleted,
             this, &VideoEditor::deleteImageFromResultVideo);
+    connect(ui->timeline, &Timeline::imageSelected,
+            this, &VideoEditor::imageSelected);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
@@ -128,20 +178,24 @@ void VideoEditor::setupVideoPlayer() {
             this, &VideoEditor::applyAnimation);
 
     // add label and playButton to preview
-    ui->preview->setChild(ui->label,
+    ui->preview->setChild(ui->videoWindow,
                           ui->playButton);
 }
 
-
-void VideoEditor::importImages() {
-    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
-    for (auto & file : files) {
-        if (imageFileTypes.contains(file.right(4))) {
-            importImage(file);
-        }
-    }
+void VideoEditor::setupAudio() {
 }
 
+
+
+
+
+/*###################
+*     IMPORT
+####################*/
+
+void VideoEditor::importAudio(const QString& fileName) {
+    audioManager->addAudio(fileName);
+}
 
 void VideoEditor::importAudios() {
     QStringList files = importFiles("Import Audios", "/", audioFileTypesFilter);
@@ -152,17 +206,24 @@ void VideoEditor::importAudios() {
     }
 }
 
+QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
+    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
+    return files;
+}
 
 void VideoEditor::importImage(const QString& fileName) {
     img::Image image(fileName.toStdString());
     thumbnailManager->addImage(image, fileName);
 }
 
-
-void VideoEditor::importAudio(const QString& fileName) {
-    audioManager->addAudio(fileName);
+void VideoEditor::importImages() {
+    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        }
+    }
 }
-
 
 void VideoEditor::importMedia() {
     QString filter = imageFileTypesFilter + " ;; " + audioFileTypesFilter;
@@ -179,49 +240,60 @@ void VideoEditor::importMedia() {
     }
 }
 
-
-QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
-    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
-    return files;
-}
-
-
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (blurSlider->isVisible()) {
+        blurSlider->setVisible(false);
+        return;
+    }
+    QPoint pos = ui->blurButton->mapToGlobal(QPoint(0, 0));
+    blurSlider->move(pos.x()-blurSlider->width(), pos.y());
+    blurSlider->setVisible(true);
     if (imageItem == nullptr) return;
-    imageItem->image->blur(5, 5);
+    imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
     imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
 
-    emit imageChanged();
+void VideoEditor::rotateImageRight() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->image->rotateImgFit(90.0);
+    imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::updateBlurLevel() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->blurLevel = blurSlider->value();
+    imageItem->resetImage();
+    imageItem->image->blur(imageItem->blurLevel, imageItem->blurLevel);
+    imageItem->update();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::resetImage() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->resetImage();
+    imageItem->update();
+    imageItem->blurLevel = 1;
+    blurSlider->setValue(1);
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
 }
 
 
-void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
-    ui->timeline->addImageAtIndicator(image);
-}
 
 
-void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
-    resultVideo->addImage(image, startTime, duration);
-    resultVideo->applyAnimation(image, animation);
-}
 
-
-void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
-    resultVideo->deleteImage(image);
-}
-
-
-void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
-    resultVideo->applyAnimation(image, animation);
-}
-
-
-void VideoEditor::updatePosition(int newPosition) {
-    updateCurrentTime(1.0 * newPosition / fps);
-}
-
+/*###################
+*      GENERIC
+####################*/
 
 void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
@@ -229,20 +301,17 @@ void VideoEditor::updateCurrentTime(double time) {
             time = 1.0 * numberFrame / fps;
             ui->playButton->clicked();
         }
-        cv::Mat frame = resultVideo->getMatByTime(time);
-        emit changeFrame(frame);
 
         this->timeInSec = time;
         this->position = int(time * fps);
+        updateFrame();
         emit positionChanged(position);
         emit currentTimeChanged(timeInSec);
     }
 }
 
-
-VideoEditor::~VideoEditor() {
-    delete ui;
-    delete resultVideo;
+void VideoEditor::updatePosition(int newPosition) {
+    updateCurrentTime(1.0 * newPosition / fps);
 }
 
 void VideoEditor::writeVideo() {
@@ -270,3 +339,53 @@ void VideoEditor::writeVideo() {
     }
 }
 
+
+
+
+/*###################
+*       AUDIO
+####################*/
+
+void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
+    QString *source = audioManager->getAudio(item);
+    QMediaPlayer *player = audioManager->getPlayer(*source);
+    ui->timeline->addAudioAtIndicator(*source, player->duration());
+}
+
+
+/*###################
+*       IMAGE
+####################*/
+
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
+    ui->timeline->addImageAtIndicator(image);
+}
+
+void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
+    resultVideo->applyAnimation(image, animation);
+}
+
+void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
+    resultVideo->addImage(image, startTime, duration);
+    resultVideo->applyAnimation(image, animation);
+    updateFrame();
+}
+
+void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
+    resultVideo->deleteImage(image);
+    updateFrame();
+}
+
+void VideoEditor::imageSelected() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    blurSlider->setValue(imageItem->blurLevel);
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::updateFrame() {
+    cv::Mat frame = resultVideo->getMatByTime(timeInSec);
+    emit changeFrame(frame);
+}

@@ -19,17 +19,41 @@ signals:
     void animationChoosed(vid::Animation);
 
 public slots:
-    void applyNormalAnimation() {emit animationChoosed(vid::Normal);};
-    void applyRotationAnimation() {emit animationChoosed(vid::Rotation);};
-    void applyZoomingAnimation() {emit animationChoosed(vid::Zooming);};
-    void applyCroppingAnimation() {emit animationChoosed(vid::Cropping);};
+    void applyNormalAnimation() {
+        normalAnimationAction->setText(QString::fromUtf8("Normal ✓"));
+        rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
+        zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
+        croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+        emit animationChoosed(vid::Normal);
+    };
+    void applyRotationAnimation() {
+        normalAnimationAction->setText(QString::fromUtf8("Normal"));
+        rotationAnimationAction->setText(QString::fromUtf8("Rotation ✓"));
+        zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
+        croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+        emit animationChoosed(vid::Rotation);
+    };
+    void applyZoomingAnimation() {
+        normalAnimationAction->setText(QString::fromUtf8("Normal"));
+        rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
+        zoomingAnimationAction->setText(QString::fromUtf8("Zooming ✓"));
+        croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+        emit animationChoosed(vid::Zooming);
+    };
+    void applyCroppingAnimation() {
+        normalAnimationAction->setText(QString::fromUtf8("Normal"));
+        rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
+        zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
+        croppingAnimationAction->setText(QString::fromUtf8("Cropping ✓"));
+        emit animationChoosed(vid::Cropping);
+    };
 
 private:
-    QMenu *animationMenu;
-    QAction *normalAnimationAction;
-    QAction *rotationAnimationAction;
-    QAction *zoomingAnimationAction;
-    QAction *croppingAnimationAction;
+    QMenu *animationMenu = nullptr;
+    QAction *normalAnimationAction = nullptr;
+    QAction *rotationAnimationAction = nullptr;
+    QAction *zoomingAnimationAction = nullptr;
+    QAction *croppingAnimationAction = nullptr;
 };
 
 #endif //VIDEO_EDITOR_BX23_IMAGEITEMMENU_H

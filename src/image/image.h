@@ -1,7 +1,7 @@
-#pragma once
+#ifndef IMAGE_CLASS
+#define IMAGE_CLASS
 
-#ifndef OPENCV
-#define OPENCV
+#pragma once
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -10,13 +10,10 @@
 #include <opencv2/video.hpp>
 #include <opencv2/core/utility.hpp>
 
-#endif //OPENCV
-
 #include <iostream>
 #include <cstdlib>
 
-#ifndef IMAGE_CLASS
-#define IMAGE_CLASS
+
 
 namespace img {
 
@@ -75,6 +72,7 @@ namespace img {
         // Basic editing functions
         void resizeImg(int width, int height);
         void rotateImg(double angle);
+        void rotateImgFit(double angle);
 
         //Blurs
         void bilateralFilter(int distance);

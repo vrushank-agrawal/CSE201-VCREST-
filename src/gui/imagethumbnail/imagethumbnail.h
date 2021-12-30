@@ -27,7 +27,7 @@ public:
     void removeAllImages(int index);
 
 private:
-    QListWidget *listWidget;
+    QListWidget *listWidget = nullptr;
     QBrush brush;
     QMap<QListWidgetItem*, img::Image> map;
 };

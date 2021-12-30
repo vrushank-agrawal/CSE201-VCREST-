@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../image.h"
-#include <iostream>
-
 #ifndef COLLAGE_CLASS
 #define COLLAGE_CLASS
+
+#include "../image.h"
+#include <iostream>
 
 namespace img {
 

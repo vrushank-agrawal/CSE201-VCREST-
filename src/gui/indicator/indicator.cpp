@@ -10,7 +10,7 @@ Indicator::Indicator(qreal height): QGraphicsItem ()
 {
     pen = QPen(Qt::black,2);
     brush = QBrush(Qt::RoundCap);
-    brush.setColor(QColor("#50f"));
+    brush.setColor(QColor("#F2F200"));
     points<<QPointF(0,10)
           <<QPointF(-10,0)
           <<QPointF(10,0);
@@ -76,6 +76,7 @@ void Indicator::updateWhenPressed() {
 void Indicator::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = true;
+    emit playStateChanged(false);
     lastUpdateTime = std::time(0);
     std::thread updateThread(&Indicator::updateWhenPressed, this);
     updateThread.detach();
@@ -96,6 +97,7 @@ void Indicator::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     pressed = false;
+    emit playStateChanged(true);
     if (event->scenePos().x() >= 0) {
         emit positionChanged(event->scenePos().x());
     }

@@ -1,15 +1,10 @@
 #ifndef VIDEO_CLASS
 #define VIDEO_CLASS
 
-#ifndef OPENCV
-#define OPENCV
-
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
-
-#endif //OPENCV
 
 #include <iostream>
 #include <vector>
@@ -132,7 +127,7 @@ namespace vid {
         std::vector<ImageAnimator> animators;
         img::Image blank;
         int number_of_animations;
-        int width, height, fps;
+        static int width, height, fps;
     };
 
 }

@@ -11,7 +11,7 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 
     normalAnimationAction = new QAction(animationMenu);
     normalAnimationAction->setObjectName(QString::fromUtf8("normalAnimationAction"));
-    normalAnimationAction->setText(QString::fromUtf8("Normal"));
+    normalAnimationAction->setText(QString::fromUtf8("Normal ✓"));
 
     rotationAnimationAction = new QAction(animationMenu);
     rotationAnimationAction->setObjectName(QString::fromUtf8("rotationAnimationAction"));
