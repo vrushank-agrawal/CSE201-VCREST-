@@ -314,7 +314,10 @@ void Timeline::addImage(img::Image *image, double start, double end) {
 
     connect(item, &ImageItem::animationApplied,
             this, &Timeline::animationApplied);
-    connect(item, &ImageItem::imageSelected, this, &Timeline::imageSelected);
+    connect(item, &ImageItem::imageSelected,
+            this, &Timeline::imageSelected);
+    connect(item, &ImageItem::blurTypeApplied,
+            this, &Timeline::blurTypeApplied);
 
     item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
 

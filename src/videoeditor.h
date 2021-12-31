@@ -63,6 +63,7 @@ public slots:
     void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
     void appendImageToThumbnail(QListWidgetItem*);
     void applyAnimation(img::Image *image, vid::Animation animation);
+    void applyBlur(ImageItem *imageItem);
     void blurImage();
     void deleteImageFromResultVideo(img::Image *image);
     void imageSelected();

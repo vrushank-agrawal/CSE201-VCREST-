@@ -17,14 +17,14 @@
 
 namespace img {
 
+    enum BlurType {
+        Normal = 0, Box = 1, Gaussian = 2, Median = 3
+    };
+
     class Image {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
-        cv::Mat img_matrix_blur;
         cv::Mat img_matrix_bilateralFilter;
-        cv::Mat img_matrix_boxBlur;
-        cv::Mat img_matrix_gaussianBlur;
-        cv::Mat img_matrix_medianBlur;
         cv::Mat current_unblur_matrix;
         std::string filename;
 
@@ -39,11 +39,6 @@ namespace img {
         cv::Mat getMat();
         std::string getFilename();
         cv::Mat getModifiedImg();
-        cv::Mat getBlurImg();
-        cv::Mat getBilateralFilterImg();
-        cv::Mat getBoxBlurImg();
-        cv::Mat getGaussianBlurImg();
-        cv::Mat getMedianBlurImg();
 
         // sets the matrix associated to the image
         cv::Mat getCurrentUnblurImg();
@@ -52,9 +47,6 @@ namespace img {
         void setOriginalImg(cv::Mat mat);
         void setBlurImg(cv::Mat mat);
         void setBilateralFilterImg(cv::Mat mat);
-        void setBoxBlurImg(cv::Mat mat);
-        void setGaussianBlurImg(cv::Mat mat);
-        void setMedianBlurImg(cv::Mat mat);
 
         // returns error if loaded image can't be read
         int return_img_error(int a);
@@ -96,18 +88,14 @@ namespace img {
         //Blurs and their previews
         void bilateralFilterPreview(int distance);
         void bilateralFilter(int distance);
-        void blurPreview(int width, int height);
         void blur(int width, int height);
-        void boxBlurPreview(int width, int height, int depth);
         void boxBlur(int width, int height, int depth);
-        void gaussianBlurPreview(int width, int height);
         void gaussianBlur(int width, int height);
-        void medianBlurPreview(int kernel_size);
         void medianBlur(int kernel_size);
 
     }; // Image() class
 
-    const cv::Mat blackMat = cv::Mat(1920, 1080, CV_8UC3, cv::Scalar(0, 0, 0));
+    const cv::Mat blackMat = cv::Mat(1280, 720, CV_8UC3, cv::Scalar(0, 0, 0));
 } //namespace
 
 #endif // IMAGE_CLASS
