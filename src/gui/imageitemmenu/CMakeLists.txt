@@ -6,5 +6,5 @@ target_include_directories(imageItemMenu
 
 target_link_libraries(imageItemMenu
         qtExternalLibrary
-        video
+        videoLibrary
         )

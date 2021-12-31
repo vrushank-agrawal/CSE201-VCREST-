@@ -28,7 +28,7 @@ target_link_libraries(gui
         imageItem
         sizeGripItem
         imageItemMenu
-        video
+        videoLibrary
         audioItem
         audioPlayer
         )
