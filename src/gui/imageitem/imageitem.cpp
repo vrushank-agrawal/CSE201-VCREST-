@@ -145,7 +145,7 @@ void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
 }
 
 double ImageItem::getTimeOfFrame() {
-    return ((this->pos().x() + this->size.width()/2.0)/100.0);
+    return ((this->pos().x() + this->size.width()/2.0)/xTimeOffset);
 }
 
 void ImageItem::resetImage() {

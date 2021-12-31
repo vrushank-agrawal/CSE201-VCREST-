@@ -79,6 +79,7 @@ void Timeline::mousePressEvent(QMouseEvent *event) {
         QPointF pos = mapToScene(event->pos());
         if (timeHeight <= pos.y() && pos.y() <= sceneHeight) {
             ImageItem::setSelectedImageItem();
+            emit imageSelected();
         }
     }
     QGraphicsView::mousePressEvent(event);
