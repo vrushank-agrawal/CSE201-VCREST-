@@ -20,7 +20,7 @@ ImageItem::ImageItem(img::Image *image,
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     menu = new ImageItemMenu();
-    connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
+    connect(menu, &ImageItemMenu::animationChosen, this, &ImageItem::applyAnimation);
     connect(menu, &ImageItemMenu::blurChosen, this, &ImageItem::applyBlur);
 }
 

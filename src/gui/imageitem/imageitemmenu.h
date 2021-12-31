@@ -16,7 +16,7 @@ public:
     ~ImageItemMenu() override;
 
 signals:
-    void animationChoosed(vid::Animation);
+    void animationChosen(vid::Animation);
     void blurChosen(img::BlurType);
 
 public slots:
