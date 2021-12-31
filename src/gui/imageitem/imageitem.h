@@ -27,18 +27,25 @@ public:
     ~ImageItem();
 
     static ImageItem* getSelectedImageItem() {return selectedImageItem;}
+    static void setSelectedImageItem(ImageItem *item = nullptr);
     constexpr static const double border = 3;
     static double yOffset, xTimeOffset, yHeight;
     static QTransform parentTransform;
 
-    vid::Animation animation = vid::Normal;
+    img::BlurType blurType = img::BlurType::Normal;
+    vid::Animation animation = vid::Animation::Normal;
+    int blurLevel = 0;
     img::Image *image = nullptr;
     QMultiMap<double, ImageItem*>::iterator start, end;
 
     void calculateSize();
     void createSizeGripItem(SizeGripItem *sizeGripItem);
+    double getTimeOfFrame();
+    void resetImage();
     void setSize(QSizeF size);
     void updateDuration(double newLength);
+    int getMedianBlurLevel();
+    void blur();
 
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -58,7 +65,9 @@ private:
 
 signals:
     void animationApplied(img::Image* image, vid::Animation animation);
+    void blurTypeApplied(ImageItem* imageItem);
     void deleted(ImageItem*);
+    void imageSelected();
     void itemMoved(ImageItem *item, double start, double end);
     void positionChanged(ImageItem* item, double start, double end);
     void resized(ImageItem* item, double newLength);
@@ -66,6 +75,7 @@ signals:
 
 public slots:
     void applyAnimation(vid::Animation);
+    void applyBlur(img::BlurType);
 
 
 protected:

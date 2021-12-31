@@ -20,15 +20,21 @@ ImageItem::ImageItem(img::Image *image,
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     menu = new ImageItemMenu();
-    connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
+    connect(menu, &ImageItemMenu::animationChosen, this, &ImageItem::applyAnimation);
+    connect(menu, &ImageItemMenu::blurChosen, this, &ImageItem::applyBlur);
 }
 
 
 ImageItem::~ImageItem() {
-    selectedImageItem = nullptr;
     delete image;
     delete sizeGripItem;
     delete menu;
+}
+
+void ImageItem::setSelectedImageItem(ImageItem *item) {
+    if (selectedImageItem != nullptr) selectedImageItem->update();
+    selectedImageItem = item;
+    if (selectedImageItem != nullptr) selectedImageItem->update();
 }
 
 QRectF ImageItem::boundingRect() const {
@@ -79,21 +85,18 @@ void ImageItem::applyAnimation(vid::Animation animation) {
     emit animationApplied(image, animation);
 }
 
+void ImageItem::applyBlur(img::BlurType blurType) {
+    this->blurType = blurType;
+    emit blurTypeApplied(this);
+}
+
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        if (selectedImageItem != this) {
-            auto oldSelected = selectedImageItem;
-            selectedImageItem = this;
-            this->update();
-            if (oldSelected != nullptr) oldSelected->update();
-        }
-        else {
-            selectedImageItem = nullptr;
-            this->update();
-        }
+        setSelectedImageItem(this);
         pressed = true;
         oldMousePos = event->scenePos();
         oldPos = scenePos();
+        emit imageSelected();
     }
     else if (event->button() == Qt::RightButton) {
         menu->exec(event->screenPos());
@@ -111,17 +114,23 @@ void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    pressed = false;
-    oldMousePos = event->scenePos();
-    oldPos = scenePos();
-    double s = oldPos.x() / xTimeOffset;
-    double e = oldPos.x() / xTimeOffset + end.key() - start.key();
-    emit positionChanged(this, s, e);
+    if (event->button() == Qt::LeftButton) {
+        pressed = false;
+        oldMousePos = event->scenePos();
+        oldPos = scenePos();
+        double s = oldPos.x() / xTimeOffset;
+        double e = oldPos.x() / xTimeOffset + end.key() - start.key();
+        emit positionChanged(this, s, e);
+    }
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
-    emit deleted(this);
-    delete this;
+    if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem == this)
+            setSelectedImageItem(nullptr);
+        emit deleted(this);
+        delete this;
+    }
 }
 
 void ImageItem::updateDuration(double newLength) {
@@ -133,6 +142,34 @@ void ImageItem::updateDuration(double newLength) {
 
 void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
     this->sizeGripItem = sizeGripItem;
+}
+
+double ImageItem::getTimeOfFrame() {
+    return ((this->pos().x() + this->size.width()/2.0)/xTimeOffset);
+}
+
+void ImageItem::resetImage() {
+    image->setModifiedImg(image->getMat().clone());
+    image->setCurrentUnblurImg(image->getMat().clone());
+}
+
+int ImageItem::getMedianBlurLevel() {
+    return (blurLevel << 1) + 1;
+}
+
+void ImageItem::blur() {
+    switch (blurType) {
+        case (img::BlurType::Normal):
+            image->blur(blurLevel, blurLevel);
+            break;
+        case (img::BlurType::Gaussian):
+            image->gaussianBlur(blurLevel, blurLevel);
+            break;
+        case (img::BlurType::Median):
+            image->medianBlur(getMedianBlurLevel());
+            break;
+    }
+    update();
 }
 
 

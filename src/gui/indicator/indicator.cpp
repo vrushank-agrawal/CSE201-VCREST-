@@ -10,7 +10,7 @@ Indicator::Indicator(qreal height): QGraphicsItem ()
 {
     pen = QPen(Qt::black,2);
     brush = QBrush(Qt::RoundCap);
-    brush.setColor(QColor("#50f"));
+    brush.setColor(QColor("#F2F200"));
     points<<QPointF(0,10)
           <<QPointF(-10,0)
           <<QPointF(10,0);

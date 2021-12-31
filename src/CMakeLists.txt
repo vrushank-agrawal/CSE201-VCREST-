@@ -13,7 +13,7 @@ target_link_libraries(videoEditor PUBLIC
         gui
         imageLibrary
         audio
-        video
+        videoLibrary
         qtExternalLibrary
         opencvExternalLibrary
         )

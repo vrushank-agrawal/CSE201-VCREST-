@@ -7,7 +7,14 @@
 img::Image::Image() {}
 
 img::Image::Image(cv::Mat mat) {
-    img_matrix = mat;
+    double c = sqrt(921601.0/(mat.size().width * mat.size().height));
+    if (c < 1) {
+        cv::resize(mat, img_matrix, cv::Size(), c, c);
+    }
+    else {
+        img_matrix = mat;
+    }
+    current_unblur_matrix = img_matrix.clone();
     img_matrix_modified = img_matrix.clone();
     filename = "no file path provided";
 }
@@ -17,17 +24,13 @@ img::Image::Image(const std::string & file) {
     if (validImg( filename )) {
         img_matrix = decodeImg( filename, cv::IMREAD_COLOR);
         if ( getMat().empty()) {
-//            printf("improper image exception - file is corrupt/invalid") ;
-            return_img_error(1) ;
+            return_img_error(1) ; //"improper image exception - file is corrupt/invalid")
         }
     } else {
-//        printf("file reading exception - file cannot be read by VEST") ;
-        return_img_error(2) ;
+        return_img_error(2) ; //printf("file reading exception - file cannot be read by VEST")
     }
     img_matrix_modified = img_matrix.clone();
-
-//        printf("img is valid can be read") ;
-    return_img_error(0) ;
+    return_img_error(0) ; //printf("img is valid can be read")
 }
 
 img::Image::~Image() {}
@@ -50,6 +53,14 @@ cv::Mat img::Image::getModifiedImg() {
 
 void img::Image::setModifiedImg(cv::Mat matrix) {
     this -> img_matrix_modified = matrix;
+}
+
+void img::Image::setOriginalImg(cv::Mat matrix) {
+    this -> img_matrix = matrix;
+}
+
+void img::Image::setBilateralFilterImg(cv::Mat matrix) {
+    this -> img_matrix_bilateralFilter = matrix;
 }
 
 cv::Mat img::Image::decodeImg(const std::string &filename, int flags) {
@@ -95,8 +106,6 @@ int img::Image::getModifiedWidth() {
 }
 
 // adds black areas to image
-
-
 void img::Image::equalizeImgDim( double width, double height) {
     double fixedRatio = height / width;
     double imgRatio = this -> getRatio();
@@ -107,12 +116,11 @@ void img::Image::equalizeImgDim( double width, double height) {
         return;
     }
 
-//    std::cout<<imgRatio<<"  "<<fixedRatio<<std::endl;
-
+    // change image because ratios are different
     if (( imgRatio > fixedRatio ) ) {
-
         if ( this -> getModifiedHeight() > height ) {
 
+            // calculate new width for the image
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
@@ -123,19 +131,16 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Black.resizeImg( black_width, height );
             Image* blackptr = &Black;
-            this -> sendToStitch( 0, blackptr );
 
+            // adding black matrices
+            // resizing image again
+            this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
+
             return;
-            //create collage vector (slow method)
-//            std::vector<Image> arr = { Black, *this, Black };
-//
-//            // set new image
-//            Collage newStichedImage = Collage(arr);
-//            newStichedImage.threeStitchInline( 0 );
-//            this ->setModifiedImg( newStichedImage.getModifiedImage() );
         } else if (this -> getModifiedHeight() < height) {
 
+            // calculate new width for the image
             int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
             this ->resizeImg( new_width, height );
 
@@ -146,18 +151,19 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Image* blackptr = &Black;
             Black.resizeImg( black_width, height );
-            this -> sendToStitch( 0, blackptr );
 
+            // adding black matrices
+            // resizing image again
+            this -> sendToStitch( 0, blackptr );
             this -> resizeImg(width, height);
+
             return;
         }
-
     }
-
     if (( imgRatio < fixedRatio ) ) {
-
         if ( this -> getModifiedWidth() > width ) {
 
+            // calculate new height for the image
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
@@ -168,13 +174,16 @@ void img::Image::equalizeImgDim( double width, double height) {
             Image Black = img::Image(blackMat);
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
+
+            // adding black matrices
+            // resizing image again
             this -> sendToStitch( 1, blackptr );
-
             this -> resizeImg(width, height);
-            return;
 
+            return;
         } else if (this -> getModifiedWidth() < width) {
 
+            // calculate new height for the image
             int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
             this -> resizeImg( width, new_height );
 
@@ -186,8 +195,11 @@ void img::Image::equalizeImgDim( double width, double height) {
             Black.resizeImg( width, black_height );
             Image* blackptr = &Black;
 
-            this -> resizeImg(width, height);
+            // adding black matrices
+            // resizing image again
             this -> sendToStitch( 1, blackptr );
+            this -> resizeImg(width, height);
+
             return;
         }
     }
@@ -215,4 +227,12 @@ void img::Image::vcon(Image *black) {
     cv::vconcat(out, black -> getModifiedImg(), out);
 
     this ->setModifiedImg( out );
+}
+
+cv::Mat img::Image::getCurrentUnblurImg() {
+    return this->current_unblur_matrix;
+}
+
+void img::Image::setCurrentUnblurImg(cv::Mat mat) {
+    this->current_unblur_matrix = mat;
 }

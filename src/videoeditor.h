@@ -63,8 +63,13 @@ public slots:
     void addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation);
     void appendImageToThumbnail(QListWidgetItem*);
     void applyAnimation(img::Image *image, vid::Animation animation);
+    void applyBlur(ImageItem *imageItem);
     void blurImage();
     void deleteImageFromResultVideo(img::Image *image);
+    void imageSelected();
+    void resetImage();
+    void rotateImageRight();
+    void updateBlurLevel();
 
 
 
@@ -85,8 +90,8 @@ private:
     QStringList importFiles(const QString& caption, const QString& startingDirectory, const QString& filter);
     void importImage(const QString& dir);
 
-    QSet<QString> audioFileTypes, imageFileTypes;
-    QString audioFileTypesFilter = "", imageFileTypesFilter = "";
+    QSet<QString> audioFileTypes, imageFileTypes, mediaFileTypes;
+    QString audioFileTypesFilter = "", imageFileTypesFilter = "", mediaFileTypesFilter = "";
 
     /*###################
     *      IMAGE
@@ -100,9 +105,11 @@ private:
     AudioPlayer *audioPlayer = nullptr;
     ThumbnailManager *thumbnailManager = nullptr;
     vid::Video *resultVideo = nullptr;
+    QSlider *blurSlider = nullptr;
 
     int fourcc = -1;
     int position = 0, fps = 30, numberFrame = fps * 5 * 60;
+    int width = 1280, height = 720;
     double timeInSec = 0;
     Ui::VideoEditor *ui;
 };

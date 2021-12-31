@@ -21,10 +21,6 @@ namespace img {
                 void fourStitch(bool );
                 void fourStitchRec(int times);
 
-                // creates inline stitching for black img::Image adding
-                void threeStitchInline(int val);
-
-                void flip();
                 void imgModifiedPreview( const std::string & winname);
 
                 // get and set functions

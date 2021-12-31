@@ -33,9 +33,10 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     connect(indicator, SIGNAL(playStateChanged(bool)),
             this, SLOT(relayPlayStateChanged(bool)));
 
+    QPen pen("#bbbbbb");
     QLineF separator(0, 0, sceneWidth, 0);
     for (int i = 0; i < 2; i++) {
-        QGraphicsItem *line = scene->addLine(separator);
+        QGraphicsItem *line = scene->addLine(separator, pen);
         line->setPos(0, timeHeight + i * (sceneHeight - timeHeight) / 2);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
@@ -43,14 +44,16 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     QLineF timestamp(0, 0, 0, 10);
 
     for (int i = 0; i <= lengthInSecond; i += 5){
-        QGraphicsItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
+        QGraphicsTextItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
+        item->setDefaultTextColor("#bbbbbb");
         item->setPos(i*xTimeOffset,yTime);
         item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 
-        QGraphicsItem *line = scene->addLine(timestamp);
+        QGraphicsItem *line = scene->addLine(timestamp, pen);
         line->setPos(i*xTimeOffset,yTime);
         line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
     }
+
 
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;
@@ -69,6 +72,17 @@ void Timeline::updateVideoLength(int length) {
         scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
         emit videoLengthChanged(length);
     }
+}
+
+void Timeline::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = mapToScene(event->pos());
+        if (timeHeight <= pos.y() && pos.y() <= sceneHeight) {
+            ImageItem::setSelectedImageItem();
+            emit imageSelected();
+        }
+    }
+    QGraphicsView::mousePressEvent(event);
 }
 
 void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
@@ -141,6 +155,7 @@ void Timeline::wheelEvent(QWheelEvent *event) {
 
 void Timeline::addAudio(QString audioSource, double sourceLength, double start, double end) {
     auto *item = new AudioItem(audioSource, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
+    end = (item->getMaxLength() < 500) ? start + item->getMaxLength()*0.01 : end;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
     item->calculateSize();
@@ -155,8 +170,10 @@ void Timeline::addAudio(QString audioSource, double sourceLength, double start, 
     connect(item, SIGNAL(deleted(AudioItem*)),
             this, SLOT(deleteAudio(AudioItem*)));
 
+    SizeGripItem *sizeGripItem = new SizeGripItem(new AudioItemResizer, item);
+    sizeGripItem->setMaxWidth(item->getMaxLength());
 
-    item->createSizeGripItem(new SizeGripItem(new AudioItemResizer, item));
+    item->createSizeGripItem(sizeGripItem);
 }
 
 void Timeline::appendAudio(QString audioSource, double sourceLength, double length) {
@@ -167,7 +184,7 @@ void Timeline::appendAudio(QString audioSource, double sourceLength, double leng
 void Timeline::addAudioAtIndicator(QString audioSource, double sourceLength, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
-    // image already exists
+    // audio already exists
     if (getAudioItem(time) != nullptr) {
         appendAudio(audioSource, sourceLength, max_length);
         return;
@@ -308,8 +325,14 @@ void Timeline::addImage(img::Image *image, double start, double end) {
 
     connect(item, &ImageItem::animationApplied,
             this, &Timeline::animationApplied);
+    connect(item, &ImageItem::imageSelected,
+            this, &Timeline::imageSelected);
+    connect(item, &ImageItem::blurTypeApplied,
+            this, &Timeline::blurTypeApplied);
 
-    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
+    auto temp = new SizeGripItem(new ImageItemResizer, item);
+    temp->setMaxWidth(std::numeric_limits<double>::infinity());
+    item->createSizeGripItem(temp);
 
     emit imageAdded(image, start, end-start, vid::Normal);
 }
@@ -414,6 +437,8 @@ void Timeline::setImageItemPosition(ImageItem *item, double startTime, double en
 }
 
 void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
+    if (item->start.key() == start && item->end.key() == end)
+        return;
     // delete old duration
     deleteImage(item);
 

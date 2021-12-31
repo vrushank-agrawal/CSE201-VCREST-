@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1077</width>
-    <height>633</height>
+    <width>1067</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,11 +23,12 @@
    <bool>true</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+   <string notr="true">QToolTip { color: #000000; background-color: #232323; border: 0px; }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+    <string notr="true">background: #232323;
+QToolTip { color: #ffffff; background-color: #232323; border: 0px; }</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_5">
     <item>
@@ -43,6 +44,9 @@
         <width>0</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #232323</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0">
        <property name="leftMargin">
@@ -69,7 +73,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: rgb(0, 85, 0)rgb(170, 170, 255)</string>
+          <string notr="true">background: rgb(35,35,35)</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
@@ -87,7 +91,7 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: rgb(85, 255, 255)rgb(255, 170, 255)</string>
+             <string notr="true">background: rgb(51,51,51)</string>
             </property>
             <layout class="QGridLayout" name="gridLayout"/>
            </widget>
@@ -107,7 +111,7 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: rgb(85, 255, 0)</string>
+             <string notr="true">background: rgb(51,51,51)</string>
             </property>
            </widget>
           </item>
@@ -129,7 +133,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: rgb(255, 255, 127);
+          <string notr="true">background: rgb(51,51,51);
 QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -169,7 +173,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: red;
+             <string notr="true">background: #232323;
 QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0">
@@ -194,10 +198,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </size>
                </property>
                <property name="toolTip">
-                <string comment="blur the image" extracomment="ahihi">blur</string>
+                <string comment="blur the image">Blur</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -215,35 +220,6 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="resizeButton">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>crop</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/img-resize.png</normaloff>:/img-resize.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>22</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QToolButton" name="rotateButton">
                <property name="minimumSize">
                 <size>
@@ -252,10 +228,11 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </size>
                </property>
                <property name="toolTip">
-                <string>zoom</string>
+                <string>Rotate</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -273,12 +250,47 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               </widget>
              </item>
              <item>
+              <widget class="QToolButton" name="resetButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Reset to Original</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset theme=":/img-reset.png"/>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>22</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="arrowType">
+                <enum>Qt::NoArrow</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QToolButton" name="toolButton">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #eeeeee; color: #000000;</string>
                </property>
                <property name="text">
                 <string>...</string>
@@ -319,7 +331,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: rgb(255, 170, 0)</string>
+             <string notr="true">background: rgb(35,35,35)</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
              <property name="spacing">
@@ -338,7 +350,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
               <number>10</number>
              </property>
              <item>
-              <widget class="VideoWindow" name="label">
+              <widget class="VideoWindow" name="videoWindow">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -346,7 +358,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background:rgb(68, 255, 82)</string>
+                <string notr="true">background: #dddddd</string>
                </property>
                <property name="verticalScrollBarPolicy">
                 <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -365,7 +377,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background: rgb(126, 154, 255)</string>
+                <string notr="true">background: rgb(51,51,51)</string>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <property name="spacing">
@@ -397,6 +409,9 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                     <height>1</height>
                    </size>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background: #eeeeee;</string>
+                  </property>
                   <property name="text">
                    <string>...</string>
                   </property>
@@ -410,6 +425,9 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                     <verstretch>1</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background: #eeeeee;</string>
+                  </property>
                   <property name="text">
                    <string>...</string>
                   </property>
@@ -422,6 +440,9 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background: #eeeeee;</string>
                   </property>
                   <property name="text">
                    <string>...</string>
@@ -442,6 +463,9 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     </item>
     <item>
      <widget class="ProgressBar" name="controlSlider">
+      <property name="styleSheet">
+       <string notr="true">background: #eeeeee</string>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -456,7 +480,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">background: rgb(12, 255, 0)</string>
+       <string notr="true">background: rgb(51,51,51); color: #ffffff;</string>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -470,8 +494,8 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1077</width>
-     <height>24</height>
+     <width>1067</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

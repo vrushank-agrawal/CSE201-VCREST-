@@ -49,7 +49,10 @@ QVariant SizeGripItem::HandleItem::itemChange(GraphicsItemChange change,
 
     if (change == ItemPositionChange)
     {
-        retVal = restrictPosition(value.toPointF());
+        double x = value.toPointF().x();
+        x = (x <= maxWidth) ? x : maxWidth;
+        QPointF *new_point = new QPointF(x, value.toPointF().y());
+        retVal = restrictPosition(*new_point);
     }
     else if (change == ItemPositionHasChanged)
     {
@@ -110,6 +113,10 @@ QPointF SizeGripItem::HandleItem::restrictPosition(const QPointF& newPos)
     return retVal;
 }
 
+void SizeGripItem::HandleItem::setMaxWidth(double w) {
+    maxWidth = w;
+}
+
 SizeGripItem::SizeGripItem(Resizer* resizer, QGraphicsItem* parent)
         : QGraphicsItem(parent),
           resizer_(resizer)
@@ -163,7 +170,7 @@ IMPL_SET_FN(const QPointF&, BottomLeft)
 
 void SizeGripItem::doResize()
 {
-    if (resizer_)
+    if (resizer_ && rect_.width() <= maxWidth)
     {
         (*resizer_)(parentItem(), rect_);
         updateHandleItemPositions();
@@ -172,7 +179,7 @@ void SizeGripItem::doResize()
 
 void SizeGripItem::updateHandleItemPositions()
 {
-            foreach (HandleItem* item, handleItems_)
+        foreach (HandleItem* item, handleItems_)
         {
             item->setFlag(ItemSendsGeometryChanges, false);
 
@@ -214,4 +221,11 @@ void SizeGripItem::updateHandleItemPositions()
 
 void SizeGripItem::resize(QRectF rect) {
     rect_ = rect;
+}
+
+void SizeGripItem::setMaxWidth(double w) {
+    maxWidth = w;
+    foreach (HandleItem* item, handleItems_) {
+        item->setMaxWidth(w);
+    }
 }

@@ -16,20 +16,28 @@ public:
     ~ImageItemMenu() override;
 
 signals:
-    void animationChoosed(vid::Animation);
+    void animationChosen(vid::Animation);
+    void blurChosen(img::BlurType);
 
 public slots:
-    void applyNormalAnimation() { emit animationChoosed(vid::Normal); };
-    void applyRotationAnimation() { emit animationChoosed(vid::Rotation); };
-    void applyZoomingAnimation() { emit animationChoosed(vid::Zooming); };
-    void applyCroppingAnimation() { emit animationChoosed(vid::Cropping); };
+    void applyNormalAnimation() ;
+    void applyRotationAnimation();
+    void applyZoomingAnimation();
+    void applyCroppingAnimation();
+    void applyNormalBlur();
+    void applyGaussianBlur();
+    void applyMedianBlur();
 
 private:
     QMenu *animationMenu = nullptr;
+    QMenu *blurMenu = nullptr;
     QAction *normalAnimationAction = nullptr;
     QAction *rotationAnimationAction = nullptr;
     QAction *zoomingAnimationAction = nullptr;
     QAction *croppingAnimationAction = nullptr;
+    QAction *normalBlurAction = nullptr;
+    QAction *gaussianBlurAction = nullptr;
+    QAction *medianBlurAction = nullptr;
 };
 
 #endif //VIDEO_EDITOR_BX23_IMAGEITEMMENU_H

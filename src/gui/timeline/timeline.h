@@ -28,6 +28,7 @@ public:
 
     void updateVideoLength(int length);
 
+  
 
 private:
     Indicator *indicator = nullptr;
@@ -46,7 +47,6 @@ private:
     };
 
     void moveTimeline(TimelineMoveOption option);
-    void updateFrame(double time);
 
 
 signals:
@@ -62,6 +62,7 @@ public slots:
 
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
     virtual void wheelEvent(QWheelEvent *event);
 
@@ -120,8 +121,10 @@ private:
 
 signals:
     void animationApplied(img::Image *image, vid::Animation animation);
+    void blurTypeApplied(ImageItem *imageItem);
     void imageAdded(img::Image *image, double startTime, double duration, vid::Animation animation);
     void imageDeleted(img::Image *image);
+    void imageSelected();
 
 
 private slots:
