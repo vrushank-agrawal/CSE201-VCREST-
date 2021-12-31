@@ -152,7 +152,7 @@ void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
 }
 
 double ImageItem::getTimeOfFrame() {
-    return ((this->pos().x() + this->size.width()/2.0)/100.0);
+    return ((pos().x() + size.width()/2.0)/100.0);
 }
 
 void ImageItem::resetImage() {
@@ -160,11 +160,7 @@ void ImageItem::resetImage() {
     image->setCurrentUnblurImg(image->getMat().clone());
 }
 
-void ImageItem::unblurImage() {
-    image->setModifiedImg(image->getCurrentUnblurImg().clone());
-}
-
-int ImageItem::getMedianBlueLevel() {
+int ImageItem::getMedianBlurLevel() {
     return (blurLevel << 1) + 1;
 }
 
@@ -177,7 +173,7 @@ void ImageItem::blur() {
             image->gaussianBlur(blurLevel, blurLevel);
             break;
         case (img::BlurType::Median):
-            image->medianBlur(getMedianBlueLevel());
+            image->medianBlur(getMedianBlurLevel());
             break;
     }
     update();

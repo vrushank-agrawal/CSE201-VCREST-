@@ -7,7 +7,13 @@
 img::Image::Image() {}
 
 img::Image::Image(cv::Mat mat) {
-    img_matrix = mat;
+    double c = sqrt(921601.0/(mat.size().width * mat.size().height));
+    if (c < 1) {
+        cv::resize(mat, img_matrix, cv::Size(), c, c);
+    }
+    else {
+        img_matrix = mat;
+    }
     current_unblur_matrix = img_matrix.clone();
     img_matrix_modified = img_matrix.clone();
     filename = "no file path provided";
