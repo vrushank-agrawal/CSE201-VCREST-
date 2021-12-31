@@ -78,7 +78,7 @@ void ImageItemMenu::applyNormalAnimation()  {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
-    emit animationChoosed(vid::Normal);
+    emit animationChosen(vid::Normal);
 }
 
 void ImageItemMenu::applyRotationAnimation() {
@@ -86,7 +86,7 @@ void ImageItemMenu::applyRotationAnimation() {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation ✓"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
-    emit animationChoosed(vid::Rotation);
+    emit animationChosen(vid::Rotation);
 }
 
 void ImageItemMenu::applyZoomingAnimation() {
@@ -94,7 +94,7 @@ void ImageItemMenu::applyZoomingAnimation() {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming ✓"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
-    emit animationChoosed(vid::Zooming);
+    emit animationChosen(vid::Zooming);
 }
 
 void ImageItemMenu::applyCroppingAnimation() {
@@ -102,7 +102,7 @@ void ImageItemMenu::applyCroppingAnimation() {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping ✓"));
-    emit animationChoosed(vid::Cropping);
+    emit animationChosen(vid::Cropping);
 };
 
 void ImageItemMenu::applyNormalBlur() {

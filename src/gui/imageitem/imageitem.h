@@ -27,6 +27,7 @@ public:
     ~ImageItem();
 
     static ImageItem* getSelectedImageItem() {return selectedImageItem;}
+    static void setSelectedImageItem(ImageItem *item = nullptr);
     constexpr static const double border = 3;
     static double yOffset, xTimeOffset, yHeight;
     static QTransform parentTransform;

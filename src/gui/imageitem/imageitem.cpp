@@ -20,7 +20,7 @@ ImageItem::ImageItem(img::Image *image,
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     menu = new ImageItemMenu();
-    connect(menu, &ImageItemMenu::animationChoosed, this, &ImageItem::applyAnimation);
+    connect(menu, &ImageItemMenu::animationChosen, this, &ImageItem::applyAnimation);
     connect(menu, &ImageItemMenu::blurChosen, this, &ImageItem::applyBlur);
 }
 
@@ -29,6 +29,12 @@ ImageItem::~ImageItem() {
     delete image;
     delete sizeGripItem;
     delete menu;
+}
+
+void ImageItem::setSelectedImageItem(ImageItem *item) {
+    if (selectedImageItem != nullptr) selectedImageItem->update();
+    selectedImageItem = item;
+    if (selectedImageItem != nullptr) selectedImageItem->update();
 }
 
 QRectF ImageItem::boundingRect() const {
@@ -86,30 +92,13 @@ void ImageItem::applyBlur(img::BlurType blurType) {
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        if (selectedImageItem != this) {
-            auto oldSelected = selectedImageItem;
-            selectedImageItem = this;
-            if (oldSelected != nullptr) oldSelected->update();
-        }
-        else {
-            selectedImageItem = nullptr;
-        }
-        this->update();
+        setSelectedImageItem(this);
         pressed = true;
         oldMousePos = event->scenePos();
         oldPos = scenePos();
         emit imageSelected();
     }
     else if (event->button() == Qt::RightButton) {
-        if (selectedImageItem != this) {
-            auto oldSelected = selectedImageItem;
-            selectedImageItem = this;
-            this->update();
-            if (oldSelected != nullptr) {
-                oldSelected->menu->hide();
-                oldSelected->update();
-            }
-        }
         menu->exec(event->screenPos());
     }
 }
@@ -125,19 +114,23 @@ void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    pressed = false;
-    oldMousePos = event->scenePos();
-    oldPos = scenePos();
-    double s = oldPos.x() / xTimeOffset;
-    double e = oldPos.x() / xTimeOffset + end.key() - start.key();
-    emit positionChanged(this, s, e);
+    if (event->button() == Qt::LeftButton) {
+        pressed = false;
+        oldMousePos = event->scenePos();
+        oldPos = scenePos();
+        double s = oldPos.x() / xTimeOffset;
+        double e = oldPos.x() / xTimeOffset + end.key() - start.key();
+        emit positionChanged(this, s, e);
+    }
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
-    if (selectedImageItem == this)
-        selectedImageItem = nullptr;
-    emit deleted(this);
-    delete this;
+    if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem == this)
+            setSelectedImageItem(nullptr);
+        emit deleted(this);
+        delete this;
+    }
 }
 
 void ImageItem::updateDuration(double newLength) {
@@ -152,7 +145,7 @@ void ImageItem::createSizeGripItem(SizeGripItem *sizeGripItem) {
 }
 
 double ImageItem::getTimeOfFrame() {
-    return ((pos().x() + size.width()/2.0)/100.0);
+    return ((this->pos().x() + this->size.width()/2.0)/xTimeOffset);
 }
 
 void ImageItem::resetImage() {

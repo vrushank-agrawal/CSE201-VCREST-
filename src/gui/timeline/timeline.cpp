@@ -74,6 +74,17 @@ void Timeline::updateVideoLength(int length) {
     }
 }
 
+void Timeline::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        QPointF pos = mapToScene(event->pos());
+        if (timeHeight <= pos.y() && pos.y() <= sceneHeight) {
+            ImageItem::setSelectedImageItem();
+            emit imageSelected();
+        }
+    }
+    QGraphicsView::mousePressEvent(event);
+}
+
 void Timeline::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         QPointF pos = mapToScene(event->pos());

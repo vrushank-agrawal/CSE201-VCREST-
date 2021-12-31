@@ -47,7 +47,6 @@ private:
     };
 
     void moveTimeline(TimelineMoveOption option);
-    void updateFrame(double time);
 
 
 signals:
@@ -63,6 +62,7 @@ public slots:
 
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
     virtual void wheelEvent(QWheelEvent *event);
 
