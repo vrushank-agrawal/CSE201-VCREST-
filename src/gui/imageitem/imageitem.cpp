@@ -31,6 +31,12 @@ ImageItem::~ImageItem() {
     delete menu;
 }
 
+void ImageItem::setSelectedImageItem(ImageItem *item) {
+    if (selectedImageItem != nullptr) selectedImageItem->update();
+    selectedImageItem = item;
+    if (selectedImageItem != nullptr) selectedImageItem->update();
+}
+
 QRectF ImageItem::boundingRect() const {
     return QRectF(0, 0, size.width() + border * 2, size.height() + border * 2);
 }
@@ -86,30 +92,13 @@ void ImageItem::applyBlur(img::BlurType blurType) {
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        if (selectedImageItem != this) {
-            auto oldSelected = selectedImageItem;
-            selectedImageItem = this;
-            if (oldSelected != nullptr) oldSelected->update();
-        }
-        else {
-            selectedImageItem = nullptr;
-        }
-        this->update();
+        setSelectedImageItem(this);
         pressed = true;
         oldMousePos = event->scenePos();
         oldPos = scenePos();
         emit imageSelected();
     }
     else if (event->button() == Qt::RightButton) {
-        if (selectedImageItem != this) {
-            auto oldSelected = selectedImageItem;
-            selectedImageItem = this;
-            this->update();
-            if (oldSelected != nullptr) {
-                oldSelected->menu->hide();
-                oldSelected->update();
-            }
-        }
         menu->exec(event->screenPos());
     }
 }
@@ -138,7 +127,7 @@ void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         if (selectedImageItem == this)
-            selectedImageItem = nullptr;
+            setSelectedImageItem(nullptr);
         emit deleted(this);
         delete this;
     }
