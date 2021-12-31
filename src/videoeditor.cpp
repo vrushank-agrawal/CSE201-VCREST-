@@ -320,7 +320,6 @@ void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
 }
 
 void VideoEditor::applyBlur(ImageItem *imageItem) {
-    imageItem->unblurImage();
     imageItem->blur();
     imageItem->update();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
@@ -355,7 +354,6 @@ void VideoEditor::updateBlurLevel() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
     imageItem->blurLevel = blurSlider->value();
-    imageItem->unblurImage();
     imageItem->blur();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);

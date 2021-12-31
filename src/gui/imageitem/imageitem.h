@@ -42,10 +42,9 @@ public:
     void createSizeGripItem(SizeGripItem *sizeGripItem);
     double getTimeOfFrame();
     void resetImage();
-    void unblurImage();
     void setSize(QSizeF size);
     void updateDuration(double newLength);
-    int getMedianBlueLevel();
+    int getMedianBlurLevel();
     void blur();
 
     virtual QRectF boundingRect() const override;

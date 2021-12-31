@@ -11,9 +11,7 @@
 
 void img::Image::blur(int width, int height){
     if (width && height) {
-        cv::Mat temp = this -> getModifiedImg();
-        cv::blur(temp, temp, cv::Size(width, height));
-        this -> setModifiedImg( temp );
+        cv::blur(current_unblur_matrix, img_matrix_modified, cv::Size(width, height));
     }
 }
 
@@ -36,7 +34,7 @@ void img::Image::bilateralFilter(int distance) {
 
 void img::Image::boxBlur(int width, int height, int depth){
     if (width && height)
-        cv::boxFilter(this->getModifiedImg(), img_matrix_modified, depth, cv::Size(width, height));
+        cv::boxFilter(current_unblur_matrix, img_matrix_modified, depth, cv::Size(width, height));
 }
 
 void img::Image::gaussianBlur(int width, int height){
@@ -45,13 +43,13 @@ void img::Image::gaussianBlur(int width, int height){
     if (!(height & 1) && height) height --;
 
     if (width && height)
-        cv::GaussianBlur(this->getModifiedImg(), img_matrix_modified, cv::Size(width, height), 0);
+        cv::GaussianBlur(current_unblur_matrix, img_matrix_modified, cv::Size(width, height), 0);
 }
 
 void img::Image::medianBlur(int kernel_size){
     if (!(kernel_size & 1)) kernel_size-- ;
     if (kernel_size)
-        cv::medianBlur(this->getModifiedImg(), img_matrix_modified, kernel_size);
+        cv::medianBlur(current_unblur_matrix, img_matrix_modified, kernel_size);
 }
 
 void img::Image::rotateImg(double angle) {
@@ -60,7 +58,7 @@ void img::Image::rotateImg(double angle) {
     //create a rotation matrix with the angle given
     cv::Mat rotation_matrix = getRotationMatrix2D(center, angle, 1.0);
     //update image to be the rotation image
-    warpAffine(this->getModifiedImg(), img_matrix_modified, rotation_matrix, img_matrix_modified.size());
+    warpAffine(img_matrix_modified, img_matrix_modified, rotation_matrix, img_matrix_modified.size());
 }
 
 void img::Image::rotateImgFit(double angle) {
@@ -73,8 +71,8 @@ void img::Image::rotateImgFit(double angle) {
     rotation_matrix.at<double>(0,2) += bbox.width/2.0 - img_matrix_modified.cols/2.0;
     rotation_matrix.at<double>(1,2) += bbox.height/2.0 - img_matrix_modified.rows/2.0;
     //update image to be the rotation image
-    warpAffine(this->getModifiedImg(), img_matrix_modified, rotation_matrix, bbox.size());
-    warpAffine(this->getCurrentUnblurImg(), current_unblur_matrix, rotation_matrix, bbox.size());
+    warpAffine(img_matrix_modified, img_matrix_modified, rotation_matrix, bbox.size());
+    warpAffine(current_unblur_matrix, current_unblur_matrix, rotation_matrix, bbox.size());
 }
 
 void img::Image::resizeImg(int width, int height) {
