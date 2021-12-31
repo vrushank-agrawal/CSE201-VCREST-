@@ -26,7 +26,6 @@ ImageItem::ImageItem(img::Image *image,
 
 
 ImageItem::~ImageItem() {
-    selectedImageItem = nullptr;
     delete image;
     delete sizeGripItem;
     delete menu;
@@ -173,9 +172,6 @@ void ImageItem::blur() {
     switch (blurType) {
         case (img::BlurType::Normal):
             image->blur(blurLevel, blurLevel);
-            break;
-        case (img::BlurType::Box):
-            image->boxBlur(blurLevel, blurLevel, 3);
             break;
         case (img::BlurType::Gaussian):
             image->gaussianBlur(blurLevel, blurLevel);

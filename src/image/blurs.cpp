@@ -34,7 +34,7 @@ void img::Image::bilateralFilter(int distance) {
     }
 }
 
-void img::Image::boxBlur(int width, int height, int depth = -1){
+void img::Image::boxBlur(int width, int height, int depth){
     if (width && height)
         cv::boxFilter(this->getModifiedImg(), img_matrix_modified, depth, cv::Size(width, height));
 }

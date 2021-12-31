@@ -18,7 +18,7 @@
 namespace img {
 
     enum BlurType {
-        Normal = 0, Box = 1, Gaussian = 2, Median = 3
+        Normal, Gaussian, Median
     };
 
     class Image {
@@ -89,7 +89,7 @@ namespace img {
         void bilateralFilterPreview(int distance);
         void bilateralFilter(int distance);
         void blur(int width, int height);
-        void boxBlur(int width, int height, int depth);
+        void boxBlur(int width, int height, int depth = -1);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
 

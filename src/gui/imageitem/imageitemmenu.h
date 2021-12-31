@@ -25,7 +25,6 @@ public slots:
     void applyZoomingAnimation();
     void applyCroppingAnimation();
     void applyNormalBlur();
-    void applyBoxBlur();
     void applyGaussianBlur();
     void applyMedianBlur();
 
@@ -37,7 +36,6 @@ private:
     QAction *zoomingAnimationAction = nullptr;
     QAction *croppingAnimationAction = nullptr;
     QAction *normalBlurAction = nullptr;
-    QAction *boxBlurAction = nullptr;
     QAction *gaussianBlurAction = nullptr;
     QAction *medianBlurAction = nullptr;
 };

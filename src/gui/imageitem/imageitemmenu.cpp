@@ -31,10 +31,6 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
     normalBlurAction->setObjectName(QString::fromUtf8("normalBlurAction"));
     normalBlurAction->setText(QString::fromUtf8("Normal ✓"));
 
-    boxBlurAction = new QAction(blurMenu);
-    boxBlurAction->setObjectName(QString::fromUtf8("boxBlurAction"));
-    boxBlurAction->setText(QString::fromUtf8("Box"));
-
     gaussianBlurAction = new QAction(blurMenu);
     gaussianBlurAction->setObjectName(QString::fromUtf8("gaussianBlurAction"));
     gaussianBlurAction->setText(QString::fromUtf8("Gaussian"));
@@ -49,7 +45,6 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 //    animationMenu->addAction(croppingAnimationAction);
 
     blurMenu->addAction(normalBlurAction);
-    blurMenu->addAction(boxBlurAction);
     blurMenu->addAction(gaussianBlurAction);
     blurMenu->addAction(medianBlurAction);
 
@@ -65,8 +60,6 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 
     connect(normalBlurAction, &QAction::triggered,
             this, &ImageItemMenu::applyNormalBlur);
-    connect(boxBlurAction, &QAction::triggered,
-            this, &ImageItemMenu::applyBoxBlur);
     connect(gaussianBlurAction, &QAction::triggered,
             this, &ImageItemMenu::applyGaussianBlur);
     connect(medianBlurAction, &QAction::triggered,
@@ -114,23 +107,13 @@ void ImageItemMenu::applyCroppingAnimation() {
 
 void ImageItemMenu::applyNormalBlur() {
     normalBlurAction->setText(QString::fromUtf8("Normal ✓"));
-    boxBlurAction->setText(QString::fromUtf8("Box"));
     gaussianBlurAction->setText(QString::fromUtf8("Gaussian"));
     medianBlurAction->setText(QString::fromUtf8("Median"));
     emit blurChosen(img::BlurType::Normal);
 }
 
-void ImageItemMenu::applyBoxBlur() {
-    normalBlurAction->setText(QString::fromUtf8("Normal"));
-    boxBlurAction->setText(QString::fromUtf8("Box ✓"));
-    gaussianBlurAction->setText(QString::fromUtf8("Gaussian"));
-    medianBlurAction->setText(QString::fromUtf8("Median"));
-    emit blurChosen(img::BlurType::Box);
-}
-
 void ImageItemMenu::applyGaussianBlur() {
     normalBlurAction->setText(QString::fromUtf8("Normal"));
-    boxBlurAction->setText(QString::fromUtf8("Box"));
     gaussianBlurAction->setText(QString::fromUtf8("Gaussian ✓"));
     medianBlurAction->setText(QString::fromUtf8("Median"));
     emit blurChosen(img::BlurType::Gaussian);
@@ -138,7 +121,6 @@ void ImageItemMenu::applyGaussianBlur() {
 
 void ImageItemMenu::applyMedianBlur() {
     normalBlurAction->setText(QString::fromUtf8("Normal"));
-    boxBlurAction->setText(QString::fromUtf8("Box"));
     gaussianBlurAction->setText(QString::fromUtf8("Gaussian"));
     medianBlurAction->setText(QString::fromUtf8("Median ✓"));
     emit blurChosen(img::BlurType::Median);
