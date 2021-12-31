@@ -8,14 +8,12 @@
 #include <string>
 #include <vector>
 #include <array>
-#include <iostream>
 #include <fstream>
+#include <QDir>
 #include "aubio/aubio.h"
 #include "lameHelper.hpp"
 
 typedef std::array<std::array<std::array<int, 2>, 2>, 2> arr3d;
-
-using namespace std;
 
 namespace audio {
 
@@ -42,7 +40,7 @@ namespace audio {
         int size;
 
         static int num;
-        static string out;
+        static std::string out;
 
     public:
         Audio(const std::string &uri);
@@ -53,9 +51,9 @@ namespace audio {
 
     };
 
-    string merge(const Audio &a1, const Audio &a2);
+    std::string merge(const Audio &a1, const Audio &a2);
 
-    string trim(const Audio &a, int ms, bool isStart);
+    std::string trim(const Audio &a, int ms, bool isStart);
 
 }
 

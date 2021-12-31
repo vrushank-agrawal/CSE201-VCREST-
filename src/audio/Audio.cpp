@@ -3,27 +3,25 @@
 //
 
 #include "Audio.hpp"
-#include <QDir>
-
-using namespace std;
+#include <iostream>
 
 namespace audio {
 
     int Audio::num = 0;
-    string folder = "temp_media";
-    string Audio::out = folder + "/output";
+    std::string folder = "temp_media";
+    std::string Audio::out = folder + "/output";
 
     Audio::Audio(const std::string &uri) {
 
         QDir().mkdir(folder.c_str());
 
-        string ext = uri.substr(uri.length() - 3);
+        std::string ext = uri.substr(uri.length() - 3);
 
         char cstr[uri.length() + 1];
         strcpy(cstr, uri.c_str());
 
-        string mp3out = out + ".mp3";
-        string wavout = out + to_string(num) + ".wav";
+        std::string mp3out = out + ".mp3";
+        std::string wavout = out + std::to_string(num) + ".wav";
         num++;
 
         if (ext == "wav") {
@@ -44,11 +42,7 @@ namespace audio {
 
         this->uri = wavout;
 
-        ifstream infile(this->uri, ios_base::binary);
-        if (!infile.is_open()) {
-            cout << "ERROR WHILE READING THE FILE!" << endl;
-            return;
-        }
+        std::ifstream infile(this->uri, std::ios_base::binary);
 
         infile.seekg(0, std::ios::end);
         size_t length = infile.tellg();
@@ -103,7 +97,7 @@ namespace audio {
 
     }
 
-    string merge(const Audio &a1, const Audio &a2) {
+    std::string merge(const Audio &a1, const Audio &a2) {
         int size = a1.size + a2.size - 44;
         char *merged_file = new char[size];
         for (int i = 0; i < a1.size; i++) {
@@ -115,16 +109,17 @@ namespace audio {
         int curr_size = *((int *) (merged_file + 40));
         curr_size += *((int *) (a2.file + 40));
         *((int *) (merged_file + 40)) = curr_size;
-        string out = Audio::out + to_string(Audio::num) + ".wav";
-        ofstream outfile(out, ios_base::binary);
+        std::string out = Audio::out + std::to_string(Audio::num) + ".wav";
+        std::ofstream outfile(out, std::ios_base::binary);
         Audio::num++;
         outfile.write(merged_file, size);
         outfile.close();
         return out;
     }
 
-    string trim(const Audio &a, int ms, bool isStart) {
-        int trim_size = ms * 4 * 44100 / 1000;
+    std::string trim(const Audio &a, int ms, bool isStart) {
+        long long ts = (long long) ms * 4 * 44100 / 1000;
+        int trim_size = ts;
         int audio_size = *((int *) (a.file + 40));
         int final_size = isStart ? trim_size : (audio_size - trim_size);
         char *trimmed_file = new char[final_size + 44];
@@ -141,8 +136,8 @@ namespace audio {
             }
         }
         *((int *) (trimmed_file + 40)) = final_size;
-        string out = Audio::out + to_string(Audio::num) + ".wav";
-        ofstream outfile(out, ios_base::binary);
+        std::string out = Audio::out + std::to_string(Audio::num) + ".wav";
+        std::ofstream outfile(out, std::ios_base::binary);
         Audio::num++;
         outfile.write(trimmed_file, final_size + 44);
         outfile.close();
@@ -196,6 +191,5 @@ namespace audio {
         return res;
 
     }
-
 
 }
