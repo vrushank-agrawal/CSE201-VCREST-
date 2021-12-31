@@ -78,10 +78,14 @@ private:
     *       SETUP
     ####################*/
     void setupAudio();
+    void setupImage();
+    void setupImageToolbar();
+    void setupImports();
     void setupMenus();
-    void setupWidgets();
+    void setupTimeline();
     void setupVideoClass();
     void setupVideoPlayer();
+    void setupWidgets();
 
     /*###################
     *      IMPORT
