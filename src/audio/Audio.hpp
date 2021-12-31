@@ -7,27 +7,55 @@
 
 #include <string>
 #include <vector>
-#include "../../libs/aubio/include/aubio/aubio.h"
+#include <array>
+#include <fstream>
+#include <QDir>
+#include "aubio/aubio.h"
+#include "lameHelper.hpp"
 
-using namespace std;
+typedef std::array<std::array<std::array<int, 2>, 2>, 2> arr3d;
 
 namespace audio {
 
     class Audio {
     private:
+
+        std::string uri;
+
+        // Audio parameters
         int channels;
         int sample_rate;
         int duration;
 
+        // Source parameters
         int hop_size;
+
+        // Function parameters
+        int min_len = 200;
 
         aubio_source_t *source;
 
     public:
-        Audio(string uri);
+        char *file;
+        int size;
 
-        vector<int> getBeatPositions();
+        static int num;
+        static std::string out;
+
+    public:
+        Audio(const std::string &uri);
+
+        std::vector<int> getBeatPositions();
+
+        arr3d getSpectrumVisualizer();
+
     };
+
+    std::string merge(const Audio &a1, const Audio &a2);
+
+    std::string trim(const Audio &a, int ms, bool isStart);
+
+    void test();
 
 }
 
