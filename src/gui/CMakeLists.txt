@@ -4,7 +4,7 @@ add_subdirectory(audioitem)
 add_subdirectory(audiomanager)
 add_subdirectory(audioplayer)
 add_subdirectory(imageitem)
-add_subdirectory(imagethumbnail)
+add_subdirectory(imagemanager)
 add_subdirectory(indicator)
 add_subdirectory(videoplayer)
 add_subdirectory(videowindow)
@@ -21,7 +21,7 @@ target_link_libraries(gui
         audioPlayer
         audioManager
         imageItem
-        imageThumbnail
+        imageManager
         indicator
         progressBar
         sizeGripItem

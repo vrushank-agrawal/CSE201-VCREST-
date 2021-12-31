@@ -4,9 +4,9 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_ImageThumbnail.h" resolved
 
-#include "imagethumbnail.h"
+#include "imagemanager.h"
 
-ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListWidget) {
+ImageManager::ImageManager(QListWidget *qListWidget) : listWidget(qListWidget) {
     qListWidget->setDragEnabled(true);
     qListWidget->setViewMode(QListView::IconMode);
     qListWidget->setIconSize(QSize(50, 50));
@@ -24,7 +24,7 @@ ThumbnailManager::ThumbnailManager(QListWidget *qListWidget) : listWidget(qListW
     map = QMap<QListWidgetItem*, img::Image>();
 }
 
-void ThumbnailManager::addImage(img::Image image, const QString& name) {
+void ImageManager::addImage(img::Image image, const QString& name) {
     cv::Mat mat = image.getMat();
     QImage qImage(mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     addImage(
@@ -34,7 +34,7 @@ void ThumbnailManager::addImage(img::Image image, const QString& name) {
             );
 }
 
-void ThumbnailManager::addImage(const QPixmap& image, const QString& name, img::Image *img) {
+void ImageManager::addImage(const QPixmap& image, const QString& name, img::Image *img) {
     QString displayName;
     if (name.lastIndexOf("/") >= 0) {
         displayName = name.right(name.length() - name.lastIndexOf("/") - 1);
@@ -51,19 +51,19 @@ void ThumbnailManager::addImage(const QPixmap& image, const QString& name, img::
     listWidget->addItem(item);
 }
 
-ThumbnailManager::~ThumbnailManager() {
+ImageManager::~ImageManager() {
     delete listWidget;
 }
 
-int ThumbnailManager::getImagesCount() {
+int ImageManager::getImagesCount() {
     return map.size();
 }
 
-img::Image *ThumbnailManager::getImage(QListWidgetItem *item) {
+img::Image *ImageManager::getImage(QListWidgetItem *item) {
     return &map.find(item).value();
 }
 
-void ThumbnailManager::removeImage(int index) {
+void ImageManager::removeImage(int index) {
 }
 
 

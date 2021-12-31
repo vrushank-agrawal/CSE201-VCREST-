@@ -59,7 +59,7 @@ void VideoEditor::setupAudio() {
 void VideoEditor::setupImage() {
     setupImageToolbar();
 
-    thumbnailManager = new ThumbnailManager(ui->imgListWidget);
+    thumbnailManager = new ImageManager(ui->imgListWidget);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
 

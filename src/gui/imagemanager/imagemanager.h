@@ -2,8 +2,8 @@
 // Created by nhatv on 24 Nov 2021.
 //
 
-#ifndef VIDEO_EDITOR_BX23_IMAGETHUMBNAIL_H
-#define VIDEO_EDITOR_BX23_IMAGETHUMBNAIL_H
+#ifndef VIDEO_EDITOR_BX23_IMAGEMANAGER_H
+#define VIDEO_EDITOR_BX23_IMAGEMANAGER_H
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -12,11 +12,11 @@
 #include "opencv2/opencv.hpp"
 #include "image.h"
 
-class ThumbnailManager {
+class ImageManager {
 
 public:
-    explicit ThumbnailManager(QListWidget *qListWidget);
-    ~ThumbnailManager();
+    explicit ImageManager(QListWidget *qListWidget);
+    ~ImageManager();
     void addImage(img::Image image, const QString& name);
 
     // will be made private
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif //VIDEO_EDITOR_BX23_IMAGETHUMBNAIL_H
+#endif //VIDEO_EDITOR_BX23_IMAGEMANAGER_H
