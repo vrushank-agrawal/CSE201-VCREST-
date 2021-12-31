@@ -86,23 +86,31 @@ void ImageItem::applyBlur(img::BlurType blurType) {
 }
 
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if (selectedImageItem != this) {
-        auto oldSelected = selectedImageItem;
-        selectedImageItem = this;
-        this->update();
-        if (oldSelected != nullptr) oldSelected->update();
-    }
-    else {
-        selectedImageItem = nullptr;
-        this->update();
-    }
     if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem != this) {
+            auto oldSelected = selectedImageItem;
+            selectedImageItem = this;
+            if (oldSelected != nullptr) oldSelected->update();
+        }
+        else {
+            selectedImageItem = nullptr;
+        }
+        this->update();
         pressed = true;
         oldMousePos = event->scenePos();
         oldPos = scenePos();
         emit imageSelected();
     }
     else if (event->button() == Qt::RightButton) {
+        if (selectedImageItem != this) {
+            auto oldSelected = selectedImageItem;
+            selectedImageItem = this;
+            this->update();
+            if (oldSelected != nullptr) {
+                oldSelected->menu->hide();
+                oldSelected->update();
+            }
+        }
         menu->exec(event->screenPos());
     }
 }
