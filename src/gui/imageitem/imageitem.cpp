@@ -125,19 +125,23 @@ void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    pressed = false;
-    oldMousePos = event->scenePos();
-    oldPos = scenePos();
-    double s = oldPos.x() / xTimeOffset;
-    double e = oldPos.x() / xTimeOffset + end.key() - start.key();
-    emit positionChanged(this, s, e);
+    if (event->button() == Qt::LeftButton) {
+        pressed = false;
+        oldMousePos = event->scenePos();
+        oldPos = scenePos();
+        double s = oldPos.x() / xTimeOffset;
+        double e = oldPos.x() / xTimeOffset + end.key() - start.key();
+        emit positionChanged(this, s, e);
+    }
 }
 
 void ImageItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
-    if (selectedImageItem == this)
-        selectedImageItem = nullptr;
-    emit deleted(this);
-    delete this;
+    if (event->button() == Qt::LeftButton) {
+        if (selectedImageItem == this)
+            selectedImageItem = nullptr;
+        emit deleted(this);
+        delete this;
+    }
 }
 
 void ImageItem::updateDuration(double newLength) {
