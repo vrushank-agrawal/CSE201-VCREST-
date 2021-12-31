@@ -330,7 +330,9 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     connect(item, &ImageItem::blurTypeApplied,
             this, &Timeline::blurTypeApplied);
 
-    item->createSizeGripItem(new SizeGripItem(new ImageItemResizer, item));
+    auto temp = new SizeGripItem(new ImageItemResizer, item);
+    temp->setMaxWidth(std::numeric_limits<double>::infinity());
+    item->createSizeGripItem(temp);
 
     emit imageAdded(image, start, end-start, vid::Normal);
 }
