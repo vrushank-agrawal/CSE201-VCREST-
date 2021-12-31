@@ -1,14 +1,14 @@
-add_library(timeline timeline.cpp)
+add_library(Timeline timeline.cpp)
 
-target_include_directories(timeline
+target_include_directories(Timeline
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(timeline
-        qtExternalLibrary
-        audioItem
-        indicator
-        imageItem
-        imageLibrary
-        sizeGripItem
+target_link_libraries(Timeline
+        QtExternalLibrary
+        AudioItem
+        Indicator
+        ImageItem
+        ImageLibrary
+        SizeGripItem
         )

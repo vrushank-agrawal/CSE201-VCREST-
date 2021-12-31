@@ -1,4 +1,4 @@
-add_library(qtExternalLibrary INTERFACE)
+add_library(QtExternalLibrary INTERFACE)
 
 find_package(Qt6 COMPONENTS
         Core
@@ -7,7 +7,7 @@ find_package(Qt6 COMPONENTS
         Multimedia
         REQUIRED)
 
-target_link_libraries(qtExternalLibrary INTERFACE
+target_link_libraries(QtExternalLibrary INTERFACE
         Qt::Core
         Qt::Gui
         Qt::Widgets

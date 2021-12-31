@@ -1,9 +1,9 @@
-add_library(audioManager audiomanager.cpp)
+add_library(AudioManager audiomanager.cpp)
 
-target_include_directories(audioManager
+target_include_directories(AudioManager
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(audioManager
-        qtExternalLibrary
+target_link_libraries(AudioManager
+        QtExternalLibrary
         )

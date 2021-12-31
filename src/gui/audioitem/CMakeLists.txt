@@ -1,10 +1,10 @@
-add_library(audioItem audioitem.cpp audioresizer.cpp)
+add_library(AudioItem audioitem.cpp audioresizer.cpp)
 
-target_include_directories(audioItem
+target_include_directories(AudioItem
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(audioItem
-        qtExternalLibrary
-        sizeGripItem
+target_link_libraries(AudioItem
+        QtExternalLibrary
+        SizeGripItem
         )

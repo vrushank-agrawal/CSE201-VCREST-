@@ -2,8 +2,6 @@
 // Created by nhatv on 24 Nov 2021.
 //
 
-// You may need to build the project (run Qt uic code generator) to get "ui_ImageThumbnail.h" resolved
-
 #include "imagemanager.h"
 
 ImageManager::ImageManager(QListWidget *qListWidget) : listWidget(qListWidget) {

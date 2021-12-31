@@ -1,9 +1,9 @@
-add_library(indicator indicator.cpp)
+add_library(Indicator indicator.cpp)
 
-target_include_directories(indicator
+target_include_directories(Indicator
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(indicator
-        qtExternalLibrary
+target_link_libraries(Indicator
+        QtExternalLibrary
         )
