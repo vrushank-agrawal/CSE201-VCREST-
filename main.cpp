@@ -1,11 +1,11 @@
 #include <QApplication>
 #include "videoeditor.h"
 
-#include "Audio.cpp"
+#include "Audio.hpp"
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
     // uncomment to test audio
-//    audio::test();
+    // audio::test();
 
     QApplication application(argc, argv);
     application.setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; }");

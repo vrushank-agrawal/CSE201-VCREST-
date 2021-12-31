@@ -55,6 +55,8 @@ namespace audio {
 
     std::string trim(const Audio &a, int ms, bool isStart);
 
+    void test();
+
 }
 
 #endif //VIDEO_EDITOR_BX23_AUDIO_HPP
