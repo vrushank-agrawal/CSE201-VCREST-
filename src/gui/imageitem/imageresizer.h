@@ -2,8 +2,8 @@
 // Created by nhatv on 7 Dec 2021.
 //
 
-#ifndef VIDEO_EDITOR_BX23_RESIZER_H
-#define VIDEO_EDITOR_BX23_RESIZER_H
+#ifndef VIDEO_EDITOR_BX23_IMAGERESIZER_H
+#define VIDEO_EDITOR_BX23_IMAGERESIZER_H
 
 #include "sizegripitem.h"
 #include "imageitem.h"
@@ -14,4 +14,4 @@ public:
 };
 
 
-#endif //VIDEO_EDITOR_BX23_RESIZER_H
+#endif //VIDEO_EDITOR_BX23_IMAGERESIZER_H

@@ -25,47 +25,54 @@ public:
                        QPoint position
                        );
     ~ImageItem();
-    static ImageItem* getSelectedImageItem() {return selectedImageItem;}
 
-    static double yOffset, xTimeOffset, yHeight;
+    static ImageItem* getSelectedImageItem() {return selectedImageItem;}
     constexpr static const double border = 3;
-    QMultiMap<double, ImageItem*>::iterator start, end;
-    img::Image *image;
-    void setSize(QSizeF size);
-    void calculateSize();
-    void updateDuration(double newLength);
-    void createSizeGripItem(SizeGripItem *sizeGripItem);
+    static double yOffset, xTimeOffset, yHeight;
     static QTransform parentTransform;
 
+    vid::Animation animation = vid::Normal;
+    img::Image *image = nullptr;
+    QMultiMap<double, ImageItem*>::iterator start, end;
+
+    void calculateSize();
+    void createSizeGripItem(SizeGripItem *sizeGripItem);
+    void setSize(QSizeF size);
+    void updateDuration(double newLength);
+
+    virtual QRectF boundingRect() const override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+
 private:
-    SizeGripItem *sizeGripItem = nullptr;
     static QBrush brush, selectedBrush;
     static QPen pen, selectedPen;
     static ImageItem *selectedImageItem;
-    QSizeF size;
-    bool pressed=false;
+
+    ImageItemMenu *menu = nullptr;
     QPointF oldPos,oldMousePos;
-    ImageItemMenu *menu;
+    bool pressed=false;
+    QSizeF size;
+    SizeGripItem *sizeGripItem = nullptr;
+
 
 signals:
+    void animationApplied(img::Image* image, vid::Animation animation);
+    void deleted(ImageItem*);
     void itemMoved(ImageItem *item, double start, double end);
     void positionChanged(ImageItem* item, double start, double end);
     void resized(ImageItem* item, double newLength);
-    void deleted(ImageItem*);
-    void animationApplied(img::Image* image, vid::Animation animation);
 
-public:
-    virtual QRectF boundingRect() const override;
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 public slots:
     void applyAnimation(vid::Animation);
 
+
 protected:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 

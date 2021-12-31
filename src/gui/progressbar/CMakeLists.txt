@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-
 add_library(progressBar progressbar.cpp)
 
 target_include_directories(progressBar
@@ -7,7 +5,5 @@ target_include_directories(progressBar
         )
 
 target_link_libraries(progressBar
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
         )

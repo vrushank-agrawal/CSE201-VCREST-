@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+add_library(gui)
 
 add_subdirectory(videoplayer)
 add_subdirectory(videowindow)
@@ -10,8 +10,8 @@ add_subdirectory(indicator)
 add_subdirectory(imageitem)
 add_subdirectory(sizegripitem)
 add_subdirectory(imageitemmenu)
-
-add_library(gui)
+add_subdirectory(audioitem)
+add_subdirectory(audioplayer)
 
 target_include_directories(gui
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -29,4 +29,6 @@ target_link_libraries(gui
         sizeGripItem
         imageItemMenu
         video
+        audioItem
+        audioPlayer
         )

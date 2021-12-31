@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-
 add_library(timeline timeline.cpp)
 
 target_include_directories(timeline
@@ -7,9 +5,8 @@ target_include_directories(timeline
         )
 
 target_link_libraries(timeline
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
+        qtExternalLibrary
+        audioItem
         indicator
         imageItem
         imageLibrary

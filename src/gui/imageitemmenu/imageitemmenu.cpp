@@ -27,8 +27,8 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 
     animationMenu->addAction(normalAnimationAction);
     animationMenu->addAction(rotationAnimationAction);
-    animationMenu->addAction(zoomingAnimationAction);
-    animationMenu->addAction(croppingAnimationAction);
+//    animationMenu->addAction(zoomingAnimationAction);
+//    animationMenu->addAction(croppingAnimationAction);
 
     connect(normalAnimationAction, &QAction::triggered,
             this, &ImageItemMenu::applyNormalAnimation);

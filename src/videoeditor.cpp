@@ -17,17 +17,33 @@ VideoEditor::VideoEditor(QWidget *parent) :
     setupVideoPlayer();
     setupMenus();
     setupWidgets();
+    setupAudio();
 
     // add video to preview
     QStringList arguments = QApplication::arguments();
+    QString prefix = "audioPath=";
     QString prefix2 = "imagePath=";
 
     for (const auto& arg : arguments) {
+        if (arg.startsWith(prefix)) {
+            importAudio(arg.right(arg.size() - prefix2.size()));
+        }
         if (arg.startsWith(prefix2)) {
             importImage(arg.right(arg.size() - prefix2.size()));
         }
     }
 }
+
+VideoEditor::~VideoEditor() {
+    delete ui;
+    delete resultVideo;
+    delete thumbnailManager;
+    delete audioManager;
+}
+
+/*###################
+*      SETUP
+####################*/
 
 void VideoEditor::setupVideoClass() {
     // create an instance of Video class
@@ -39,12 +55,11 @@ void VideoEditor::setupVideoClass() {
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
-
 void VideoEditor::setupMenus() {
     imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
-    imageFileTypesFilter = "JPG Image (*.jpg) ;; PNG Image (*.png) ;; GIF Image (*.gif) ;; SVG Image (*.svg)";
-    audioFileTypes << ".wmv";
-    audioFileTypesFilter = "Waveform Audio (*.wmv)";
+    imageFileTypesFilter = "Images (*.jpg *.png *.gif *.svg)";
+    audioFileTypes << ".wmv" << ".mp3";
+    audioFileTypesFilter = "Audio (*.wmv *.mp3)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
     ui->actionExport->setShortcut(QKeySequence::Save);
@@ -65,16 +80,34 @@ void VideoEditor::setupMenus() {
     }
 }
 
-
 void VideoEditor::setupWidgets() {
     thumbnailManager = new ThumbnailManager(ui->imgListWidget);
     audioManager = new AudioManager(ui->audioListWidget);
+    audioPlayer = new AudioPlayer(audioManager, ui->timeline);
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
-}
+    connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
+            this, &VideoEditor::appendAudioToThumbnail);
+    connect(ui->preview, SIGNAL(playStateUpdated(bool)),
+            audioPlayer, SLOT(updatePlayState(bool)));
+    connect(ui->timeline, SIGNAL(playStateChanged(bool)),
+            audioPlayer, SLOT(handleIndicatorSignal(bool)));
+    connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
+            audioPlayer, SLOT(seek(double)));
 
+//    QMediaPlayer *player1 = new QMediaPlayer;
+//    QMediaPlayer *player2 = new QMediaPlayer;
+//    QAudioOutput *output1 = new QAudioOutput;
+//    QAudioOutput *output2 = new QAudioOutput;
+//    player1->setAudioOutput(output1);
+//    player2->setAudioOutput(output2);
+//    player1->setSource(QUrl("D:/Downloads/mp3_ex.mp3"));
+//    player2->setSource(QUrl("../media/audio/test.mp3"));
+//    player1->play();
+//    player2->play();
+}
 
 void VideoEditor::setupVideoPlayer() {
     // add signal to play video when clicking playButton
@@ -132,16 +165,20 @@ void VideoEditor::setupVideoPlayer() {
                           ui->playButton);
 }
 
-
-void VideoEditor::importImages() {
-    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
-    for (auto & file : files) {
-        if (imageFileTypes.contains(file.right(4))) {
-            importImage(file);
-        }
-    }
+void VideoEditor::setupAudio() {
 }
 
+
+
+
+
+/*###################
+*     IMPORT
+####################*/
+
+void VideoEditor::importAudio(const QString& fileName) {
+    audioManager->addAudio(fileName);
+}
 
 void VideoEditor::importAudios() {
     QStringList files = importFiles("Import Audios", "/", audioFileTypesFilter);
@@ -152,17 +189,24 @@ void VideoEditor::importAudios() {
     }
 }
 
+QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
+    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
+    return files;
+}
 
 void VideoEditor::importImage(const QString& fileName) {
     img::Image image(fileName.toStdString());
     thumbnailManager->addImage(image, fileName);
 }
 
-
-void VideoEditor::importAudio(const QString& fileName) {
-    audioManager->addAudio(fileName);
+void VideoEditor::importImages() {
+    QStringList files = importFiles("Import Images", "/", imageFileTypesFilter);
+    for (auto & file : files) {
+        if (imageFileTypes.contains(file.right(4))) {
+            importImage(file);
+        }
+    }
 }
-
 
 void VideoEditor::importMedia() {
     QString filter = imageFileTypesFilter + " ;; " + audioFileTypesFilter;
@@ -179,70 +223,40 @@ void VideoEditor::importMedia() {
     }
 }
 
-
-QStringList VideoEditor::importFiles(const QString &caption, const QString &dir, const QString &filter) {
-    QStringList files = QFileDialog::getOpenFileNames(this, caption, dir, filter);
-    return files;
-}
-
-
 void VideoEditor::blurImage() {
     ImageItem *imageItem = ImageItem::getSelectedImageItem();
     if (imageItem == nullptr) return;
-    imageItem->image->blur(100, 100);
+    imageItem->image->blur(5, 5);
     imageItem->update();
 
     emit imageChanged();
 }
 
 
-void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
-    ui->timeline->addImageAtIndicator(image);
-}
 
 
-void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration) {
-    resultVideo->addImage(image, startTime, duration);
-}
 
-
-void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
-    resultVideo->deleteImage(image);
-}
-
-
-void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
-    resultVideo->applyAnimation(image, animation);
-}
-
-
-void VideoEditor::updatePosition(int newPosition) {
-    if (this->position != newPosition) {
-        this->position = newPosition;
-        this->timeInSec = 1.0 * newPosition / fps;
-        emit positionChanged(newPosition);
-        emit currentTimeChanged(timeInSec);
-    }
-}
-
+/*###################
+*      GENERIC
+####################*/
 
 void VideoEditor::updateCurrentTime(double time) {
     if (this->timeInSec != time) {
-        cv::Mat frame = resultVideo->getMatByTime(time);
-        emit changeFrame(frame);
+        if (time * fps > numberFrame) {
+            time = 1.0 * numberFrame / fps;
+            ui->playButton->clicked();
+        }
 
         this->timeInSec = time;
         this->position = int(time * fps);
+        updateFrame();
         emit positionChanged(position);
         emit currentTimeChanged(timeInSec);
     }
 }
 
-
-VideoEditor::~VideoEditor() {
-    delete ui;
-    delete resultVideo;
+void VideoEditor::updatePosition(int newPosition) {
+    updateCurrentTime(1.0 * newPosition / fps);
 }
 
 void VideoEditor::writeVideo() {
@@ -268,5 +282,48 @@ void VideoEditor::writeVideo() {
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
     }
+}
+
+
+
+
+/*###################
+*       AUDIO
+####################*/
+
+void VideoEditor::appendAudioToThumbnail(QListWidgetItem *item) {
+    QString *source = audioManager->getAudio(item);
+    QMediaPlayer *player = audioManager->getPlayer(*source);
+    ui->timeline->addAudioAtIndicator(*source, player->duration());
+}
+
+
+/*###################
+*       IMAGE
+####################*/
+
+void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
+    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
+    ui->timeline->addImageAtIndicator(image);
+}
+
+void VideoEditor::applyAnimation(img::Image *image, vid::Animation animation) {
+    resultVideo->applyAnimation(image, animation);
+}
+
+void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, double duration, vid::Animation animation) {
+    resultVideo->addImage(image, startTime, duration);
+    resultVideo->applyAnimation(image, animation);
+    updateFrame();
+}
+
+void VideoEditor::deleteImageFromResultVideo(img::Image *image) {
+    resultVideo->deleteImage(image);
+    updateFrame();
+}
+
+void VideoEditor::updateFrame() {
+    cv::Mat frame = resultVideo->getMatByTime(timeInSec);
+    emit changeFrame(frame);
 }
 

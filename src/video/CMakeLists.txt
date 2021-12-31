@@ -6,11 +6,8 @@ target_include_directories(video
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-find_package( OpenCV REQUIRED )
-include_directories( ${OpenCV_INCLUDE_DIRS} )
-
 #add_executable( video test_video.cpp)
 target_link_libraries(video
-        ${OpenCV_LIBS}
         imageLibrary
+        opencvExternalLibrary
         )
