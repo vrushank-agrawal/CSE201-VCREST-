@@ -24,7 +24,7 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     connect(indicator, SIGNAL(positionChanged(qreal)),
             this, SLOT(updateTime(qreal)));
     connect(indicator, SIGNAL(playStateChanged(bool)),
-            this, SLOT(relayPlayStateChanged(bool)));
+            this, SIGNAL(playStateChanged(bool)));
 
     QPen pen("#bbbbbb");
     QLineF separator(0, 0, sceneWidth, 0);
@@ -99,10 +99,6 @@ void Timeline::moveTimeline(TimelineMoveOption option = KeepCurrentPosition) {
     fitInView(currentXPosition, 0, sceneShowingWidth, sceneHeight + 10, Qt::IgnoreAspectRatio);
     ImageItem::parentTransform = transform();
     AudioItem::parentTransform = transform();
-}
-
-void Timeline::relayPlayStateChanged(bool isPlaying) {
-    emit playStateChanged(isPlaying);
 }
 
 void Timeline::resizeEvent(QResizeEvent *event) {
