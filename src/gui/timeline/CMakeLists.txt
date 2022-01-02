@@ -5,6 +5,7 @@ add_library(Timeline
         )
 
 add_subdirectory(indicator)
+add_subdirectory(items)
 
 target_include_directories(Timeline
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -12,9 +13,7 @@ target_include_directories(Timeline
 
 target_link_libraries(Timeline
         QtExternalLibrary
-        AudioItem
         Indicator
-        ImageItem
         ImageLibrary
-        SizeGripItem
+        TimelineItems
         )
