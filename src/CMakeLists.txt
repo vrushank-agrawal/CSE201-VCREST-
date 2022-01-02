@@ -1,4 +1,11 @@
-add_library(VideoEditor videoeditor.cpp)
+add_library(VideoEditor
+        audio.cpp
+        export.cpp
+        image.cpp
+        import.cpp
+        setup.cpp
+        videoeditor.cpp
+        )
 
 add_subdirectory(gui)
 add_subdirectory(image)
