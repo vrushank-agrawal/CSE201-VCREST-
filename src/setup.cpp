@@ -92,6 +92,7 @@ void VideoEditor::setupVideoClass() {
     ui->controlSlider->setTracking(true);
 
     ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
+    ui->preview->updateVideoLength((numberFrame + fps-1) / fps);
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -131,6 +132,9 @@ void VideoEditor::setupVideoPlayer() {
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
             ui->preview, &VideoPlayer::updateFrame);
+
+    connect(ui->preview, &VideoPlayer::seekAudioRequested,
+            audioPlayer, &AudioPlayer::seek);
 
     // add label and playButton to preview
     ui->preview->setChild(ui->videoWindow, ui->playButton);
