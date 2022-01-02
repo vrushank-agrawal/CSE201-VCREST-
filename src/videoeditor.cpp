@@ -8,6 +8,9 @@
 #include "ui_VideoEditor.h"
 #include <QFileDialog>
 #include "image.h"
+#include <thread>
+#include <QProgressBar>
+#include <QProgressDialog>
 
 
 VideoEditor::VideoEditor(QWidget *parent) :
@@ -267,6 +270,12 @@ void VideoEditor::updatePosition(int newPosition) {
     updateCurrentTime(1.0 * newPosition / fps);
 }
 
+void VideoEditor::writeThread(std::string *outputPath, bool *done, bool *returnValue) {
+    auto res = resultVideo->writeVideoParallel(*outputPath, this->fourcc);
+    *done = true;
+    *returnValue = res;
+}
+
 void VideoEditor::writeVideo() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
@@ -283,8 +292,19 @@ void VideoEditor::writeVideo() {
     }
 
     remove(outputPath.c_str());
+    bool done = false;
+    bool returnValue = false;
+    std::thread t(&VideoEditor::writeThread, this, &outputPath, &done, &returnValue);
 
-    if (!resultVideo->writeVideoParallel(outputPath, fourcc)) {
+    while (!done) {
+        QApplication::processEvents();
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+
+    t.join();
+
+
+    if (!returnValue) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");

@@ -99,6 +99,11 @@ private:
     void updateFrame();
 
     /*###################
+    *      VIDEO
+    ####################*/
+    void writeThread(std::string *outputPath, bool *done, bool *returnValue);
+
+    /*###################
     *     ATTRIBUTE
     ####################*/
     AudioManager *audioManager = nullptr;
