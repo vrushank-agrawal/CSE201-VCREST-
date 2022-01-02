@@ -11,7 +11,7 @@ void VideoEditor::setupAudio() {
 
     connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendAudioToThumbnail);
-    connect(ui->preview, SIGNAL(playStateUpdated(bool)),
+    connect(ui->preview, SIGNAL(playStateChanged(bool)),
             audioPlayer, SLOT(updatePlayState(bool)));
     connect(ui->timeline, SIGNAL(playStateChanged(bool)),
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
