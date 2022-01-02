@@ -4,6 +4,8 @@ add_library(Timeline
         timeline.cpp
         )
 
+add_subdirectory(indicator)
+
 target_include_directories(Timeline
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
