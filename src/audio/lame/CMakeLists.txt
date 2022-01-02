@@ -31,10 +31,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libmp3lame)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/mpglib)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-add_library(lame ${SOURCE_LIB} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_include_directories(lame
+add_library(Lame ${SOURCE_LIB} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_include_directories(Lame
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         )
 
-set_property(TARGET lame PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET Lame PROPERTY POSITION_INDEPENDENT_CODE ON)

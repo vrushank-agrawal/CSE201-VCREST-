@@ -1,12 +1,11 @@
-add_library(audioPlayer audioplayer.cpp)
+add_library(AudioPlayer audioplayer.cpp)
 
-target_include_directories(audioPlayer
+target_include_directories(AudioPlayer
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(audioPlayer
-        qtExternalLibrary
-        audioItem
-        audioManager
-        timeline
+target_link_libraries(AudioPlayer
+        QtExternalLibrary
+        AudioManager
+        Timeline
         )

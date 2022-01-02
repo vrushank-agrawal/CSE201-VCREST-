@@ -9,7 +9,7 @@
 #include <QListView>
 #include <string>
 #include <audiomanager.h>
-#include <imagethumbnail.h>
+#include <imagemanager.h>
 #include <video.h>
 #include <QMediaPlayer>
 #include <QAudioOutput>
@@ -78,10 +78,14 @@ private:
     *       SETUP
     ####################*/
     void setupAudio();
+    void setupImage();
+    void setupImageToolbar();
+    void setupImports();
     void setupMenus();
-    void setupWidgets();
+    void setupTimeline();
     void setupVideoClass();
     void setupVideoPlayer();
+    void setupWidgets();
 
     /*###################
     *      IMPORT
@@ -103,7 +107,7 @@ private:
     ####################*/
     AudioManager *audioManager = nullptr;
     AudioPlayer *audioPlayer = nullptr;
-    ThumbnailManager *thumbnailManager = nullptr;
+    ImageManager *imageManager = nullptr;
     vid::Video *resultVideo = nullptr;
     QSlider *blurSlider = nullptr;
 

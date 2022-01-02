@@ -57,7 +57,7 @@ void VideoPlayer::setChild(VideoWindow *label,
 void VideoPlayer::play(){
     isPlaying = !isPlaying;
     updatePlayButton();
-    emit playStateUpdated(isPlaying);
+    emit playStateChanged(isPlaying);
 }
 
 void VideoPlayer::sliderPressed(){

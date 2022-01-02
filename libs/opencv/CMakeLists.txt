@@ -1,4 +1,4 @@
-add_library(opencvExternalLibrary INTERFACE)
+add_library(OpenCVExternalLibrary INTERFACE)
 
 find_package( OpenCV REQUIRED )
 
@@ -10,6 +10,6 @@ message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-target_link_libraries(opencvExternalLibrary INTERFACE
+target_link_libraries(OpenCVExternalLibrary INTERFACE
         ${OpenCV_LIBS}
         )
