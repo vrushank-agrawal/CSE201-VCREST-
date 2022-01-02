@@ -151,7 +151,8 @@ void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
     item->end = audioMap.insert(end, nullptr);
 
     if (end > lengthInSecond) {
-        updateVideoLength(end + 30);
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
     }
 
     emit audioAdded(item->audioSource, start, end-start);

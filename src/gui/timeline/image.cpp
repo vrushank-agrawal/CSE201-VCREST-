@@ -35,7 +35,8 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     item->createSizeGripItem(temp);
 
     if (end > lengthInSecond) {
-        updateVideoLength(end + 30);
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
     }
 
     emit imageAdded(image, start, end-start, vid::Normal);
@@ -151,7 +152,8 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     item->end = imageMap.insert(end, nullptr);
 
     if (end > lengthInSecond) {
-        updateVideoLength(end + 30);
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
     }
 
     emit imageAdded(item->image, start, end-start, item->animation);
