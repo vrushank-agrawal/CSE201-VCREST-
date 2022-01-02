@@ -1,4 +1,8 @@
-add_library(Timeline timeline.cpp)
+add_library(Timeline
+        audio.cpp
+        image.cpp
+        timeline.cpp
+        )
 
 target_include_directories(Timeline
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
