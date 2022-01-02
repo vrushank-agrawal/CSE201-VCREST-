@@ -34,6 +34,10 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     temp->setMaxWidth(std::numeric_limits<double>::infinity());
     item->createSizeGripItem(temp);
 
+    if (end > lengthInSecond) {
+        updateVideoLength(end + 30);
+    }
+
     emit imageAdded(image, start, end-start, vid::Normal);
 }
 
@@ -145,5 +149,10 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // add new duration
     item->start = imageMap.insert(start, item);
     item->end = imageMap.insert(end, nullptr);
+
+    if (end > lengthInSecond) {
+        updateVideoLength(end + 30);
+    }
+
     emit imageAdded(item->image, start, end-start, item->animation);
 }

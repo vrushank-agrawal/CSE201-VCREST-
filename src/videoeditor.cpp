@@ -55,3 +55,13 @@ void VideoEditor::updateCurrentTime(double time) {
 void VideoEditor::updatePosition(int newPosition) {
     updateCurrentTime(1.0 * newPosition / fps);
 }
+
+void VideoEditor::updateVideoLength(double length) {
+    numberFrame = int(length * fps);
+
+    ui->controlSlider->setRange(0, numberFrame);
+    ui->controlSlider->setTracking(true);
+
+    ui->timeline->updateVideoLength(length);
+    ui->preview->updateVideoLength(length);
+}

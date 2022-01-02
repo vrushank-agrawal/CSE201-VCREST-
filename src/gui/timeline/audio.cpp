@@ -149,6 +149,11 @@ void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
     // add new duration
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
+
+    if (end > lengthInSecond) {
+        updateVideoLength(end + 30);
+    }
+
     emit audioAdded(item->audioSource, start, end-start);
     emit seekAudioRequested(indicator->x() / xTimeOffset);
 }

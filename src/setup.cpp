@@ -88,11 +88,7 @@ void VideoEditor::setupVideoClass() {
     resultVideo = new vid::Video(width, height, fps);
     ui->videoWindow->setSize(width, height);
 
-    ui->controlSlider->setRange(0, numberFrame);
-    ui->controlSlider->setTracking(true);
-
-    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
-    ui->preview->updateVideoLength((numberFrame + fps-1) / fps);
+    updateVideoLength(60);
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -125,9 +121,13 @@ void VideoEditor::setupVideoPlayer() {
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
 
-    // connect timeInSecChanged with timeline and preview
+    // connect currentTimeChanged with videoEditor and preview
     connect(this, &VideoEditor::currentTimeChanged,
             ui->preview, &VideoPlayer::updateCurrentTime);
+
+    // connect videoLengthUpdated to updateVideoLength
+    connect(ui->timeline, &Timeline::videoLengthChanged,
+            this, &VideoEditor::updateVideoLength);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,

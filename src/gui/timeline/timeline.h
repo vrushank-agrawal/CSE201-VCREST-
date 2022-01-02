@@ -33,9 +33,10 @@ public:
 private:
     Indicator *indicator = nullptr;
     QGraphicsScene *scene = nullptr;
+    QGraphicsItem* separatorLine[2] = {nullptr, nullptr};
 
     qreal currentXPosition = 0;
-    int lengthInSecond = 10 * 60;
+    int lengthInSecond = 0;
     int sceneWidth = 120, sceneHeight = 120;
     qreal sceneShowingWidth = 3000;
     int timeHeight = 20;
