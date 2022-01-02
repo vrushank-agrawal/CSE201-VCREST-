@@ -24,6 +24,6 @@ file(GLOB headers
         "utils/*.h"
         "*.h")
 
-add_library(aubio ${sources} ${headers})
+add_library(Aubio ${sources} ${headers})
 
-target_include_directories(aubio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(Aubio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

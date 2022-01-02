@@ -56,7 +56,6 @@ signals:
 
 
 public slots:
-    void relayPlayStateChanged(bool isPlaying);
     void updateIndicatorPosition(double);
 
 

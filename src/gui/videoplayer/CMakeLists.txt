@@ -1,11 +1,11 @@
-add_library(videoPlayer videoplayer.cpp)
+add_library(VideoPlayer videoplayer.cpp)
 
-target_include_directories(videoPlayer
+target_include_directories(VideoPlayer
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(videoPlayer
-        opencvExternalLibrary
-        qtExternalLibrary
-        videoWindow
+target_link_libraries(VideoPlayer
+        OpenCVExternalLibrary
+        QtExternalLibrary
+        VideoWindow
         )

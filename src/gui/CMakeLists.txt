@@ -1,32 +1,23 @@
-add_library(gui)
+add_library(GUI)
 
-add_subdirectory(audioitem)
 add_subdirectory(audiomanager)
 add_subdirectory(audioplayer)
-add_subdirectory(imageitem)
-add_subdirectory(imagethumbnail)
-add_subdirectory(indicator)
+add_subdirectory(imagemanager)
 add_subdirectory(videoplayer)
 add_subdirectory(videowindow)
 add_subdirectory(progressbar)
 add_subdirectory(timeline)
-add_subdirectory(sizegripitem)
 
-target_include_directories(gui
+target_include_directories(GUI
         INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
         )
 
-target_link_libraries(gui
-        audioItem
-        audioPlayer
-        audioManager
-        imageItem
-        imageThumbnail
-        indicator
-        progressBar
-        sizeGripItem
-        timeline
-        videoLibrary
-        videoPlayer
-        videoWindow
+target_link_libraries(GUI
+        AudioPlayer
+        AudioManager
+        ImageManager
+        ProgressBar
+        Timeline
+        VideoPlayer
+        VideoWindow
         )

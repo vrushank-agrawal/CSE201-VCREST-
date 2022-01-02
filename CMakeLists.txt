@@ -23,9 +23,9 @@ add_subdirectory(src)
 
 add_executable(video_editor_BX23 main.cpp application.qrc)
 target_link_libraries(video_editor_BX23
-        PUBLIC videoEditor
-        INTERFACE qtExternalLibrary
-        INTERFACE opencvExternalLibrary
+        PUBLIC VideoEditor
+        INTERFACE QtExternalLibrary
+        INTERFACE OpenCVExternalLibrary
         )
 
 # add warning
