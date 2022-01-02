@@ -17,6 +17,9 @@ void VideoEditor::setupAudio() {
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
     connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
             audioPlayer, SLOT(seek(double)));
+
+    connect(ui->preview, &VideoPlayer::seekAudioRequested,
+            audioPlayer, &AudioPlayer::seek);
 }
 
 void VideoEditor::setupImage() {
@@ -112,29 +115,22 @@ void VideoEditor::setupVideoPlayer() {
             ui->preview, &VideoPlayer::sliderReleased);
     connect(ui->controlSlider, &ProgressBar::frameChanged,
             this, &VideoEditor::updatePosition);
-
-    // connect frameUpdated in preview to update position in this class
-    connect(ui->preview, &VideoPlayer::timeUpdated,
-            this, &VideoEditor::updateCurrentTime);
-
-    // connect positionChanged in this class to slider and preview
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
 
-    // connect currentTimeChanged with videoEditor and preview
+    // connect time in preview and videoEditor
+    connect(ui->preview, &VideoPlayer::timeUpdated,
+            this, &VideoEditor::updateCurrentTime);
     connect(this, &VideoEditor::currentTimeChanged,
             ui->preview, &VideoPlayer::updateCurrentTime);
 
-    // connect videoLengthUpdated to updateVideoLength
+    // connect videoLengthChanged in timeline to videoEditor updateVideoLength
     connect(ui->timeline, &Timeline::videoLengthChanged,
             this, &VideoEditor::updateVideoLength);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
             ui->preview, &VideoPlayer::updateFrame);
-
-    connect(ui->preview, &VideoPlayer::seekAudioRequested,
-            audioPlayer, &AudioPlayer::seek);
 
     // add label and playButton to preview
     ui->preview->setChild(ui->videoWindow, ui->playButton);

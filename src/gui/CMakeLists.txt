@@ -4,7 +4,6 @@ add_subdirectory(audiomanager)
 add_subdirectory(audioplayer)
 add_subdirectory(imagemanager)
 add_subdirectory(videoplayer)
-add_subdirectory(videowindow)
 add_subdirectory(progressbar)
 add_subdirectory(timeline)
 
@@ -19,5 +18,4 @@ target_link_libraries(GUI
         ProgressBar
         Timeline
         VideoPlayer
-        VideoWindow
         )
