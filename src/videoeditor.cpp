@@ -34,7 +34,7 @@ VideoEditor::VideoEditor(QWidget *parent) :
 VideoEditor::~VideoEditor() {
     delete ui;
     delete resultVideo;
-    delete thumbnailManager;
+    delete imageManager;
     delete audioManager;
 }
 
@@ -59,7 +59,7 @@ void VideoEditor::setupAudio() {
 void VideoEditor::setupImage() {
     setupImageToolbar();
 
-    thumbnailManager = new ImageManager(ui->imgListWidget);
+    imageManager = new ImageManager(ui->imgListWidget);
     connect(ui->imgListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendImageToThumbnail);
 
@@ -227,7 +227,7 @@ QStringList VideoEditor::importFiles(const QString &caption, const QString &dir,
 
 void VideoEditor::importImage(const QString& fileName) {
     img::Image image(fileName.toStdString());
-    thumbnailManager->addImage(image, fileName);
+    imageManager->addImage(image, fileName);
 }
 
 void VideoEditor::importImages() {
@@ -334,7 +334,7 @@ void VideoEditor::addImageToResultVideo(img::Image *image, double startTime, dou
 }
 
 void VideoEditor::appendImageToThumbnail(QListWidgetItem* item) {
-    auto *image = new img::Image(thumbnailManager->getImage(item)->getMat());
+    auto *image = new img::Image(imageManager->getImage(item)->getMat());
     ui->timeline->addImageAtIndicator(image);
 }
 

@@ -107,7 +107,7 @@ private:
     ####################*/
     AudioManager *audioManager = nullptr;
     AudioPlayer *audioPlayer = nullptr;
-    ImageManager *thumbnailManager = nullptr;
+    ImageManager *imageManager = nullptr;
     vid::Video *resultVideo = nullptr;
     QSlider *blurSlider = nullptr;
 
