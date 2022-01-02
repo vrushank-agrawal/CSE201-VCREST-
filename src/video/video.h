@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <thread>
 #include "image.h"
 
 namespace vid {
@@ -54,6 +55,8 @@ namespace vid {
 
         bool writeVideo(std::string output_name, int fourcc);
 
+        bool writeVideoParallel(std::string output_name, int fourcc);
+
         int getPlace(double time);
 
         int getIndex(img::Image *img);
@@ -86,6 +89,7 @@ namespace vid {
         //current image for that time and applying the Animation
         struct ImageAnimator {
         public:
+
             ImageAnimator();
 
             ImageAnimator(img::Image *image, double start_time, double display_time, int fps);
@@ -97,6 +101,8 @@ namespace vid {
             void display();
 
             void write(cv::VideoWriter video_writer);
+
+            void writeParallel(cv::VideoWriter video_writer);
 
             void setAnimation(Animation animation_type);
 
@@ -128,6 +134,7 @@ namespace vid {
         img::Image blank;
         int number_of_animations;
         static int width, height, fps;
+
     };
 
 }

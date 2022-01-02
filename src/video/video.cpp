@@ -2,6 +2,10 @@
 // Created by korkot on 11/21/2021.
 //
 #include "video.h"
+#include <chrono>
+#include <execution>
+#include <iterator>
+
 
 int vid::Video::width = 0, vid::Video::height = 0, vid::Video::fps = 0;
 
@@ -132,10 +136,43 @@ namespace vid {
         cv::destroyAllWindows();
     }
 
-    bool Video::writeVideo(std::string output_name, int fourcc) {
+    bool Video::writeVideoParallel(std::string output_name, int fourcc) {
+        auto start = std::chrono::high_resolution_clock::now();
         cv::VideoWriter video_writer;
         bool isOpened = video_writer.open(output_name, fourcc,
-                                     this->fps, cv::Size(this->width, this->height), true);
+                                          this->fps, cv::Size(this->width, this->height), true);
+
+        if (!isOpened) return false;
+        double cur_time = 0;
+        std::vector<double> blank_time_dur(this->number_of_animations);
+
+        for (int i = 0; i < this->number_of_animations; i++) {
+            blank_time_dur[i] = this->animators[i].start_time - cur_time;
+            cur_time = this->animators[i].start_time + this->animators[i].time;
+        }
+
+
+        std::for_each(std::execution::par_unseq, blank_time_dur.begin(), blank_time_dur.end(), [&](double& time) {
+            auto i = (int)(&time - &blank_time_dur[0]);
+            if (time > 0) {
+                this->addBlank(video_writer, time);
+            }
+            this->animators[i].writeParallel(video_writer);
+        });
+
+        video_writer.release();
+        cv::destroyAllWindows();
+        auto stop = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        std::cout << "Writing time: " << duration.count() << " microseconds" << std::endl;
+        return true;
+    }
+
+    bool Video::writeVideo(std::string output_name, int fourcc) {
+        auto start = std::chrono::high_resolution_clock::now();
+        cv::VideoWriter video_writer;
+        bool isOpened = video_writer.open(output_name, fourcc,
+                                          this->fps, cv::Size(this->width, this->height), true);
 
         if (!isOpened) return false;
 
@@ -150,7 +187,9 @@ namespace vid {
         }
         video_writer.release();
         cv::destroyAllWindows();
-
+        auto stop = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        std::cout << "Writing time: " << duration.count() << " microseconds" << std::endl;
         return true;
     }
 
@@ -211,6 +250,8 @@ namespace vid {
     }
 
 
+
+
 //*****************************************ImageAnimator struct***********************************************
 
     Video::ImageAnimator::ImageAnimator(img::Image *image, double start_time, double display_time, int fps) {
@@ -257,6 +298,23 @@ namespace vid {
             if (c == 27)
                 break;
             i++;
+        }
+    }
+
+    void Video::ImageAnimator::writeParallel(cv::VideoWriter video_writer) {
+        const int num_frames = this->time * this->fps;
+        std::vector<img::Image> frames(num_frames);
+
+        std::for_each(std::execution::par_unseq, frames.begin(), frames.end(), [&](img::Image& frame) {
+            auto i = (int)(&frame - &frames[0]);
+            cv::Mat disp = this->getMatAt(i);
+            img::Image new_image(disp);
+            new_image.equalizeImgDim(width, height);
+            frames[i] = new_image;
+        });
+
+        for (int i = 0; i < num_frames; ++i) {
+            video_writer.write(frames[i].getModifiedImg());
         }
     }
 

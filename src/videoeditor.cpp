@@ -284,7 +284,7 @@ void VideoEditor::writeVideo() {
 
     remove(outputPath.c_str());
 
-    if (!resultVideo->writeVideo(outputPath, fourcc)) {
+    if (!resultVideo->writeVideoParallel(outputPath, fourcc)) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");

@@ -117,91 +117,45 @@ void img::Image::equalizeImgDim( double width, double height) {
     }
 
     // change image because ratios are different
-    if (( imgRatio > fixedRatio ) ) {
-        if ( this -> getModifiedHeight() > height ) {
+    if ((imgRatio > fixedRatio) && (this -> getModifiedHeight() != height)) {
 
-            // calculate new width for the image
-            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
-            this ->resizeImg( new_width, height );
+        // calculate new width for the image
+        int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
+        this ->resizeImg( new_width, height );
 
-            // get the width of black image
-            int black_width = floor( abs(width - new_width) / 2 );
+        // get the width of black image
+        int black_width = floor( abs(width - new_width) / 2 );
 
-            // create black image and resize it
-            Image Black = img::Image(blackMat);
-            Black.resizeImg( black_width, height );
-            Image* blackptr = &Black;
+        // create black image and resize it
+        Image Black = img::Image(blackMat);
+        Black.resizeImg( black_width, height );
 
-            // adding black matrices
-            // resizing image again
-            this -> sendToStitch( 0, blackptr );
-            this -> resizeImg(width, height);
+        // adding black matrices
+        // resizing image again
+        this -> sendToStitch( 0, &Black );
+        this -> resizeImg(width, height);
 
-            return;
-        } else if (this -> getModifiedHeight() < height) {
-
-            // calculate new width for the image
-            int new_width = std::floor( this -> getModifiedWidth() * height / this -> getModifiedHeight() );
-            this ->resizeImg( new_width, height );
-
-            // get the width of black image
-            int black_width = floor( abs(width - new_width) / 2 );
-
-            // create black image and resize it
-            Image Black = img::Image(blackMat);
-            Image* blackptr = &Black;
-            Black.resizeImg( black_width, height );
-
-            // adding black matrices
-            // resizing image again
-            this -> sendToStitch( 0, blackptr );
-            this -> resizeImg(width, height);
-
-            return;
-        }
+        return;
     }
-    if (( imgRatio < fixedRatio ) ) {
-        if ( this -> getModifiedWidth() > width ) {
+    if ((imgRatio < fixedRatio) && (this -> getModifiedWidth() > width)) {
 
-            // calculate new height for the image
-            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
-            this -> resizeImg( width, new_height );
+        // calculate new height for the image
+        int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
+        this -> resizeImg( width, new_height );
 
-            // get the width of black image
-            int black_height = floor( abs(height - new_height) / 2 );
+        // get the width of black image
+        int black_height = floor( abs(height - new_height) / 2 );
 
-            // create black image and resize it
-            Image Black = img::Image(blackMat);
-            Black.resizeImg( width, black_height );
-            Image* blackptr = &Black;
+        // create black image and resize it
+        Image Black = img::Image(blackMat);
+        Black.resizeImg( width, black_height );
 
-            // adding black matrices
-            // resizing image again
-            this -> sendToStitch( 1, blackptr );
-            this -> resizeImg(width, height);
+        // adding black matrices
+        // resizing image again
+        this -> sendToStitch( 1, &Black );
+        this -> resizeImg(width, height);
 
-            return;
-        } else if (this -> getModifiedWidth() < width) {
-
-            // calculate new height for the image
-            int new_height = std::floor( this -> getModifiedHeight() * width / this -> getModifiedWidth() );
-            this -> resizeImg( width, new_height );
-
-            // get the width of black image
-            int black_height = floor( abs(height - new_height) / 2 );
-
-            // create black image and resize it
-            Image Black = img::Image(blackMat);
-            Black.resizeImg( width, black_height );
-            Image* blackptr = &Black;
-
-            // adding black matrices
-            // resizing image again
-            this -> sendToStitch( 1, blackptr );
-            this -> resizeImg(width, height);
-
-            return;
-        }
+        return;
     }
 }
 
