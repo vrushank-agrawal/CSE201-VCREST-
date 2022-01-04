@@ -80,6 +80,19 @@ void img::Image::resizeImg(int width, int height) {
     if (height && width) {
         //uses linear interpolation to resize the image.
         resize(this->getModifiedImg(), resized_img, cv::Size(width, height),cv::INTER_LINEAR);
+        this ->setModifiedImg(resized_img);
     }
-    this ->setModifiedImg(resized_img);
 }
+
+
+// fadein functions needed for animation
+
+void img::Image::addWeighted(double alpha, double beta, double gamma = 0.0){
+    // superimposes image with black images - we will vary intensity to create fade animation 
+    if (width && height) {
+        cv::Mat temp;
+        cv::addWeighted( this->getModifiedImg(), alpha,  blackMat, beta, gamma, temp);
+        this -> setModifiedImg( temp);
+    }
+}
+
