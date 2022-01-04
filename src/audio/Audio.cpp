@@ -56,6 +56,10 @@ namespace audio {
 
     }
 
+    std::string Audio::getURI() {
+        return uri;
+    }
+
     std::vector<int> Audio::getBeatPositions() {
 
         sample_rate = 0;

@@ -41,18 +41,18 @@ However, further features include adding simple animations to the corresponding 
 * Lasha Koroshinadze
 * Hayate Sasaki
 
-## External Libraries & IDE's Used
+## Thirs Parties Used
 - QT v6.2.2
-    - QT Multimedia
+    - QT Multimedia (should be added while installing QT)
 - FFmpeg v4.2.5
 - OpenCV v4.5.4
-- MinGW version v9.0.0
-- Clion v2021.3.2 
+- MinGW version v9.0.0 (should be added with QT)
+- Clion v2021.3.2 (optional but recommended)
 
 ## Setup for CLion
 - In Setting(Preferences)/Build, Execute and Deployment
-    - Toolchain to change your compiler
-    - In CMake: -DCMAKE_PREFIX_PATH=path/to/your/Qt (example [Mac] `~/Qt/6.2.1/MacOS`; [Windows] `C:\Qt\6.2.2\mingw_64\bin`)
+    - Go to `Toolchains` and select your compiler (specify the same compiler with which OpenCV binaries will be built in later steps)
+    - In CMake set: `-DCMAKE_PREFIX_PATH=path/to/your/Qt` (example [Mac] `~/Qt/6.2.1/MacOS`; [Windows] `C:\Qt\6.2.2\mingw_64\bin`)
     
 ## Setup for FFmpeg
 1. Download the latest version of FFmpeg from this [link](https://www.ffmpeg.org/download.html)
@@ -109,3 +109,54 @@ However, further features include adding simple animations to the corresponding 
 - Try to run `test_opencv` as a separate debug environment in CLion. In the `test.cpp` file, change the run command for `image_path` according to the OS (different for windows and mac). 
 - If there is no error and the image `lena.jpg` is displayed then `CONGRATULATIONS!` OpenCV is successfully integrated. Otherwise, retry the entire process or look for possible errors on Google.
 - For macOS, it is advised to use Xcode g++ compiler because other compilers run into to an error like `Undefined symbols for architecture arm64`. If you have this problem you probably want to change to Xcode g++ compiler.
+
+
+## Guide To Use V-CREST v1.0
+
+1. Run the project in build environment on your preferred IDE (CLion hopefully)
+2. The main software window will appear. 
+(insert image)
+
+3. Start by importing some media (Ctrl + O)
+4. The imported media is now displayed in their respective panels
+(insert image)
+
+5. You can add images and audios to the respective timelines by double-clicking on the objects
+6. The selected object will be inserted after the slider if no object is available otherwise after the last object in the current state of the timeline
+(insert image)
+
+7. The objects are automatically inserted for a duration of 5 seconds which can be extended or decreased manually using the slider at the end of each object
+(insert image)
+
+8. The objects can be shifted to various positions in the timeline by simply clicking and dragging
+(insert image)
+
+9. You can preview the created video by clicking the play button in the video preview panel
+10. To add a specific animation to an image, simply right click on the image object and select the animation among:
+    - Normal - Current state
+    - Rotation - The image object will rotate
+    - X
+    - Y
+    - Z
+(insert image)
+
+11. You may also add blur filters to smoothen images among:
+    - Blur - normal blur function
+    - Gaussian Blur - dynamically smoothes the edges in the image 
+    - Median Blur - removes noise while preserving the edges (gives a paint-like feel)
+ 
+(insert image)
+
+12. The intensity of the blur function can be increased or decreased from the blur slider (teardrop symbol) next to the video preview panel
+(insert image)
+
+13. An image may be rotated as well using the rotation button next to the video preview panel
+(insert image)
+
+14. With all these amazing editing options, your personalized video is now ready to be exported!
+
+### Note on V-CREST v2.0
+- The current editing features in the software are limited due to difficulties faced in building the GUI
+- The next version will provide much more flexibility to the user in terms of filters and animations that may be added
+- Collage making functions will also be better integrated in the future version
+- The GUI will have more ease of use with better graphics
