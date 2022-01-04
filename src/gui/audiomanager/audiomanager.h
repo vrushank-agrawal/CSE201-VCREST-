@@ -22,7 +22,7 @@ public:
 
 private:
     QListWidget *listWidget = nullptr;
-    QMap<QListWidgetItem*, audio::Audio> map;
+    QMap<QListWidgetItem*, audio::Audio*> map;
     QMap<audio::Audio*, QMediaPlayer*> playerMap;
 };
 
