@@ -7,7 +7,7 @@
 
 double Timeline::default_audio_length = 5;
 
-void Timeline::addAudio(audio::Audio audio, double sourceLength, double start, double end) {
+void Timeline::addAudio(audio::Audio* audio, double sourceLength, double start, double end) {
     auto *item = new AudioItem(audio, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
     end = (item->getMaxLength() < 500) ? start + item->getMaxLength()*0.01 : end;
     item->start = audioMap.insert(start, item);
@@ -149,6 +149,6 @@ void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
     // add new duration
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
-    emit audioAdded(item->audioSource, start, end-start);
+    emit audioAdded(item->audio, start, end-start);
     emit seekAudioRequested(indicator->x() / xTimeOffset);
 }
