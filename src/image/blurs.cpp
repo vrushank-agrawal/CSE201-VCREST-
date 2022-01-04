@@ -8,10 +8,6 @@
 
 #include "image.h"
 
-#include <string>
-#include <unistd.h>
-#include <algorithm>
-
 void img::Image::blur(int width, int height) {
     if (width && height) {
         cv::blur(current_unblur_matrix, img_matrix_modified, cv::Size(width, height));
@@ -87,7 +83,9 @@ void img::Image::resizeImg(int width, int height) {
     }
 }
 
-// fadein functions needed for animation
+// fadeIn and fadeOutfunctions needed for animation
+
+// alpha is the weight of the first image and beta is the weight of the black image
 void img::Image::addWeighted(double alpha, double beta, double gamma = 0.0) {
     // superimposes image with black images - we will vary intensity to create fade animation 
     if (alpha != 0 && beta != 0) {
