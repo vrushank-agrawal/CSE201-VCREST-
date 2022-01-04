@@ -53,8 +53,8 @@ int main() {
 //    img1.bilateralFilter(51 );
 //    img1.imgModifiedPreview("testing_bilateral_filter");
 
-    img1.addWeighted(0.1, 0.9);
-    img1.imgModifiedPreview("testing_fade_function");
+//    img1.addWeighted(1.1, 1.1);
+//    img1.imgModifiedPreview("testing_fade_function");
 
 
 // ---------------------------BLUR PREVIEW----------------------------

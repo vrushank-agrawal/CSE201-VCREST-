@@ -83,16 +83,20 @@ void img::Image::resizeImg(int width, int height) {
     }
 }
 
-// fadeIn and fadeOutfunctions needed for animation
+// fadeIn and fadeOut functions needed for animation
 
 // alpha is the weight of the first image and beta is the weight of the black image
+// if alpha + beta < 1 then beta = 1 - alpha
+// if alpha > 1 then beta = zero
 void img::Image::addWeighted(double alpha, double beta, double gamma = 0.0) {
     // superimposes image with black images - we will vary intensity to create fade animation 
     if (alpha != 0 && beta != 0) {
         cv::Mat dst;
         img::Image black = img::Image(blackMat);
         int height = this -> getModifiedHeight(), width = this -> getModifiedWidth();
-        black.resizeImg(width, height);
+        // resize black image if necessary
+        if (black.getModifiedWidth() != width && black.getModifiedHeight() != height)
+            black.resizeImg(width, height);
         cv::addWeighted(this -> getModifiedImg(), alpha, black . getModifiedImg(), beta, gamma, dst);
         this->setModifiedImg(dst);
     }
