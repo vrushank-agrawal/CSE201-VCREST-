@@ -15,21 +15,16 @@ QTransform AudioItem::parentTransform = QTransform();
 
 
 AudioItem::AudioItem(audio::Audio* audio,
+                     QString displayName,
                      double sourceLength,
                      QPoint position
-                     ) : audio(audio) {
+                     ) : audio(audio), displayName(displayName) {
     QString audioSource = QString::fromStdString(audio->getURI());
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     maxLength = sourceLength * xTimeOffset / 1000;
     qDebug() << "Audio added with length " << maxLength;
 
-    if (audioSource.lastIndexOf("/") >= 0) {
-        displayName = audioSource.right(audioSource.length() - audioSource.lastIndexOf("/") - 1);
-    }
-    else {
-        displayName = audioSource;
-    }
 }
 
 AudioItem::~AudioItem() {

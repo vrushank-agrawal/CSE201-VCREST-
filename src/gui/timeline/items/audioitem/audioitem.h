@@ -20,6 +20,7 @@ Q_INTERFACES(QGraphicsItem)
 
 public:
     explicit AudioItem(audio::Audio* audio,
+                       QString displayName,
                        double sourceLength,
                        QPoint position);
     ~AudioItem();

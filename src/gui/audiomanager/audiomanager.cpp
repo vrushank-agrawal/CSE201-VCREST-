@@ -53,7 +53,6 @@ AudioManager::~AudioManager() {
 }
 
 audio::Audio* AudioManager::getAudio(QListWidgetItem *item) {
-    qDebug() << map;
     return map.find(item).value();
 }
 

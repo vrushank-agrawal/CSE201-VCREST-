@@ -7,8 +7,8 @@
 
 double Timeline::default_audio_length = 5;
 
-void Timeline::addAudio(audio::Audio* audio, double sourceLength, double start, double end) {
-    auto *item = new AudioItem(audio, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
+void Timeline::addAudio(audio::Audio* audio, QString displayName, double sourceLength, double start, double end) {
+    auto *item = new AudioItem(audio, displayName, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
     end = (item->getMaxLength() < 500) ? start + item->getMaxLength()*0.01 : end;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
@@ -30,17 +30,17 @@ void Timeline::addAudio(audio::Audio* audio, double sourceLength, double start, 
     item->createSizeGripItem(sizeGripItem);
 }
 
-void Timeline::appendAudio(audio::Audio* audio, double sourceLength, double length) {
+void Timeline::appendAudio(audio::Audio* audio, QString displayName, double sourceLength, double length) {
     double start = audioMap.isEmpty() ? 0 : audioMap.lastKey();
-    addAudio(audio, sourceLength, start, start + length);
+    addAudio(audio, displayName, sourceLength, start, start + length);
 }
 
-void Timeline::addAudioAtIndicator(audio::Audio* audio, double sourceLength, double max_length) {
+void Timeline::addAudioAtIndicator(audio::Audio* audio, QString displayName, double sourceLength, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
     // audio already exists
     if (getAudioItem(time) != nullptr) {
-        appendAudio(audio, sourceLength, max_length);
+        appendAudio(audio, displayName, sourceLength, max_length);
         return;
     }
 
@@ -50,7 +50,7 @@ void Timeline::addAudioAtIndicator(audio::Audio* audio, double sourceLength, dou
         duration = max_length;
     else
         duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addAudio(audio, sourceLength, time, time + duration);
+    addAudio(audio, displayName, sourceLength, time, time + duration);
 }
 
 void Timeline::deleteAudio(AudioItem *item) {
