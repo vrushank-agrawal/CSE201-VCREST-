@@ -87,38 +87,16 @@ void img::Image::resizeImg(int width, int height) {
     }
 }
 
-
 // fadein functions needed for animation
-std::string get_curr_dir() {
-    char add[256];
-    getcwd(add, 256);
-
-    // convert char to string
-    std::string address;
-    for (int i = 0; i < strlen(add); i++)
-        address += add[i];
-    return address;
-}
-
 void img::Image::addWeighted(double alpha, double beta, double gamma = 0.0) {
     // superimposes image with black images - we will vary intensity to create fade animation 
     if (alpha != 0 && beta != 0) {
-
-        cv::Mat src1, src2, dst;
-        std::string add = get_curr_dir();
-        std::string address1 =  "\\..\\default_images\\heaven.jpg";
-        std::string address2 =  "\\..\\default_images\\black.jpg";
-        src1 = cv::imread(cv::samples::findFile(address1));
-        src2 = cv::imread(cv::samples::findFile(address2));
-
-        cv::Mat temp = this->getModifiedImg();
-        cv::Mat temp2;
-        cv::OutputArray output(temp2);
-        cv::InputArray inputImg(temp);
-        cv::InputArray blackImg(blackMat);
-        cv::addWeighted(src1, alpha, src2, beta, gamma, dst);
+        cv::Mat dst;
+        img::Image black = img::Image(blackMat);
+        int height = this -> getModifiedHeight(), width = this -> getModifiedWidth();
+        black.resizeImg(width, height);
+        cv::addWeighted(this -> getModifiedImg(), alpha, black . getModifiedImg(), beta, gamma, dst);
         this->setModifiedImg(dst);
-        std::cout << this -> getModifiedHeight() << std::endl << this -> getModifiedHeight() << std::endl;
     }
 }
 

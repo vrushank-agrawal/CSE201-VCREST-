@@ -12,17 +12,17 @@
 
 using img::Image;
 using img::Collage;
-//
-//std::string get_curr_dir() {
-//    char add[256];
-//    getcwd(add, 256);
-//
-//    // convert char to string
-//    std::string address;
-//    for (int i =0; i< strlen(add); i++)
-//        address += add[i];
-//    return address;
-//}
+
+std::string get_curr_dir() {
+    char add[256];
+    getcwd(add, 256);
+
+    // convert char to string
+    std::string address;
+    for (int i =0; i< strlen(add); i++)
+        address += add[i];
+    return address;
+}
 
 int main() {
     std::string add = get_curr_dir();
@@ -53,8 +53,8 @@ int main() {
 //    img1.bilateralFilter(51 );
 //    img1.imgModifiedPreview("testing_bilateral_filter");
 
-    img1.addWeighted(0.1, 0.9);
-    img1.imgModifiedPreview("testing_fade_function");
+//    img1.addWeighted(0.3, 0.9);
+//    img1.imgModifiedPreview("testing_fade_function");
 
 
 // ---------------------------BLUR PREVIEW----------------------------
