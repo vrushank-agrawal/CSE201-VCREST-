@@ -92,6 +92,10 @@ namespace img {
         void boxBlur(int width, int height, int depth = -1);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
+        
+        // functions needed for the fade in animation
+        void addWeighted( src1, alpha, src2, beta, 0.0, dst);
+
 
     }; // Image() class
 
