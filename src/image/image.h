@@ -94,7 +94,7 @@ namespace img {
         void medianBlur(int kernel_size);
         
         // functions needed for the fade in animation
-        void addWeighted( src1, alpha, src2, beta, 0.0, dst);
+        void addWeighted( double alpha, double beta, double gamma);
 
 
     }; // Image() class
