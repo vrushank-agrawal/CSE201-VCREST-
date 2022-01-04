@@ -12,6 +12,7 @@ target_include_directories(Timeline
         )
 
 target_link_libraries(Timeline
+        AudioLibrary
         QtExternalLibrary
         Indicator
         ImageLibrary

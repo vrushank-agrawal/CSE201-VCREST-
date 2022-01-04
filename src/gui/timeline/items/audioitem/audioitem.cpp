@@ -14,10 +14,11 @@ QPen AudioItem::pen = QPen(Qt::black, border);
 QTransform AudioItem::parentTransform = QTransform();
 
 
-AudioItem::AudioItem(QString audioSource,
+AudioItem::AudioItem(audio::Audio* audio,
                      double sourceLength,
                      QPoint position
-                     ) : audioSource(audioSource) {
+                     ) : audio(audio) {
+    QString audioSource = QString::fromStdString(audio->getURI());
     setPos(QPoint(position.x(), position.y() + yOffset));
     size = QSizeF();
     maxLength = sourceLength * xTimeOffset / 1000;
