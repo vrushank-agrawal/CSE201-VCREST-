@@ -43,6 +43,9 @@ namespace audio {
         static std::string out;
 
     public:
+
+        std::string getURI();
+
         Audio(const std::string &uri);
 
         std::vector<int> getBeatPositions();

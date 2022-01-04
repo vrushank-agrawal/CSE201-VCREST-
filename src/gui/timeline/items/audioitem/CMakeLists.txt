@@ -5,6 +5,7 @@ target_include_directories(AudioItem
         )
 
 target_link_libraries(AudioItem
+        AudioLibrary
         QtExternalLibrary
         SizeGripItem
         )
