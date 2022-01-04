@@ -5,5 +5,6 @@ target_include_directories(AudioManager
         )
 
 target_link_libraries(AudioManager
+        AudioLibrary
         QtExternalLibrary
         )
