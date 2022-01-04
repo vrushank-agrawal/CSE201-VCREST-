@@ -34,12 +34,14 @@ void AudioManager::addAudio(const QString& name) {
     item->setBackground(brush);
     item->setSizeHint(QSize(60, 30));
     listWidget->addItem(item);
-    map.insert(item, name);
+
+    audio::Audio audio(name.toStdString());
+    map.insert(item, audio);
 
     auto *player = new QMediaPlayer;
     player->setAudioOutput(new QAudioOutput);
-    player->setSource(QUrl(name));
-    playerMap.insert(name, player);
+    player->setSource(QUrl(QString::fromStdString(audio.getURI())));
+    playerMap.insert(&audio, player);
 }
 
 AudioManager::~AudioManager() {
@@ -50,10 +52,10 @@ AudioManager::~AudioManager() {
     }
 }
 
-QString *AudioManager::getAudio(QListWidgetItem *item) {
+audio::Audio* AudioManager::getAudio(QListWidgetItem *item) {
     return &map.find(item).value();
 }
 
-QMediaPlayer *AudioManager::getPlayer(QString source) {
-    return playerMap.value(source, nullptr);
+QMediaPlayer* AudioManager::getPlayer(audio::Audio *audio) {
+    return playerMap.value(audio, nullptr);
 }

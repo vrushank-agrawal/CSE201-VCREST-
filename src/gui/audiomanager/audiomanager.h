@@ -8,6 +8,7 @@
 
 #include <QListWidget>
 #include <QMediaPlayer>
+#include "Audio.hpp"
 
 class AudioManager : public QObject {
 Q_OBJECT
@@ -16,13 +17,13 @@ public:
     explicit AudioManager(QListWidget *qListWidget);
     ~AudioManager();
     void addAudio(const QString& name);
-    QString* getAudio(QListWidgetItem *item);
-    QMediaPlayer* getPlayer(QString source);
+    audio::Audio* getAudio(QListWidgetItem *item);
+    QMediaPlayer* getPlayer(audio::Audio* audio);
 
 private:
     QListWidget *listWidget = nullptr;
-    QMap<QListWidgetItem*, QString> map;
-    QMap<QString, QMediaPlayer*> playerMap;
+    QMap<QListWidgetItem*, audio::Audio> map;
+    QMap<audio::Audio*, QMediaPlayer*> playerMap;
 };
 
 
