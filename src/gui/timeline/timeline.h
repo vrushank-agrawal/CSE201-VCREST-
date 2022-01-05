@@ -42,6 +42,7 @@ private:
     qreal sceneShowingWidth = 3000;
     int timeHeight = 20;
     int xTimeOffset = 100, yTime = 0;
+    double eps = 1e-8;
 
     enum TimelineMoveOption{
         KeepCurrentPosition,
