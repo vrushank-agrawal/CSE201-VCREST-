@@ -33,8 +33,10 @@ namespace img {
                 void setModifiedImage(cv::Mat modifiedMat);
                 const std::vector<double>& getModifiedRatios();
 
+                void setFourStitchRecImgArr(cv::Mat image);
+                const std::vector<Image>& getFourStitchRecImgArr();
             private:
-
+                std::vector <Image> fourStitchRecImgArr;
                 int numImages;
                 int modifiedNumImages;
                 std::vector <double> ratios;
