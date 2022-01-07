@@ -123,6 +123,8 @@ namespace vid {
             
              //untested: 
             //void fadeInAnimation(int frame_number);
+            //void fadeOutAnimation(int frame_number);
+
         };
 
     private:
