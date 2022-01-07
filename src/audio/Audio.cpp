@@ -7,9 +7,9 @@
 
 namespace audio {
 
-    int Audio::num = 0;
+    int num = 0;
     std::string folder = "temp_media";
-    std::string Audio::out = folder + "/output";
+    std::string out = folder + "/output";
 
     Audio::Audio(const std::string &uri) {
 
@@ -77,12 +77,12 @@ namespace audio {
         aubio_tempo_t *tempo = new_aubio_tempo("default", win_size, hop_size, sample_rate);
 
         fvec_t *in = new_fvec(hop_size); // input audio buffer
-        fvec_t *out = new_fvec(1); // output position
+        fvec_t *outf = new_fvec(1); // output position
 
         uint_t read = 0;
         do {
             aubio_source_do(source, in, &read);
-            aubio_tempo_do(tempo, in, out);
+            aubio_tempo_do(tempo, in, outf);
             beats_ms.push_back(aubio_tempo_get_last_ms(tempo));
         } while (read == hop_size);
 
@@ -113,12 +113,12 @@ namespace audio {
         int curr_size = *((int *) (merged_file + 40));
         curr_size += *((int *) (a2.file + 40));
         *((int *) (merged_file + 40)) = curr_size;
-        std::string out = Audio::out + std::to_string(Audio::num) + ".wav";
-        std::ofstream outfile(out, std::ios_base::binary);
-        Audio::num++;
+        std::string outs = out + std::to_string(num) + ".wav";
+        std::ofstream outfile(outs, std::ios_base::binary);
+        num++;
         outfile.write(merged_file, size);
         outfile.close();
-        return out;
+        return outs;
     }
 
     std::string trim(const Audio &a, int ms, bool isStart) {
@@ -140,12 +140,12 @@ namespace audio {
             }
         }
         *((int *) (trimmed_file + 40)) = final_size;
-        std::string out = Audio::out + std::to_string(Audio::num) + ".wav";
-        std::ofstream outfile(out, std::ios_base::binary);
-        Audio::num++;
+        std::string outs = out + std::to_string(num) + ".wav";
+        std::ofstream outfile(outs, std::ios_base::binary);
+        num++;
         outfile.write(trimmed_file, final_size + 44);
         outfile.close();
-        return out;
+        return outs;
     }
 
     arr3d Audio::getSpectrumVisualizer() {
@@ -193,6 +193,43 @@ namespace audio {
         aubio_cleanup();
 
         return res;
+
+    }
+
+    std::string createSilence(int ms) {
+
+        QDir().mkdir(folder.c_str());
+
+        std::ifstream infile("../media/silence.wav", std::ios_base::binary);
+
+        infile.seekg(0, std::ios::end);
+        size_t length = infile.tellg();
+        infile.seekg(0, std::ios::beg);
+
+        char *silencefile = new char[length];
+
+        infile.read(silencefile, length);
+        infile.close();
+
+        int samples = (int) ((long long) ms * 44100 / 1000);
+        int bytes = 4 * samples;
+
+        char *newfile = new char[44 + bytes];
+
+        for (int i = 0; i < 40; i++) {
+            newfile[i] = silencefile[i];
+        }
+        *((int *) (newfile + 40)) = bytes;
+        for (int i = 44; i < 44 + bytes; i++) {
+            newfile[i] = 0;
+        }
+
+        std::string outs = out + std::to_string(num) + ".wav";
+        std::ofstream outfile(outs, std::ios_base::binary);
+        num++;
+        outfile.write(newfile, 44 + bytes);
+        outfile.close();
+        return outs;
 
     }
 

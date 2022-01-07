@@ -39,9 +39,6 @@ namespace audio {
         char *file;
         int size;
 
-        static int num;
-        static std::string out;
-
     public:
 
         std::string getURI();
@@ -57,6 +54,10 @@ namespace audio {
     std::string merge(const Audio &a1, const Audio &a2);
 
     std::string trim(const Audio &a, int ms, bool isStart);
+
+    std::vector<int> getWaveform(int fps, int size, int frame);
+
+    std::string createSilence(int ms);
 
     void test();
 
