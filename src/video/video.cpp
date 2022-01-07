@@ -315,7 +315,7 @@ namespace vid {
     }
 
     /* Needs testing: 
-    void Video::ImageAnimator::FadeInAnimation(int frame_number) {
+    void Video::ImageAnimator::fadeInAnimation(int frame_number) {
         Image image_mat = img::Image(this->img); // transforming matrix from video class into image so that we can use image functions
         image_mat.addWeighted(0,1); // we start by displaying the black image 
         imshow( "Frame", image_mat);
