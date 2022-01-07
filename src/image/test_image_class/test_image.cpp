@@ -52,7 +52,7 @@ int main(){
     // test stitching functions
 
     //define vectors
-    vector<Image> imageArr2 = {img1, img2};
+    vector<Image> imageArr2 = {img1, img2, img3, img4};
 //    vector<Image> imageArr3 = {img1, img2, img3};
 //    vector<Image> imageArr4 = {img1, img2, img3, img4};
 
@@ -62,10 +62,10 @@ int main(){
 //    Collage collage4 = Collage(imageArr4);
 
     //run collage functions
-    collage2.twoStitch();
+//    collage2.twoStitch();
 //    collage3.threeStitch();
 //    collage4.fourStitch();
-//    collage2.fourStitchRec(2);
+    collage2.fourStitchRec(2);
 
     // display collage
     Image collage_img2 = Image(collage2.getModifiedImage());

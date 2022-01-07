@@ -1,5 +1,6 @@
 #include "collage.h"
 #include <algorithm>
+#include <future>
 // #include <typeinfo>
 using namespace img;
 using namespace cv;
@@ -167,6 +168,22 @@ void img::Collage::threeStitch() {
 Collage createCollage(vector<Image> *imageArr){
     return Collage(*imageArr);
 }
+//auto th1 = std::thread([]{
+//    std::cout << "th1";
+//    Collage c1( .... );
+//    //...
+//});
+//auto th2 = std::thread([]{
+//    std::cout << "th2";
+//    Collage c2( .... );
+//    //...
+//});
+//th1.join();
+//th2.join();
+Collage createObj(vector<Image> subImageArr){
+    Collage subCollage(subImageArr);
+    return subCollage;
+}
 void img::Collage::fourStitch(bool original= true) {
     if (this->getNumImages() == 4) {
         vector<double> ratios;
@@ -195,8 +212,15 @@ void img::Collage::fourStitch(bool original= true) {
         subImageArr2.push_back(*secondMaxIndex);
         Collage subCollage1(subImageArr1);
         Collage subCollage2(subImageArr2);
-        subCollage1.twoStitch();
-        subCollage2.twoStitch();
+//        std::thread th0(&createObj, subImageArr1);
+//        std::promise<Collage> promiseObj;
+//        std::future<Collage> futureObj = promiseObj.get_future();
+//        std::thread th(initiazer, &promiseObj);
+        std::thread th1(&Collage::twoStitch, &subCollage1, true);
+        std::thread th2(&Collage::twoStitch, &subCollage2, true);
+        th1.join();
+        th2.join();
+
         vector<Image> imageArrModified ={subCollage1.getModifiedImage(), subCollage2.getModifiedImage()};
         this->setModifiedImageArr(imageArrModified);
         this->twoStitch(false);
