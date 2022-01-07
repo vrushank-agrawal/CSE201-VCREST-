@@ -34,6 +34,11 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     temp->setMaxWidth(std::numeric_limits<double>::infinity());
     item->createSizeGripItem(temp);
 
+    if (end > lengthInSecond) {
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
+    }
+
     emit imageAdded(image, start, end-start, vid::Normal);
 }
 
@@ -73,19 +78,13 @@ img::Image* Timeline::getImage(double time) {
 }
 
 ImageItem* Timeline::getImageItem(double time) {
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.upperBound(time);
+    for (auto iterator = imageMap.begin(); iterator != imageMap.end(); iterator++) {
+        if (iterator.value() == nullptr) continue;
+        double startTime = iterator.value()->start.key(), endTime = iterator.value()->end.key();
 
-    // find the greatest key smaller than this key
-    if (iterator == imageMap.begin()) return nullptr;
-    iterator--;
-    iterator = imageMap.find(iterator.key());
-
-    // ignore nullptr
-    while (iterator != imageMap.end() && iterator.key() <= time) {
-        if (iterator.value() != nullptr)
-            return iterator.value();
-        iterator++;
+        if (startTime <= time + eps && time - eps <= endTime) return iterator.value();
     }
+
     return nullptr;
 }
 
@@ -106,6 +105,17 @@ void Timeline::moveImageItem(ImageItem *item, double startPos, double endPos) {
     setImageItemPosition(item, startTime, endTime);
 }
 
+void Timeline::setImageItemPosition(ImageItem *item, double startTime, double endTime) {
+    if (startTime < 0) return;
+    for (auto iterator = imageMap.begin(); iterator != imageMap.end(); iterator++) {
+        if (iterator.value() == nullptr || iterator.value() == item) continue;
+        double start = iterator.value()->start.key(), end = iterator.value()->end.key();
+
+        if (startTime < end && start < endTime) return;
+    }
+    item->setX(startTime * xTimeOffset);
+}
+
 void Timeline::resizeImageItem(ImageItem *item, double newLength) {
     double startTime = item->x() / xTimeOffset;
     double endTime = (item->x() + newLength) / xTimeOffset;
@@ -122,20 +132,6 @@ void Timeline::resizeImageItem(ImageItem *item, double newLength) {
     item->updateDuration(newLength);
 }
 
-void Timeline::setImageItemPosition(ImageItem *item, double startTime, double endTime) {
-    ImageItem* s = getImageItem(startTime);
-    if (s != nullptr && s != item) return;
-    if (startTime < 0) return;
-    QMultiMap<double, ImageItem*>::iterator iterator = imageMap.lowerBound(startTime);
-    while (iterator != imageMap.end() && iterator.key() < endTime) {
-        if (iterator.value() != nullptr && iterator.value() != item) {
-            return;
-        }
-        iterator++;
-    }
-    item->setX(startTime * xTimeOffset);
-}
-
 void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     if (item->start.key() == start && item->end.key() == end)
         return;
@@ -145,5 +141,11 @@ void Timeline::updateImagePosition(ImageItem* item, double start, double end) {
     // add new duration
     item->start = imageMap.insert(start, item);
     item->end = imageMap.insert(end, nullptr);
+
+    if (end > lengthInSecond) {
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
+    }
+
     emit imageAdded(item->image, start, end-start, item->animation);
 }

@@ -10,6 +10,7 @@
 #include <QResizeEvent>
 #include <QListWidgetItem>
 #include <audioitem.h>
+#include "Audio.hpp"
 #include "imageitem.h"
 #include "indicator.h"
 #include "image.h"
@@ -28,18 +29,20 @@ public:
 
     void updateVideoLength(int length);
 
-  
+
 
 private:
     Indicator *indicator = nullptr;
     QGraphicsScene *scene = nullptr;
+    QGraphicsItem* separatorLine[2] = {nullptr, nullptr};
 
     qreal currentXPosition = 0;
-    int lengthInSecond = 10 * 60;
+    int lengthInSecond = 0;
     int sceneWidth = 120, sceneHeight = 120;
     qreal sceneShowingWidth = 3000;
     int timeHeight = 20;
     int xTimeOffset = 100, yTime = 0;
+    double eps = 1e-8;
 
     enum TimelineMoveOption{
         KeepCurrentPosition,
@@ -72,10 +75,10 @@ protected:
  ####################*/
 
 public:
-    void addAudio(QString audioSource, double sourceLength, double start, double end);
-    void addAudioAtIndicator(QString audioSource, double sourceLength, double max_length = default_audio_length);
-    void appendAudio(QString audioSource, double sourceLength, double length=default_audio_length);
-    QString getAudio(qreal time);
+    void addAudio(audio::Audio* audio, QString displayName, double sourceLength, double start, double end);
+    void addAudioAtIndicator(audio::Audio* audio, QString displayName, double sourceLength, double max_length = default_audio_length);
+    void appendAudio(audio::Audio* audio, QString displayName, double sourceLength, double length=default_audio_length);
+    audio::Audio* getAudio(qreal time);
     AudioItem* getAudioItem(double time);
     double getAudioStartTime(double time);
 
@@ -87,8 +90,8 @@ private:
 
 
 signals:
-    void audioAdded(QString audio, double startTime, double duration);
-    void audioDeleted(QString audio);
+    void audioAdded(audio::Audio *audio, double startTime, double duration);
+    void audioDeleted(audio::Audio *audio);
     void seekAudioRequested(double time);
 
 

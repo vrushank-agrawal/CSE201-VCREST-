@@ -55,10 +55,10 @@ void VideoEditor::importMedia() {
 void VideoEditor::setupImports() {
     imageFileTypes << ".jpg" << ".png" << ".gif" << ".svg";
     imageFileTypesFilter = "Images (*.jpg *.png *.gif *.svg)";
-    audioFileTypes << ".wmv" << ".mp3";
-    audioFileTypesFilter = "Audio (*.wmv *.mp3)";
-    mediaFileTypes << ".jpg" << ".png" << ".gif" << ".svg" << ".wmv" << ".mp3";
-    mediaFileTypesFilter = "Media (*.jpg *.png *.gif *.svg *.wmv *.mp3)";
+    audioFileTypes << ".wav" << ".mp3";
+    audioFileTypesFilter = "Audio (*.wav *.mp3)";
+    mediaFileTypes << ".jpg" << ".png" << ".gif" << ".svg" << ".wav" << ".mp3";
+    mediaFileTypesFilter = "Media (*.jpg *.png *.gif *.svg *.wav *.mp3)";
 
     ui->actionImport_Media->setShortcut(QKeySequence::Open);
     ui->actionExport->setShortcut(QKeySequence::Save);

@@ -7,8 +7,8 @@
 
 double Timeline::default_audio_length = 5;
 
-void Timeline::addAudio(QString audioSource, double sourceLength, double start, double end) {
-    auto *item = new AudioItem(audioSource, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
+void Timeline::addAudio(audio::Audio* audio, QString displayName, double sourceLength, double start, double end) {
+    auto *item = new AudioItem(audio, displayName, sourceLength, QPoint(start * xTimeOffset, AudioItem::border));
     end = (item->getMaxLength() < 500) ? start + item->getMaxLength()*0.01 : end;
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
@@ -24,23 +24,23 @@ void Timeline::addAudio(QString audioSource, double sourceLength, double start, 
     connect(item, SIGNAL(deleted(AudioItem*)),
             this, SLOT(deleteAudio(AudioItem*)));
 
-    SizeGripItem *sizeGripItem = new SizeGripItem(new AudioItemResizer, item);
+    auto *sizeGripItem = new SizeGripItem(new AudioItemResizer, item);
     sizeGripItem->setMaxWidth(item->getMaxLength());
 
     item->createSizeGripItem(sizeGripItem);
 }
 
-void Timeline::appendAudio(QString audioSource, double sourceLength, double length) {
+void Timeline::appendAudio(audio::Audio* audio, QString displayName, double sourceLength, double length) {
     double start = audioMap.isEmpty() ? 0 : audioMap.lastKey();
-    addAudio(audioSource, sourceLength, start, start + length);
+    addAudio(audio, displayName, sourceLength, start, start + length);
 }
 
-void Timeline::addAudioAtIndicator(QString audioSource, double sourceLength, double max_length) {
+void Timeline::addAudioAtIndicator(audio::Audio* audio, QString displayName, double sourceLength, double max_length) {
     double time = indicator->x() / xTimeOffset;
 
     // audio already exists
     if (getAudioItem(time) != nullptr) {
-        appendAudio(audioSource, sourceLength, max_length);
+        appendAudio(audio, displayName, sourceLength, max_length);
         return;
     }
 
@@ -50,18 +50,18 @@ void Timeline::addAudioAtIndicator(QString audioSource, double sourceLength, dou
         duration = max_length;
     else
         duration = (end.key() - time > max_length) ? max_length : end.key() - time;
-    addAudio(audioSource, sourceLength, time, time + duration);
+    addAudio(audio, displayName, sourceLength, time, time + duration);
 }
 
 void Timeline::deleteAudio(AudioItem *item) {
     audioMap.erase(item->start);
     audioMap.erase(item->end);
-    emit audioDeleted(item->audioSource);
+    emit audioDeleted(item->audio);
 }
 
-QString Timeline::getAudio(qreal time) {
+audio::Audio* Timeline::getAudio(qreal time) {
     AudioItem *item = getAudioItem(time);
-    if (item != nullptr) return item->audioSource;
+    if (item != nullptr) return item->audio;
     return nullptr;
 }
 
@@ -71,18 +71,11 @@ AudioItem* Timeline::getAudioItem(double time) {
 }
 
 QMultiMap<double, AudioItem *>::iterator Timeline::getAudioIterator(double time) {
-    QMultiMap<double, AudioItem*>::iterator iterator = audioMap.upperBound(time);
+    for (auto iterator = audioMap.begin(); iterator != audioMap.end(); iterator++) {
+        if (iterator.value() == nullptr) continue;
+        double startTime = iterator.value()->start.key(), endTime = iterator.value()->end.key();
 
-    // find the greatest key smaller than this key
-    if (iterator == audioMap.begin()) return audioMap.end();
-    iterator--;
-    iterator = audioMap.find(iterator.key());
-
-    // ignore nullptr
-    while (iterator != audioMap.end() && iterator.key() <= time) {
-        if (iterator.value() != nullptr)
-            return iterator;
-        iterator++;
+        if (startTime <= time + eps && time - eps <= endTime) return iterator;
     }
     return audioMap.end();
 }
@@ -149,6 +142,12 @@ void Timeline::updateAudioPosition(AudioItem *item, double start, double end) {
     // add new duration
     item->start = audioMap.insert(start, item);
     item->end = audioMap.insert(end, nullptr);
-    emit audioAdded(item->audioSource, start, end-start);
+
+    if (end > lengthInSecond) {
+        int newEnd = ceil(end / 5) * 5;
+        updateVideoLength(newEnd + 30);
+    }
+
+    emit audioAdded(item->audio, start, end-start);
     emit seekAudioRequested(indicator->x() / xTimeOffset);
 }

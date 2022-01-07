@@ -26,32 +26,10 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     connect(indicator, SIGNAL(playStateChanged(bool)),
             this, SIGNAL(playStateChanged(bool)));
 
-    QPen pen("#bbbbbb");
-    QLineF separator(0, 0, sceneWidth, 0);
-    for (int i = 0; i < 2; i++) {
-        QGraphicsItem *line = scene->addLine(separator, pen);
-        line->setPos(0, timeHeight + i * (sceneHeight - timeHeight) / 2);
-        line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
-    }
-
-    QLineF timestamp(0, 0, 0, 10);
-
-    for (int i = 0; i <= lengthInSecond; i += 5){
-        QGraphicsTextItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
-        item->setDefaultTextColor("#bbbbbb");
-        item->setPos(i*xTimeOffset,yTime);
-        item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
-
-        QGraphicsItem *line = scene->addLine(timestamp, pen);
-        line->setPos(i*xTimeOffset,yTime);
-        line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
-    }
-
-
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;
     AudioItem::yOffset = (timeHeight + sceneHeight) / 2;
-    ImageItem::xTimeOffset = xTimeOffset;
+    AudioItem::xTimeOffset = xTimeOffset;
 }
 
 Timeline::~Timeline() {
@@ -60,6 +38,28 @@ Timeline::~Timeline() {
 
 void Timeline::updateVideoLength(int length) {
     if (lengthInSecond != length) {
+        QPen pen("#bbbbbb");
+        QLineF separator(0, 0, length * xTimeOffset, 0);
+        for (int i = 0; i < 2; i++) {
+            delete separatorLine[i];
+            separatorLine[i] = scene->addLine(separator, pen);
+            separatorLine[i]->setPos(0, timeHeight + i * (sceneHeight - timeHeight) / 2);
+            separatorLine[i]->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+        }
+
+        QLineF timestamp(0, 0, 0, 10);
+
+        for (int i = lengthInSecond; i <= length; i += 5){
+            QGraphicsTextItem *item = scene->addText(QDateTime::fromSecsSinceEpoch(i).toUTC().toString("hh:mm:ss"));
+            item->setDefaultTextColor("#bbbbbb");
+            item->setPos(i*xTimeOffset,yTime);
+            item->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+
+            QGraphicsItem *line = scene->addLine(timestamp, pen);
+            line->setPos(i*xTimeOffset,yTime);
+            line->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+        }
+
         lengthInSecond = length;
         sceneWidth = lengthInSecond * xTimeOffset;
         scene->setSceneRect(0, 0, sceneWidth, sceneHeight);

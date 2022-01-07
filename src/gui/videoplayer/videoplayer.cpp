@@ -20,6 +20,10 @@ VideoPlayer::~VideoPlayer()
     delete timer;
 }
 
+void VideoPlayer::updateVideoLength(double duration) {
+    videoLength = duration;
+}
+
 void VideoPlayer::updateFrame(cv::Mat frame){
     QImage qimg(frame.data,
                 frame.cols,
@@ -32,7 +36,6 @@ void VideoPlayer::updateFrame(cv::Mat frame){
 
 void VideoPlayer::updateTime(){
     currentTime += 1.0 / fps;
-    cv::Mat frame;
 
     emit timeUpdated(currentTime);
 }
@@ -42,6 +45,7 @@ void VideoPlayer::updateCurrentTime(double time) {
     currentTime = time;
 
     emit timeUpdated(currentTime);
+    emit seekAudioRequested(currentTime);
 }
 
 void VideoPlayer::setChild(VideoWindow *label,
@@ -71,13 +75,15 @@ void VideoPlayer::sliderReleased() {
 }
 
 void VideoPlayer::forward(){
-    currentTime = std::max(currentTime + 5, 0.0);
+    currentTime = std::min(currentTime + 5, videoLength);
     emit timeUpdated(currentTime);
+    emit seekAudioRequested(currentTime);
 }
 
 void VideoPlayer::backward(){
-    currentTime = std::min(currentTime - 5, videoLength);
+    currentTime = std::max(currentTime - 5, 0.0);
     emit timeUpdated(currentTime);
+    emit seekAudioRequested(currentTime);
 }
 
 void VideoPlayer::updatePlayButton(){
