@@ -314,6 +314,24 @@ namespace vid {
         }
     }
 
+    /* Needs testing: 
+    void Video::ImageAnimator::FadeInAnimation(int frame_number) {
+        Image image_mat = img::Image(this->img); // transforming matrix from video class into image so that we can use image functions
+        image_mat.addWeighted(0,1); // we start by displaying the black image 
+        imshow( "Frame", image_mat);
+         char c = (char) cv::waitKey(1);
+            if (c == 27)
+                break;}
+
+       for (int i = 1; i <= frame_number; i++) {  // we gradually increase the intensity of the other image 
+        image_mat.addWeighted( i/frame_number, 1- i/frame_number) 
+        imshow( "Frame", image_mat);
+        char c = (char) cv::waitKey(1);
+        if (c == 27)
+        break;}
+        }    
+        */        
+
 
 /*
 //Not tested
