@@ -113,6 +113,7 @@ namespace audio {
         int curr_size = *((int *) (merged_file + 40));
         curr_size += *((int *) (a2.file + 40));
         *((int *) (merged_file + 40)) = curr_size;
+        *((int *) (merged_file + 4)) = curr_size + 36;
         std::string outs = out + std::to_string(num) + ".wav";
         std::ofstream outfile(outs, std::ios_base::binary);
         num++;
@@ -140,6 +141,7 @@ namespace audio {
             }
         }
         *((int *) (trimmed_file + 40)) = final_size;
+        *((int *) (trimmed_file + 4)) = final_size + 36;
         std::string outs = out + std::to_string(num) + ".wav";
         std::ofstream outfile(outs, std::ios_base::binary);
         num++;
@@ -220,6 +222,7 @@ namespace audio {
             newfile[i] = silencefile[i];
         }
         *((int *) (newfile + 40)) = bytes;
+        *((int *) (newfile + 4)) = bytes + 36;
         for (int i = 44; i < 44 + bytes; i++) {
             newfile[i] = 0;
         }
