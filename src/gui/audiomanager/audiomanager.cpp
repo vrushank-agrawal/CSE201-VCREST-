@@ -35,7 +35,7 @@ void AudioManager::addAudio(const QString& name) {
     item->setSizeHint(QSize(60, 30));
     listWidget->addItem(item);
 
-    audio::Audio* audio = new audio::Audio(name.toStdString());
+    auto* audio = new audio::Audio(name.toStdString());
     map.insert(item, audio);
 
     auto *player = new QMediaPlayer;
