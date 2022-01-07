@@ -41,7 +41,7 @@ However, further features include adding simple animations to the corresponding 
 * Lasha Koroshinadze
 * Hayate Sasaki
 
-## Thirs Parties Used
+## Third Parties Used
 - QT v6.2.2
     - QT Multimedia (should be added while installing QT)
 - FFmpeg v4.2.5
@@ -114,25 +114,29 @@ However, further features include adding simple animations to the corresponding 
 ## Guide To Use V-CREST v1.0
 
 1. Run the project in build environment on your preferred IDE (CLion hopefully)
-2. The main software window will appear. 
-(insert image)
+
+2. The main software window will appear.
+   ![Main V-CREST window](howToImages/1.png)
 
 3. Start by importing some media (Ctrl + O)
+
 4. The imported media is now displayed in their respective panels
-(insert image)
+   ![Media imported](howToImages/2.png)
 
 5. You can add images and audios to the respective timelines by double-clicking on the objects
+
 6. The selected object will be inserted after the slider if no object is available otherwise after the last object in the current state of the timeline
-(insert image)
+   ![Main V-CREST window](howToImages/3.png)
 
 7. The objects are automatically inserted for a duration of 5 seconds which can be extended or decreased manually using the slider at the end of each object
-(insert image)
+   ![Main V-CREST window](howToImages/4.png)
 
 8. The objects can be shifted to various positions in the timeline by simply clicking and dragging
-(insert image)
+   ![Main V-CREST window](howToImages/5.png)
 
 9. You can preview the created video by clicking the play button in the video preview panel
-10. To add a specific animation to an image, simply right click on the image object and select the animation among:
+
+10. To add a specific animation to an image, simply right-click on the image object and select the animation among:
     - Normal - Current state
     - Rotation - The image object will rotate
     - X
@@ -142,18 +146,21 @@ However, further features include adding simple animations to the corresponding 
 
 11. You may also add blur filters to smoothen images among:
     - Blur - normal blur function
-    - Gaussian Blur - dynamically smoothes the edges in the image 
+    - Gaussian Blur - dynamically smoothens the edges in the image 
     - Median Blur - removes noise while preserving the edges (gives a paint-like feel)
- 
-(insert image)
+
+    ![Main V-CREST window](howToImages/7.png)
 
 12. The intensity of the blur function can be increased or decreased from the blur slider (teardrop symbol) next to the video preview panel
-(insert image)
+    ![Main V-CREST window](howToImages/8.png)
 
 13. An image may be rotated as well using the rotation button next to the video preview panel
-(insert image)
+    ![Main V-CREST window](howToImages/9.png)
 
-14. With all these amazing editing options, your personalized video is now ready to be exported!
+14. An image can be reset to its original version as well using the reset button next to the video preview panel
+    ![Main V-CREST window](howToImages/10.png)
+
+15. With all these amazing editing options, your personalized video is now ready to be exported!
 
 ### Note on V-CREST v2.0
 - The current editing features in the software are limited due to difficulties faced in building the GUI

@@ -83,8 +83,6 @@ void img::Image::resizeImg(int width, int height) {
     }
 }
 
-// fadeIn and fadeOut functions needed for animation
-
 // alpha is the weight of the first image and beta is the weight of the black image
 // if alpha + beta < 1 then beta = 1 - alpha
 // if alpha > 1 then beta = zero

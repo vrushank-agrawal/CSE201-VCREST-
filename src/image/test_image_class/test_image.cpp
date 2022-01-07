@@ -27,7 +27,7 @@ std::string get_curr_dir() {
 int main() {
     std::string add = get_curr_dir();
     // change path for macOS
-    add += "\\..\\htest.jpg";
+    add += "\\..\\lena.jpg";
 
     std::string image_path = cv::samples::findFile(add, cv::IMREAD_COLOR);
     Image img1 = Image(image_path);
@@ -53,7 +53,7 @@ int main() {
 //    img1.bilateralFilter(51 );
 //    img1.imgModifiedPreview("testing_bilateral_filter");
 
-//    img1.addWeighted(1.1, 1.1);
+//    img1.addWeighted(0.3, 0.9);
 //    img1.imgModifiedPreview("testing_fade_function");
 
 
