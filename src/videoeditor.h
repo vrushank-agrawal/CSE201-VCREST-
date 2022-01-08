@@ -44,6 +44,7 @@ public slots:
     void updatePosition(int newPosition);
     void updateCurrentTime(double time);
     void writeVideo();
+    void updateVideoLength(double length);
 
     /*###################
     *      IMPORT
@@ -112,7 +113,7 @@ private:
     QSlider *blurSlider = nullptr;
 
     int fourcc = -1;
-    int position = 0, fps = 30, numberFrame = fps * 5 * 60;
+    int position = 0, fps = 30, numberFrame = 0;
     int width = 1280, height = 720;
     double timeInSec = 0;
     Ui::VideoEditor *ui;

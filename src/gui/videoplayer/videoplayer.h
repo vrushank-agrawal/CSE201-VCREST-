@@ -28,10 +28,12 @@ public:
     ~VideoPlayer();
     void setChild(VideoWindow *label,
                   QToolButton *playButton);
+    void updateVideoLength(double duration);
 
 signals:
     void playStateChanged(bool isPlaying);
     void timeUpdated(double currentTime);
+    void seekAudioRequested(double currentTime);
 
 public slots:
     void updateCurrentTime(double time);

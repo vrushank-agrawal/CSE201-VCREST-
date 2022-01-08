@@ -17,6 +17,9 @@ void VideoEditor::setupAudio() {
             audioPlayer, SLOT(handleIndicatorSignal(bool)));
     connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
             audioPlayer, SLOT(seek(double)));
+
+    connect(ui->preview, &VideoPlayer::seekAudioRequested,
+            audioPlayer, &AudioPlayer::seek);
 }
 
 void VideoEditor::setupImage() {
@@ -88,10 +91,7 @@ void VideoEditor::setupVideoClass() {
     resultVideo = new vid::Video(width, height, fps);
     ui->videoWindow->setSize(width, height);
 
-    ui->controlSlider->setRange(0, numberFrame);
-    ui->controlSlider->setTracking(true);
-
-    ui->timeline->updateVideoLength((numberFrame + fps-1) / fps);
+    updateVideoLength(60);
 }
 
 void VideoEditor::setupVideoPlayer() {
@@ -115,18 +115,18 @@ void VideoEditor::setupVideoPlayer() {
             ui->preview, &VideoPlayer::sliderReleased);
     connect(ui->controlSlider, &ProgressBar::frameChanged,
             this, &VideoEditor::updatePosition);
-
-    // connect frameUpdated in preview to update position in this class
-    connect(ui->preview, &VideoPlayer::timeUpdated,
-            this, &VideoEditor::updateCurrentTime);
-
-    // connect positionChanged in this class to slider and preview
     connect(this, &VideoEditor::positionChanged,
             ui->controlSlider, &ProgressBar::setValue);
 
-    // connect timeInSecChanged with timeline and preview
+    // connect time in preview and videoEditor
+    connect(ui->preview, &VideoPlayer::timeUpdated,
+            this, &VideoEditor::updateCurrentTime);
     connect(this, &VideoEditor::currentTimeChanged,
             ui->preview, &VideoPlayer::updateCurrentTime);
+
+    // connect videoLengthChanged in timeline to videoEditor updateVideoLength
+    connect(ui->timeline, &Timeline::videoLengthChanged,
+            this, &VideoEditor::updateVideoLength);
 
     // connect changeFrame in VideoEditor with updateFrame VideoPlayer
     connect(this, &VideoEditor::changeFrame,
