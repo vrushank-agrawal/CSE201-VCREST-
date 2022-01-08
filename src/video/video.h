@@ -122,6 +122,11 @@ namespace vid {
             Animation animation_type;
 
             cv::Mat (ImageAnimator::*anim_functions[total_number_of_animations + 1 ])(int);
+            
+             //untested: 
+            //void fadeInAnimation(int frame_number);
+            //void fadeOutAnimation(int frame_number);
+
         };
 
     private:
