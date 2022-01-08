@@ -79,12 +79,6 @@ void Timeline::deleteAudio(AudioItem *item) {
     emit audioDeleted(item->audio);
 }
 
-audio::Audio* Timeline::getAudio(qreal time) {
-    AudioItem *item = getAudioItem(time);
-    if (item != nullptr) return item->audio;
-    return nullptr;
-}
-
 AudioItem* Timeline::getAudioItem(double time) {
     QMultiMap<double, AudioItem*>::iterator iterator = getAudioIterator(time);
     return (iterator == audioMap.end()) ? nullptr : iterator.value();
