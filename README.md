@@ -165,7 +165,10 @@ You can use homebrew to install. Run `brew install ffmpeq`.
 15. An image can be reset to its original version as well using the reset button next to the video preview panel. <br/> <br/>
     ![Reset image to original here](media/imgsVCREST/10.png)
 
-16. With all these amazing editing options, your personalized video is now ready to be exported!
+16. Want to change the brightness of the image? You can do so using the third button in the video preview panel. <br/> <br/>
+    ![Change brightness here](media/imgsVCREST/11.png)
+
+17. With all these amazing editing options, your personalized video is now ready to be exported!
 
 ### Note on V-CREST v2.0
 - The current editing features in the software are limited due to difficulties faced in building the GUI

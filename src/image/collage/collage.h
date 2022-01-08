@@ -8,7 +8,7 @@
 
 namespace img {
 
-    class Collage {
+    class Collage : public Image {
     public:
         explicit Collage(std::vector<img::Image> imageArr);
         ~ Collage();
