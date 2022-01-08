@@ -8,9 +8,31 @@
 
 #include "image.h"
 
+void img::Image::blurAndBrighten(int blurLevel, int brightLevel, img::BlurType blurType) {
+    if (blurLevel) {
+        switch (blurType) {
+            case img::BlurType::Gaussian:
+                gaussianBlur(blurLevel, blurLevel);
+                break;
+            case img::BlurType::Median:
+                medianBlur((blurLevel << 1) + 1);
+                break;
+            default:
+                blur(blurLevel, blurLevel);
+                break;
+        }
+    }
+    else {
+        img_matrix_modified = current_unaffected_matrix.clone();
+    }
+    auto alpha = ((double)brightLevel+50.0)/100.0;
+    auto beta = 1.0 - alpha;
+    addWeighted(alpha, beta, 0.0);
+}
+
 void img::Image::blur(int width, int height) {
     if (width && height) {
-        cv::blur(current_unblur_matrix, img_matrix_modified, cv::Size(width, height));
+        cv::blur(current_unaffected_matrix, img_matrix_modified, cv::Size(width, height));
     }
 }
 
@@ -33,7 +55,7 @@ void img::Image::bilateralFilter(int distance) {
 
 void img::Image::boxBlur(int width, int height, int depth) {
     if (width && height)
-        cv::boxFilter(current_unblur_matrix, img_matrix_modified, depth, cv::Size(width, height));
+        cv::boxFilter(current_unaffected_matrix, img_matrix_modified, depth, cv::Size(width, height));
 }
 
 void img::Image::gaussianBlur(int width, int height) {
@@ -42,13 +64,13 @@ void img::Image::gaussianBlur(int width, int height) {
     if (!(height & 1) && height) height--;
 
     if (width && height)
-        cv::GaussianBlur(current_unblur_matrix, img_matrix_modified, cv::Size(width, height), 0);
+        cv::GaussianBlur(current_unaffected_matrix, img_matrix_modified, cv::Size(width, height), 0);
 }
 
 void img::Image::medianBlur(int kernel_size) {
     if (!(kernel_size & 1)) kernel_size--;
     if (kernel_size)
-        cv::medianBlur(current_unblur_matrix, img_matrix_modified, kernel_size);
+        cv::medianBlur(current_unaffected_matrix, img_matrix_modified, kernel_size);
 }
 
 void img::Image::rotateImg(double angle) {
@@ -71,7 +93,7 @@ void img::Image::rotateImgFit(double angle) {
     rotation_matrix.at<double>(1, 2) += bbox.height / 2.0 - img_matrix_modified.rows / 2.0;
     //update image to be the rotation image
     warpAffine(img_matrix_modified, img_matrix_modified, rotation_matrix, bbox.size());
-    warpAffine(current_unblur_matrix, current_unblur_matrix, rotation_matrix, bbox.size());
+    warpAffine(current_unaffected_matrix, current_unaffected_matrix, rotation_matrix, bbox.size());
 }
 
 void img::Image::resizeImg(int width, int height) {
@@ -96,7 +118,7 @@ void img::Image::addWeighted(double alpha, double beta, double gamma = 0.0) {
         // resize black image if necessary
         if (black.getModifiedWidth() != width && black.getModifiedHeight() != height)
             black.resizeImg(width, height);
-        cv::addWeighted(this -> getModifiedImg(), alpha, black . getModifiedImg(), beta, gamma, dst);
+        cv::addWeighted(this -> getModifiedImg(), alpha, black.getModifiedImg(), beta, gamma, dst);
         this->setModifiedImg(dst);
     }
 }

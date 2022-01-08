@@ -5,6 +5,7 @@
         <file alias="img-rotate.png">src/gui/icons/rotate.png</file>
         <file alias="img-error.png">src/gui/icons/image.png</file>
         <file alias="img-reset.png">src/gui/icons/reset.png</file>
+        <file alias="img-brightness.png">src/gui/icons/brightness.png</file>
         <file alias="file-mp3.png">src/gui/icons/file_ext/mp3.png</file>
     </qresource>
 </RCC>

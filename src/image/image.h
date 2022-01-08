@@ -26,7 +26,7 @@ namespace img {
         cv::Mat img_matrix;
         cv::Mat img_matrix_modified;
         cv::Mat img_matrix_bilateralFilter;
-        cv::Mat current_unblur_matrix;
+        cv::Mat current_unaffected_matrix;
         std::string filename;
 
     public:
@@ -44,7 +44,7 @@ namespace img {
         // sets the matrix associated to the image
         cv::Mat getCurrentUnblurImg();
         void setModifiedImg(cv::Mat mat);
-        void setCurrentUnblurImg(cv::Mat mat);
+        void setCurrentUnaffectedImg(cv::Mat mat);
         void setOriginalImg(cv::Mat mat);
         void setBlurImg(cv::Mat mat);
         void setBilateralFilterImg(cv::Mat mat);
@@ -96,6 +96,9 @@ namespace img {
         
         // functions needed for the fade in animation
         void addWeighted( double alpha, double beta, double gamma);
+
+        // Blur and Brighten combination function
+        void blurAndBrighten(int blurLevel, int brightLevel, BlurType blurType);
 
 
     }; // Image() class

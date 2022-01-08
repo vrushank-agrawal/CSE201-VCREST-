@@ -35,6 +35,7 @@ public:
     img::BlurType blurType = img::BlurType::Normal;
     vid::Animation animation = vid::Animation::Normal;
     int blurLevel = 0;
+    int brightLevel = 50;
     img::Image *image = nullptr;
     QMultiMap<double, ImageItem*>::iterator start, end;
 
@@ -46,6 +47,7 @@ public:
     void updateDuration(double newLength);
     int getMedianBlurLevel();
     void blur();
+    void bright();
 
     virtual QRectF boundingRect() const override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
