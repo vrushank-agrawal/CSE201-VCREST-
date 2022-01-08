@@ -3,6 +3,8 @@
 //
 
 #include "videoeditor.h"
+#include "ui_VideoEditor.h"
+#include "export.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -11,7 +13,7 @@ void VideoEditor::writeVideo() {
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setNameFilter("MP4 video (*.mp4)");
-    std::string outputPath;
+    std::string outputPath, videoPath = "./temp_media/1.mp4";
     if (dialog.exec()) {
         QString qOutputPath = dialog.selectedFiles()[0];
         if (qOutputPath.right(4) != ".mp4")
@@ -22,11 +24,16 @@ void VideoEditor::writeVideo() {
     }
 
     remove(outputPath.c_str());
+    remove(videoPath.c_str());
 
-    if (!resultVideo->writeVideo(outputPath, fourcc)) {
+    if (!resultVideo->writeVideo(videoPath, fourcc)) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Export is not supported on this platform");
         errorMsg.exec();
+    }
+    else {
+        exportClass::merge_av(videoPath, ui->timeline->createAudio(), outputPath);
+        remove(videoPath.c_str());
     }
 }
