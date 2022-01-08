@@ -15,14 +15,14 @@ void Timeline::addAudio(audio::Audio* audio, QString displayName, double sourceL
     item->calculateSize();
     scene->addItem(item);
 
-    connect(item, SIGNAL(itemMoved(AudioItem*,double,double)),
-            this, SLOT(moveAudioItem(AudioItem*,double,double)));
-    connect(item, SIGNAL(positionChanged(AudioItem*,double,double)),
-            this, SLOT(updateAudioPosition(AudioItem*,double,double)));
-    connect(item, SIGNAL(resized(AudioItem*,double)),
-            this, SLOT(resizeAudioItem(AudioItem*,double)));
-    connect(item, SIGNAL(deleted(AudioItem*)),
-            this, SLOT(deleteAudio(AudioItem*)));
+    connect(item, &AudioItem::itemMoved,
+            this, &Timeline::moveAudioItem);
+    connect(item, &AudioItem::positionChanged,
+            this, &Timeline::updateAudioPosition);
+    connect(item, &AudioItem::resized,
+            this, &Timeline::resizeAudioItem);
+    connect(item, &AudioItem::deleted,
+            this, &Timeline::deleteAudio);
 
     auto *sizeGripItem = new SizeGripItem(new AudioItemResizer, item);
     sizeGripItem->setMaxWidth(item->getMaxLength());

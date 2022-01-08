@@ -11,12 +11,12 @@ void VideoEditor::setupAudio() {
 
     connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendAudioToThumbnail);
-    connect(ui->preview, SIGNAL(playStateChanged(bool)),
-            audioPlayer, SLOT(updatePlayState(bool)));
-    connect(ui->timeline, SIGNAL(playStateChanged(bool)),
-            audioPlayer, SLOT(handleIndicatorSignal(bool)));
-    connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
-            audioPlayer, SLOT(seek(double)));
+    connect(ui->preview, &VideoPlayer::playStateChanged,
+            audioPlayer, &AudioPlayer::updatePlayState);
+    connect(ui->timeline, &Timeline::playStateChanged,
+            audioPlayer, &AudioPlayer::handleIndicatorSignal);
+    connect(ui->timeline, &Timeline::seekAudioRequested,
+            audioPlayer, &AudioPlayer::seek);
 
     connect(ui->preview, &VideoPlayer::seekAudioRequested,
             audioPlayer, &AudioPlayer::seek);
