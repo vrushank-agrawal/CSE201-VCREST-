@@ -57,7 +57,7 @@ namespace img {
         cv::Mat decodeImg(const std::string & 	filename, int flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
-        void equalizeImgDim( double width, double height );
+        void equalizeImgDim(double width, double height);
         void sendToStitch(int val, Image * img);
         void hcon (Image * img );
         void vcon (Image * img );

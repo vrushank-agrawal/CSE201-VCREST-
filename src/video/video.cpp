@@ -199,6 +199,7 @@ namespace vid {
     void Video::addBlank(cv::VideoWriter video_writer, double time) {
         int i = 0;
         int num_fames = time * this->fps;
+        this->blank.equalizeImgDim(this->width, this->height);
         while (i < num_fames) {
             video_writer.write(this->blank.getModifiedImg());
             i++;
@@ -241,6 +242,7 @@ namespace vid {
     void Video::ImageAnimator::initFunctions() {
         this->anim_functions[0] = &vid::Video::ImageAnimator::normalDisplay;
         this->anim_functions[1] = &vid::Video::ImageAnimator::rotateAnimation;
+        this->anim_functions[2] = &vid::Video::ImageAnimator::zoomAnimation;
     }
 
     void Video::ImageAnimator::setAnimation(Animation animation_type) {
@@ -296,23 +298,55 @@ namespace vid {
 //************************************************************************************************
 
 //Not tested
-    void Video::ImageAnimator::zoomAnimation(int frame_number) {
-        double ratio = 0.2;
-        int num_frame = fps * time;
-        double change_per_frame = 1 + ratio;
-        int img_h = this->image->getMat().size().height;
-        int img_w = this->image->getMat().size().width;
-        for (int i = 1; i <= num_frame; i++) {
-            img_h *= change_per_frame;
-            img_w *= change_per_frame;
-            this->image->resizeImg(img_w, img_h);
-            imshow("Frame", this->image->getModifiedImg());
-            char c = (char) cv::waitKey(1);
-            if (c == 27)
-                break;
-            change_per_frame += ratio;
-        }
+    cv::Mat Video::ImageAnimator::zoomAnimation(int frame_number) {
+        double new_width = this->image->getWidth();
+        double new_height = this->image->getHeight();
+        int total_frame_number = fps*this->time;
+        double maximum_resize = 20;
+        double coefficient = 1 + frame_number*(maximum_resize-1)/total_frame_number;
+        new_width /= coefficient;
+        new_height /= coefficient;
+        img::Image temp = img::Image(this->image->getMat());
+        temp.equalizeImgDim(new_width, new_height);
+        temp.equalizeImgDim(this->image->getWidth(), new_height);
+        temp.equalizeImgDim(this->image->getWidth(), this->image->getHeight());
+        return temp.getModifiedImg();
     }
+
+    /* Needs testing: 
+    void Video::ImageAnimator::fadeInAnimation(int frame_number) {
+        Image image_mat = img::Image(this->img); // transforming matrix from video class into image so that we can use image functions
+        image_mat.addWeighted(0,1); // we start by displaying the black image 
+        imshow( "Frame", image_mat);
+         char c = (char) cv::waitKey(1);
+            if (c == 27)
+                break;}
+       for (int i = 1; i <= frame_number; i++) {  // we gradually increase the intensity of the other image 
+        image_mat.addWeighted( i/frame_number, 1- i/frame_number) 
+        imshow( "Frame", image_mat);
+        char c = (char) cv::waitKey(1);
+        if (c == 27)
+        break;}
+        }   
+        
+        
+        void Video::ImageAnimator::FadeOutAnimation(int frame_number) {
+        Image image_mat = img::Image(this->img); // transforming matrix from video class into image so that we can use image functions
+        image_mat.addWeighted(1,0); // we start by displaying the desired image 
+        imshow( "Frame", image_mat);
+         char c = (char) cv::waitKey(1);
+            if (c == 27)
+                break;}
+       for (int i = 1; i <= frame_number; i++) {  // we gradually increase the intensity of the black image 
+        image_mat.addWeighted( 1- i/frame_number, i/frame_number) 
+        imshow( "Frame", image_mat);
+        char c = (char) cv::waitKey(1);
+        if (c == 27)
+        break;}
+        }           
+
+
+        */        
 
 
 /*
