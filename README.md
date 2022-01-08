@@ -141,6 +141,11 @@ However, further features include adding simple animations to the corresponding 
 11. To add a specific animation to an image, simply right-click on the image object and select the animation among:
     - Normal - Current state
     - Rotation - The image object will constantly rotate anticlockwise
+    - Zoom In - The image will be zoomed in until the end of the object
+    - Zoom Out - The image will be zoomed out until the end of the object
+    - Fade In - The image will fade in from the beginning
+    - Fade Out - The image will fade out until the end <br/><br/>
+    ![Choose the kind of animation](media/imgsVCREST/6.png)
 
 12. You may also add blur filters to smoothen images among:
     - Blur - normal blur function
