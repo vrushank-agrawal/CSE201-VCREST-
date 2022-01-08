@@ -150,25 +150,16 @@ double ImageItem::getTimeOfFrame() {
 
 void ImageItem::resetImage() {
     image->setModifiedImg(image->getMat().clone());
-    image->setCurrentUnblurImg(image->getMat().clone());
+    image->setCurrentUnaffectedImg(image->getMat().clone());
 }
 
-int ImageItem::getMedianBlurLevel() {
-    return (blurLevel << 1) + 1;
+void ImageItem::bright() {
+    image->blurAndBrighten(blurLevel, brightLevel, blurType);
+    update();
 }
 
 void ImageItem::blur() {
-    switch (blurType) {
-        case (img::BlurType::Normal):
-            image->blur(blurLevel, blurLevel);
-            break;
-        case (img::BlurType::Gaussian):
-            image->gaussianBlur(blurLevel, blurLevel);
-            break;
-        case (img::BlurType::Median):
-            image->medianBlur(getMedianBlurLevel());
-            break;
-    }
+    image->blurAndBrighten(blurLevel, brightLevel, blurType);
     update();
 }
 

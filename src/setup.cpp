@@ -47,6 +47,8 @@ void VideoEditor::setupImage() {
 void VideoEditor::setupImageToolbar() {
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
+    connect(ui->brightButton, &QToolButton::clicked,
+            this, &VideoEditor::brightImage);
     connect(ui->resetButton, &QToolButton::clicked,
             this, &VideoEditor::resetImage);
     connect(ui->rotateButton, &QToolButton::clicked,
@@ -60,6 +62,17 @@ void VideoEditor::setupImageToolbar() {
     blurSlider->setRange(0, 100);
     connect(blurSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBlurLevel);
+
+    // setup brightSlider
+    brightSlider = new QSlider(Qt::Vertical);
+    brightSlider->setWindowFlag(Qt::ToolTip);
+    brightSlider->setVisible(false);
+    brightSlider->setFixedSize(22, 200);
+    brightSlider->setRange(0, 100);
+    brightSlider->setValue(50);
+    connect(brightSlider, &QSlider::valueChanged,
+            this, &VideoEditor::updateBrightLevel);
+
 }
 
 
