@@ -1,6 +1,6 @@
 # GUI
 
-## VideoEditor class `videoeditor.h`
+## `VideoEditor` class (`videoeditor.h`)
 
 The main class to create the whole GUI was by using the subclasses: `AudioPlayer`, `AudioManager`, `ImageManager`, `ProgressBar`, `Timeline`, and `VideoPlayer`.
 
@@ -15,7 +15,7 @@ __Functionalities__:
 
 ## List Manager classes
 
-#### `AudioManager`class `audiomanager.h`
+### `AudioManager`class (`audiomanager.h`)
 
 Allows importing audio files (`.mp3` or `.wav`) to the application
 
@@ -24,14 +24,14 @@ __Functionalities__
 - Bind each audio file to a separate `QMediaPlayer` for audio playing
 
 
-#### `ImageManager`class `imagemanager.h`
+### `ImageManager`class (`imagemanager.h`)
 
 Allows importing audio files (`.jpg`, `.png`, ...) to the application
 
 __Functionalities__
 - Import and store image files
 
-## `AudioPlayer` class `audioplayer.h`
+## `AudioPlayer` class (`audioplayer.h`)
 
 Manage audio playing
 
@@ -41,12 +41,12 @@ __Functionalities__
 - Synchronized with the `Timeline`'s time
 
 
-## `ProgressBar` class `progressbar.h`
+## `ProgressBar` class (`progressbar.h`)
 
 A slider to show the progress of the video in preview.
 
 
-## `Timeline` class `timeline.h`
+## `Timeline` class (`timeline.h`)
 
 A class to create the timeline.
 
@@ -57,7 +57,7 @@ __Functionalities__
 - Have an indicator to show the current time in the timeline
 - Allow jumping the indicator by double-clicking the time section
 
-#### `AudioItem` class `audioitem.h`
+### `AudioItem` class (`audioitem.h`)
 
 A class for managing audio cues in `Timeline`
 
@@ -66,7 +66,7 @@ __Functionalities__
 - Resizing audio's duration
 
 
-#### `ImageItem` class `imageitem.h`
+### `ImageItem` class (`imageitem.h`)
 
 A class for the image in timeline. Implementation is similar to `AudioItem`, but with additional functionalities
 
@@ -76,8 +76,12 @@ __Functionalities__
 - Right click for menu to choose Animation of Blur type
 - Having one selected ImageItem to apply effect such as blurring or rotating
 
+### `Indicator` class (`indicator.h`)
 
-## VideoPlayer class `videoplayer.h`
+Indicates the current time, with functionalites to jump by double-clicking
+
+
+## `VideoPlayer` class (`videoplayer.h`)
 
 Class for creating a widget to display video by frames.
 
