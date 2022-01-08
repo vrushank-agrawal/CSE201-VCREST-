@@ -9,14 +9,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../image/image.cpp"
-#include "../image/blurs.cpp"
+#include "image.h"
 
 namespace vid {
 
-    const int total_number_of_animations = 5;
+    const int total_number_of_animations = 10;
     enum Animation {
-        Normal = 0, Rotation = 1, Zooming = 2, Cropping = 3
+        Normal = 0, Rotation = 1, ZoomIn = 2, ZoomOut = 3, FadeIn = 4, FadeOut = 5
     };
 
     class Video {
@@ -108,7 +107,13 @@ namespace vid {
 
             cv::Mat rotateAnimation(int frame_number);
 
-            cv::Mat zoomAnimation(int frame_number);
+            cv::Mat zoomInAnimation(int frame_number);
+
+            cv::Mat zoomOutAnimation(int frame_number);
+
+            cv::Mat fadeInAnimation(int frame_number);
+
+            cv::Mat fadeOutAnimation(int frame_number);
 
             //Functions below should be of type Mat as well, not tested yet
             void cropAnimation();

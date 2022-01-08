@@ -64,22 +64,26 @@ int main(){
     v.addImage(&img2, 8.1, 3);
     v.addImage(&img3, 12, 2);
     std::cout << v.animationNumber() << std::endl;
-
+    //int codec = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
+    //v.writeVideo("..//Before.mp4", codec);
 
     cout << "****************" << endl;
 
-    int codec = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
-    v.writeVideo("..//Before.mp4", codec);
 
-
+    v.applyAnimation(&img4, vid::FadeIn);
     v.applyAnimation(&img1, vid::Rotation);
     v.applyAnimation(&img3, vid::Rotation);
-    v.applyAnimation(&img2, vid::Zooming);
-    v.applyAnimation(&img3, vid::Zooming);
+    v.applyAnimation(&img2, vid::ZoomIn);
+    v.applyAnimation(&img3, vid::ZoomOut);
     std::cout << v.animationNumber() << std::endl;
 
     v.writeVideo("..//YESSS.mp4", (int)cv::VideoWriter::fourcc('m', 'p', '4', 'v'));
-
+    //cv::imshow( "Frame", img5.getModifiedImg());
+    //cv::waitKey(2000);
+    //img5.addWeighted(0.7, 0.3);
+    //img5.addWeighted(0.3, 0.7);
+    //cv::imshow( "Frame", img5.getModifiedImg());
+    //cv::waitKey(2000);
 
     std::cout << "Everything done, opencv works" << std::endl;
     return 0;
