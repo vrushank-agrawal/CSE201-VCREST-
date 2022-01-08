@@ -2,7 +2,7 @@
 
 ## VideoEditor class
 
-The main class to create the whole GUI by using subclasses: VideoPlayer, Timeline, ProgressBar, ImageManager, AudioPlayer and AudioManager.
+The main class to create the whole GUI was by using the subclasses: VideoPlayer, Timeline, ProgressBar, ImageManager, AudioPlayer and AudioManager.
 
 __Utility__:
 - Import Media files

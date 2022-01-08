@@ -1,6 +1,16 @@
-The target files for CMake in this directory is image.cpp and blurs.cpp. 
-Both of these files call the image namespace and class which are defined in image.h.
-CMake also calls the subdirectory in collage folder which is explained in the file.
-The image class provides all functions on images from reading and writing to editing and animating used in the GUI and video animations respectively.
-The OpenCV files required for the project are also included in these files and can be changed from here only.
-The default_images folder contains images to be added in the GUI 
+## General Note
+The target files for CMake in this directory is `image.cpp` and `blurs.cpp`. 
+Both of these files call the `img` namespace and class which are defined in `image.h`.
+CMake also calls the subdirectory in collage, details for which are explained in the corresponding folder.
+
+## Image class
+
+As the name suggests, this class works with all individual image manipulation needed by the software.
+
+__Utility__:
+- Define OpenCV header files and relevant functions
+- Read / Write functions to manipulate images as matrices
+- Basic editing functions like resize, rotate, superimpose images
+- Basic blurs and filters
+- Equalize dimensions of all images by adding black matrix
+- Calls default_images in the corresponding folder
