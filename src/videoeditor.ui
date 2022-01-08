@@ -567,6 +567,10 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <property name="title">
      <string>Images</string>
     </property>
+    <addaction name="actionBlur_Image"/>
+    <addaction name="actionBrighten_Image"/>
+    <addaction name="actionRotate_Image"/>
+    <addaction name="actionReset_Image"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -1118,6 +1122,26 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionBlur_Image">
+   <property name="text">
+    <string>Blur Image</string>
+   </property>
+  </action>
+  <action name="actionBrighten_Image">
+   <property name="text">
+    <string>Brighten Image</string>
+   </property>
+  </action>
+  <action name="actionRotate_Image">
+   <property name="text">
+    <string>Rotate Image</string>
+   </property>
+  </action>
+  <action name="actionReset_Image">
+   <property name="text">
+    <string>Reset Image</string>
    </property>
   </action>
  </widget>
