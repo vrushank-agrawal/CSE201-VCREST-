@@ -1,8 +1,6 @@
 # V-CREST - Video Creation Software
 
-This is a unique video creating software developed to help a user build a video out of a set of images. 
-The main feature is to allow the user to merge images with an audio file in a given sequence by analyzing the audio's bpm. 
-However, further features include adding simple animations to the corresponding video and certain filters to the images.
+This is a unique video creating software developed to help a user build a video out of a set of images.
 
 
 ## Members
