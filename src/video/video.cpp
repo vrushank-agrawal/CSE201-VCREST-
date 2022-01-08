@@ -305,13 +305,14 @@ namespace vid {
         double new_height = this->image->getModifiedHeight();
         int total_frame_number = fps * this->time;
         double maximum_resize = 20;
-        double coefficient = maximum_resize - frame_number * (maximum_resize - 1) / total_frame_number;
+        int nFrame = total_frame_number - frame_number;
+        double coefficient = 1 + nFrame * nFrame * (maximum_resize - 1) / total_frame_number / total_frame_number;
         new_width /= coefficient;
         new_height /= coefficient;
         img::Image temp = img::Image(this->image->getModifiedImg());
         temp.equalizeImgDim(new_width, new_height);
-        temp.equalizeImgDim(this->image->getWidth(), new_height);
-        temp.equalizeImgDim(this->image->getWidth(), this->image->getHeight());
+        temp.equalizeImgDim(this->image->getModifiedWidth(), new_height);
+        temp.equalizeImgDim(this->image->getModifiedWidth(), this->image->getModifiedHeight());
         return temp.getModifiedImg();
     }
 
@@ -320,13 +321,13 @@ namespace vid {
         double new_height = this->image->getModifiedHeight();
         int total_frame_number = fps * this->time;
         double maximum_resize = 20;
-        double coefficient = 1 + frame_number * (maximum_resize - 1) / total_frame_number;
+        double coefficient = 1 + frame_number * frame_number * (maximum_resize - 1) / total_frame_number / total_frame_number;
         new_width /= coefficient;
         new_height /= coefficient;
         img::Image temp = img::Image(this->image->getModifiedImg());
         temp.equalizeImgDim(new_width, new_height);
-        temp.equalizeImgDim(this->image->getWidth(), new_height);
-        temp.equalizeImgDim(this->image->getWidth(), this->image->getHeight());
+        temp.equalizeImgDim(this->image->getModifiedWidth(), new_height);
+        temp.equalizeImgDim(this->image->getModifiedWidth(), this->image->getModifiedHeight());
         return temp.getModifiedImg();
     }
 
