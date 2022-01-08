@@ -53,6 +53,8 @@ void VideoEditor::setupImageToolbar() {
             this, &VideoEditor::resetImage);
     connect(ui->rotateButton, &QToolButton::clicked,
             this, &VideoEditor::rotateImageRight);
+    connect(ui->autoAddImageButton, &QToolButton::clicked,
+            this, &VideoEditor::addImagesByAudio);
 
     // setup blurSlider
     blurSlider = new QSlider(Qt::Vertical);
