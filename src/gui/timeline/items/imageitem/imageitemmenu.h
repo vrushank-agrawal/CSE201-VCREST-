@@ -22,8 +22,10 @@ signals:
 public slots:
     void applyNormalAnimation() ;
     void applyRotationAnimation();
-    void applyZoomingAnimation();
-    void applyCroppingAnimation();
+    void applyZoomInAnimation();
+    void applyZoomOutAnimation();
+    void applyFadeInAnimation();
+    void applyFadeOutAnimation();
     void applyNormalBlur();
     void applyGaussianBlur();
     void applyMedianBlur();
@@ -33,8 +35,10 @@ private:
     QMenu *blurMenu = nullptr;
     QAction *normalAnimationAction = nullptr;
     QAction *rotationAnimationAction = nullptr;
-    QAction *zoomingAnimationAction = nullptr;
-    QAction *croppingAnimationAction = nullptr;
+    QAction *zoomInAnimationAction = nullptr;
+    QAction *zoomOutAnimationAction = nullptr;
+    QAction *fadeInAnimationAction = nullptr;
+    QAction *fadeOutAnimationAction = nullptr;
     QAction *normalBlurAction = nullptr;
     QAction *gaussianBlurAction = nullptr;
     QAction *medianBlurAction = nullptr;

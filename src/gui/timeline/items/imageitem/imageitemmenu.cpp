@@ -19,13 +19,21 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
     rotationAnimationAction->setObjectName(QString::fromUtf8("rotationAnimationAction"));
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
 
-    zoomingAnimationAction = new QAction(animationMenu);
-    zoomingAnimationAction->setObjectName(QString::fromUtf8("zoomingAnimationAction"));
-    zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
+    zoomInAnimationAction = new QAction(animationMenu);
+    zoomInAnimationAction->setObjectName(QString::fromUtf8("Zoom InAnimationAction"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
 
-    croppingAnimationAction = new QAction(animationMenu);
-    croppingAnimationAction->setObjectName(QString::fromUtf8("croppingAnimationAction"));
-    croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+    zoomOutAnimationAction = new QAction(animationMenu);
+    zoomOutAnimationAction->setObjectName(QString::fromUtf8("zoomOutAnimationAction"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+
+    fadeInAnimationAction = new QAction(animationMenu);
+    fadeInAnimationAction->setObjectName(QString::fromUtf8("fadeInAnimationAction"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+
+    fadeOutAnimationAction = new QAction(animationMenu);
+    fadeOutAnimationAction->setObjectName(QString::fromUtf8("fadeOutAnimationAction"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
 
     normalBlurAction = new QAction(blurMenu);
     normalBlurAction->setObjectName(QString::fromUtf8("normalBlurAction"));
@@ -41,8 +49,10 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
 
     animationMenu->addAction(normalAnimationAction);
     animationMenu->addAction(rotationAnimationAction);
-//    animationMenu->addAction(zoomingAnimationAction);
-//    animationMenu->addAction(croppingAnimationAction);
+    animationMenu->addAction(zoomInAnimationAction);
+    animationMenu->addAction(zoomOutAnimationAction);
+    animationMenu->addAction(fadeInAnimationAction);
+    animationMenu->addAction(fadeOutAnimationAction);
 
     blurMenu->addAction(normalBlurAction);
     blurMenu->addAction(gaussianBlurAction);
@@ -53,10 +63,14 @@ ImageItemMenu::ImageItemMenu(QWidget *parent): QMenu(parent) {
             this, &ImageItemMenu::applyNormalAnimation);
     connect(rotationAnimationAction, &QAction::triggered,
             this, &ImageItemMenu::applyRotationAnimation);
-    connect(zoomingAnimationAction, &QAction::triggered,
-            this, &ImageItemMenu::applyZoomingAnimation);
-    connect(croppingAnimationAction, &QAction::triggered,
-            this, &ImageItemMenu::applyCroppingAnimation);
+    connect(zoomInAnimationAction, &QAction::triggered,
+            this, &ImageItemMenu::applyZoomInAnimation);
+    connect(zoomOutAnimationAction, &QAction::triggered,
+            this, &ImageItemMenu::applyZoomOutAnimation);
+    connect(fadeInAnimationAction, &QAction::triggered,
+            this, &ImageItemMenu::applyFadeInAnimation);
+    connect(fadeOutAnimationAction, &QAction::triggered,
+            this, &ImageItemMenu::applyFadeOutAnimation);
 
     connect(normalBlurAction, &QAction::triggered,
             this, &ImageItemMenu::applyNormalBlur);
@@ -76,33 +90,61 @@ ImageItemMenu::~ImageItemMenu() {
 void ImageItemMenu::applyNormalAnimation()  {
     normalAnimationAction->setText(QString::fromUtf8("Normal ✓"));
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
-    zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
-    croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
     emit animationChosen(vid::Normal);
 }
 
 void ImageItemMenu::applyRotationAnimation() {
     normalAnimationAction->setText(QString::fromUtf8("Normal"));
     rotationAnimationAction->setText(QString::fromUtf8("Rotation ✓"));
-    zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
-    croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
     emit animationChosen(vid::Rotation);
 }
 
-void ImageItemMenu::applyZoomingAnimation() {
+void ImageItemMenu::applyZoomInAnimation() {
     normalAnimationAction->setText(QString::fromUtf8("Normal"));
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
-    zoomingAnimationAction->setText(QString::fromUtf8("Zooming ✓"));
-    croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In ✓"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
     emit animationChosen(vid::ZoomIn);
 }
 
-void ImageItemMenu::applyCroppingAnimation() {
+void ImageItemMenu::applyZoomOutAnimation() {
     normalAnimationAction->setText(QString::fromUtf8("Normal"));
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
-    zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
-    croppingAnimationAction->setText(QString::fromUtf8("Cropping ✓"));
-//    emit animationChosen(vid::Cropping);
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out ✓"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
+    emit animationChosen(vid::ZoomOut);
+}
+
+void ImageItemMenu::applyFadeInAnimation() {
+    normalAnimationAction->setText(QString::fromUtf8("Normal"));
+    rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In ✓"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out"));
+    emit animationChosen(vid::FadeIn);
+}
+
+void ImageItemMenu::applyFadeOutAnimation() {
+    normalAnimationAction->setText(QString::fromUtf8("Normal"));
+    rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
+    zoomInAnimationAction->setText(QString::fromUtf8("Zoom In"));
+    zoomOutAnimationAction->setText(QString::fromUtf8("Zoom Out"));
+    fadeInAnimationAction->setText(QString::fromUtf8("Fade In"));
+    fadeOutAnimationAction->setText(QString::fromUtf8("Fade Out ✓"));
+    emit animationChosen(vid::FadeOut);
 }
 
 void ImageItemMenu::applyNormalBlur() {
