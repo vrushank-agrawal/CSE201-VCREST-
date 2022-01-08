@@ -33,7 +33,7 @@ void VideoEditor::writeVideo() {
         errorMsg.exec();
     }
     else {
-        exp::merge_av(videoPath, ui->timeline->createAudio(), outputPath);
+        exportClass::merge_av(videoPath, ui->timeline->createAudio(), outputPath);
         remove(videoPath.c_str());
     }
 }

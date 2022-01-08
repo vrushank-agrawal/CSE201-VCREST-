@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <sstream>
 
-namespace exp {
+namespace exportClass {
     void merge_av(std::string video_path, std::string audio_path, std::string export_address);
 }
 
