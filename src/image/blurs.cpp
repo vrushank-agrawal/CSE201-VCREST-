@@ -76,6 +76,7 @@ void img::Image::rotateImgFit(double angle) {
 
 void img::Image::resizeImg(int width, int height) {
     cv::Mat resized_img;
+
     if (height && width) {
         //uses linear interpolation to resize the image.
         resize(this->getModifiedImg(), resized_img, cv::Size(width, height), cv::INTER_LINEAR);
