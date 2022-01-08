@@ -507,72 +507,23 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuSave_Project">
-     <property name="title">
-      <string>Save Project</string>
-     </property>
-     <addaction name="actionSave_Project_2"/>
-     <addaction name="actionSave_Project_As"/>
-     <addaction name="actionBackup_Project"/>
-    </widget>
-    <addaction name="actionNew_Video"/>
-    <addaction name="separator"/>
     <addaction name="actionImport_Media"/>
     <addaction name="actionImport_Image"/>
     <addaction name="actionImport_Audio"/>
-    <addaction name="actionImport_VEST_Projects_3"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_Library"/>
-    <addaction name="actionOpen_Recent"/>
-    <addaction name="actionClose_Library"/>
-    <addaction name="actionCopy_To_Library"/>
-    <addaction name="actionMove_To_Library"/>
-    <addaction name="actionMerge_Events"/>
-    <addaction name="actionConsolidate_Library_Files"/>
-    <addaction name="separator"/>
-    <addaction name="menuSave_Project"/>
     <addaction name="actionExport"/>
-    <addaction name="separator"/>
-    <addaction name="actionShare"/>
-    <addaction name="separator"/>
-    <addaction name="actionUpdate_Projects_and_Events"/>
-    <addaction name="separator"/>
-    <addaction name="actionDelete_Project"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionUndo"/>
-    <addaction name="actionPaste"/>
-    <addaction name="separator"/>
-    <addaction name="actionCut"/>
-    <addaction name="actionCopy"/>
-    <addaction name="actionPaste_2"/>
-    <addaction name="actionPaste_Adjustments"/>
-    <addaction name="actionDelete"/>
-    <addaction name="actionDelete_Keyframes"/>
-    <addaction name="separator"/>
-    <addaction name="actionDuplicate_Project"/>
-    <addaction name="separator"/>
-    <addaction name="actionSelect_All"/>
-    <addaction name="actionSelect_Entire_Clip"/>
-    <addaction name="actionSelect_in_Video"/>
-    <addaction name="actionDeselect_All"/>
-    <addaction name="separator"/>
-    <addaction name="actionAdd_to_Video"/>
-    <addaction name="actionInsert"/>
-    <addaction name="separator"/>
     <addaction name="actionFind"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -599,104 +550,29 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <addaction name="actionSnapping"/>
     <addaction name="actionAudio_Skimming"/>
    </widget>
-   <widget class="QMenu" name="menuWindow">
-    <property name="title">
-     <string>Window</string>
-    </property>
-    <addaction name="actionMinimize"/>
-    <addaction name="actionMinimize_All"/>
-    <addaction name="actionZoom"/>
-    <addaction name="actionMove_Window_to_Left_Side_of_Screen"/>
-    <addaction name="actionMove_Window_to_Right_Side_of_Screen"/>
-    <addaction name="separator"/>
-    <addaction name="actionGo_to_Media"/>
-    <addaction name="actionGo_to_Projects"/>
-    <addaction name="actionShow_Libraries"/>
-    <addaction name="actionContent_Library"/>
-    <addaction name="actionTheme_Chooser"/>
-    <addaction name="separator"/>
-    <addaction name="actionClip_Trimmer"/>
-    <addaction name="actionPrecision_Editor"/>
-    <addaction name="actionRecord_Voiceover"/>
-    <addaction name="separator"/>
-    <addaction name="actionRevert_to_Original_Layout"/>
-    <addaction name="separator"/>
-    <addaction name="actionBring_All_to_Front"/>
-    <addaction name="separator"/>
-    <addaction name="actionEnter_Full_Screen"/>
-    <addaction name="separator"/>
-    <addaction name="actionVEST"/>
-    <addaction name="actionWelcome_to_VEST"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionSearch"/>
-    <addaction name="separator"/>
     <addaction name="actionVEST_Help"/>
     <addaction name="separator"/>
-    <addaction name="actionWhat_s_New_in_VEST"/>
-    <addaction name="actionKeyboard_Shortcuts"/>
-    <addaction name="actionSupported_Cameras"/>
-    <addaction name="separator"/>
-    <addaction name="actionService_and_Support"/>
-   </widget>
-   <widget class="QMenu" name="menuModify">
-    <property name="title">
-     <string>Modify</string>
-    </property>
-    <addaction name="actionEnhance"/>
-    <addaction name="actionFade_to"/>
-    <addaction name="actionFlash_and_Freeze_Frame"/>
-    <addaction name="actionMute_Audio"/>
-    <addaction name="separator"/>
-    <addaction name="actionTrim_to_Selection"/>
-    <addaction name="actionTrim_Clip_Edge"/>
-    <addaction name="actionSplit_Clip"/>
-    <addaction name="actionJoin_Clips"/>
-    <addaction name="actionDetach_Audio"/>
-    <addaction name="separator"/>
-    <addaction name="actionSlow_Motion"/>
-    <addaction name="actionFast_Forward"/>
-    <addaction name="actionInstant_Reply"/>
-    <addaction name="actionRewind"/>
-    <addaction name="actionAdd_Freeze_Frame"/>
-    <addaction name="actionReset_Speed"/>
-    <addaction name="separator"/>
-    <addaction name="actionAdjust_Clip_Date_and_Time"/>
-   </widget>
-   <widget class="QMenu" name="menuMark">
-    <property name="title">
-     <string>Mark</string>
-    </property>
-    <addaction name="actionFavorite"/>
-    <addaction name="actionReject"/>
-    <addaction name="actionUnrate"/>
-    <addaction name="separator"/>
-    <addaction name="actionAdd_Marker"/>
-    <addaction name="actionDelete_Marker"/>
+    <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuAudio">
     <property name="title">
      <string>Audio</string>
     </property>
-    <addaction name="actionEdit"/>
    </widget>
    <widget class="QMenu" name="menuImages">
     <property name="title">
      <string>Images</string>
     </property>
-    <addaction name="actionImages"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuAudio"/>
    <addaction name="menuImages"/>
-   <addaction name="menuMark"/>
-   <addaction name="menuModify"/>
-   <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew_Video">
@@ -1237,6 +1113,11 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
   <action name="actionImport_Media">
    <property name="text">
     <string>Import Media...</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About...</string>
    </property>
   </action>
  </widget>
