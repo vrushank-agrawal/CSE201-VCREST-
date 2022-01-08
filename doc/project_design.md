@@ -1,13 +1,10 @@
 ## Functionalities
 
-The project aims to provide the user with a unique feature of automatically creating a video with custom images in a given audio file.
+The project aims to provide the user with a unique feature of creating a video with custom images in a given audio file.
 - A user will import an audio file and a set of custom images.
-- A function in the program will analyze the audio file using FFT's and recognize the its bpm, troughs and peaks in the audio file.
-- Another function will automatically organize these images (randomly or with user preference) and combine them with the audio to create a video.
+- These images and audio files can be combined to create a video.
 - There will be additional simple animations and filters that can be added in the video for effects.
 - The user will also be provided with the ability to rearrange these images and animations in the video in the GUI manually.
-
-END RESULT - You create a video of memories automatically with the tempo of a certain song for the right vibes!
 
 ## Deadlines and deliverables
 
@@ -51,8 +48,8 @@ END RESULT - You create a video of memories automatically with the tempo of a ce
         - Used for image and video manipulation
     - FFmpeg
         - Required for exporting functions
-    - Audio Libraries
-        - These are already imported and integrated in the code required for analyzing audio
+    - Lime and Aubio (Audio Libraries)
+        - Pre-installed in the code, these libraries are required for analyzing and reading audio files.
 - CMake
     - CMake calls the QT libraries and OpenCV as Interfaces from a separate folder
     - This organizes the code to reduces redundancy
