@@ -13,6 +13,7 @@ END RESULT - You create a video of memories automatically with the tempo of a ce
 
 ### WEEK 2
 - functions for adding filters and animations in the image and video parts
+- determining audio library to implement
 
 ### WEEK 4
 - Simple working GUI that previews the audio and the image files.
