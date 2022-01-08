@@ -2,6 +2,7 @@
 // Created by korkot on 11/21/2021.
 //
 #include "video.h"
+#include "image.h"
 
 int vid::Video::width = 0, vid::Video::height = 0, vid::Video::fps = 0;
 
@@ -329,12 +330,11 @@ namespace vid {
         return temp.getModifiedImg();
     }
 
-
     cv::Mat Video::ImageAnimator::fadeInAnimation(int frame_number) {
         img::Image to_show = img::Image(this->image->getMat());
         double total_frames = fps * this->time;
         double alpha = frame_number/total_frames;
-        to_show.addWeighted(alpha, 1 - alpha);
+        to_show.addWeighted(alpha, 1 - alpha, 0.0);
         return to_show.getModifiedImg();
     }
 
@@ -342,13 +342,9 @@ namespace vid {
         img::Image to_show = img::Image(this->image->getMat());
         double total_frames = fps * this->time;
         double alpha = frame_number/total_frames;
-        to_show.addWeighted(1-alpha, alpha);
+        to_show.addWeighted(1-alpha, alpha, 0.0);
         return to_show.getModifiedImg();
     }
-
-
-
-
 
 
 /*
@@ -369,10 +365,8 @@ void Video::ImageAnimator::CropAnimation() {
             if (c == 27)
                 break;
         }
-
     }
 }
-
 
 
 //Needs testing...

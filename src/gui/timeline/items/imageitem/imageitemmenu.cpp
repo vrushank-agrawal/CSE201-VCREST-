@@ -94,7 +94,7 @@ void ImageItemMenu::applyZoomingAnimation() {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming ✓"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping"));
-    emit animationChosen(vid::Zooming);
+    emit animationChosen(vid::ZoomIn);
 }
 
 void ImageItemMenu::applyCroppingAnimation() {
@@ -102,8 +102,8 @@ void ImageItemMenu::applyCroppingAnimation() {
     rotationAnimationAction->setText(QString::fromUtf8("Rotation"));
     zoomingAnimationAction->setText(QString::fromUtf8("Zooming"));
     croppingAnimationAction->setText(QString::fromUtf8("Cropping ✓"));
-    emit animationChosen(vid::Cropping);
-};
+//    emit animationChosen(vid::Cropping);
+}
 
 void ImageItemMenu::applyNormalBlur() {
     normalBlurAction->setText(QString::fromUtf8("Normal ✓"));
