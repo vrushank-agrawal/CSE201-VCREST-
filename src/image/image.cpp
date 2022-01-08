@@ -4,7 +4,6 @@
 
 #include "image.h"
 
-using namespace std;
 
 img::Image::Image() {}
 
