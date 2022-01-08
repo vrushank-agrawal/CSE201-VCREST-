@@ -11,6 +11,7 @@
 #include <QPen>
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include "Audio.hpp"
 #include "sizegripitem.h"
 
 class AudioItem : public QObject, public QGraphicsItem {
@@ -18,7 +19,8 @@ Q_OBJECT
 Q_INTERFACES(QGraphicsItem)
 
 public:
-    explicit AudioItem(QString audioSource,
+    explicit AudioItem(audio::Audio* audio,
+                       QString displayName,
                        double sourceLength,
                        QPoint position);
     ~AudioItem();
@@ -27,7 +29,7 @@ public:
     constexpr static const double border = 3;
     static QTransform parentTransform;
 
-    QString audioSource = "";
+    audio::Audio* audio = nullptr;
     QString displayName = "";
     QMultiMap<double, AudioItem*>::iterator start, end;
 
