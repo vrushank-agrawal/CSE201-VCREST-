@@ -14,20 +14,8 @@
 #include <algorithm>
 #include <sstream>
 
-namespace exp {
-
-    class exporter {
-        std::string video_path;
-        std::string audio_path;
-        std::string export_address;
-
-    public:
-        exporter(std::string video_path, std::string audio_path, std::string export_address);
-        ~exporter();
-        void merge_av(std::string video_path, std::string audio_path, std::string export_address);
-
-    };
-
+namespace exportClass {
+    void merge_av(std::string video_path, std::string audio_path, std::string export_address);
 }
 
 #endif //EXPORT_CLASS

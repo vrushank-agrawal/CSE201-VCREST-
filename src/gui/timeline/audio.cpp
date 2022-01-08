@@ -53,6 +53,26 @@ void Timeline::addAudioAtIndicator(audio::Audio* audio, QString displayName, dou
     addAudio(audio, displayName, sourceLength, time, time + duration);
 }
 
+std::string Timeline::createAudio() {
+    double currentTime = 0;
+    audio::Audio currentAudio = audio::createSilence(0);
+    for (auto iterator = audioMap.begin(); iterator != audioMap.end(); iterator++) {
+        if (iterator.value() == nullptr) continue;
+        double start = iterator.key(), end = iterator.value()->end.key();
+        audio::Audio *curAudio = iterator.value()->audio;
+        if (abs(currentTime - start) >= 1e3) {
+            std::string newName = audio::createSilence(int((start - currentTime) * 1000));
+            audio::Audio silentAudio = audio::Audio(newName);
+            currentAudio = audio::merge(currentAudio, silentAudio);
+        }
+        std::string audioName = audio::trim(*curAudio, int((end - start) * 1000), true);
+        audio::Audio newAudio = audio::Audio(audioName);
+        currentAudio = audio::merge(currentAudio, audioName);
+    }
+
+    return currentAudio.getURI();
+}
+
 void Timeline::deleteAudio(AudioItem *item) {
     audioMap.erase(item->start);
     audioMap.erase(item->end);
