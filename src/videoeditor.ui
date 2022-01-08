@@ -269,7 +269,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="icon">
                 <iconset theme=":/img-brightness.png">
-                 <normaloff>.</normaloff>.</iconset>
+                 <normaloff>:/img-brightness.png</normaloff>:/img-brightness.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -302,7 +302,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                </property>
                <property name="icon">
                 <iconset theme=":/img-reset.png">
-                 <normaloff>.</normaloff>.</iconset>
+                 <normaloff>:/img-reset.png</normaloff>:/img-reset.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -507,7 +507,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -568,8 +568,8 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <string>Images</string>
     </property>
     <addaction name="actionBlur_Image"/>
-    <addaction name="actionBrighten_Image"/>
     <addaction name="actionRotate_Image"/>
+    <addaction name="actionBrighten_Image"/>
     <addaction name="actionReset_Image"/>
    </widget>
    <addaction name="menuFile"/>
