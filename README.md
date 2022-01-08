@@ -41,7 +41,7 @@ However, further features include adding simple animations to the corresponding 
 * Lasha Koroshinadze
 * Hayate Sasaki
 
-## Thirs Parties Used
+## Third Parties Used
 - QT v6.2.2
     - QT Multimedia (should be added while installing QT)
 - FFmpeg v4.2.5
@@ -113,50 +113,59 @@ However, further features include adding simple animations to the corresponding 
 
 ## Guide To Use V-CREST v1.0
 
-1. Run the project in build environment on your preferred IDE (CLion hopefully)
-2. The main software window will appear. 
-(insert image)
+1. Run the project in build environment on your preferred IDE (CLion hopefully).
 
-3. Start by importing some media (Ctrl + O)
-4. The imported media is now displayed in their respective panels
-(insert image)
+2. The main software window will appear. <br/> <br/>
+   ![Main V-CREST window](howToImages/1.png)
 
-5. You can add images and audios to the respective timelines by double-clicking on the objects
-6. The selected object will be inserted after the slider if no object is available otherwise after the last object in the current state of the timeline
-(insert image)
+3. Start by importing some media (Ctrl + O) or choose import media option from File menu.
 
-7. The objects are automatically inserted for a duration of 5 seconds which can be extended or decreased manually using the slider at the end of each object
-(insert image)
+4. The imported media is now displayed in their respective panels. <br/> <br/>
+   ![Media imported](howToImages/2.png)
 
-8. The objects can be shifted to various positions in the timeline by simply clicking and dragging
-(insert image)
+5. You can add images and audios to the respective timelines by double-clicking on the objects.
 
-9. You can preview the created video by clicking the play button in the video preview panel
-10. To add a specific animation to an image, simply right click on the image object and select the animation among:
+6. The selected object will be inserted after the slider if no object is available otherwise after the last object in the current state of the timeline.<br/> <br/>
+   ![Images added](howToImages/3.png)
+
+7. You can remove the objects from the timeline by double-clicking on them in the timeline.
+
+8. The objects are automatically inserted for a duration of 5 seconds which can be extended or decreased manually using the slider at the end of each object.<br/> <br/>
+   ![Image removed and objects rearranged](howToImages/4.png)
+
+9. The objects can be shifted to various positions in the timeline by simply clicking and dragging. <br/> <br/>
+   ![Objects extended and shifted](howToImages/5.png)
+
+10. You can preview the created video by clicking the play button in the video preview panel.
+
+11. To add a specific animation to an image, simply right-click on the image object and select the animation among:
     - Normal - Current state
     - Rotation - The image object will rotate
     - X
     - Y
-    - Z
+    - Z <br/> <br/>
 (insert image)
 
-11. You may also add blur filters to smoothen images among:
+12. You may also add blur filters to smoothen images among:
     - Blur - normal blur function
-    - Gaussian Blur - dynamically smoothes the edges in the image 
-    - Median Blur - removes noise while preserving the edges (gives a paint-like feel)
- 
-(insert image)
+    - Gaussian Blur - dynamically smoothens the edges in the image 
+    - Median Blur - removes noise while preserving the edges (gives a paint-like feel) <br/> <br/>
+    ![Choose the kind of blur](howToImages/7.png)
 
-12. The intensity of the blur function can be increased or decreased from the blur slider (teardrop symbol) next to the video preview panel
-(insert image)
+13. The intensity of the blur function can be increased or decreased from the blur slider (teardrop symbol) next to the video preview panel. <br/> <br/>
+    ![Set blur magnitude](howToImages/8.png)
 
-13. An image may be rotated as well using the rotation button next to the video preview panel
-(insert image)
+14. An image may be rotated as well using the rotation button next to the video preview panel.<br/> <br/>
+    ![Rotate image anticlockwise](howToImages/9.png)
 
-14. With all these amazing editing options, your personalized video is now ready to be exported!
+15. An image can be reset to its original version as well using the reset button next to the video preview panel. <br/> <br/>
+    ![Reset image to original here](howToImages/10.png)
+
+16. With all these amazing editing options, your personalized video is now ready to be exported!
 
 ### Note on V-CREST v2.0
 - The current editing features in the software are limited due to difficulties faced in building the GUI
-- The next version will provide much more flexibility to the user in terms of filters and animations that may be added
-- Collage making functions will also be better integrated in the future version
+- The next version will also boast a unique feature to automatically arrange images according to beats of a song
+- The use will be provided with much more flexibility in terms of filters and animations that may be applied to an image
 - The GUI will have more ease of use with better graphics
+- And MUCH MORE!

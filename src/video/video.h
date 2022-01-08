@@ -13,9 +13,9 @@
 
 namespace vid {
 
-    const int total_number_of_animations = 5;
+    const int total_number_of_animations = 10;
     enum Animation {
-        Normal = 0, Rotation = 1, Zooming = 2, Cropping = 3
+        Normal = 0, Rotation = 1, ZoomIn = 2, ZoomOut = 3, FadeIn = 4, FadeOut = 5
     };
 
     class Video {
@@ -68,6 +68,10 @@ namespace vid {
 
         void clear();
 
+        void displayCurrentVideo();
+
+
+    //User doesn't need these functions
     private:
         //adds Image pointer in the end(normally user won't use this)
         void insertImage(img::Image *img, double start_time, double time_to_display);
@@ -77,9 +81,6 @@ namespace vid {
 
         //Removes from the vector at certain index(not meant to be used by user)
         void removeImageAtIndex(int index);
-
-        //User doesn't need these functions
-        void displayCurrentVideo();
 
 
         //Animator structure which is capable of displaying
@@ -106,9 +107,15 @@ namespace vid {
 
             cv::Mat rotateAnimation(int frame_number);
 
-            //Functions below should be of type Mat as well, not tested yet
-            void zoomAnimation(int frame_number);
+            cv::Mat zoomInAnimation(int frame_number);
 
+            cv::Mat zoomOutAnimation(int frame_number);
+
+            cv::Mat fadeInAnimation(int frame_number);
+
+            cv::Mat fadeOutAnimation(int frame_number);
+
+            //Functions below should be of type Mat as well, not tested yet
             void cropAnimation();
 
             void initFunctions();
@@ -120,6 +127,11 @@ namespace vid {
             Animation animation_type;
 
             cv::Mat (ImageAnimator::*anim_functions[total_number_of_animations + 1 ])(int);
+            
+             //untested: 
+            //void fadeInAnimation(int frame_number);
+            //void fadeOutAnimation(int frame_number);
+
         };
 
     private:

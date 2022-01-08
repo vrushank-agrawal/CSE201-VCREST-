@@ -7,6 +7,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/core/mat.hpp>
 #include <opencv2/video.hpp>
 #include <opencv2/core/utility.hpp>
 
@@ -56,7 +57,7 @@ namespace img {
         cv::Mat decodeImg(const std::string & 	filename, int flags = cv::IMREAD_COLOR);
 
         //resets image dimensions by adding black areas
-        void equalizeImgDim( double width, double height );
+        void equalizeImgDim(double width, double height);
         void sendToStitch(int val, Image * img);
         void hcon (Image * img );
         void vcon (Image * img );
@@ -92,6 +93,10 @@ namespace img {
         void boxBlur(int width, int height, int depth = -1);
         void gaussianBlur(int width, int height);
         void medianBlur(int kernel_size);
+        
+        // functions needed for the fade in animation
+        void addWeighted( double alpha, double beta, double gamma);
+
 
     }; // Image() class
 

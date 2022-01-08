@@ -9,40 +9,41 @@
 namespace img {
 
     class Collage {
-            public:
-                Collage( std::vector<img::Image> imageArr);
-                ~ Collage();
+    public:
+        explicit Collage(std::vector<img::Image> imageArr);
+        ~ Collage();
 
-                //create an array of coordinates of corners of each of the images, variable
-                //int subImageCorners[numImages * 4];
+        // actual stitching functions
+        void twoStitch(bool);
+        void threeStitch();
+        void fourStitch(bool);
+        void fourStitchRec(int times);
 
-                void twoStitch(bool );
-                void threeStitch();
-                void fourStitch(bool );
-                void fourStitchRec(int times);
+        void imgModifiedPreview(const std::string &winname);
 
-                void imgModifiedPreview( const std::string & winname);
+        // get and set functions
+        [[nodiscard]] int getNumImages() const;
+        const std::vector<double> &getRatios();
+        const std::vector<img::Image> &getImageArr();
+        cv::Mat getModifiedImage();
+        void setModifiedImageArr(const std::vector<img::Image>& arrModified);
+        std::vector<img::Image> getModifiedImageArr();
+        void setModifiedImage(cv::Mat modifiedMat);
+        const std::vector<double> &getModifiedRatios();
+        void setFourStitchRecImgArr(const cv::Mat& image);
+        const std::vector<Image> &getFourStitchRecImgArr();
 
-                // get and set functions
-                int getNumImages();
-                const std::vector<double>& getRatios();
-                const std::vector<img::Image>& getImageArr();
-                cv::Mat getModifiedImage();
-                void setModifiedImageArr(std::vector<img::Image> imageArrModified);
-                std::vector<img::Image> getModifiedImageArr();
-                void setModifiedImage(cv::Mat modifiedMat);
-                const std::vector<double>& getModifiedRatios();
+    private:
+        std::vector<Image> fourStitchRecImgArr;
+        int numImages;
+        int modifiedNumImages{};
+        std::vector<double> ratios;
+        std::vector<double> modifiedRatios;
+        std::vector<img::Image> imageArr;
+        cv::Mat modifiedImage;
+        std::vector<img::Image> imageArrModified;
 
-            private:
-
-                int numImages;
-                int modifiedNumImages;
-                std::vector <double> ratios;
-                std::vector <double> modifiedRatios;
-                std::vector <img::Image> imageArr;
-                cv::Mat modifiedImage;
-                std::vector <img::Image> imageArrModified;
-                void fourStitchRecAux(bool, int times);
+        void fourStitchRecAux(bool, int times);
     };
 }
 
