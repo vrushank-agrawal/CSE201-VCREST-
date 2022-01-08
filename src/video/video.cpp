@@ -301,37 +301,38 @@ namespace vid {
 
 
     cv::Mat Video::ImageAnimator::zoomInAnimation(int frame_number) {
-        double new_width = this->image->getWidth();
-        double new_height = this->image->getHeight();
+        double new_width = this->image->getModifiedWidth();
+        double new_height = this->image->getModifiedHeight();
         int total_frame_number = fps * this->time;
         double maximum_resize = 20;
-        double coefficient = maximum_resize - frame_number * (maximum_resize - 1) / total_frame_number;
+        int nFrame = total_frame_number - frame_number;
+        double coefficient = 1 + nFrame * nFrame * (maximum_resize - 1) / total_frame_number / total_frame_number;
         new_width /= coefficient;
         new_height /= coefficient;
-        img::Image temp = img::Image(this->image->getMat());
+        img::Image temp = img::Image(this->image->getModifiedImg());
         temp.equalizeImgDim(new_width, new_height);
-        temp.equalizeImgDim(this->image->getWidth(), new_height);
-        temp.equalizeImgDim(this->image->getWidth(), this->image->getHeight());
+        temp.equalizeImgDim(this->image->getModifiedWidth(), new_height);
+        temp.equalizeImgDim(this->image->getModifiedWidth(), this->image->getModifiedHeight());
         return temp.getModifiedImg();
     }
 
     cv::Mat Video::ImageAnimator::zoomOutAnimation(int frame_number) {
-        double new_width = this->image->getWidth();
-        double new_height = this->image->getHeight();
+        double new_width = this->image->getModifiedWidth();
+        double new_height = this->image->getModifiedHeight();
         int total_frame_number = fps * this->time;
         double maximum_resize = 20;
-        double coefficient = 1 + frame_number * (maximum_resize - 1) / total_frame_number;
+        double coefficient = 1 + frame_number * frame_number * (maximum_resize - 1) / total_frame_number / total_frame_number;
         new_width /= coefficient;
         new_height /= coefficient;
-        img::Image temp = img::Image(this->image->getMat());
+        img::Image temp = img::Image(this->image->getModifiedImg());
         temp.equalizeImgDim(new_width, new_height);
-        temp.equalizeImgDim(this->image->getWidth(), new_height);
-        temp.equalizeImgDim(this->image->getWidth(), this->image->getHeight());
+        temp.equalizeImgDim(this->image->getModifiedWidth(), new_height);
+        temp.equalizeImgDim(this->image->getModifiedWidth(), this->image->getModifiedHeight());
         return temp.getModifiedImg();
     }
 
     cv::Mat Video::ImageAnimator::fadeInAnimation(int frame_number) {
-        img::Image to_show = img::Image(this->image->getMat());
+        img::Image to_show = img::Image(this->image->getModifiedImg());
         double total_frames = fps * this->time;
         double alpha = frame_number/total_frames;
         to_show.addWeighted(alpha, 1 - alpha, 0.0);
@@ -339,7 +340,7 @@ namespace vid {
     }
 
     cv::Mat Video::ImageAnimator::fadeOutAnimation(int frame_number) {
-        img::Image to_show = img::Image(this->image->getMat());
+        img::Image to_show = img::Image(this->image->getModifiedImg());
         double total_frames = fps * this->time;
         double alpha = frame_number/total_frames;
         to_show.addWeighted(1-alpha, alpha, 0.0);
