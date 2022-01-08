@@ -1,8 +1,6 @@
 # V-CREST - Video Creation Software
 
-This is a unique video creating software developed to help a user build a video out of a set of images. 
-The main feature is to allow the user to merge images with an audio file in a given sequence by analyzing the audio's bpm. 
-However, further features include adding simple animations to the corresponding video and certain filters to the images.
+This is a unique video creating software developed to help a user build a video out of a set of images.
 
 
 ## Members
@@ -50,15 +48,20 @@ However, further features include adding simple animations to the corresponding 
 - Clion v2021.3.2 (optional but recommended)
 
 ## Setup for CLion
-- In Setting(Preferences)/Build, Execute and Deployment
+- In `Setting(Preferences)/Build, Execute and Deployment`
     - Go to `Toolchains` and select your compiler (specify the same compiler with which OpenCV binaries will be built in later steps)
-    - In CMake set: `-DCMAKE_PREFIX_PATH=path/to/your/Qt` (example [Mac] `~/Qt/6.2.1/MacOS`; [Windows] `C:\Qt\6.2.2\mingw_64\bin`)
+    - In CMake set: `-DCMAKE_PREFIX_PATH=path/to/your/Qt` (example [Mac] `~/Qt/6.2.2/MacOS`; [Windows] `C:\Qt\6.2.2\mingw_64\bin`)
     
 ## Setup for FFmpeg
+
+### Windows
 1. Download the latest version of FFmpeg from this [link](https://www.ffmpeg.org/download.html)
 2. Unpack the files in a directory with the folder name `ffmpeg` (folder name is important)
 3. Add the path to ffmpeg in environment variables (example [Windows] `C:\ffmpeg`)
 4. If Clion is already open, then restart the IDE so that the environment variables can be updated.
+
+### macOS
+You can use homebrew to install. Run `brew install ffmpeq`.
 
 ## Setup for OpenCV
 ### Windows
@@ -116,50 +119,51 @@ However, further features include adding simple animations to the corresponding 
 1. Run the project in build environment on your preferred IDE (CLion hopefully).
 
 2. The main software window will appear. <br/> <br/>
-   ![Main V-CREST window](howToImages/1.png)
+   ![Main V-CREST window](media/imgsVCREST/1.png)
 
 3. Start by importing some media (Ctrl + O) or choose import media option from File menu.
 
 4. The imported media is now displayed in their respective panels. <br/> <br/>
-   ![Media imported](howToImages/2.png)
+   ![Media imported](media/imgsVCREST/2.png)
 
 5. You can add images and audios to the respective timelines by double-clicking on the objects.
 
 6. The selected object will be inserted after the slider if no object is available otherwise after the last object in the current state of the timeline.<br/> <br/>
-   ![Images added](howToImages/3.png)
+   ![Images added](media/imgsVCREST/3.png)
 
 7. You can remove the objects from the timeline by double-clicking on them in the timeline.
 
 8. The objects are automatically inserted for a duration of 5 seconds which can be extended or decreased manually using the slider at the end of each object.<br/> <br/>
-   ![Image removed and objects rearranged](howToImages/4.png)
+   ![Image removed and objects rearranged](media/imgsVCREST/4.png)
 
 9. The objects can be shifted to various positions in the timeline by simply clicking and dragging. <br/> <br/>
-   ![Objects extended and shifted](howToImages/5.png)
+   ![Objects extended and shifted](media/imgsVCREST/5.png)
 
 10. You can preview the created video by clicking the play button in the video preview panel.
 
 11. To add a specific animation to an image, simply right-click on the image object and select the animation among:
     - Normal - Current state
-    - Rotation - The image object will rotate
-    - X
-    - Y
-    - Z <br/> <br/>
-(insert image)
+    - Rotation - The image object will constantly rotate anticlockwise
+    - Zoom In - The image will be zoomed in until the end of the object
+    - Zoom Out - The image will be zoomed out until the end of the object
+    - Fade In - The image will fade in from the beginning
+    - Fade Out - The image will fade out until the end <br/><br/>
+    ![Choose the kind of animation](media/imgsVCREST/6.png)
 
 12. You may also add blur filters to smoothen images among:
     - Blur - normal blur function
     - Gaussian Blur - dynamically smoothens the edges in the image 
     - Median Blur - removes noise while preserving the edges (gives a paint-like feel) <br/> <br/>
-    ![Choose the kind of blur](howToImages/7.png)
+    ![Choose the kind of blur](media/imgsVCREST/7.png)
 
 13. The intensity of the blur function can be increased or decreased from the blur slider (teardrop symbol) next to the video preview panel. <br/> <br/>
-    ![Set blur magnitude](howToImages/8.png)
+    ![Set blur magnitude](media/imgsVCREST/8.png)
 
 14. An image may be rotated as well using the rotation button next to the video preview panel.<br/> <br/>
-    ![Rotate image anticlockwise](howToImages/9.png)
+    ![Rotate image anticlockwise](media/imgsVCREST/9.png)
 
 15. An image can be reset to its original version as well using the reset button next to the video preview panel. <br/> <br/>
-    ![Reset image to original here](howToImages/10.png)
+    ![Reset image to original here](media/imgsVCREST/10.png)
 
 16. With all these amazing editing options, your personalized video is now ready to be exported!
 
