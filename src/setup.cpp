@@ -6,6 +6,9 @@
 #include "ui_VideoEditor.h"
 
 void VideoEditor::setupAudio() {
+    connect(ui->actionV_CEST_Unique_Feature, &QAction::triggered,
+            this, &VideoEditor::addImagesByAudio);
+    
     audioManager = new AudioManager(ui->audioListWidget);
     audioPlayer = new AudioPlayer(audioManager, ui->timeline);
 
@@ -53,8 +56,6 @@ void VideoEditor::setupImageToolbar() {
             this, &VideoEditor::resetImage);
     connect(ui->rotateButton, &QToolButton::clicked,
             this, &VideoEditor::rotateImageRight);
-    connect(ui->autoAddImageButton, &QToolButton::clicked,
-            this, &VideoEditor::addImagesByAudio);
 
     // setup blurSlider
     blurSlider = new QSlider(Qt::Vertical);
