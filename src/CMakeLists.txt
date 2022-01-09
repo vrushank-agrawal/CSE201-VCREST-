@@ -3,6 +3,7 @@ add_library(VideoEditor
         export.cpp
         image.cpp
         import.cpp
+        menu.cpp
         setup.cpp
         videoeditor.cpp
         )

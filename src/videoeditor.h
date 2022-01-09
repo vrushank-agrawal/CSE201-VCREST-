@@ -74,6 +74,10 @@ public slots:
     void updateBlurLevel();
     void updateBrightLevel();
 
+    /*###################
+    *       MENU
+    ####################*/
+    void playFromBeginning();
 
 
 private:

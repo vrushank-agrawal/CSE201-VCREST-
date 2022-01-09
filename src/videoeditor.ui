@@ -507,7 +507,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -520,35 +520,12 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <addaction name="separator"/>
     <addaction name="actionExport"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionFind"/>
-   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>Preview</string>
     </property>
     <addaction name="actionPlay"/>
-    <addaction name="actionPlay_Selection"/>
     <addaction name="actionPlay_from_Beginning"/>
-    <addaction name="actionPlay_Full_Screen"/>
-    <addaction name="actionLoop_Playback"/>
-    <addaction name="separator"/>
-    <addaction name="actionSort_Events_By"/>
-    <addaction name="actionSort_By"/>
-    <addaction name="actionShow_Separate_Days_in_Events"/>
-    <addaction name="actionShow_Audio_Waveforms"/>
-    <addaction name="actionShow_Used_Media_Ranges"/>
-    <addaction name="actionShow_Skimmer_Info"/>
-    <addaction name="separator"/>
-    <addaction name="actionZoom_In"/>
-    <addaction name="actionZoom_Out"/>
-    <addaction name="actionZoom_All_Clips"/>
-    <addaction name="separator"/>
-    <addaction name="actionSnapping"/>
-    <addaction name="actionAudio_Skimming"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -565,7 +542,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
    </widget>
    <widget class="QMenu" name="menuImages">
     <property name="title">
-     <string>Images</string>
+     <string>Image</string>
     </property>
     <addaction name="actionBlur_Image"/>
     <addaction name="actionRotate_Image"/>
@@ -573,10 +550,9 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <addaction name="actionReset_Image"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
-   <addaction name="menuView"/>
    <addaction name="menuAudio"/>
    <addaction name="menuImages"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew_Video">
@@ -846,7 +822,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
   </action>
   <action name="actionPlay">
    <property name="text">
-    <string>Play</string>
+    <string>Play/Pause</string>
    </property>
   </action>
   <action name="actionPlay_Selection">

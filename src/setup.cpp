@@ -72,24 +72,9 @@ void VideoEditor::setupImageToolbar() {
     brightSlider->setValue(50);
     connect(brightSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBrightLevel);
-
 }
 
 
-
-void VideoEditor::setupMenus() {
-    setupImports();
-    connect(ui->actionExport, &QAction::triggered,
-            this, &VideoEditor::writeVideo);
-    connect(ui->actionBlur_Image, &QAction::triggered,
-            this, &VideoEditor::blurImage);
-    connect(ui->actionBrighten_Image, &QAction::triggered,
-            this, &VideoEditor::brightImage);
-    connect(ui->actionRotate_Image, &QAction::triggered,
-            this, &VideoEditor::rotateImageRight);
-    connect(ui->actionReset_Image, &QAction::triggered,
-            this, &VideoEditor::resetImage);
-}
 
 void VideoEditor::setupTimeline() {
     // setup images
