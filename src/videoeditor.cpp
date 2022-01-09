@@ -65,3 +65,23 @@ void VideoEditor::updateVideoLength(double length) {
     ui->timeline->updateVideoLength(length);
     ui->preview->updateVideoLength(length);
 }
+
+void VideoEditor::addImagesByAudio() {
+    auto item = audioManager->getSelectedAudio();
+    if (item == nullptr || imageManager->getImagesCount() == 0) {
+        QMessageBox errorMsg;
+        errorMsg.setWindowTitle("Error");
+        errorMsg.setText("Not enough image or not selected audio");
+        errorMsg.exec();
+    };
+    std::vector<int> timeVector = item->getBeatPositions();
+    img::Image *image[timeVector.size()];
+    double startTime[timeVector.size()], length[timeVector.size()];
+    for (int i = 0; i < timeVector.size(); i++) {
+        startTime[i] = (i == 0) ? 0 : timeVector[i-1];
+        length[i] = timeVector[i] - startTime[i];
+        auto image = new img::Image(imageManager->getImage(i)->getMat());
+        ui->timeline->addImage(image, startTime[i], length[i]);
+    }
+
+}

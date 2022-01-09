@@ -45,6 +45,7 @@ public slots:
     void updateCurrentTime(double time);
     void writeVideo();
     void updateVideoLength(double length);
+    void addImagesByAudio();
 
     /*###################
     *      IMPORT

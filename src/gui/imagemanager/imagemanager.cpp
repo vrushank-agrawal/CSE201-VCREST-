@@ -61,4 +61,11 @@ img::Image *ImageManager::getImage(QListWidgetItem *item) {
     return &map.find(item).value();
 }
 
+img::Image *ImageManager::getImage(int row) {
+    if (row >= getImagesCount() || row < 0) return nullptr;
+    return getImage(listWidget->item(row));
+}
+
+void ImageManager::removeImage(int index) {
+}
 

@@ -176,7 +176,7 @@ QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
              <string notr="true">background: #232323;
 QToolTip { color: #000000; background-color: #ffffff; border: 0px; }</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0">
+            <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,0,0,0,0">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -258,7 +258,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                 </size>
                </property>
                <property name="toolTip">
-                <string>Reset to Original</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Brightness&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">background: #eeeeee;
@@ -303,6 +303,35 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
                <property name="icon">
                 <iconset theme=":/img-reset.png">
                  <normaloff>:/img-reset.png</normaloff>:/img-reset.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>22</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="arrowType">
+                <enum>Qt::NoArrow</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="autoAddImageButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>auto add images</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #eeeeee;
+QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
+               </property>
+               <property name="text">
+                <string/>
                </property>
                <property name="iconSize">
                 <size>
