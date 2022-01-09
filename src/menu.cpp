@@ -16,7 +16,9 @@ void VideoEditor::setupMenus() {
 
     connect(ui->actionExit, &QAction::triggered,
             QApplication::quit);
-    ui->actionExit->setShortcut(QKeySequence::Quit);
+    QList<QKeySequence> exitShortcuts;
+    exitShortcuts << QKeySequence::Quit << QKeySequence(Qt::ALT | Qt::Key_F4);
+    ui->actionExit->setShortcuts(exitShortcuts);
 
 
     // Image
