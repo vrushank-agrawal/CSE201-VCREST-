@@ -507,7 +507,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
      <x>0</x>
      <y>0</y>
      <width>1067</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -536,8 +536,6 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionVEST_Help"/>
-    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuAudio">
@@ -598,7 +596,7 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>About...</string>
+    <string>About V-CREST</string>
    </property>
   </action>
   <action name="actionBlur_Image">
