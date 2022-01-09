@@ -134,32 +134,32 @@ int main() {
 
     //define images and vectors
 
-//    Image img2 = Image(image_path);
-//    Image img3 = Image(image_path);
-//    Image img4 = Image(image_path);
-//    std::vector<Image> imageArr2 = {img1, img2};
-//    std::vector<Image> imageArr3 = {img1, img2, img3};
-//    std::vector<Image> imageArr4 = {img1, img2, img3, img4};
+    Image img2 = Image(image_path);
+    Image img3 = Image(image_path);
+    Image img4 = Image(image_path);
+    std::vector<Image> imageArr2 = {img1, img2};
+    std::vector<Image> imageArr3 = {img1, img2, img3};
+    std::vector<Image> imageArr4 = {img1, img2, img3, img4};
 
     //define collages
 //    Collage collage2 = Collage(imageArr2);
 //    Collage collage3 = Collage(imageArr3);
-//    Collage collage4 = Collage(imageArr4);
+    Collage collage4 = Collage(imageArr4);
 
     //run collage functions
 //    collage2.twoStitch();
 //    collage3.threeStitch();
 //    collage4.fourStitch();
-//    collage2.fourStitchRec(2);
+    collage4.fourStitchRec(3);
 
     // display collage
 //    Image collage_img2 = Image(collage2.getModifiedImage());
 //    Image collage_img3 = Image(collage3.getModifiedImage());
-//    Image collage_img4 = Image(collage4.getModifiedImage());
+    Image collage_img4 = Image(collage4.getModifiedImage());
 
 //    collage_img2.imgPreview("test_lena_collage2");
 //    collage_img3.imgPreview("test_lena_collage3");
-//    collage_img4.imgPreview("test_lena_collage4");
+    collage_img4.imgPreview("test_lena_collage4");
 
 
 // --------------------------------EXIT--------------------------------
