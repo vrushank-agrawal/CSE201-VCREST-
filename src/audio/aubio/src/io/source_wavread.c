@@ -18,9 +18,11 @@
 
 */
 
+#include <stdio.h>
 #include "aubio_priv.h"
 
-#ifdef HAVE_WAVREAD
+#ifndef HAVE_WAVREAD
+#define HAVE_WAVREAD
 
 #include "fvec.h"
 #include "fmat.h"
@@ -98,7 +100,7 @@ aubio_source_wavread_t * new_aubio_source_wavread(const char_t * path, uint_t sa
 
   s->fid = fopen((const char *)path, "rb");
   if (!s->fid) {
-    AUBIO_STRERR("source_wavread: Failed opening %s (%s)\n", s->path, errorstr);
+    //AUBIO_STRERR("source_wavread: Failed opening %s (%s)\n", s->path, errorstr);
     goto beach;
   }
 
@@ -131,8 +133,8 @@ aubio_source_wavread_t * new_aubio_source_wavread(const char_t * path, uint_t sa
     buf[4] = '\0';
     bytes_junk += read_little_endian(buf, 4);
     if (fseek(s->fid, bytes_read + bytes_junk, SEEK_SET) != 0) {
-      AUBIO_STRERR("source_wavread: Failed opening %s (could not seek past JUNK Chunk: %s)\n",
-          s->path, errorstr);
+      //AUBIO_STRERR("source_wavread: Failed opening %s (could not seek past JUNK Chunk: %s)\n",
+          //s->path, errorstr);
       goto beach;
     }
     bytes_read += bytes_junk;
@@ -259,8 +261,8 @@ aubio_source_wavread_t * new_aubio_source_wavread(const char_t * path, uint_t sa
     buf[4] = '\0';
     bytes_junk += read_little_endian(buf, 4);
     if (fseek(s->fid, bytes_read + bytes_junk, SEEK_SET) != 0) {
-      AUBIO_STRERR("source_wavread: could not seek past unknown chunk in %s (%s)\n",
-          s->path, errorstr);
+      //AUBIO_STRERR("source_wavread: could not seek past unknown chunk in %s (%s)\n",
+      //    s->path, errorstr);
       goto beach;
     }
     bytes_read += bytes_junk;
@@ -440,7 +442,7 @@ uint_t aubio_source_wavread_seek (aubio_source_wavread_t * s, uint_t pos) {
   }
   ret = fseek(s->fid, s->seek_start + pos * s->blockalign, SEEK_SET);
   if (ret != 0) {
-    AUBIO_STRERR("source_wavread: could not seek %s at %d (%s)\n", s->path, pos, errorstr);
+    //AUBIO_STRERR("source_wavread: could not seek %s at %d (%s)\n", s->path, pos, errorstr);
     return AUBIO_FAIL;
   }
   // reset some values
@@ -461,7 +463,7 @@ uint_t aubio_source_wavread_close (aubio_source_wavread_t * s) {
     return AUBIO_OK;
   }
   if (fclose(s->fid)) {
-    AUBIO_STRERR("source_wavread: could not close %s (%s)\n", s->path, errorstr);
+    //AUBIO_STRERR("source_wavread: could not close %s (%s)\n", s->path, errorstr);
     return AUBIO_FAIL;
   }
   s->fid = NULL;
