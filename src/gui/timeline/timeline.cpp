@@ -36,6 +36,10 @@ Timeline::~Timeline() {
     delete scene;
 }
 
+bool Timeline::isEmpty() {
+    return audioMap.isEmpty() && imageMap.isEmpty();
+}
+
 void Timeline::updateVideoLength(int length) {
     if (lengthInSecond != length) {
         QPen pen("#bbbbbb");

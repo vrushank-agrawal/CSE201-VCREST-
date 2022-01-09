@@ -74,14 +74,22 @@ void VideoEditor::addImagesByAudio() {
         errorMsg.setWindowTitle("Error");
         errorMsg.setText("Not enough image or not selected audio");
         errorMsg.exec();
-    };
-    std::vector<int> timeVector = item->getBeatPositions();
-    double videoLengthInMs = 0;
-    for (int i = 0; i < timeVector.size(); i++) {
-        double start = (i == 0) ? 0 : timeVector[i-1], end = timeVector[i];
-        auto image = new img::Image(imageManager->getImage(i % imageManager->getImagesCount())->getMat());
-        ui->timeline->addImage(image, start / 1000.0, end / 1000.0);
     }
-    videoLengthInMs = *timeVector.rbegin();
-    ui->timeline->addAudio(item, listItem->text(), videoLengthInMs, 0, videoLengthInMs / 1000.0);
+    else if (!ui->timeline->isEmpty()) {
+        QMessageBox errorMsg;
+        errorMsg.setWindowTitle("Error");
+        errorMsg.setText("Timeline is not empty");
+        errorMsg.exec();
+    }
+    else {
+        std::vector<int> timeVector = item->getBeatPositions();
+        double videoLengthInMs = 0;
+        for (int i = 0; i < timeVector.size(); i++) {
+            double start = (i == 0) ? 0 : timeVector[i-1], end = timeVector[i];
+            auto image = new img::Image(imageManager->getImage(i % imageManager->getImagesCount())->getMat());
+            ui->timeline->addImage(image, start / 1000.0, end / 1000.0);
+        }
+        videoLengthInMs = *timeVector.rbegin();
+        ui->timeline->addAudio(item, listItem->text(), videoLengthInMs, 0, videoLengthInMs / 1000.0);
+    }
 }
