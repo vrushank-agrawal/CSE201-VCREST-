@@ -19,7 +19,7 @@ public:
     void addAudio(const QString& name);
     audio::Audio* getAudio(QListWidgetItem *item);
     QMediaPlayer* getPlayer(audio::Audio* audio);
-    audio::Audio* getSelectedAudio();
+    QListWidgetItem* getSelectedItem();
 
 private:
     QListWidget *listWidget = nullptr;
