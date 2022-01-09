@@ -15,7 +15,7 @@ void VideoEditor::setupMenus() {
     ui->actionExport->setShortcut(QKeySequence::Save);
 
     connect(ui->actionExit, &QAction::triggered,
-            this, &VideoEditor::close);
+            QApplication::quit);
     ui->actionExit->setShortcut(QKeySequence::Quit);
 
 
@@ -50,4 +50,8 @@ void VideoEditor::setupMenus() {
 
 void VideoEditor::playFromBeginning() {
     updateCurrentTime(0);
+}
+
+void VideoEditor::quit() {
+    QApplication::quit();
 }
