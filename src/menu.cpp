@@ -53,6 +53,7 @@ void VideoEditor::setupMenus() {
     // Help
     connect(ui->actionAbout, &QAction::triggered,
             this, &VideoEditor::openAboutPage);
+    ui->actionAbout->setShortcut(QKeySequence::HelpContents);
 }
 
 void VideoEditor::openAboutPage() {
