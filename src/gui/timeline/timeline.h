@@ -79,7 +79,6 @@ public:
     void addAudioAtIndicator(audio::Audio* audio, QString displayName, double sourceLength, double max_length = default_audio_length);
     void appendAudio(audio::Audio* audio, QString displayName, double sourceLength, double length=default_audio_length);
     std::string createAudio();
-    audio::Audio* getAudio(qreal time);
     AudioItem* getAudioItem(double time);
     double getAudioStartTime(double time);
 

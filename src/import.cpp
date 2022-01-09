@@ -60,12 +60,10 @@ void VideoEditor::setupImports() {
     mediaFileTypes << ".jpg" << ".png" << ".gif" << ".svg" << ".wav" << ".mp3";
     mediaFileTypesFilter = "Media (*.jpg *.png *.gif *.svg *.wav *.mp3)";
 
-    ui->actionImport_Media->setShortcut(QKeySequence::Open);
-    ui->actionExport->setShortcut(QKeySequence::Save);
-    connect(ui->actionImport_Image, SIGNAL(triggered(bool)),
-            this, SLOT(importImages()));
-    connect(ui->actionImport_Audio, SIGNAL(triggered(bool)),
-            this, SLOT(importAudios()));
-    connect(ui->actionImport_Media, SIGNAL(triggered(bool)),
-            this, SLOT(importMedia()));
+    connect(ui->actionImport_Image, &QAction::triggered,
+            this, &VideoEditor::importImages);
+    connect(ui->actionImport_Audio, &QAction::triggered,
+            this, &VideoEditor::importAudios);
+    connect(ui->actionImport_Media, &QAction::triggered,
+            this, &VideoEditor::importMedia);
 }

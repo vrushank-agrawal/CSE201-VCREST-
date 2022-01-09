@@ -33,11 +33,32 @@ void VideoEditor::blurImage() {
         blurSlider->setVisible(false);
         return;
     }
+    if (brightSlider->isVisible()) {
+        brightSlider->setVisible(false);
+    }
     QPoint pos = ui->blurButton->mapToGlobal(QPoint(0, 0));
     blurSlider->move(pos.x()-blurSlider->width(), pos.y());
     blurSlider->setVisible(true);
     if (imageItem == nullptr) return;
     imageItem->blur();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::brightImage() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (brightSlider->isVisible()) {
+        brightSlider->setVisible(false);
+        return;
+    }
+    if (blurSlider->isVisible()) {
+        blurSlider->setVisible(false);
+    }
+    QPoint pos = ui->brightButton->mapToGlobal(QPoint(0, 0));
+    brightSlider->move(pos.x()-brightSlider->width(), pos.y());
+    brightSlider->setVisible(true);
+    if (imageItem == nullptr) return;
+    imageItem->bright();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
@@ -65,7 +86,9 @@ void VideoEditor::resetImage() {
     imageItem->resetImage();
     imageItem->update();
     imageItem->blurLevel = 0;
+    imageItem->brightLevel = 50;
     blurSlider->setValue(0);
+    brightSlider->setValue(50);
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }
@@ -84,6 +107,15 @@ void VideoEditor::updateBlurLevel() {
     if (imageItem == nullptr) return;
     imageItem->blurLevel = blurSlider->value();
     imageItem->blur();
+    cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
+    emit changeFrame(frame);
+}
+
+void VideoEditor::updateBrightLevel() {
+    ImageItem *imageItem = ImageItem::getSelectedImageItem();
+    if (imageItem == nullptr) return;
+    imageItem->brightLevel = brightSlider->value();
+    imageItem->bright();
     cv::Mat frame = resultVideo->getMatByTime(imageItem->getTimeOfFrame());
     emit changeFrame(frame);
 }

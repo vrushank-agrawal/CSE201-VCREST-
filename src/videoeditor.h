@@ -66,12 +66,18 @@ public slots:
     void applyAnimation(img::Image *image, vid::Animation animation);
     void applyBlur(ImageItem *imageItem);
     void blurImage();
+    void brightImage();
     void deleteImageFromResultVideo(img::Image *image);
     void imageSelected();
     void resetImage();
     void rotateImageRight();
     void updateBlurLevel();
+    void updateBrightLevel();
 
+    /*###################
+    *       MENU
+    ####################*/
+    void playFromBeginning();
 
 
 private:
@@ -111,6 +117,7 @@ private:
     ImageManager *imageManager = nullptr;
     vid::Video *resultVideo = nullptr;
     QSlider *blurSlider = nullptr;
+    QSlider *brightSlider = nullptr;
 
     int fourcc = -1;
     int position = 0, fps = 30, numberFrame = 0;

@@ -21,10 +21,10 @@ Timeline::Timeline(QWidget *parent) : QGraphicsView(parent)
     indicator->setPos(0, 0);
     indicator->setZValue(101);
     indicator->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
-    connect(indicator, SIGNAL(positionChanged(qreal)),
-            this, SLOT(updateTime(qreal)));
-    connect(indicator, SIGNAL(playStateChanged(bool)),
-            this, SIGNAL(playStateChanged(bool)));
+    connect(indicator, &Indicator::positionChanged,
+            this, &Timeline::updateTime);
+    connect(indicator, &Indicator::playStateChanged,
+            this, &Timeline::playStateChanged);
 
     ImageItem::yOffset = timeHeight;
     ImageItem::xTimeOffset = xTimeOffset;

@@ -11,12 +11,12 @@ void VideoEditor::setupAudio() {
 
     connect(ui->audioListWidget, &QListWidget::itemDoubleClicked,
             this, &VideoEditor::appendAudioToThumbnail);
-    connect(ui->preview, SIGNAL(playStateChanged(bool)),
-            audioPlayer, SLOT(updatePlayState(bool)));
-    connect(ui->timeline, SIGNAL(playStateChanged(bool)),
-            audioPlayer, SLOT(handleIndicatorSignal(bool)));
-    connect(ui->timeline, SIGNAL(seekAudioRequested(double)),
-            audioPlayer, SLOT(seek(double)));
+    connect(ui->preview, &VideoPlayer::playStateChanged,
+            audioPlayer, &AudioPlayer::updatePlayState);
+    connect(ui->timeline, &Timeline::playStateChanged,
+            audioPlayer, &AudioPlayer::handleIndicatorSignal);
+    connect(ui->timeline, &Timeline::seekAudioRequested,
+            audioPlayer, &AudioPlayer::seek);
 
     connect(ui->preview, &VideoPlayer::seekAudioRequested,
             audioPlayer, &AudioPlayer::seek);
@@ -47,6 +47,8 @@ void VideoEditor::setupImage() {
 void VideoEditor::setupImageToolbar() {
     connect(ui->blurButton, &QToolButton::clicked,
             this, &VideoEditor::blurImage);
+    connect(ui->brightButton, &QToolButton::clicked,
+            this, &VideoEditor::brightImage);
     connect(ui->resetButton, &QToolButton::clicked,
             this, &VideoEditor::resetImage);
     connect(ui->rotateButton, &QToolButton::clicked,
@@ -60,15 +62,19 @@ void VideoEditor::setupImageToolbar() {
     blurSlider->setRange(0, 100);
     connect(blurSlider, &QSlider::valueChanged,
             this, &VideoEditor::updateBlurLevel);
+
+    // setup brightSlider
+    brightSlider = new QSlider(Qt::Vertical);
+    brightSlider->setWindowFlag(Qt::ToolTip);
+    brightSlider->setVisible(false);
+    brightSlider->setFixedSize(22, 200);
+    brightSlider->setRange(0, 100);
+    brightSlider->setValue(50);
+    connect(brightSlider, &QSlider::valueChanged,
+            this, &VideoEditor::updateBrightLevel);
 }
 
 
-
-void VideoEditor::setupMenus() {
-    setupImports();
-    connect(ui->actionExport, &QAction::triggered,
-            this, &VideoEditor::writeVideo);
-}
 
 void VideoEditor::setupTimeline() {
     // setup images
