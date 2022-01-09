@@ -519,6 +519,8 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
     <addaction name="actionImport_Audio"/>
     <addaction name="separator"/>
     <addaction name="actionExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -626,6 +628,11 @@ QToolTip { color: #000000; background-color: #eeeeee; border: 0px; }</string>
   <action name="actionBackward">
    <property name="text">
     <string>Backward</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

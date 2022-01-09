@@ -14,6 +14,10 @@ void VideoEditor::setupMenus() {
             this, &VideoEditor::writeVideo);
     ui->actionExport->setShortcut(QKeySequence::Save);
 
+    connect(ui->actionExit, &QAction::triggered,
+            QApplication::quit);
+    ui->actionExit->setShortcut(QKeySequence::Quit);
+
 
     // Image
     connect(ui->actionBlur_Image, &QAction::triggered,
