@@ -59,3 +59,9 @@ audio::Audio* AudioManager::getAudio(QListWidgetItem *item) {
 QMediaPlayer* AudioManager::getPlayer(audio::Audio *audio) {
     return playerMap.value(audio, nullptr);
 }
+
+QListWidgetItem* AudioManager::getSelectedItem() {
+    auto listItem = listWidget->selectedItems();
+    if (listItem.length() == 0) return nullptr;
+    return listItem[0];
+}

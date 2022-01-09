@@ -27,8 +27,8 @@ public:
     ~Timeline();
     static double default_image_length, default_audio_length;
 
+    bool isEmpty();
     void updateVideoLength(int length);
-
 
 
 private:

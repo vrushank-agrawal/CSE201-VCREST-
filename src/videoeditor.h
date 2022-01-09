@@ -45,6 +45,7 @@ public slots:
     void updateCurrentTime(double time);
     void writeVideo();
     void updateVideoLength(double length);
+    void addImagesByAudio();
 
     /*###################
     *      IMPORT
@@ -77,6 +78,7 @@ public slots:
     /*###################
     *       MENU
     ####################*/
+    void openAboutPage();
     void playFromBeginning();
 
 

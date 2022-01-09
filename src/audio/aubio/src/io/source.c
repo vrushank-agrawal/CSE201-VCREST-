@@ -31,7 +31,8 @@
 #ifdef HAVE_SNDFILE
 #include "io/source_sndfile.h"
 #endif /* HAVE_SNDFILE */
-#ifdef HAVE_WAVREAD
+#ifndef HAVE_WAVREAD
+#define HAVE_WAVREAD
 #include "io/source_wavread.h"
 #endif /* HAVE_WAVREAD */
 

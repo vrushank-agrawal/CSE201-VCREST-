@@ -10,7 +10,7 @@
 #include <array>
 #include <fstream>
 #include <QDir>
-#include "aubio/aubio.h"
+#include "aubio/src/aubio.h"
 #include "lameHelper.hpp"
 
 typedef std::array<std::array<std::array<int, 2>, 2>, 2> arr3d;
