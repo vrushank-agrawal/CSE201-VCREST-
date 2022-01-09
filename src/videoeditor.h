@@ -78,7 +78,6 @@ public slots:
     *       MENU
     ####################*/
     void playFromBeginning();
-    void quit();
 
 
 private:
