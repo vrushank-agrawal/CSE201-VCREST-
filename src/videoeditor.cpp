@@ -68,11 +68,10 @@ void VideoEditor::updateVideoLength(double length) {
 
 void VideoEditor::addImagesByAudio() {
     auto listItem = audioManager->getSelectedItem();
-    auto item = audioManager->getAudio(listItem);
-    if (item == nullptr || imageManager->getImagesCount() == 0) {
+    if (listItem == nullptr || imageManager->getImagesCount() == 0) {
         QMessageBox errorMsg;
         errorMsg.setWindowTitle("Error");
-        errorMsg.setText("Not enough image or not selected audio");
+        errorMsg.setText("Not enough images or audio not selected");
         errorMsg.exec();
     }
     else if (!ui->timeline->isEmpty()) {
@@ -82,6 +81,7 @@ void VideoEditor::addImagesByAudio() {
         errorMsg.exec();
     }
     else {
+        auto item = audioManager->getAudio(listItem);
         std::vector<int> timeVector = item->getBeatPositions();
         double videoLengthInMs = 0;
         for (int i = 0; i < timeVector.size(); i++) {
