@@ -78,6 +78,7 @@ public slots:
     /*###################
     *       MENU
     ####################*/
+    void openAboutPage();
     void playFromBeginning();
 
 

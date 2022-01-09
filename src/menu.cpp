@@ -4,6 +4,7 @@
 
 #include "videoeditor.h"
 #include "ui_VideoEditor.h"
+#include "QDesktopServices"
 
 void VideoEditor::setupMenus() {
     // Files
@@ -48,6 +49,14 @@ void VideoEditor::setupMenus() {
     connect(ui->actionBackward, &QAction::triggered,
             ui->preview, &VideoPlayer::backward);
     ui->actionBackward->setShortcut(QKeySequence::MoveToPreviousChar);
+
+    // Help
+    connect(ui->actionAbout, &QAction::triggered,
+            this, &VideoEditor::openAboutPage);
+}
+
+void VideoEditor::openAboutPage() {
+    QDesktopServices::openUrl(QUrl("https://github.com/vrushank-agrawal/video_editor_BX23"));
 }
 
 void VideoEditor::playFromBeginning() {
