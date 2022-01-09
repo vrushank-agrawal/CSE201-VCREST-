@@ -23,8 +23,6 @@ public:
     void addImage(const QPixmap& image, const QString& name, img::Image *img=nullptr);
     int getImagesCount();
     img::Image* getImage(QListWidgetItem *item);
-    void removeImage(int index);
-    void removeAllImages(int index);
 
 private:
     QListWidget *listWidget = nullptr;

@@ -14,14 +14,14 @@ void Timeline::addImage(img::Image *image, double start, double end) {
     item->calculateSize();
     scene->addItem(item);
 
-    connect(item, SIGNAL(itemMoved(ImageItem*,double,double)),
-            this, SLOT(moveImageItem(ImageItem*,double,double)));
-    connect(item, SIGNAL(positionChanged(ImageItem*,double,double)),
-            this, SLOT(updateImagePosition(ImageItem*,double,double)));
-    connect(item, SIGNAL(resized(ImageItem*,double)),
-            this, SLOT(resizeImageItem(ImageItem*,double)));
-    connect(item, SIGNAL(deleted(ImageItem*)),
-            this, SLOT(deleteImage(ImageItem*)));
+    connect(item, &ImageItem::itemMoved,
+            this, &Timeline::moveImageItem);
+    connect(item, &ImageItem::positionChanged,
+            this, &Timeline::updateImagePosition);
+    connect(item, &ImageItem::resized,
+            this, &Timeline::resizeImageItem);
+    connect(item, &ImageItem::deleted,
+            this, &Timeline::deleteImage);
 
     connect(item, &ImageItem::animationApplied,
             this, &Timeline::animationApplied);

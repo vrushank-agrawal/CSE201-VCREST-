@@ -61,7 +61,4 @@ img::Image *ImageManager::getImage(QListWidgetItem *item) {
     return &map.find(item).value();
 }
 
-void ImageManager::removeImage(int index) {
-}
-
 

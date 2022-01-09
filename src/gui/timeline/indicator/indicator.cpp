@@ -101,6 +101,9 @@ void Indicator::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->scenePos().x() >= 0) {
         emit positionChanged(event->scenePos().x());
     }
+    else {
+        emit positionChanged(0);
+    }
     QGraphicsItem::mouseReleaseEvent(event);
     update();
 }

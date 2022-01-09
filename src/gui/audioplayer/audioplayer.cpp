@@ -40,7 +40,6 @@ void AudioPlayer::seek(double time) {
     }
     QMediaPlayer *newPlayer = manager->getPlayer(item->audio);
     if (newPlayer != player) {
-        qDebug() << "switching player";
         if (player != nullptr)
             player->pause();
         player = newPlayer;
